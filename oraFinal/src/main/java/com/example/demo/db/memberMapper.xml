@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+	<select id="idCheck" resultType="int">
+		SELECT COUNT(*) FROM MEMBER WHERE ID=#{id}
+	</select>
+	
+	<select id="nickCheck" resultType="int">
+		SELECT COUNT(*) FROM MEMBER WHERE nickName=#{nickName}
+	</select>
+	
+	<insert id="insertMember">
+		INSERT INTO MEMBER(id,code_value,password,name,nickName,gender,phone,rank_name,regdate) 
+		VALUES(#{id},#{code_value},#{password},#{name},#{nickName},#{gender},#{phone},#{rank_name},sysdate)
+	</insert>
+	
+	<select id="selectMember" resultType="memberVo">
+		SELECT ID, CODE_VALUE,PASSWORD,NAME,NICKNAME,GENDER,PHONE,RANK_NAME,TO_CHAR(REGDATE,'YY.MM.DD HH:MI') AS REGDATE 
+		FROM MEMBER WHERE ID=#{id}
+	</select>
+	
+	<select id="selectRank" resultType="rankVo">
+		SELECT * FROM rank WHERE rank_name=#{rank_name}
+	</select>
+	
+	<update id="updateMember">
+		UPDATE MEMBER SET NICKNAME=#{nickName},PHONE=#{phone} WHERE ID=#{id}
+	</update>
+</mapper>

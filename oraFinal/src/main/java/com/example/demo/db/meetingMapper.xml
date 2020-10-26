@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="meeting">
+	<!-- 게시글 -->
+	<select id="nextMNum" resultType="int"> <!-- 게시글 번호 -->
+		SELECT NVL(MAX(M_NO),0)+1 FROM MEETING
+	</select>
+	<select id="selectMAll" resultType="meetingVo"> <!-- 게시글 목록 -->
+		SELECT * FROM (SELECT ROWNUM N, M_NO, C_NAME, M_TIME, M_TITLE, RANK_ICON, NICKNAME, TO_CHAR(M_REGDATE, 'YYYY. MM. DD HH24:MI') AS M_REGDATE, M_HIT 
+		FROM (SELECT M_NO, C_NAME, M_TIME, M_TITLE, RANK_ICON, NICKNAME, M_REGDATE, M_HIT 
+		FROM meeting MT, MEMBER MB, COURSE C, RANK R 
+		WHERE MT.ID=MB.ID AND C.C_NO=MT.C_NO AND R.RANK_NAME = MB.RANK_NAME 
+		ORDER BY M_NO DESC)) WHERE N BETWEEN #{start} and #{end}
+	</select>
+	<select id="selectMByNo" resultType="meetingVo"> <!-- 게시글 상세 -->
+	 	SELECT MT.M_NO, NICKNAME, C_NAME, RANK_ICON, M_TITLE, M_CONTENT, TO_CHAR(M_REGDATE, 'YYYY. MM. DD HH24:MI') AS M_REGDATE, M_HIT, M_LATITUDE, M_LONGITUDE, M_LOCNAME, M_TIME, M_NUMPEOPLE FROM MEETING MT, MEMBER MB, COURSE C, RANK R WHERE MT.ID=MB.ID AND C.C_NO=MT.C_NO AND R.RANK_NAME=MB.RANK_NAME AND M_NO=#{m_no}
+	</select>
+	<select id="totMRecord" resultType="int"> <!-- 게시글 수 -->
+		SELECT COUNT(*) FROM MEETING
+	</select>
+	<insert id="insertM" parameterType="meetingVo"> <!-- 게시글 등록 -->
+		INSERT INTO MEETING VALUES (#{m_no}, #{c_no}, #{id}, #{m_title}, #{m_content}, SYSDATE, #{m_hit}, #{m_latitude}, #{m_longitude}, 0, #{m_numpeople})
+	</insert>
+	<update id="updateM" parameterType="meetingVo"> <!-- 게시글 수정 -->
+		UPDATE MEETING SET C_NO=#{c_no}, M_TITLE={m_title}, M_CONTENT=#{m_content} WHERE M_NO=#{m_no}
+	</update>
+	<update id="updateHit" parameterType="meetingVo"> <!-- 조회수 수정 -->
+		UPDATE MEETING SET M_HIT=M_HIT+1 WHERE M_NO=#{m_no}
+	</update>
+	<delete id="deleteM" parameterType="meetingVo"> <!-- 게시글 삭제 -->
+		DELETE MEETING WHERE M_NO=#{m_no}
+	</delete>
+	
+
+	<!-- 첨부파일 -->
+	<select id="nextMfNum" resultType="int"> <!-- 첨부파일 번호 -->
+		SELECT NVL(MAX(MF_NO),0)+1 FROM MEETING_FILE
+	</select>
+	<select id="selectMfByNo" resultType="meeting_fileVo"> <!-- 첨부파일 상세 -->
+		SELECT * FROM MEETING_FILE WHERE M_NO=#{m_no}
+	</select>
+	<insert id="insertMf" parameterType="meeting_fileVo"> <!-- 첨부파일 등록 -->
+		INSERT INTO MEETING_FILE VALUES(#{mf_no}, #{m_no}, #{mf_name}, #{mf_savename}, #{mf_path}, #{mf_size})
+	</insert>
+	<update id="updateMf" parameterType="meeting_fileVo"> <!-- 첨부파일 수정 -->
+		UPDATE MEETING_FILE SET MF_NAME=#{mf_name}, MF_SAVENAME=#{mf_savename}, MF_SIZE=#{mf_size} WHERE M_NO=#{m_no}
+	</update>
+	<delete id="deleteMf" parameterType="meeting_fileVo"> <!-- 첨부파일 삭제 -->
+		DELETE MEETING_FILE WHERE M_NO=#{m_no}
+	</delete>
+	
+	
+	<!-- 댓글 -->
+	<select id="cntRep" resultType="int"> <!-- 댓글 수 -->
+		SELECT COUNT(*) FROM MEETING_REP WHERE M_NO=#{m_no}
+	</select>
+	<select id="nextMrNum" resultType="int"> <!-- 게시글 첨부파일 번호 -->
+		SELECT NVL(MAX(MR_NO),0)+1 FROM MEETING_REP
+	</select>
+	<select id="selectMrByNo" resultType="meeting_repVo"> <!-- 댓글 상세 -->
+		SELECT MR_NO, M_NO, MR.ID, MR_CONTENT, TO_CHAR(MR_REGDATE,'YYYY. MM. DD HH24:MI') AS MR_REGDATE, MR_REF, MR_STEP, MR_FILE1, RANK_ICON, NICKNAME 
+		FROM MEETING_REP MR, MEMBER MB, RANK R 
+		WHERE MR.ID=MB.ID AND R.RANK_NAME=MB.RANK_NAME AND M_NO=#{m_no} ORDER BY MR_REF DESC, MR_NO
+	</select>
+	<insert id="insertMr"> <!-- 댓글등록 -->
+		INSERT INTO MEETING_REP VALUES(#{mr_no}, #{m_no}, #{id}, #{mr_content}, #{mr_regdate}, #{mr_ref}, #{mr_step}, #{mr_file1})
+	</insert>
+	<delete id="deleteMr" parameterType="meeting_repVo"> <!-- 댓글 삭제 -->
+		DELETE MEETING_REP WHERE M_NO=#{m_no}
+	</delete>
+</mapper>	

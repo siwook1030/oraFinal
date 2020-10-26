@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="review">
+  <select id="selectList" resultType="reviewVo">
+    SELECT * FROM review ORDER BY r_no DESC
+  </select>
+  <update id="incHit">
+  	UPDATE review SET r_hit=r_hit+1 WHERE r_no=#{r_no}
+  </update>
+  <select id="selectOne" resultType="reviewVo">
+  	SELECT * FROM review WHERE r_no=#{r_no}
+  </select>
+  <select id="selectListFile" resultType="review_fileVo">
+  	SELECT * FROM review_file WHERE r_no=#{r_no}
+  </select>
+  <select id="selectListRep" resultType="review_repVo">
+  	SELECT * FROM review_rep WHERE r_no=#{r_no} ORDER BY rr_ref, rr_step
+  </select>
+  <select id="nextR_no" resultType="java.lang.Integer">
+  	SELECT NVL(MAX(r_no),0)+1 FROM review
+  </select>
+  <insert id="insert">
+  	INSERT INTO review(r_no,c_no,id,r_title,r_content,r_regdate,r_hit) VALUES(#{r_no},#{c_no},#{id},#{r_title},#{r_content},SYSDATE,0)
+  </insert>
+  <insert id="insertFile">
+  	INSERT INTO review_file(rf_no,r_no,rf_name,rf_savename,rf_path,rf_size) VALUES(#{rf_no},#{r_no},#{rf_name},#{rf_savename},#{rf_path},#{rf_size})
+  </insert>
+  <select id="nextRf_no" resultType="java.lang.Integer">
+  	SELECT NVL(MAX(rf_no),0)+1 FROM review_file
+  </select>
+  <select id="countRep" resultType="java.lang.Integer">
+  	SELECT COUNT(*) FROM review_rep WHERE r_no=#{r_no}
+  </select>
+  <delete id="delete">
+  	DELETE FROM review WHERE r_no=#{r_no}
+  </delete>
+  <delete id="deleteFile">
+  	DELETE FROM review_file WHERE r_no=#{r_no}
+  </delete>
+  <delete id="deleteRep">
+  	DELETE FROM review_rep WHERE r_no=#{r_no}
+  </delete>
+</mapper>

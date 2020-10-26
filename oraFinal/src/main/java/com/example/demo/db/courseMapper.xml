@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="course">
+
+	<select id="nextCno" resultType="int">
+		SELECT NVL(MAX(C_NO),0)+1 FROM COURSE
+	</select>
+	
+	<insert id="insertCourse">
+		INSERT INTO COURSE(C_NO, CODE_VALUE, ID, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP,  C_MAPLEVEL)
+		VALUES (#{c_no}, #{code_value}, #{id}, #{c_name}, #{c_s_locname}, #{c_s_latitude}, #{c_s_longitude}, #{c_e_locname},
+		#{c_e_latitude}, #{c_e_longitude}, #{c_loc}, #{c_distance}, #{c_time}, #{c_difficulty}, 
+		#{c_view}, #{c_words}, #{c_line}, #{c_temp},  #{c_mapLevel} )
+	</insert>
+	
+	<insert id="insertPT">
+		INSERT INTO PUBLICTRANSPORT(PT_NO, CODE_VALUE, C_NO, PT_LATITUDE, PT_LONGITUDE, PT_IMG, PT_STATION, PT_DISTANCE, PT_LINE)
+		VALUES (PT_SEQ.NEXTVAL, #{code_value},#{c_no},#{pt_latitude},#{pt_longitude},#{pt_img},#{pt_station},#{pt_distance},#{pt_line})
+	</insert>
+
+	<select id="selectByView" resultType="courseVo">
+		SELECT C_NO, CODE_VALUE, ID, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP, C_MAPLEVEL 
+		FROM COURSE WHERE C_TEMP ='N' AND C_VIEW LIKE #{view} || '%'
+	</select>
+	
+	<select id="selectByCno" resultType="courseVo">
+		SELECT C_NO, CODE_VALUE, ID, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP,  C_MAPLEVEL 
+		FROM COURSE WHERE C_NO = #{c_no}
+	</select>
+	
+	<select id="selectCourseList" resultType="courseVo">
+		SELECT C_NO, CODE_VALUE, ID, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP, C_MAPLEVEL 
+		FROM COURSE WHERE  C_TEMP ='N' ORDER BY C_NO
+	</select>
+	
+	<select id="selectSearchCourseNum" resultType="int" parameterType="map">
+		SELECT C_NO FROM (SELECT CALC_DISTANCE(#{latitude},#{longitude},C_S_LATITUDE,C_S_LONGITUDE) AS D, C_NO FROM COURSE
+		<where>
+		    C_TEMP ='N'
+			AND CALC_DISTANCE(#{latitude},#{longitude},C_S_LATITUDE,C_S_LONGITUDE) BETWEEN 0 AND #{maxNearDis}
+			<if test="distance != 0">
+				AND C_DISTANCE BETWEEN #{minDis} AND #{maxDis}
+			</if>
+			<if test="time != 0">
+				AND C_TIME BETWEEN #{minTime} AND #{maxTime}
+			</if>
+			<if test="view1 != null"> AND C_VIEW LIKE '%'|| #{view1} ||'%'</if>
+			<if test="view2 != null"> AND C_VIEW LIKE '%'|| #{view2} ||'%'</if>
+			<if test="view3 != null"> AND C_VIEW LIKE '%'|| #{view3} ||'%'</if>
+			<if test="view4 != null"> AND C_VIEW LIKE '%'|| #{view4} ||'%'</if>
+		</where>
+		ORDER BY D)
+	</select>
+	
+	<select id="selectByCnoandUserDis" resultType="courseVo" parameterType="map">
+		SELECT C_NO, CODE_VALUE, ID, C_NAME, CALC_DISTANCE(#{latitude},#{longitude},C_S_LATITUDE,C_S_LONGITUDE) AS userDis,
+		C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP,  C_MAPLEVEL 
+		FROM COURSE WHERE C_TEMP ='N' AND C_NO = #{c_no} 
+	</select>
+	
+		
+	<select id="selectCoursePhoto" resultType="coursePhotoVo">
+		SELECT CP_NO, C_NO, CP_NAME, CP_PATH, CP_LATITUDE, CP_LONGITUDE FROM COURSEPHOTO WHERE C_NO = #{c_no}
+	</select>
+	
+	<select id="selectPt" resultType="publicTransportVo">
+		SELECT PT_NO, CODE_VALUE, C_NO, PT_LATITUDE, PT_LONGITUDE, PT_IMG, PT_STATION, PT_DISTANCE, PT_LINE
+		FROM PUBLICTRANSPORT WHERE C_NO = #{c_no} 
+	</select>
+	
+	<select id="selectFood" resultType="foodVo">
+		SELECT FOOD_NO, C_NO, FOOD_TAG, FOOD_TEL, FOOD_NAME, FOOD_ADDR, FOOD_BHOURS FROM
+		FOOD WHERE C_NO=#{c_no}
+	</select>
+	
+	<select id="selectOneFood" resultType="foodVo">
+		SELECT FOOD_NO, C_NO, FOOD_TAG, FOOD_TEL, FOOD_NAME, FOOD_ADDR, FOOD_BHOURS FROM
+		FOOD WHERE FOOD_NO=#{food_no}
+	</select>
+	
+	<select id="selectFoodPhoto" resultType="foodPhotoVo">
+		SELECT FP_NO, FOOD_NO, FP_NAME, FP_PATH FROM FOODPHOTO WHERE FOOD_NO=#{food_no}
+	</select>
+	
+</mapper>

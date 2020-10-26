@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="notice">
+  <select id="listNotice" resultType="noticeVo">
+    SELECT n_no,n.code_value,code_name,n_title,n_content,TO_CHAR(n_regdate,'yyyy.mm.dd hh:mi'), 
+    n_hit FROM NOTICE n, CODE c WHERE n.CODE_VALUE = c.CODE_VALUE
+  </select>
+  
+  <select id="getBoardCategory" resultType="codeVo">
+    select code_value,code_type,code_name from code where code_type=#{code_type}
+  </select>
+  
+  <select id="detailNotice" resultType="noticeVo">
+    SELECT n_no,n.code_value,code_name,n_title,n_content,TO_CHAR(n_regdate,'yyyy.mm.dd hh:mi'),
+    n_hit FROM NOTICE n, CODE c WHERE n.CODE_VALUE = c.CODE_VALUE AND N_NO=#{N_NO}
+  </select>
+  
+  <insert id="insertNotice">
+    insert into notice values(#{n_no},#{code_value},#{n_title},#{n_content},sysdate,#{n_hit})
+  </insert>
+</mapper>

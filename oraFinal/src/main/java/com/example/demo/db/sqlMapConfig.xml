@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<properties resource="com/example/demo/db/db.properties"/>
+	<typeAliases>
+		<typeAlias type="com.example.demo.vo.MemberVo" alias="memberVo" />
+		
+		<typeAlias type="com.example.demo.vo.CourseVo" alias="courseVo" />
+		<typeAlias type="com.example.demo.vo.CoursePhotoVo" alias="coursePhotoVo" />
+		<typeAlias type="com.example.demo.vo.PublicTransportVo" alias="publicTransportVo" />
+		<typeAlias type="com.example.demo.vo.FoodVo" alias="foodVo" />
+		<typeAlias type="com.example.demo.vo.FoodPhotoVo" alias="foodPhotoVo" />
+		
+		<typeAlias type="com.example.demo.vo.MeetingVo" alias="meetingVo"/>
+		<typeAlias type="com.example.demo.vo.Meeting_fileVo" alias="meeting_fileVo"/>
+		<typeAlias type="com.example.demo.vo.Meeting_repVo" alias="meeting_repVo"/>
+		
+		<typeAlias type="com.example.demo.vo.ReviewVo" alias="reviewVo"/>
+		<typeAlias type="com.example.demo.vo.RankVo" alias="rankVo"/>
+		<typeAlias type="com.example.demo.vo.Review_fileVo" alias="review_fileVo"/>
+		<typeAlias type="com.example.demo.vo.Review_repVo" alias="review_repVo"/>
+		
+		<typeAlias type="com.example.demo.vo.NoticeVo" alias="noticeVo" />
+		<typeAlias type="com.example.demo.vo.CodeVo" alias="codeVo" />
+
+	</typeAliases>
+  <environments default="development">
+    <environment id="development">
+      <transactionManager type="JDBC"/>
+      <dataSource type="POOLED">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+      </dataSource>
+    </environment>
+  </environments>
+  <mappers>
+    <mapper resource="com/example/demo/db/memberMapper.xml"/>
+    <mapper resource="com/example/demo/db/courseMapper.xml"/>
+    <mapper resource="com/example/demo/db/meetingMapper.xml"/>
+    <mapper resource="com/example/demo/db/reviewMapper.xml"/>
+    <mapper resource="com/example/demo/db/noticeMapper.xml"/>
+  </mappers>
+</configuration>
