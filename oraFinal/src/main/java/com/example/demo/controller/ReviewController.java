@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,6 +26,7 @@ import com.example.demo.vo.RankVo;
 import com.example.demo.vo.ReviewVo;
 import com.example.demo.vo.Review_fileVo;
 import com.example.demo.vo.Review_repVo;
+import com.google.gson.Gson;
 
 
 @Controller
@@ -112,6 +114,19 @@ public class ReviewController {
 		model.addAttribute("rvo", rvo);
 		model.addAttribute("rflist", rflist);
 		model.addAttribute("rrlist", rrlist);
+	}
+	@RequestMapping(value = "/getRvo", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String detailReviewRvo(int r_no) {
+		rdao.incHit(r_no);		// 히트수 증가
+		ReviewVo rvo = rdao.selectOne(r_no);
+		rvo.setR_no(r_no);
+		rvo.setC_name(getC_name(rvo.getC_no()));			// 게시글 코스명 설정
+		rvo.setNickName(getNickName(rvo.getId()));			// 게시글 닉네임 설정
+		rvo.setRank_icon(getRankIcon(mvo.getRank_name()));	// 게시글 랭크아이콘 설정
+		rvo.setTotal_reply(rdao.countRep(r_no));			// 게시글 답글 수 설정
+		Gson gson = new Gson();
+		return gson.toJson(rvo);
 	}
 	@RequestMapping(value = "/insertReview", method = RequestMethod.GET)
 	public void insertReviewForm(Model model) {

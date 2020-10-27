@@ -1,13 +1,5 @@
 {
   "ecmaVersion": 6,
-  "ide": {
-    "scriptPaths": [
-      {
-        "type": "PROJECT",
-        "path": "finalOra2"
-      }
-    ]
-  },
   "plugins": {
     "guess-types": {
       
@@ -18,11 +10,9 @@
     "complete_strings": {
       
     },
-
     "browser-extension": {
       
     },
-
     "jquery-ui1-12": {
       
     },

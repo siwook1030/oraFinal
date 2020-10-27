@@ -8,24 +8,26 @@
 <style type="text/css">
 footer {
 
-   margin: 30px auto;
-   width: 100%;
-   height: 150px;
-   font-family: 'NEXON Lv1 Gothic Low OTF';
+	margin: 30px auto;
+	width: 100%;
+	height: 150px;
+	font-family: 'NEXON Lv1 Gothic Low OTF';
 }
 #footer_box {
-   width: 1140px;
-   height: 150px;
-   margin: 0 auto;
-   text-align: center;    
+	width: 1140px;
+	height: 150px;
+	margin: 0 auto;
+	text-align: center;    
+
 }
 #footer_icon{
    margin: 0 auto;
 }
 #address {
-   margin: 10px 0 0 0;
-   font-size: 11px;
-   list-style-type: none;
+
+	margin: 10px 0 0 0;
+	font-size: 11px;
+	list-style-type: none;
 }
 
 </style>
