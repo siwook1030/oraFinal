@@ -152,10 +152,10 @@ public class MeetingManager {
 	}
 	
 	// 댓글 출력
-	public static List<Meeting_repVo> detailMRep(int m_no) {
+	public static List<Meeting_repVo> detailMRep(HashMap map) {
 		List<Meeting_repVo> list = null;
 		SqlSession session = sqlSessionFactory.openSession();
-		list = session.selectList("meeting.selectMrByNo", m_no);
+		list = session.selectList("meeting.selectMrByNo", map);
 		session.close();
 		return list;
 	}

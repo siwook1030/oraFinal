@@ -25,8 +25,8 @@ public class MeetingDao {
 	}
 	
 	
-	public List<Meeting_repVo> detailMRep(int m_no) {
-		return MeetingManager.detailMRep(m_no);
+	public List<Meeting_repVo> detailMRep(HashMap map) {
+		return MeetingManager.detailMRep(map);
 	}
 	
 	

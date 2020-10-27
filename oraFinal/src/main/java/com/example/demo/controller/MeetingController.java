@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,6 +35,10 @@ public class MeetingController {
 	public static int recordSize = 3; // 한 번에 보이는 게시글 수
 	public static int totPage = 0; // 총 페이지 수
 	public static int pageSize = 2; // 한 번에 보이는 페이지 수
+	
+	public static int recordSizeR = 3; // 한 번에 보이는 게시글 수
+	public static int totPageR = 0; // 총 페이지 수
+	public static int pageSizeR = 2; // 한 번에 보이는 페이지 수
 	
 	@RequestMapping("/listMeeting")
 	public void listMeeting(Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo, MeetingVo m) {
@@ -78,22 +83,46 @@ public class MeetingController {
 		model.addAttribute("list", mdao.listMeeting(map));
 	}
 	
-	@RequestMapping("/detailMeeting")
+	@RequestMapping(value = "/detailMeeting", produces = "application/json;charset=utf-8")
 	public void detailMeeting(Model model, int m_no, MeetingVo m) {
 		mdao.updateHit(m_no);
 		MeetingVo mt = mdao.detailMeeting(m_no);
 		int c_no = mt.getC_no();
+		
+		int totalRecordR = mdao.cntRep(m_no);
+		int totalPageNum = (int)Math.ceil((double)totalRecordR/recordSizeR);
+		System.out.println("토탈페이지넘 : " +totalPageNum);
+		int start = 1;
+		int end = start+recordSizeR-1;
+			
+		HashMap map = new HashMap();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("m_no", m_no);
+		
+		Gson gson = new Gson();
+		model.addAttribute("mrList", gson.toJson(mdao.detailMRep(map)));
+		model.addAttribute("m_no", gson.toJson(m_no));
+		model.addAttribute("totalPageNum", gson.toJson(totalPageNum));
+		model.addAttribute("c", cdao.getCourseByCno(c_no));
+		
 		model.addAttribute("mt", mt);
-		model.addAttribute("cntRep", mdao.cntRep(m_no));
-		model.addAttribute("mr", mdao.detailMRep(m_no));
+		model.addAttribute("cntRep", totalRecordR);	
 		model.addAttribute("mf", mdao.detailMFile(m_no));
 	}
 	
-	@RequestMapping(value = "/detailMRep", produces = "application/json;charset=utf-8")
+	@GetMapping(value = "/detailMRep", produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public String detailMrep(int m_no) {
+	public String detailMrep(int m_no, int num) {
+		int end = num*recordSizeR;
+		int start = end-recordSizeR+1;
+		HashMap map = new HashMap();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("m_no", m_no);
+
 		Gson gson = new Gson();
-		return gson.toJson(mdao.detailMRep(m_no));
+		return gson.toJson(mdao.detailMRep(map));
 	}
 	
 	@RequestMapping("/deleteMeeting")
