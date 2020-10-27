@@ -7,17 +7,17 @@
 <title>Insert title here</title>
 <style type="text/css">
 footer {
-	width: 1000px;
+
+	margin: 30px auto;
+	width: 100%;
 	height: 150px;
-	margin-top: 100px;
-	margin: 10px auto;
-	clear: both;	/* footer로의 overflow해결 */
+	font-family: 'NEXON Lv1 Gothic Low OTF';
 }
 #footer_box {
-      width: 1000px;
-      height: 150px;
-      margin: 0 auto;
-      text-align: center;
+	width: 1140px;
+	height: 150px;
+	margin: 0 auto;
+	text-align: center;    
 }
 #footer_icon{
 	margin: 0 auto;
@@ -25,7 +25,9 @@ footer {
 #address {
 	margin: 10px 0 0 0;
 	font-size: 11px;
+	list-style-type: none;
 }
+
 </style>
 </head>
 <body>
