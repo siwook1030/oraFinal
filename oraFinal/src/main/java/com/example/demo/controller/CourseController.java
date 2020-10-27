@@ -13,11 +13,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.dao.CourseDao;
 import com.example.demo.db.CourseManager;
+import com.example.demo.vo.CoursePhotoVo;
 import com.example.demo.vo.CourseVo;
 import com.example.demo.vo.FoodVo;
 import com.example.demo.vo.PublicTransportVo;
@@ -109,5 +111,21 @@ public class CourseController {
 	public void detailFood(Model model,int c_no ,int food_no) {
 		model.addAttribute("c", cdao.getCourseByCno(c_no));
 		model.addAttribute("f", cdao.getFoodByFoodNo(food_no));
+	}
+	
+	@RequestMapping(value = "/saveCourse", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public void saveCourse(Model model,HttpSession httpSession) {
+		System.out.println("세이브 컨트롤러 작동!!!!");
+		List<CourseVo> courseList = cdao.getSaveCourse(httpSession);
+		List<CoursePhotoVo> photovo =null;
+		for (CourseVo c : courseList) {
+			photovo =(c.getC_photo());
+		}
+		model.addAttribute("courseList",courseList);
+		model.addAttribute("photovo",photovo);
+		System.out.println(courseList);
+		System.out.println("코스리스트");
+		System.out.println(photovo);
 	}
 }

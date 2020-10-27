@@ -11,27 +11,6 @@
       margin: 0px;
       padding: 0px;
    }
-   header {
-      width: 1000px;
-      height: 100px;
-      margin-top: 10px;
-      font-family: 'NEXON Lv1 Gothic Low OTF';
-      border: solid 1px red;
-      margin: 10px auto;
-   }
-   #logo {
-       float: left; 
-   }
-   #top {
-      margin: 30px 20px 0 0;
-      font-size: 12px;
-      float: right;
-      text-align: right;   
-   }
-   #login {
-      font-size: 11px;
-      text-align: right;
-   }
       
       
       
@@ -136,33 +115,32 @@
    
    
    
-   footer {
-   margin: 30px auto;
-       width: 1000px;
-       height: 150px;
 
-       font-family: 'NEXON Lv1 Gothic Low OTF';
-       border: solid 1px green;
-      }
-    #footer_box {
-       width: 1000px;
-       height: 150px;
-       margin: 0 auto;
-       text-align: center;
-      
-    }
-    #footer_icon{
-       margin: 0 auto;
-    }
-    #address {
-       margin: 10px 0 0 0;
-       font-size: 11px;
-    }
 
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
 	$(function(){
+	      var tabBtn = $("#tab-btn > ul > li"); //각각의 버튼을 변수에 저장
+	      var tabCont = $("#tab-cont > div"); //각각의 콘텐츠를 변수에 저장
+	      
+	      //컨텐츠 내용을 숨겨주세요!
+	      tabCont.hide().eq(0).show();
+	      
+	      tabBtn.click(function () {
+	       var target = $(this); //버튼의 타겟(순서)을 변수에 저장
+	       var index = target.index(); //버튼의 순서를 변수에 저장
+	       tabBtn.removeClass("active"); //버튼의 클래스를 삭제
+	       target.addClass("active"); //타겟의 클래스를 추가
+	       tabCont.css("display", "none");
+	       tabCont.eq(index).css("display", "block");
+	       if(index == 1){
+				$.ajax("/saveCourse", {success:function(){
+					console.log("작동");
+				}});
+		    }
+	      });
+		
 		$("#btnUpdate").click(function() {
 			$(".updateMember").css({visibility: "visible"});
 			$("#btnUpdate").css({visibility: "hidden"});
@@ -180,46 +158,26 @@
 </script>
 </head>
 <body>
-
-
-<header>
-  <div id="logo">
-         <a href="/mainPage"><img src='/headerImg/logo.png' height="100"></a>
-      </div>
-      <div id="login">
-      <c:choose>
-      	<c:when test="${m == null }">
-      		<a href="/login">로그인</a>&nbsp;&nbsp;&nbsp;<a href="/signUp">회원가입</a>
-      	</c:when>
-      	<c:when test="${m != null }">
-      		${m.nickName } 라이더! &nbsp;&nbsp;<a href="/logout">로그아웃</a>&nbsp;&nbsp;<a href="/myPage2">마이페이지</a>
-      	</c:when>
-      </c:choose>
-         <img src="/headerImg/myIcon.png" height="40">
-         &nbsp;&nbsp;
-      </div>
-      <div id="top">
-         오늘의 라이딩&nbsp;&nbsp;&nbsp;&nbsp;자전거길&nbsp;&nbsp;&nbsp;&nbsp;<a href="listReview">후기게시판</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="listMeeting">번개게시판</a>&nbsp;&nbsp;&nbsp;&nbsp;정보게시판
-      </div>
- </header>
-   
+ <jsp:include page="header.jsp"/>
    
   <div id="tab-menu">
   <div id="tab-btn">
 
     <ul>
-      <li class="active"><a href="#">정보 수정</a></li>
-      <li><a href="#">찜 목록</a></li>
-      <li><a href="#">내코스</a></li>
-      <li><a href="#">작성글</a></li>
-      <li><a href="#">랭킹</a></li>
+      <li class="active">정보 수정</li>
+      <li>찜 목록</li>
+      <li>내코스</li>
+      <li>작성글</li>
+      <li>랭킹</li>
     </ul>
   </div>
   <!--찜목록-->
   <div id="tab-cont">
       <div>
-  		<form id="update">
+      
+      
         <!--회원정보-->
+  		<form id="update">
             <div id="myinfo">
               <div class="row">
                 <span class="cell col1">아이디</span>
@@ -265,31 +223,25 @@
                 <span id="regdate"class="cell col2">${m.regdate }</span>
               </div>
 
+            </div>
 		</form>
       <button id="btnUpdate">수정</button>
       <button id="btnUpdate2" style="visibility: hidden">수정</button>
-            </div>
       </div>
       
       
-      
-      <div id="container">
-      <figure>
-         <!-- <img src="img/${vo.cp_path }"> -->
-         <c:forEach var="vo" items="${list }">
-               <option value="${vo.cp_name }">${vo.c_name }</option>
-            </c:forEach>
-
-         <figcaption>블라블라${vo.cp_path } </figcaption>
-         <c:forEach var="vo" items="${list }">
-               <option value="${vo.c_no }">${vo.c_name }</option>
-            </c:forEach>
-
-         <!-- <img src=img/"> -->
-         <!-- <figcaption>    </figcaption> -->
-      </figure>
-    </div>
-
+      <div>  
+      	  <c:forEach var="vo" items="${courseList}">
+		      <div id="container">
+			      <figure>       
+			         <figcaption>${vo.c_name} </figcaption>         
+			         <option value="${vo.c_difficulty}"></option>
+			      </figure>
+		   	  </div>
+  		 </c:forEach>
+  		 
+	</div>
+		
       <div>
         작성글 불러오기
 
@@ -299,54 +251,13 @@
       </div>
     </div>
 
-
   </div>
 </div>
+	<jsp:include page="footer.jsp"/>
 
- <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
-
-     <script id="rendered-js" >
-      var tabBtn = $("#tab-btn > ul > li"); //각각의 버튼을 변수에 저장
-      var tabCont = $("#tab-cont > div"); //각각의 콘텐츠를 변수에 저장
-      
-      //컨텐츠 내용을 숨겨주세요!
-      tabCont.hide().eq(0).show();
-      
-      tabBtn.click(function () {
-       var target = $(this); //버튼의 타겟(순서)을 변수에 저장
-       var index = target.index(); //버튼의 순서를 변수에 저장
-       tabBtn.removeClass("active"); //버튼의 클래스를 삭제
-       target.addClass("active"); //타겟의 클래스를 추가
-       tabCont.css("display", "none");
-       tabCont.eq(index).css("display", "block");
-      });
-      //# sourceURL=pen.js
-      </script>
 
      
      
-     
-     
-     
-     
-     
-     
-     
-     
-   <footer>
-       <div id='footer_box'>
-            <div id="footer_icon" >
-               <img src='/footerImg/instagram.png' height="50px">
-               <img src='/footerImg/facebook.png' height="50px">
-               <img src='/footerImg/twitter.png' height="50px">
-               <ul id="address">
-                  <li>04108 | 서울시 마포구 백범로 23 구프라자 3층</li>
-                  <li>TEL: 02-707-1480 | Email: ora@bit.com</li>
-                  <li>COPYRIGHT (C)2020 오늘의 라이딩 ALL RIGHTS RESERVED</li>
-               </ul>
-            </div>
-            
-         </div>
-   </footer>
+
 </body>
 </html>

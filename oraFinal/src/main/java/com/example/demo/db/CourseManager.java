@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -19,6 +21,7 @@ import com.example.demo.vo.CoursePhotoVo;
 import com.example.demo.vo.CourseVo;
 import com.example.demo.vo.FoodPhotoVo;
 import com.example.demo.vo.FoodVo;
+import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.PublicTransportVo;
 
 public class CourseManager {
@@ -213,6 +216,21 @@ private static final int recommendNum = 3;
 		}
 		
 		return c_line;
+	}
+	
+	public static List<CourseVo> getSaveCourse(HttpSession httpSession) {
+		MemberVo m = (MemberVo)httpSession.getAttribute("m");
+		List<CourseVo> SaveCourseList;
+		SqlSession session = sqlSessionFactory.openSession();
+		SaveCourseList = session.selectList("course.selectSaveCourse", m.getId());
+		List<CoursePhotoVo> cpList = null;
+		for (CourseVo c : SaveCourseList) {
+			cpList=session.selectList("course.selectCoursePhoto", c.getC_no());
+			Collections.shuffle(cpList);
+			c.setC_photo(cpList);
+		}
+		session.close();
+		return SaveCourseList;
 	}
 	
 	
