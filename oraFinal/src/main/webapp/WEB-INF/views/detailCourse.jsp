@@ -8,31 +8,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
-      * {
-      margin: 0px;
-      padding: 0px;
-   }
-   header {
-      width: 1000px;
-      height: 100px;
-      margin-top: 10px;
-      font-family: 'NEXON Lv1 Gothic Low OTF';
-      border: solid 1px red;
-       margin: 0 auto;
-   }
-   #logo {
-       float: left; 
-   }
-   #top {
-      margin: 30px 20px 0px 0;
-      font-size: 12px;
-      float: right;
-      text-align: right;   
-   }
-   #login {
-      font-size: 11px;
-      text-align: right;
-   }
+   
    /*매인섹션부분css------------ ----------------*/
    section {
     margin: 0 auto;
@@ -132,28 +108,6 @@
  	}
 	
    /*메인섹션 끝css--------------------------*/
-   footer {
-       width: 1000px;
-       height: 150px;
-        margin: 30px auto;
-       font-family: 'NEXON Lv1 Gothic Low OTF';
-       border: solid 1px green;
-      }
-    #footer_box {
-       width: 1000px;
-       height: 150px;
-       margin: 0 auto;
-       text-align: center;
-      
-    }
-    #footer_icon{
-       margin: 0 auto;
-      
-    }
-    #address {
-       margin: 10px 0 0 0;
-       font-size: 11px;
-    }
 
    /*float 초기화 아이디*/
    #clear{
@@ -727,26 +681,7 @@ $(function(){
  </script>
 </head>
 <body onload="init()">
-<header>
-      <div id="logo">
-         <a href="/mainPage"><img src='/headerImg/logo.png' height="100"></a>
-      </div>
-      <div id="login">
-         <c:choose>
-      	<c:when test="${m == null }">
-      		<a href="/login">로그인</a>&nbsp;&nbsp;&nbsp;<a href="/signUp">회원가입</a>
-      	</c:when>
-      	<c:when test="${m != null }">
-      		${m.nickName } 라이더! &nbsp;&nbsp;<a href="/logout">로그아웃</a>&nbsp;&nbsp;<a href="modify.do">마이페이지</a>
-      	</c:when>
-      </c:choose>
-         <img src="img/myIcon.png" height="40">
-         &nbsp;&nbsp;
-      </div>
-      <div id="top">
-         오늘의 라이딩&nbsp;&nbsp;&nbsp;&nbsp;자전거길&nbsp;&nbsp;&nbsp;&nbsp;<a href="listReview.do">후기게시판</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="listMeeting.do">번개게시판</a>&nbsp;&nbsp;&nbsp;&nbsp;정보게시판
-      </div>
-   </header>
+<jsp:include page="header.jsp"/>
       <div id="clear"></div>
   	<section>
   		<div id="detailTitle">
@@ -924,21 +859,6 @@ $(function(){
   	</section>
   	
   	<div id="clear"></div>
-  	
-   <footer>
-      <div id='footer_box'>
-            <div id="footer_icon" >
-               <img src='/footerImg/instagram.png' height="50px">
-               <img src='/footerImg/facebook.png' height="50px">
-               <img src='/footerImg/twitter.png' height="50px">
-               <ul id="address">
-                  <li>04108 | 서울시 마포구 백범로 23 구프라자 3층</li>
-                  <li>TEL: 02-707-1480 | Email: ora@bit.com</li>
-                  <li>COPYRIGHT (C)2020 오늘의 라이딩 ALL RIGHTS RESERVED</li>
-               </ul>
-            </div>
-            
-         </div>
-   </footer>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>

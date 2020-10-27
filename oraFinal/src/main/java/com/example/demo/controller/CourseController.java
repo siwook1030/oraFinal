@@ -26,7 +26,7 @@ import com.google.gson.Gson;
 @Controller
 public class CourseController {
 	
-	public static final String c_linePath = "C:\\Users\\siwook\\git\\ora2\\ora2\\src\\main\\webapp\\courseLine/";
+	public static final String c_linePath = "C:\\Users\\siwook\\git\\oraFinal\\oraFinal\\src\\main\\webapp\\courseLine/";
 	
 	@Autowired
 	private CourseDao cdao;

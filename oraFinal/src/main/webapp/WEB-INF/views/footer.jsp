@@ -18,11 +18,13 @@ footer {
 	height: 150px;
 	margin: 0 auto;
 	text-align: center;    
+
 }
 #footer_icon{
-	margin: 0 auto;
+   margin: 0 auto;
 }
 #address {
+
 	margin: 10px 0 0 0;
 	font-size: 11px;
 	list-style-type: none;
@@ -32,9 +34,9 @@ footer {
 </head>
 <body>
 <footer>
-		<hr style="width: 100%; color: gray;">
-		<br>
-		<div id='footer_box'>
+      <hr style="width: 100%; color: gray;">
+      <br>
+      <div id='footer_box'>
             <div id="footer_icon" >
                <img src='footerImg/instagram.png' height="50px">
                <img src='footerImg/facebook.png' height="50px">

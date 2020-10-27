@@ -8,66 +8,14 @@
 <title>Insert title here</title>
 	<style>
 		/* 공통 */
-		* {
-	   		padding : 0px;
-	   		margin : 0px;
-	   		font-family: 'NEXON Lv1 Gothic Low OTF';
-		}
-		li {
-    		list-style-type: none;
-	    }
-		a {
-			text-decoration: none;
-			color: black;
-		}
-		header {
-			width: 1000px;
-	      	height: 100px;
-			margin-top: 10px;
-			margin: 10px auto;
-		}
-		#address {
-			margin: 10px 0 0 0;
-			font-size: 11px;
-		}
-		#logo {
-			float: left; 
-		}
-		#top {
-			margin: 30px 20px 0 0;
-			font-size: 12px;
-			float: right;
-			text-align: right;   
-		}
-		#top li {
-			display: inline;
-			margin-left: 18px;
-		}
-		#login {
-			font-size: 11px;
-			text-align: right;
-		}
+	
 		section {
 			margin: 0 auto;
 			padding: 10px;
 			width: 1000px;
 			text-align: left;
 		}
-		footer {
-			width: 1000px;
-			height: 150px;
-			margin-top: 100px;
-			margin: 10px auto;
-		}
-		#footer_box {
-	       width: 1000px;
-	       height: 150px;
-	       margin: 0 auto;
-	       text-align: center;
-		}
-		#footer_icon{
-			margin: 0 auto;
-		}
+	
 	
 		/* 개별 */
 		.btnImg {
@@ -102,13 +50,21 @@
 			font-size: 13px;
 		}
 		
+		.repInput-noshow{
+			display: none;
+		}
+		.repInput-show{
+			display: inline;
+		}
+		
 		.map_wrap {position:relative;width:100%;height:300px;font-size: 80%;}
 	</style>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script type="text/javascript">
 $(function(){
-	$("#loadComment").empty();
+
+	/*$("#loadComment").empty();
 	$.ajax("/detailMRep",{function(arr){
 		$.each(arr,function(idx, mr){
 			var rank_icon = $("<img/>").attr("src","../meetingFile/"+mr.rank_icon);
@@ -118,8 +74,130 @@ $(function(){
 			var regdate = $("<p></p>").html(mr.regdate);
 			$("#loadComment").append(rank_icon, nickName, mr_content, mr_file1, regdate);
 		});
-	}});
+	}});*/
+///////////////////////////////////////////////////
+	function checkLogin(){
+		var check="0";
+		$.ajax({
+			url: "/checkLogin",
+			type: "POST",
+			async: false,
+			success: function(data){
+				check = data;
+			},
+			error: function(){
+				alert("에러발생");
+			}
+		})
 
+		return check;
+	}
+	
+	var mrList = ${mrList};
+	var m_no = ${m_no};
+	var totalPageNum = ${totalPageNum};
+	var nowPageNum = 1;
+
+	function setPageNum(totalPageNum){
+		var content="";
+		for(var i=1; i<= totalPageNum; i++){
+			content += '<span class="pageNum" val="'+i+'">'+i+'</span>';
+		}
+		$("#replyPgaeNum").html(content);
+		console.log(content);
+	}
+	
+ function setReply(mrList){
+		$("#reply").empty();
+		$(mrList).each(function(i, mr) {
+			var mrDiv = $("<div></div>");
+			var ul = $("<ul></ul>");
+			var li1 = $("<li></li>");
+			var li2 = $("<li></li>").attr("id","rep_input"+mr.mr_no).css({display: "none"});
+			var hr = $("<hr>");
+			
+			var content="";
+			if(mr.mr_step > 0){
+				$(mrDiv).css({paddingLeft: "30px"});
+			}
+			content += '<img src="rank/'+mr.rank_icon+'" height="25">'+mr.nickName+'<br>';
+			content += '<p style="margin-left: 25px;">'+mr.mr_content+'</p>';
+			if(mr.mr_file1 != null){
+				content += '<p style="margin-left: 25px;"><img src="meetingFile/'+mr.mr_file1+'" height="100"></p>';
+			}
+			content += '<p class="repInfo" style="float: left;">'+mr.mr_regdate+'<p>';
+			var repSpan = $("<span></span>").html("답글달기");
+			$(li1).html(content).append(repSpan);
+
+			var repDiv = $("<div></div>");
+			var rep_input = $("<textarea></textarea>").attr({rows:"5",cols:"50"});
+			var btn = $("<button></button>").html("등록");
+			$(repDiv).append(rep_input,btn);
+			$(li2).append(repDiv);
+			$(ul).append(li1,li2);
+			$(mrDiv).append(ul,hr);
+			$("#reply").append(mrDiv);
+
+			$(repSpan).click(function() {
+				repReply(li2);
+			});
+			$(btn).click(function() {
+				repSub(rep_input);
+			})
+			
+		})
+		
+ };
+
+	$(document).on("click", ".pageNum" ,function() {
+		var num = $(this).attr("val");
+		$.ajax({
+			url:"/detailMRep",
+			type:"GET",
+			data: {
+				"m_no":m_no,
+				"num":num
+				},
+			success: function(mrList){
+				nowPageNum = num;   //나우페이지넘은 현재페이지가 몇인지 알기위해 선언한거
+				console.log(nowPageNum);
+				setReply(mrList);
+			},
+			error: function(){
+				alert("에러발생");
+			}
+		});
+
+	})
+	
+	setPageNum(totalPageNum);
+	setReply(mrList);
+
+	function repReply(li2){
+		var check = checkLogin();
+		if(check == "0"){
+			var cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
+			if(cfm){
+				window.location = "/login";
+			}
+			return;
+		}
+		$(li2).css({display: "inline"});
+
+	}
+
+	function repSub(rep_input){
+		var content = $.trim($(rep_input).val());
+		if(content == ""){
+			alert("내용을 입력하세요");
+			return;
+		}
+		insertRep(content);
+	}
+
+	function insertRep(content){
+		//$.ajax({url:"",data: })
+	}
 /////////////////////////////////////////////////////////////////////////////////// 맵표시
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = {
@@ -164,37 +242,29 @@ $(function(){
 	
 	//미팅 마커 이미지를 생성합니다
 	var meetingImage = new kakao.maps.MarkerImage(meetingSrc, meetingSize);
-	var meetingMarker = new kakao.maps.Marker({image:meetingImage}); 		
-	
+	var meetingMarker = new kakao.maps.Marker({image:meetingImage}); 
+
+	if(${c.c_no} != 0){
+		startMarker.setPosition(new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude}));
+		arriveMarker.setPosition(new kakao.maps.LatLng(${c.c_e_latitude}, ${c.c_e_longitude}));
+		coursePolyline.setPath(${c.c_line});
+		startMarker.setMap(map);
+		arriveMarker.setMap(map);
+		coursePolyline.setMap(map);
+		map.setLevel(${c.c_mapLevel});
+		
+	}	
+	meetingMarker.setPosition(new kakao.maps.LatLng(${mt.m_latitude}, ${mt.m_longitude}));
+	meetingMarker.setMap(map);
+	map.setCenter(new kakao.maps.LatLng(${mt.m_latitude}, ${mt.m_longitude}));
 	/////////////////////////////////////////////////////////////////////////////////// 맵표시 끝
+
+	
 });
 	</script>
 </head>
 <body>
-	<header>
-		<div id="logo">
-			<a href="/mainPage"><img src='headerImg/logo.png' height="100"></a>
-		</div>
-	    <nav>
-		    <div id="login">
-				<c:choose>
-					<c:when test="${m == null }">
-			      		<a href="/login">로그인</a>&nbsp;&nbsp;&nbsp;<a href="/signUp">회원가입</a>
-			      	</c:when>
-			      	<c:when test="${m != null }">
-			      		<a href="modify">${m.nickName } 라이더!</a> &nbsp;&nbsp;<a href="/logout">로그아웃</a>
-			      	</c:when>
-     			 </c:choose>
-			</div>
-			<ul id="top">
-				<li>오늘의 라이딩</li>
-				<li>자전거 길</li>
-				<li><a href="listReview">후기게시판</a></li>
-				<li><a href="/listMeeting?pageNo=1">번개게시판</a></li>
-				<li>정보게시판</li>
-			</ul>
-		</nav>
-	</header>
+<jsp:include page="header.jsp"/>
 	<section>
 		<br><br>
 		<p style="font-size: 20px;"><a href="/listMeeting">번개 게시판</a>&nbsp;&gt;&nbsp;<font color="#c85725">번개 상세</font></p>
@@ -218,9 +288,9 @@ $(function(){
 			</div>
 			<table border="1">
 				<tr>
-					<td>미팅장소</td><td></td>
-					<td>미팅시간</td><td></td>
-					<td>미팅인원</td><td></td>
+					<td>미팅장소</td><td>${mt.m_locname }</td>
+					<td>미팅시간</td><td>${mt.m_time }</td>
+					<td>미팅인원</td><td>${mt.m_numpeople }</td>
 				</tr>
 			</table>
 			<!-- 
@@ -231,7 +301,7 @@ $(function(){
 			모임인원 : ${mt.m_numpeople }
 			 -->
 			<br>
-			
+		
 			<c:if test="${mf!=null }">
 				<c:forEach var="mf" items="${mf}">
 					<img src="${mf.mf_path }/${mf.mf_savename }" width="400">
@@ -250,30 +320,9 @@ $(function(){
 			<hr style="margin: 10px 0 10px;">
 			<!-- 댓글출력 -->
 			<div id="reply">
-				<c:forEach var="mr" items="${mr }">
-					<c:if test="${mr.mr_step==0 }">
-						<img src="rank/${mr.rank_icon }" height="25">${mr.nickName }<br>
-						<p style="margin-left: 25px;">${mr.mr_content }</p>
-						<c:if test="${mr.mr_file1!=null }">
-							<p style="margin-left: 25px;"><img src="meetingFile/${mr.mr_file1 }" height="100"></p>
-						</c:if>
-						<p class="repInfo" style="float: left;">${mr.mr_regdate }<p>
-						<a class="repInfo">[답글달기]</a>
-					</c:if>
-					<div style="margin: 0 0 0 20px;">
-						<c:if test="${mr.mr_step>0 }">
-							<img src="rank/${mr.rank_icon }" height="25">${mr.nickName }<br>
-								<p style="margin-left: 25px;">${mr.mr_content }</p>
-							<c:if test="${mr.mr_file1!=null }">
-								<p style="margin-left: 25px;"><img src="meetingFile/${mr.mr_file1 }" height="100"></p>
-							</c:if>
-							<p class="repInfo" style="float: left;">${mr.mr_regdate }<p>
-							<a class="repInfo">[답글달기]</a>	
-						</c:if>
-					</div>
-				</c:forEach>
 			</div>
-			
+			<div id="replyPgaeNum">
+			</div>
 			
 			<!-- jQuery -->
 			<!-- 여기에 댓글출력 -->
@@ -301,21 +350,6 @@ $(function(){
 
 		</div>
 	</section>
-	<footer>
-		<hr style="width: 100%; color: gray;">
-		<br>
-		<div id='footer_box'>
-			<div id="footer_icon" >
-				<img src='footerImg/instagram.png' height="50px">
-				<img src='footerImg/facebook.png' height="50px">
-				<img src='footerImg/twitter.png' height="50px">
-				<ul id="address">
-					<li>04108 | 서울시 마포구 백범로 23 구프라자 3층</li>
-					<li>TEL: 02-707-1480 | Email: ora@bit.com</li>
-					<li>COPYRIGHT (C)2020 오늘의 라이딩 ALL RIGHTS RESERVED</li>
-				</ul>
-			</div>
-		</div>
-	</footer>
+	<jsp:include page="footer.jsp"/>
 </body>
 </html>
