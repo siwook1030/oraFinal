@@ -56,7 +56,7 @@ public class ReviewController {
 	MemberVo mvo;
 	RankVo rkvo;
 	public String getC_name(int c_no) {				// 코스명 가져오기
-		cvo = cdao.getCourseByCno(c_no);
+		cvo = cdao.getCourseByCno(c_no, "");
 		c_name = cvo.getC_name();
 		return c_name;
 	}

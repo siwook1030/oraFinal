@@ -1089,7 +1089,6 @@ $(function(){
 			data: courseData,
 			success: function(response){
 				if(response.code == "200"){
-					alert("등록됫음");
 					alert(response.message);
 				}
 				else{

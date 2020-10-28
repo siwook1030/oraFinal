@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.ResponseDataCode;
+import com.example.demo.vo.MemberVo;
+import com.example.demo.vo.ResponseDataVo;
+import com.google.gson.Gson;
+
 @Controller
 public class LoginController {
 	
@@ -40,12 +45,16 @@ public class LoginController {
 	@PostMapping(value = "/checkLogin", produces = "application/json;charset=utf-8")
 	@ResponseBody
 	public String checkLogin(HttpSession session) {
-		String check = "0";
+		ResponseDataVo responseDataVo = new ResponseDataVo();
+		responseDataVo.setCode(ResponseDataCode.ERROR);
+		responseDataVo.setItem("");
 		if(session.getAttribute("m") != null) {
-			check = "1";
+			MemberVo m = (MemberVo)session.getAttribute("m");
+			responseDataVo.setCode(ResponseDataCode.SUCCESS);
+			responseDataVo.setItem(m.getId());
 		}
-		
-		return check;
+		System.out.println("리스폰스대이타브이오 : " + responseDataVo);
+		return new Gson().toJson(responseDataVo);
 	}
 	
 	

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,6 @@ import com.google.gson.Gson;
 @Controller
 public class CourseController {
 	
-	public static final String c_linePath = "C:\\Users\\siwook\\git\\oraFinal\\oraFinal\\src\\main\\webapp\\courseLine/";
 	
 	@Autowired
 	private CourseDao cdao;
@@ -94,11 +94,12 @@ public class CourseController {
 	
 	
 	@RequestMapping(value = "/detailCourse", produces = "application/json; charset=utf-8")
-	public void detailCourse(Model model, int c_no) {
+	public void detailCourse(HttpServletRequest request,Model model, int c_no) {
+		String path = request.getRealPath("/courseLine")+"/";
 		Gson gson = new Gson();
 		List<PublicTransportVo> ptList = cdao.getPublicTransportByCno(c_no);
 		List<FoodVo> fList = cdao.getFoodByCno(c_no);
-		model.addAttribute("c", cdao.getCourseByCno(c_no));
+		model.addAttribute("c", cdao.getCourseByCno(c_no, path));
 		model.addAttribute("ptList", ptList);
 		model.addAttribute("ptJson", gson.toJson(ptList));
 		model.addAttribute("fList", fList);
@@ -106,8 +107,9 @@ public class CourseController {
 	}
 	
 	@RequestMapping("/detailFood")
-	public void detailFood(Model model,int c_no ,int food_no) {
-		model.addAttribute("c", cdao.getCourseByCno(c_no));
+	public void detailFood(HttpServletRequest request,Model model,int c_no ,int food_no) {
+		String path = request.getRealPath("/courseLine")+"/";
+		model.addAttribute("c", cdao.getCourseByCno(c_no, path));
 		model.addAttribute("f", cdao.getFoodByFoodNo(food_no));
 	}
 }

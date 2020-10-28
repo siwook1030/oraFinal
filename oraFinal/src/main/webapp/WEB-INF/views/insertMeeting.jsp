@@ -373,11 +373,11 @@ $("#selectCourse").change(function() {
 	       
 			<div id="selectLoc">
 				<strong>원하는 위치를 클릭하여 미팅장소를 정하세요!</strong><br><br>
-				<form action="searchCourse" method="post">
+		
 					위도 <input type="text" name="m_latitude" id="latitude" value="37.53814589110931">
 					경도 <input type="text" name="m_longitude" id="longitude" value="126.98135334065803"><br><br>
 					주소 <input type="text" name="m_locname" id="addr" value="" size="60" readonly="readonly">
-				</form>
+		
 	        </div>
 			<br><br>
 			<hr><br>
