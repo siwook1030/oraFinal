@@ -8,44 +8,48 @@
 <title>Insert title here</title>
 <style type="text/css">
 * {
-
 	margin: 0px;
 	padding: 0px;
-
+	font-family: 'NEXON Lv1 Gothic Low OTF';
 }
+
 header {
 	width: 1000px;
 	height: 100px;
-	font-family: 'NEXON Lv1 Gothic Low OTF';
 	margin: 20px auto;
-
 }
+
 #logo {
    float: left; 
 }
+
 li{
    list-style-type: none;  
 }
-li{
-	list-style-type: none;  
-}
-#top {
 
+#top {
 	margin: 50px 0 0 0;
 	font-size: 15px;
 	float: right;
 }
+
 #top li {
 	display: inline;
 }
+
 .menu{
 	margin: 0 20px 0 20px;
 }
+
 #login {
 	font-size: 13px;
 	text-align: right;
 	margin: 0 20px 0 0;
+}
 
+a{
+	text-decoration: none;
+	color: black;
 }
 </style>
 </head>
