@@ -176,7 +176,7 @@ public class MakingCourseController {
 		 }
 		 String c_words = (String)map.get("c_words");
 		 
-		 String path = CourseController.c_linePath;
+		 String path = request.getRealPath("/courseLine")+"/";
 		 String c_line=c_no+"_"+ System.currentTimeMillis() +"_c_line.dat";
 		 String c_lineDat = (String)map.get("c_line");
 

@@ -79,12 +79,12 @@ private static final int recommendNum = 3;
 		return clist;
 	}
 	
-	public static CourseVo getCourseByCno(int c_no) {
+	public static CourseVo getCourseByCno(int c_no, String path) {
 		CourseVo c = null;
 		SqlSession session = sqlSessionFactory.openSession();
 		c = session.selectOne("course.selectByCno", c_no);
 		c.setC_views(c.getC_view().split("-"));
-		c.setC_line(getCline(c.getC_line()));
+		c.setC_line(getCline(c.getC_line(), path));
 		List<CoursePhotoVo> cpList = session.selectList("course.selectCoursePhoto", c_no);			
 		Collections.shuffle(cpList);
 		if(cpList.size() == 0 ) {
@@ -195,10 +195,10 @@ private static final int recommendNum = 3;
 	}
 	
 	
-	private static String getCline(String filename) {
+	private static String getCline(String filename, String path) {
 		String c_line = "";
 		try {
-			File file = new File(CourseController.c_linePath+filename);
+			File file = new File(path+filename);
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			String line = "";

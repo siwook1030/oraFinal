@@ -25,8 +25,8 @@ public class CourseDao {
 		return CourseManager.recommendList(view);
 	}
 	
-	public CourseVo getCourseByCno(int c_no) {
-		return CourseManager.getCourseByCno(c_no);
+	public CourseVo getCourseByCno(int c_no, String path) {
+		return CourseManager.getCourseByCno(c_no, path);
 	}
 	
 	public List<CourseVo> listCourse(){
