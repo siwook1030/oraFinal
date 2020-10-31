@@ -404,7 +404,7 @@ window.onload = function(){
 		/////////////// 대중교통 도착점 표시 끝   
 		const arr = new Array();
 	    let cnt=0;
-		var pathStr="[";
+		let pathStr="[";
 	        for(let i=0; i<linePLength; i++){
 	            cnt++;
 	            arr[i] = new kakao.maps.LatLng(lineP[i].y, lineP[i].x);
@@ -909,7 +909,7 @@ window.onload = function(){
 		const pte_line = linePE.value.trim();
 
 		
-		var courseData = {
+		const courseData = {
 				 "c_name": c_name,
 			     "c_s_latitude" : c_s_latitude,
 				 "c_s_longitude" : c_s_longitude,
