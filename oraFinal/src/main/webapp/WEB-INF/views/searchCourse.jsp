@@ -550,7 +550,7 @@ function MarkerTracker(map, target) {
 	kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
 	    searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
 	        if (status === kakao.maps.services.Status.OK) {
-	            var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
+	            let detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
 	            detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
 	            
 	            let content = '<div class="bAddr">' +
@@ -606,16 +606,13 @@ function MarkerTracker(map, target) {
 	document.getElementById("nowLoc").onclick=myNowLoc;
 	
 	function myNowLoc(){
-	//	var lat = $("#lat").val();
-	//	var lon = $("#lon").val();
 		const lat = myLat.value;
 		const lon = myLon.value;
 		if(lat != "0" && lon != "0"){
-			var locPosition = new kakao.maps.LatLng(lat, lon);
+			const locPosition = new kakao.maps.LatLng(lat, lon);
 			 myLatitude.value= lat;
 			 myLongitude.value = lon;
-			// $("#latitude").val(lat);
-			// $("#longitude").val(lon);
+
 			 map.setCenter(locPosition); 
 			 startInfowindow.open(null);
 			 startMarker.setMap(null);
@@ -680,7 +677,7 @@ function MarkerTracker(map, target) {
 		const time = document.querySelector("#time :checked").value;
 		
 		const view = [];
-		var viewChecked = document.querySelectorAll("#view :checked");
+		const viewChecked = document.querySelectorAll("#view :checked");
 		console.log(viewChecked);
 		viewChecked.forEach(function(v) {
 			view.push(v.value);
@@ -769,8 +766,8 @@ function MarkerTracker(map, target) {
 		let nextArr;
 		
 		
-		for(i=0; i<scArr.length; i++){
-			for(j=i+1; j<scArr.length; j++){
+		for(let i=0; i<scArr.length; i++){
+			for(let j=i+1; j<scArr.length; j++){
 				if(val == 1){
 					preArr = scArr[i].userDis;
 					nextArr = scArr[j].userDis;
@@ -785,7 +782,7 @@ function MarkerTracker(map, target) {
 				}
 						
 				if(preArr > nextArr){
-					var temp = scArr[i];
+					const temp = scArr[i];
 					scArr[i] = scArr[j];
 					scArr[j] = temp;
 				}
@@ -908,7 +905,7 @@ function MarkerTracker(map, target) {
 		placeOverlay.setMap(null);
 	}
 
-	var mapTypes = { //자전거맵 표시변수
+	const mapTypes = { //자전거맵 표시변수
 		    bicycle : kakao.maps.MapTypeId.BICYCLE
 		};
 
