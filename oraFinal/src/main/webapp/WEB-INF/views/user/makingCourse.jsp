@@ -34,115 +34,121 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=drawing,services"></script>
 <script>
-$(function(){
-	$("#startC").click(function() {
+window.onload = function(){
+	const title =  document.getElementById("title");
+	const slat =  document.getElementById("slat");
+	const slon =  document.getElementById("slon");
+	const sLoc =  document.getElementById("sLoc");
+	
+	const elat =  document.getElementById("elat");
+	const elon =  document.getElementById("elon");
+	const eLoc =  document.getElementById("eLoc");
+	const words = document.getElementById("words");
+	const mapLevel =  document.getElementById("mapLevel");
+	const firstView =  document.getElementById("firstView");
+	const secondView =  document.getElementById("secondView");
+	const dis =  document.getElementById("dis");
+	const time =  document.getElementById("time");
+	const diff =  document.getElementById("diff");
+	const line =  document.getElementById("line");
+	const fixC =  document.getElementById("fixC"); // 수정시 가져오기필요문구 나타낼스판
+////////////////////////////////////////////////////
+	const latPS = document.getElementById("latPS");
+	const lonPS = document.getElementById("lonPS");
+	const sPT = document.getElementById("sPT");
+	const sPTStation = document.getElementById("sPTStation");
+	const disPS = document.getElementById("disPS");
+	const linePS = document.getElementById("linePS");
+	const fixPS = document.getElementById("fixPS"); // 수정시 가져오기필요문구 나타낼스판
+////////////////////////////////////////////////////////////
+	const latPE = document.getElementById("latPE");
+	const lonPE = document.getElementById("lonPE");
+	const ePT = document.getElementById("ePT");
+	const ePTStation = document.getElementById("ePTStation");
+	const disPE = document.getElementById("disPE");
+	const linePE = document.getElementById("linePE");
+	const fixPE = document.getElementById("fixPE");;  // 수정시 가져오기필요문구 나타낼스판
+
+////////////////////////////////////////////////////////////// 변수선언끝 	
+	document.getElementById("startC").addEventListener("click", function(e) {
 		selectOverlay('MARKER');
 	});
-	$("#arriveC").click(function() {
+	document.getElementById("arriveC").addEventListener("click", function(e) {
 		selectOverlay2('MARKER');
 	});
-	$("#polyC").click(function() {
+	document.getElementById("polyC").addEventListener("click", function(e) {
 		selectOverlay3('POLYLINE');
 	});
-	$("#backPolyC").click(function() {
+	document.getElementById("backPolyC").addEventListener("click", function(e) {
 		back();
 	});
-	$("#frontPolyC").click(function() {
+	document.getElementById("frontPolyC").addEventListener("click", function(e) {
 		front();
 	});
-	$("#infoC").click(function() {
+	document.getElementById("infoC").addEventListener("click", function(e) {
 		getInfo();
 	});
-	$("#chkBicycle").click(function() {
+	document.getElementById("chkBicycle").addEventListener("click", function(e) {
 		setOverlayMapTypeId(map);
 	});
+
 //////////////////////////////////////// 코스끝
-	$("#publicTranportPS").click(function() {
+	document.getElementById("publicTranportPS").addEventListener("click", function(e) {
 		selectOverlayPS('MARKER');
 	});
-	$("#polyPS").click(function() {
+	document.getElementById("polyPS").addEventListener("click", function(e) {
 		selectOverlayPS('POLYLINE');
 	});
-	$("#backPolyPS").click(function() {
+	document.getElementById("backPolyPS").addEventListener("click", function(e) {
 		backPS();
 	});
-	$("#frontPolyPS").click(function() {
+	document.getElementById("frontPolyPS").addEventListener("click", function(e) {
 		frontPS();
 	});
-	$("#infoPS").click(function() {
+	document.getElementById("infoPS").addEventListener("click", function(e) {
 		getInfoPS();
 	});
-	$("#chkBicyclePS").click(function() {
+	document.getElementById("chkBicyclePS").addEventListener("click", function(e) {
 		setOverlayMapTypeId(mapPS);
 	});
+
 //////////////////////////////////////////// 대중교통 출발점 끝
-	$("#publicTranportPE").click(function() {
+	document.getElementById("publicTranportPE").addEventListener("click", function(e) {
 		selectOverlayPE('MARKER');
 	});
-	$("#polyPE").click(function() {
+	document.getElementById("polyPE").addEventListener("click", function(e) {
 		selectOverlayPE('POLYLINE');
 	});
-	$("#backPolyPE").click(function() {
+	document.getElementById("backPolyPE").addEventListener("click", function(e) {
 		backPE();
 	});
-	$("#frontPolyPE").click(function() {
+	document.getElementById("frontPolyPE").addEventListener("click", function(e) {
 		frontPE();
 	});
-	$("#infoPE").click(function() {
+	document.getElementById("infoPE").addEventListener("click", function(e) {
 		getInfoPE();
 	});
-	$("#chkBicyclePE").click(function() {
+	document.getElementById("chkBicyclePE").addEventListener("click", function(e) {
 		setOverlayMapTypeId(mapPE);
 	});
+
 //////////////////////////////////////////////대중교통 도착점 끝
-	var title =  document.getElementById("title");
-	var slat =  document.getElementById("slat");
-	var slon =  document.getElementById("slon");
-	var sLoc =  document.getElementById("sLoc");
 	
-	var elat =  document.getElementById("elat");
-	var elon =  document.getElementById("elon");
-	var eLoc =  document.getElementById("eLoc");
-	var words = document.getElementById("words");
-	var mapLevel =  document.getElementById("mapLevel");
-	var firstView =  document.getElementById("firstView");
-	var secondView =  document.getElementById("secondView");
-	var dis =  document.getElementById("dis");
-	var time =  document.getElementById("time");
-	var diff =  document.getElementById("diff");
-	var line =  document.getElementById("line");
-	var fixC =  document.getElementById("fixC"); // 수정시 가져오기필요문구 나타낼스판
-////////////////////////////////////////////////////
-	var latPS = document.getElementById("latPS");
-	var lonPS = document.getElementById("lonPS");
-	var sPT = document.getElementById("sPT");
-	var sPTStation = document.getElementById("sPTStation");
-	var disPS = document.getElementById("disPS");
-	var linePS = document.getElementById("linePS");
-	var fixPS = document.getElementById("fixPS"); // 수정시 가져오기필요문구 나타낼스판
-////////////////////////////////////////////////////////////
-	var latPE = document.getElementById("latPE");
-	var lonPE = document.getElementById("lonPE");
-	var ePT = document.getElementById("ePT");
-	var ePTStation = document.getElementById("ePTStation");
-	var disPE = document.getElementById("disPE");
-	var linePE = document.getElementById("linePE");
-	var fixPE = document.getElementById("fixPE");;  // 수정시 가져오기필요문구 나타낼스판
 ////////////////////////////////////////////////////////////	
-	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+	const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 	    mapOption = { 
 	        center: new kakao.maps.LatLng(37.52084556725995, 126.97701335521351), // 지도의 중심좌표
 	        level: 7 // 지도의 확대 레벨
 	    };
 	
 	// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
-	var map = new kakao.maps.Map(mapContainer, mapOption); 
-	var mapTypeControl = new kakao.maps.MapTypeControl();
-	var zoomControl = new kakao.maps.ZoomControl();
+	const map = new kakao.maps.Map(mapContainer, mapOption); 
+	const mapTypeControl = new kakao.maps.MapTypeControl();
+	const zoomControl = new kakao.maps.ZoomControl();
 	map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 	map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
-	var options = { // Drawing Manager를 생성할 때 사용할 옵션입니다
+	const options = { // Drawing Manager를 생성할 때 사용할 옵션입니다
 	    map: map, // Drawing Manager로 그리기 요소를 그릴 map 객체입니다
 	    drawingMode: [ // drawing manager로 제공할 그리기 요소 모드입니다
 	        kakao.maps.drawing.OverlayType.MARKER
@@ -167,7 +173,7 @@ $(function(){
 	    }
 	};    
 	    
-	var options2 = { // Drawing Manager를 생성할 때 사용할 옵션입니다
+	const options2 = { // Drawing Manager를 생성할 때 사용할 옵션입니다
 	    map: map, // Drawing Manager로 그리기 요소를 그릴 map 객체입니다
 	    drawingMode: [ // drawing manager로 제공할 그리기 요소 모드입니다
 	        kakao.maps.drawing.OverlayType.MARKER
@@ -192,7 +198,7 @@ $(function(){
 	    }
 	};
 
-	var options3 = { // Drawing Manager를 생성할 때 사용할 옵션입니다
+	const options3 = { // Drawing Manager를 생성할 때 사용할 옵션입니다
 	    map: map, // Drawing Manager로 그리기 요소를 그릴 map 객체입니다
 	    drawingMode: [ // drawing manager로 제공할 그리기 요소 모드입니다
 	        kakao.maps.drawing.OverlayType.POLYLINE
@@ -213,19 +219,19 @@ $(function(){
 	};       
 	    
 	// 위에 작성한 옵션으로 Drawing Manager를 생성합니다
-	var manager = new kakao.maps.drawing.DrawingManager(options);
-	var manager2 = new kakao.maps.drawing.DrawingManager(options2);
-	var manager3 = new kakao.maps.drawing.DrawingManager(options3);
+	const manager = new kakao.maps.drawing.DrawingManager(options);
+	const manager2 = new kakao.maps.drawing.DrawingManager(options2);
+	const manager3 = new kakao.maps.drawing.DrawingManager(options3);
 
 	function setFixC(){
-		$(fixC).html("가져오기를 눌러주세요");
-		$(fixC).attr("val", "y");
-		$(fixPS).html("가져오기를 눌러주세요");
-		$(fixPS).attr("val", "y");
-		$(fixPE).html("가져오기를 눌러주세요");
-		$(fixPE).attr("val", "y");
+		fixC.innerHTML="가져오기를 눌러주세요";
+		fixC.setAttribute("val", "y");
+		fixPS.innerHTML="가져오기를 눌러주세요";
+		fixPS.setAttribute("val", "y");
+		fixPE.innerHTML="가져오기를 눌러주세요";
+		fixPE.setAttribute("val", "y");
 	}
-	manager.addListener('state_changed', function() {
+	manager.addListener('state_changed', function() { // 3개의 맵에서 수정이 일어나면 가져오기를 진행하라고 표시
 		setFixC();
 	});
 	manager2.addListener('state_changed', function() {
@@ -235,8 +241,8 @@ $(function(){
 		setFixC();
 	});
 	manager3.addListener('state_changed', function() {
-		var undoBtn =  document.getElementById("backPolyC");
-		var redoBtn =  document.getElementById("frontPolyC");
+		const undoBtn =  document.getElementById("backPolyC");
+		const redoBtn =  document.getElementById("frontPolyC");
 		// 되돌릴 수 있다면 undo 버튼을 활성화 시킵니다 
 		if (manager3.undoable()) {
 			undoBtn.disabled = false;
@@ -260,8 +266,8 @@ $(function(){
 	
 	// 버튼 클릭 시 호출되는 핸들러 입니다
 	function selectOverlay(type) {
-	    var data = manager.getData();
-	    var start = data[kakao.maps.drawing.OverlayType.MARKER];
+		const data = manager.getData();
+		const start = data[kakao.maps.drawing.OverlayType.MARKER];
 	    if(start.length==0){
 		   // 클릭한 그리기 요소 타입을 선택합니다
 		   manager.select(kakao.maps.drawing.OverlayType[type]);
@@ -271,8 +277,8 @@ $(function(){
 	    manager3.cancel();
 	}
 	function selectOverlay2(type) {
-	     var data = manager2.getData();
-	     var end = data[kakao.maps.drawing.OverlayType.MARKER];
+		const data = manager2.getData();
+		const end = data[kakao.maps.drawing.OverlayType.MARKER];
 	    if(end.length==0){ 
 	    	// 클릭한 그리기 요소 타입을 선택합니다
 	     	manager2.select(kakao.maps.drawing.OverlayType[type]);
@@ -281,8 +287,8 @@ $(function(){
 		manager3.cancel();
 	}
 	function selectOverlay3(type) {
-	     var data = manager3.getData();
-	     var linepath = data[kakao.maps.drawing.OverlayType.POLYLINE];
+		const data = manager3.getData();
+		const linepath = data[kakao.maps.drawing.OverlayType.POLYLINE];
 	    if(linepath.length == 0){
 		     // 클릭한 그리기 요소 타입을 선택합니다
 		     manager3.select(kakao.maps.drawing.OverlayType[type]);
@@ -305,42 +311,42 @@ $(function(){
 	}
 	    }    
 	    
-	var geocoder = new kakao.maps.services.Geocoder();
+	const geocoder = new kakao.maps.services.Geocoder();
 
-	var startSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png', // 출발 마커이미지의 주소입니다    
+	const startSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png', // 출발 마커이미지의 주소입니다    
 	startSize = new kakao.maps.Size(50, 45), // 출발 마커이미지의 크기입니다 
 	startOption = { 
 	offset: new kakao.maps.Point(15, 43) // 출발 마커이미지에서 마커의 좌표에 일치시킬 좌표를 설정합니다 (기본값은 이미지의 가운데 아래입니다)
 	};
 	//출발 마커 이미지를 생성합니다
-	var startImage = new kakao.maps.MarkerImage(startSrc, startSize, startOption);
+	const startImage = new kakao.maps.MarkerImage(startSrc, startSize, startOption);
 
 	//출발 마커를 생성합니다
-	var startMarker = new kakao.maps.Marker({
+	const startMarker = new kakao.maps.Marker({
 	image: startImage // 출발 마커이미지를 설정합니다
 	});
 
-	var arriveSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/blue_b.png', // 도착 마커이미지 주소입니다    
+	const arriveSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/blue_b.png', // 도착 마커이미지 주소입니다    
 	arriveSize = new kakao.maps.Size(50, 45), // 도착 마커이미지의 크기입니다 
 	arriveOption = { 
 	offset: new kakao.maps.Point(15, 43) // 도착 마커이미지에서 마커의 좌표에 일치시킬 좌표를 설정합니다 (기본값은 이미지의 가운데 아래입니다)
 	};
 	//도착 마커 이미지를 생성합니다
-	var arriveImage = new kakao.maps.MarkerImage(arriveSrc, arriveSize, arriveOption);
+	const arriveImage = new kakao.maps.MarkerImage(arriveSrc, arriveSize, arriveOption);
 
 	//도착 마커를 생성합니다 
-	var arriveMarker = new kakao.maps.Marker({  
+	const arriveMarker = new kakao.maps.Marker({  
 	image: arriveImage // 도착 마커이미지를 설정합니다
 	});
 	
-	var polyObj = new kakao.maps.Polyline(); // 라인의 길이를 담기위한 폴리라인객체
+	const polyObj = new kakao.maps.Polyline(); // 라인의 길이를 담기위한 폴리라인객체
 	function getInfo() {
-		var data = manager.getData();
-	    var start = data[kakao.maps.drawing.OverlayType.MARKER];
-	    var data2 = manager2.getData();
-	    var end = data2[kakao.maps.drawing.OverlayType.MARKER];
-	    var data3 = manager3.getData();
-	    var linepath = data3[kakao.maps.drawing.OverlayType.POLYLINE];
+		const data = manager.getData();
+		const start = data[kakao.maps.drawing.OverlayType.MARKER];
+		const data2 = manager2.getData();
+		const end = data2[kakao.maps.drawing.OverlayType.MARKER];
+		const data3 = manager3.getData();
+		const linepath = data3[kakao.maps.drawing.OverlayType.POLYLINE];
 		
 	    if(start.length==0){
 	    	alert("출발점마커를 그려주세요");
@@ -352,11 +358,11 @@ $(function(){
 	    	alert("출발점과 도착점의 경로를 그려주세요");
 		}
 	    else{   
-	        var sMarkerData = start[0];
-	        var eMarkerData = end[0];
+	    	let sMarkerData = start[0];
+	    	let eMarkerData = end[0];
 	        
-	    	var lineP = linepath[0].points;
-	    	var linePLength = lineP.length;
+	    	const lineP = linepath[0].points;
+	    	const linePLength = lineP.length;
 	    	lineP[0].x = sMarkerData.x; 
 	    	lineP[0].y = sMarkerData.y;     	
 	    	lineP[linePLength-1].x = eMarkerData.x;
@@ -373,7 +379,7 @@ $(function(){
 			});
 	   
 			//////////////// 대중교통 출발점 위치표시
-			var startSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png', // 출발 마커이미지의 주소입니다    
+			const startSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png', // 출발 마커이미지의 주소입니다    
 			startSize = new kakao.maps.Size(50, 45), // 출발 마커이미지의 크기입니다 
 			startOption = { 
 			    offset: new kakao.maps.Point(15, 43) // 출발 마커이미지에서 마커의 좌표에 일치시킬 좌표를 설정합니다 (기본값은 이미지의 가운데 아래입니다)
@@ -396,14 +402,13 @@ $(function(){
 		arriveMarker.setMap(mapPE);
 		mapPE.setCenter(new kakao.maps.LatLng(eMarkerData.y, eMarkerData.x));
 		/////////////// 대중교통 도착점 표시 끝   
-		var arr = new Array();
-	    var i=0, cnt=0;
+		const arr = new Array();
+	    let cnt=0;
 		var pathStr="[";
-	        for(; i<linePLength; i++){
+	        for(let i=0; i<linePLength; i++){
 	            cnt++;
-	        
 	            arr[i] = new kakao.maps.LatLng(lineP[i].y, lineP[i].x);
-	            var str = " new kakao.maps.LatLng("+lineP[i].y+","+lineP[i].x+")";
+	            let str = " new kakao.maps.LatLng("+lineP[i].y+","+lineP[i].x+")";
 	            if(cnt < linePLength)
 	           		 pathStr += str+",\r\n";
 	            else
@@ -413,10 +418,10 @@ $(function(){
 	        
 	    manager3.remove(manager3.getOverlays().polyline[0]);
 	    manager3.put(kakao.maps.drawing.OverlayType.POLYLINE, arr);
-    	$(fixC).html(""); // 새로 라인을 그리기 후 가져오기눌러주세요 글을 없앤다
-    	$(fixC).attr("val", "n");
+    	fixC.innerHTML=""; // 새로 라인을 그리기 후 가져오기눌러주세요 글을 없앤다
+    	fixC.setAttribute("val", "n");
 		polyObj.setPath(arr);
-		var distance = (polyObj.getLength()/1000).toFixed(1);
+		const distance = (polyObj.getLength()/1000).toFixed(1);
 
 		mapLevel.value = map.getLevel();
 		line.value = pathStr;
@@ -427,20 +432,20 @@ $(function(){
 
 //////////////////////////////////////////////////////////////////////// 코스설정끝
 
-	var mapContainerPS = document.getElementById('mapPS'), // 지도를 표시할 div 
+	const mapContainerPS = document.getElementById('mapPS'), // 지도를 표시할 div 
 	 mapOptionPS = { 
 	        center: new kakao.maps.LatLng(37.52084556725995, 126.97701335521351), // 지도의 중심좌표
 	        level: 7 // 지도의 확대 레벨
 	 };
 
 	// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
-	var mapPS = new kakao.maps.Map(mapContainerPS, mapOptionPS); 
-	var mapTypeControlPS = new kakao.maps.MapTypeControl();
-	var zoomControlPS = new kakao.maps.ZoomControl();
+	const mapPS = new kakao.maps.Map(mapContainerPS, mapOptionPS); 
+	const mapTypeControlPS = new kakao.maps.MapTypeControl();
+	const zoomControlPS = new kakao.maps.ZoomControl();
 	mapPS.addControl(mapTypeControlPS, kakao.maps.ControlPosition.TOPRIGHT);
 	mapPS.addControl(zoomControlPS, kakao.maps.ControlPosition.RIGHT);
 
-	var optionsPS = { // Drawing Manager를 생성할 때 사용할 옵션입니다
+	const optionsPS = { // Drawing Manager를 생성할 때 사용할 옵션입니다
 	    map: mapPS, // Drawing Manager로 그리기 요소를 그릴 map 객체입니다
 	    drawingMode: [ // drawing manager로 제공할 그리기 요소 모드입니다
 	        kakao.maps.drawing.OverlayType.MARKER,
@@ -464,11 +469,11 @@ $(function(){
 	        hintStrokeOpacity: 0.8  // 그리중 마우스를 따라다니는 보조선의 투명도
 	    }
 	}; 
-	var managerPS = new kakao.maps.drawing.DrawingManager(optionsPS);
+	const managerPS = new kakao.maps.drawing.DrawingManager(optionsPS);
 	
 	managerPS.addListener('state_changed', function() {
-		var undoBtn =  document.getElementById("backPolyPS");
-		var redoBtn =  document.getElementById("frontPolyPS");
+		const undoBtn =  document.getElementById("backPolyPS");
+		const redoBtn =  document.getElementById("frontPolyPS");
 		// 되돌릴 수 있다면 undo 버튼을 활성화 시킵니다 
 		if (managerPS.undoable()) {
 			undoBtn.disabled = false;
@@ -486,22 +491,22 @@ $(function(){
 			redoBtn.disabled = true;
 			redoBtn.className = "disabled";
 		}
-		$(fixPS).html("가져오기를 눌러주세요!");
-		$(fixPS).attr("val", "y");
+		fixPS.innerHTML="가져오기를 눌러주세요!";
+		fixPS.setAttribute("val", "y");
 	});
 	 
 	function selectOverlayPS(type) {
 	   	 managerPS.cancel();
-	     var data = managerPS.getData();
+	   	const data = managerPS.getData();
 	     if(startMarker.getMap() != null){
 		    if(type=='MARKER'){
-		     var pts = data[kakao.maps.drawing.OverlayType.MARKER];
+		    	const pts = data[kakao.maps.drawing.OverlayType.MARKER];
 		        if(pts.length==0){
 		        	 managerPS.select(kakao.maps.drawing.OverlayType[type]);
 		        }
 		    }
 		    else{
-		        var linepath = data[kakao.maps.drawing.OverlayType.POLYLINE];
+		    	const linepath = data[kakao.maps.drawing.OverlayType.POLYLINE];
 		         if(linepath.length == 0){
 			   		 // 클릭한 그리기 요소 타입을 선택합니다
 			    	 managerPS.select(kakao.maps.drawing.OverlayType[type]);
@@ -525,12 +530,12 @@ $(function(){
 		managerPS.redo();
 	}
 	    }  
-	var polyObjPS =  new kakao.maps.Polyline();   
+	const polyObjPS =  new kakao.maps.Polyline();   
 	function getInfoPS(){
-		var data = managerPS.getData();
-	    var pts = data[kakao.maps.drawing.OverlayType.MARKER];
-	    var linepath = data[kakao.maps.drawing.OverlayType.POLYLINE];
-		if($(fixC).attr("val") == "y"){
+		const data = managerPS.getData();
+		const pts = data[kakao.maps.drawing.OverlayType.MARKER];
+		const linepath = data[kakao.maps.drawing.OverlayType.POLYLINE];
+		if(fixC.getAttribute("val") == "y"){
 			alert("상단의 코스경로만들기에서 가져오기 후 진행해주세요");
 		}
 		else if(pts.length==0){
@@ -540,8 +545,8 @@ $(function(){
 			alert("대중교통과 출발점과의 경로를 그려주세요");
 		}
 		else{	
-			var lineP = linepath[0].points;
-	    	var linePLength = lineP.length;
+			const lineP = linepath[0].points;
+			const linePLength = lineP.length;
 	
 	    	lineP[0].x = pts[0].x;
 	    	lineP[0].y = pts[0].y;
@@ -551,13 +556,13 @@ $(function(){
 		  	latPS.value = pts[0].y;
 		    lonPS.value = pts[0].x;
 	  
-		    var arr = new Array();
-		    var i=0, cnt=0;
-			var pathStr="[";
-		        for(; i<linePLength; i++){
+		    const arr = new Array();
+		    let cnt=0;
+		    let pathStr="[";
+		        for(let i=0; i<linePLength; i++){
 		            cnt++;
 		            arr[i] = new kakao.maps.LatLng(lineP[i].y, lineP[i].x);
-		            var str = " new kakao.maps.LatLng("+lineP[i].y+","+lineP[i].x+")";
+		            let str = " new kakao.maps.LatLng("+lineP[i].y+","+lineP[i].x+")";
 		            if(cnt < linePLength)
 		           		 pathStr += str+",\r\n";
 		            else
@@ -567,10 +572,10 @@ $(function(){
 	        
 		    managerPS.remove(managerPS.getOverlays().polyline[0]);
 		    managerPS.put(kakao.maps.drawing.OverlayType.POLYLINE, arr);
-			$(fixPS).html("");
-			$(fixPS).attr("val", "n");
+		    fixPS.innerHTML="";
+			fixPS.setAttribute("val", "n");
 			polyObjPS.setPath(arr);
-			var distance = (polyObjPS.getLength()/1000).toFixed(1);
+			const distance = (polyObjPS.getLength()/1000).toFixed(1);
 	
 			 linePS.value = pathStr;
 		   	 disPS.value = distance;
@@ -578,21 +583,21 @@ $(function(){
 	}
 /////////////////////////////////////////////////// 출발점 교통편 끝
 
-	var mapContainerPE = document.getElementById('mapPE'), // 지도를 표시할 div 
+	const mapContainerPE = document.getElementById('mapPE'), // 지도를 표시할 div 
 	 mapOptionPE = { 
 	        center: new kakao.maps.LatLng(37.52084556725995, 126.97701335521351), // 지도의 중심좌표
 	        level: 7 // 지도의 확대 레벨
 	    };
 
 	// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
-	var mapPE = new kakao.maps.Map(mapContainerPE, mapOptionPE); 
-	var mapTypeControlPE = new kakao.maps.MapTypeControl();
-	var zoomControlPE = new kakao.maps.ZoomControl();
+	const mapPE = new kakao.maps.Map(mapContainerPE, mapOptionPE); 
+	const mapTypeControlPE = new kakao.maps.MapTypeControl();
+	const zoomControlPE = new kakao.maps.ZoomControl();
 	mapPE.addControl(mapTypeControlPE, kakao.maps.ControlPosition.TOPRIGHT);
 	mapPE.addControl(zoomControlPE, kakao.maps.ControlPosition.RIGHT);
 
 
-	var optionsPE = { // Drawing Manager를 생성할 때 사용할 옵션입니다
+	const optionsPE = { // Drawing Manager를 생성할 때 사용할 옵션입니다
 	    map: mapPE, // Drawing Manager로 그리기 요소를 그릴 map 객체입니다
 	    drawingMode: [ // drawing manager로 제공할 그리기 요소 모드입니다
 	        kakao.maps.drawing.OverlayType.MARKER,
@@ -616,11 +621,11 @@ $(function(){
 	        hintStrokeOpacity: 0.8  // 그리중 마우스를 따라다니는 보조선의 투명도
 	    }
 	}; 
-	var managerPE = new kakao.maps.drawing.DrawingManager(optionsPE);
+	const managerPE = new kakao.maps.drawing.DrawingManager(optionsPE);
 
 		managerPE.addListener('state_changed', function() {
-			var undoBtn =  document.getElementById("backPolyPE");
-			var redoBtn =  document.getElementById("frontPolyPE");
+			const undoBtn =  document.getElementById("backPolyPE");
+			const redoBtn =  document.getElementById("frontPolyPE");
 			// 되돌릴 수 있다면 undo 버튼을 활성화 시킵니다 
 			if (managerPE.undoable()) {
 				undoBtn.disabled = false;
@@ -638,22 +643,22 @@ $(function(){
 				redoBtn.disabled = true;
 				redoBtn.className = "disabled";
 			}
-			$(fixPE).html("가져오기를 눌러주세요!");
-			$(fixPE).attr("val", "y");
+			fixPE.innerHTML="가져오기를 눌러주세요!";
+			fixPE.setAttribute("val", "y");
 	});
 	    
 	function selectOverlayPE(type) {
 	   	 managerPE.cancel();
-	     var data = managerPE.getData();
+	   	const data = managerPE.getData();
 	    if(arriveMarker.getMap() != null ){
 		    if(type=='MARKER'){
-		     var pts = data[kakao.maps.drawing.OverlayType.MARKER];
+		    	const pts = data[kakao.maps.drawing.OverlayType.MARKER];
 		        if(pts.length==0){
 		         managerPE.select(kakao.maps.drawing.OverlayType[type]);
 		        }
 		    }
 		    else{
-		        var linepath = data[kakao.maps.drawing.OverlayType.POLYLINE];
+		    	const linepath = data[kakao.maps.drawing.OverlayType.POLYLINE];
 		         if(linepath.length == 0){
 		   		 // 클릭한 그리기 요소 타입을 선택합니다
 		    	 managerPE.select(kakao.maps.drawing.OverlayType[type]);
@@ -678,13 +683,13 @@ $(function(){
 	}
 	    }  
     
-	var polyObjPE =  new kakao.maps.Polyline();     
+	const polyObjPE =  new kakao.maps.Polyline();     
 	function getInfoPE(){
-		var data = managerPE.getData();
-	    var pte = data[kakao.maps.drawing.OverlayType.MARKER];
-	    var linepath = data[kakao.maps.drawing.OverlayType.POLYLINE];
+		const data = managerPE.getData();
+		const pte = data[kakao.maps.drawing.OverlayType.MARKER];
+		const linepath = data[kakao.maps.drawing.OverlayType.POLYLINE];
 
-	    if($(fixC).attr("val") == "y"){
+	    if(fixC.getAttribute("val") == "y"){
 			alert("상단의 코스경로만들기에서 가져오기 후 진행해주세요");
 		}
 		else if(pte.length==0){
@@ -694,8 +699,8 @@ $(function(){
 			alert("대중교통과 출발점과의 경로를 그려주세요");
 		}
 		else{
-			var lineP = linepath[0].points;
-	    	var linePLength = lineP.length;
+			const lineP = linepath[0].points;
+			const linePLength = lineP.length;
 	    	
 			lineP[0].x = pte[0].x;
 	    	lineP[0].y = pte[0].y;
@@ -705,13 +710,13 @@ $(function(){
 		  	latPE.value = pte[0].y;
 		    lonPE.value = pte[0].x;
 		    
-			var arr = Array();
-		    var i=0, cnt=0;
-			var pathStr="[";
-		        for(; i<linePLength; i++){
+		    const arr = Array();
+		    let cnt=0;
+		    let pathStr="[";
+		        for(let i=0; i<linePLength; i++){
 		            cnt++;
 		            arr[i] = new kakao.maps.LatLng(lineP[i].y, lineP[i].x);
-		            var str = " new kakao.maps.LatLng("+lineP[i].y+","+lineP[i].x+")";
+		            let str = " new kakao.maps.LatLng("+lineP[i].y+","+lineP[i].x+")";
 		            if(cnt < linePLength)
 		           		 pathStr += str+",\r\n";
 		            else
@@ -721,23 +726,23 @@ $(function(){
 	        
 	        managerPE.remove(managerPE.getOverlays().polyline[0]);
 		    managerPE.put(kakao.maps.drawing.OverlayType.POLYLINE, arr);
-			$(fixPE).html("");
-			$(fixPE).attr("val", "n");
+		    fixPE.innerHTML="";
+		    fixPE.setAttribute("val", "n");
 		    
 			polyObjPE.setPath(arr);
-			var distance = (polyObjPE.getLength()/1000).toFixed(1);
+			const distance = (polyObjPE.getLength()/1000).toFixed(1);
 	
 			 linePE.value = pathStr;
 		   	 disPE.value = distance;
 		}
 	}
 
-	var mapTypes = { //자전거맵 표시변수
+	const mapTypes = { //자전거맵 표시변수
 		    bicycle : kakao.maps.MapTypeId.BICYCLE
 		};
 		// 체크 박스를 선택하면 호출되는 함수입니다
 	function setOverlayMapTypeId(m) { //자전거맵 함수
-		var chkBicycle;
+		let chkBicycle;
 		if(m == map){
 	   	  chkBicycle = document.getElementById('chkBicycle');
 		}
@@ -754,7 +759,7 @@ $(function(){
 	   
 	}
 //////////////////////////////////////////////////////// 파일드랍기능 구현
-	var uploadFiles = [];
+	let uploadFiles = [];
 	var $drop = $("#drop");
 	
 	$drop.on("dragenter", function(e) { //드래그 요소가 들어왔을떄
@@ -801,23 +806,23 @@ $(function(){
 ////////////////////////////////////////////////////////
 	function preCheck(){
 		
-		var cname = $.trim($(title).val());
-		var fixCVal = $(fixC).attr("val"); 
-		var fixPSVal = $(fixPS).attr("val"); 
-		var fixPEVal = $(fixPE).attr("val");
-		var fView = $("#firstView option:selected").val();
-		var cDiff = $("#diff option:selected").val();
-		var cwords = $.trim($(words).val());
-		var sPTVal = $("#sPT option:selected").val();
-		var sPTSt = $.trim($(sPTStation).val());
-		var ePTVal = $("#ePT option:selected").val();
-		var ePTSt = $.trim($(ePTStation).val());
+		const cname = title.value;
+		const fixCVal = fixC.getAttribute("val");
+		const fixPSVal = fixPS.getAttribute("val");
+		const fixPEVal = fixPE.getAttribute("val");		
+		const fView = firstView.options[firstView.selectedIndex].value;	
+		const cDiff = diff.options[diff.selectedIndex].value;	
+		const cwords = words.value.trim();
+		const sPTVal = sPT.options[sPT.selectedIndex].value;
+		const sPTSt = sPTStation.value.trim();
+		const ePTVal = ePT.options[ePT.selectedIndex].value;
+		const ePTSt = ePTStation.value.trim();
 
-		var krengAvail = /^[가-힣a-zA-Z\s]{2,10}$/;
-		var krengnumAvail = /^[가-힣a-zA-Z0-9\s]{2,10}$/;
-		var cnameCheck = krengAvail.test(cname);
-		var sPTStCheck = krengnumAvail.test(sPTSt);
-		var ePTStCheck = krengnumAvail.test(ePTSt);
+		const krengAvail = /^[가-힣a-zA-Z\s]{2,10}$/;
+		const krengnumAvail = /^[가-힣a-zA-Z0-9\s]{2,10}$/;
+		const cnameCheck = krengAvail.test(cname);
+		const sPTStCheck = krengnumAvail.test(sPTSt);
+		const ePTStCheck = krengnumAvail.test(ePTSt);
 
 		if(cname == ''){
 			alert("페이지 상단의 코스명을 입력한 후 진행해주세요.");
@@ -858,24 +863,24 @@ $(function(){
 
 		return 0;
 	}
-	$("#previewMakingCourse").click(function() {
-		var fixCVal = $(fixC).attr("val");
+	document.getElementById("previewMakingCourse").addEventListener("click", function(e) {
+		const fixCVal = fixC.getAttribute("val");
 		if(fixCVal != "n"){
 			alert("코스 가져오기를 실행해야만 미리보기를 볼 수 있습니다.");
 			return;
 		}
 		
-		var c_name =  $.trim($(title).val());
-	    var c_s_latitude = $.trim($(slat).val());
-		var c_s_longitude =  $.trim($(slon).val());
-		var c_s_locname =  $.trim($(sLoc).val());		
-		var c_e_latitude =  $.trim($(elat).val());
-		var c_e_longitude =  $.trim($(elon).val());
-		var c_e_locname =  $.trim($(eLoc).val());
-		var c_mapLevel =  $.trim($(mapLevel).val());
-		var c_view1 = $.trim($(firstView).val());
-		var c_view2 = $.trim($(secondView).val());
-		var c_views = [];
+		const c_name =  title.value.trim();
+		const c_s_latitude = slat.value.trim();
+		const c_s_longitude = slon.value.trim();
+		const c_s_locname = sLoc.value.trim();		
+		const c_e_latitude = elat.value.trim();
+		const c_e_longitude = elon.value.trim();
+		const c_e_locname = eLoc.value.trim();
+		const c_mapLevel = mapLevel.value.trim();
+		const c_view1 = firstView.value.trim();
+		const c_view2 = secondView.value.trim();
+		const c_views = [];
 		if(c_view1 != 0){
 			c_views.push(c_view1);
 		}
@@ -883,26 +888,25 @@ $(function(){
 			c_views.push(c_view2);
 		}
 		
-		
-		var c_words =  $.trim($(words).val());
-		var c_difficulty =  $.trim($(diff).val());
-		var c_distance =  $.trim($(dis).val());
-		var c_time =  $.trim($(time).val());
-		var c_line =  $.trim($(line).val());
+		const c_words =  words.value.trim();
+		const c_difficulty = diff.value.trim();
+		const c_distance =  dis.value.trim();
+		const c_time = time.value.trim();
+		const c_line = line.value.trim();
 	////////////////////////////////////////////////////
-		var pts_latitude = $.trim($(latPS).val());
-		var pts_longitude = $.trim($(lonPS).val());
-		var pts_distance = $.trim($(disPS).val());
-		var pts_img = $.trim($(sPT).val());
-		var pts_station = $.trim($(sPTStation).val());
-		var pts_line = $.trim($(linePS).val());
+		const pts_latitude = latPS.value.trim();
+		const pts_longitude = lonPS.value.trim();
+		const pts_distance = disPS.value.trim();
+		const pts_img = sPT.value.trim();
+		const pts_station = sPTStation.value.trim();
+		const pts_line = linePS.value.trim();
 	////////////////////////////////////////////////////////////
-		var pte_latitude = $.trim($(latPE).val());
-		var pte_longitude = $.trim($(lonPE).val());
-		var pte_distance = $.trim($(disPE).val());
-		var pte_img = $.trim($(ePT).val());
-		var pte_station = $.trim($(ePTStation).val());
-		var pte_line = $.trim($(linePE).val());
+		const pte_latitude = latPE.value.trim();
+		const pte_longitude = lonPE.value.trim();
+		const pte_distance = disPE.value.trim();
+		const pte_img = ePT.value.trim();
+		const pte_station = ePTStation.value.trim();
+		const pte_line = linePE.value.trim();
 
 		
 		var courseData = {
@@ -975,28 +979,28 @@ $(function(){
 		})
 	});
 
-	$("#regCourse").click(function() {
-		var check = preCheck();
+	document.getElementById("regCourse").addEventListener("click", function(e) {
+		const check = preCheck();
 		if(check == 1){
 			return;
 		}
-		var preConfirm = confirm("등록하면 더 이상 수정이 불가능합니다.\r\n등록하시겠습니까?(미리보기를 통해 충분히 확인 후 진행해도 좋습니다)");
+		const preConfirm = confirm("등록하면 더 이상 수정이 불가능합니다.\r\n등록하시겠습니까?(미리보기를 통해 충분히 확인 후 진행해도 좋습니다)");
 
 		if(preConfirm == false){
 			return;
 		}
 
-		var c_name =  $.trim($(title).val());
-	    var c_s_latitude = $.trim($(slat).val());
-		var c_s_longitude =  $.trim($(slon).val());
-		var c_s_locname =  $.trim($(sLoc).val());		
-		var c_e_latitude =  $.trim($(elat).val());
-		var c_e_longitude =  $.trim($(elon).val());
-		var c_e_locname =  $.trim($(eLoc).val());
-		var c_mapLevel =  $.trim($(mapLevel).val());
-		var c_view1 = $.trim($(firstView).val());
-		var c_view2 = $.trim($(secondView).val());
-		var c_views = [];
+		const c_name =  title.value.trim();
+		const c_s_latitude = slat.value.trim();
+		const c_s_longitude = slon.value.trim();
+		const c_s_locname = sLoc.value.trim();		
+		const c_e_latitude = elat.value.trim();
+		const c_e_longitude = elon.value.trim();
+		const c_e_locname = eLoc.value.trim();
+		const c_mapLevel = mapLevel.value.trim();
+		const c_view1 = firstView.value.trim();
+		const c_view2 = secondView.value.trim();
+		const c_views = [];
 		if(c_view1 != 0){
 			c_views.push(c_view1);
 		}
@@ -1004,29 +1008,27 @@ $(function(){
 			c_views.push(c_view2);
 		}
 		
-		
-		var c_words =  $.trim($(words).val());
-		var c_difficulty =  $.trim($(diff).val());
-		var c_distance =  $.trim($(dis).val());
-		var c_time =  $.trim($(time).val());
-		var c_line =  $.trim($(line).val());
+		const c_words =  words.value.trim();
+		const c_difficulty = diff.value.trim();
+		const c_distance =  dis.value.trim();
+		const c_time = time.value.trim();
+		const c_line = line.value.trim();
 	////////////////////////////////////////////////////
-		var pts_latitude = $.trim($(latPS).val());
-		var pts_longitude = $.trim($(lonPS).val());
-		var pts_distance = $.trim($(disPS).val());
-		var pts_img = $.trim($(sPT).val());
-		var pts_station = $.trim($(sPTStation).val());
-		var pts_line = $.trim($(linePS).val());
+		const pts_latitude = latPS.value.trim();
+		const pts_longitude = lonPS.value.trim();
+		const pts_distance = disPS.value.trim();
+		const pts_img = sPT.value.trim();
+		const pts_station = sPTStation.value.trim();
+		const pts_line = linePS.value.trim();
 	////////////////////////////////////////////////////////////
-		var pte_latitude = $.trim($(latPE).val());
-		var pte_longitude = $.trim($(lonPE).val());
-		var pte_distance = $.trim($(disPE).val());
-		var pte_img = $.trim($(ePT).val());
-		var pte_station = $.trim($(ePTStation).val());
-		var pte_line = $.trim($(linePE).val());
+		const pte_latitude = latPE.value.trim();
+		const pte_longitude = lonPE.value.trim();
+		const pte_distance = disPE.value.trim();
+		const pte_img = ePT.value.trim();
+		const pte_station = ePTStation.value.trim();
+		const pte_line = linePE.value.trim();
 
-		
-		var courseData = {
+		const courseData = {
 				 "c_name": c_name,
 			     "c_s_latitude" : c_s_latitude,
 				 "c_s_longitude" : c_s_longitude,
@@ -1099,39 +1101,10 @@ $(function(){
 				alert("에러발생");
 			}
 		});
-	})
+	});
 
-	/*
-	  var c_s_latitude =  document.getElementById("c_s_latitude");
-	var c_s_longitude =  document.getElementById("c_s_longitude");
-	var c_s_locname =  document.getElementById("c_s_locname");
-	
-	var c_e_latitude =  document.getElementById("c_e_latitude");
-	var c_e_longitude =  document.getElementById("c_e_longitude");
-	var c_e_locname =  document.getElementById("c_e_locname");
-	var c_mapLevel =  document.getElementById("c_mapLevel");
-	var c_distance =  document.getElementById("c_distance");
-	var c_time =  document.getElementById("c_time");
-	var c_line =  document.getElementById("c_line");
-	var fixC = $("#fixC");  // 수정시 가져오기필요문구 나타낼스판
-////////////////////////////////////////////////////
-	var pts_latitude = document.getElementById("pts_latitude");
-	var pts_longitude = document.getElementById("pts_longitude");
-	var pts_distance = document.getElementById("pts_distance");
-	var pts_img = document.getElementById("pts_img");
-	var pts_station = document.getElementById("pts_station");
-	var pts_line = document.getElementById("pts_line");
-	var fixPS = $("#fixPS"); // 수정시 가져오기필요문구 나타낼스판
-////////////////////////////////////////////////////////////*
-	var pte_latitude = document.getElementById("pte_latitude");
-	var pte_longitude = document.getElementById("pte_longitude");
-	var pte_distance = document.getElementById("pte_distance");
-	var pte_img = document.getElementById("pte_img");
-	var pte_station = document.getElementById("pte_station");
-	var pte_line = document.getElementById("pte_line");
-	var fixPE = $("#fixPE");  // 수정시 가져오기필요문구 나타낼스판
-	*/
-})
+
+}
 </script>
 </head>
 <body>

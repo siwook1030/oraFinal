@@ -166,8 +166,19 @@ input, button, select, textarea {
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
-$(function(){
 //////////
+window.onload = function(){
+
+	const myLat = document.getElementById("lat");
+	const myLon  = document.getElementById("lon");
+	const myLatitude =  document.getElementById("latitude");
+	const myLongitude =  document.getElementById("longitude");
+/*	
+document.getElementById('distanceAll').checked = true;
+document.getElementById("timeAll").setAttribute("checked", true);
+document.getElementById("timeAll").checked=true;
+//document.getElementsByName("view").checked = true;
+/*
 $("#distance input:first").prop("checked", true);
 $("#time input:first").prop("checked", true);
 $("#view input").prop("checked", false);
@@ -177,35 +188,35 @@ $("#view input").prop("checked", false);
  */
 function MarkerTracker(map, target) {
     // 클리핑을 위한 outcode
-    var OUTCODE = {
+  const OUTCODE = {
         INSIDE: 0, // 0b0000
         TOP: 8, //0b1000
         RIGHT: 2, // 0b0010
         BOTTOM: 4, // 0b0100
         LEFT: 1 // 0b0001
     };
-    
+  
     // viewport 영역을 구하기 위한 buffer값
     // target의 크기가 60x60 이므로 
     // 여기서는 지도 bounds에서 상하좌우 30px의 여분을 가진 bounds를 구하기 위해 사용합니다.
-    var BOUNDS_BUFFER = 30;
+    const BOUNDS_BUFFER = 30;
     
     // 클리핑 알고리즘으로 tracker의 좌표를 구하기 위한 buffer값
     // 지도 bounds를 기준으로 상하좌우 buffer값 만큼 축소한 내부 사각형을 구하게 됩니다.
     // 그리고 그 사각형으로 target위치와 지도 중심 사이의 선을 클리핑 합니다.
     // 여기서는 tracker의 크기를 고려하여 40px로 잡습니다.
-    var CLIP_BUFFER = 40;
+    const CLIP_BUFFER = 40;
 
     // trakcer 엘리먼트
-    var tracker = document.createElement('div');
+    const tracker = document.createElement('div');
     tracker.className = 'tracker';
 
     // 내부 아이콘
-    var icon = document.createElement('div');
+    const icon = document.createElement('div');
     icon.className = 'icon';
 
     // 외부에 있는 target의 위치에 따라 회전하는 말풍선 모양의 엘리먼트
-    var balloon = document.createElement('div');
+    const balloon = document.createElement('div');
     balloon.className = 'balloon';
 
     tracker.appendChild(balloon);
@@ -221,13 +232,13 @@ function MarkerTracker(map, target) {
 
     // target의 위치를 추적하는 함수
     function tracking() {
-        var proj = map.getProjection();
+    	const proj = map.getProjection();
         
         // 지도의 영역을 구합니다.
-        var bounds = map.getBounds();
+        const bounds = map.getBounds();
         
         // 지도의 영역을 기준으로 확장된 영역을 구합니다.
-        var extBounds = extendBounds(bounds, proj);
+        const extBounds = extendBounds(bounds, proj);
 
         // target이 확장된 영역에 속하는지 판단하고
         if (extBounds.contain(target.getPosition())) {
@@ -266,32 +277,32 @@ function MarkerTracker(map, target) {
             // 계산을 위해 좌표 변환 메소드를 사용하여 모두 화면 좌표로 변환시킵니다.
             
             // TooltipMarker의 위치
-            var pos = proj.containerPointFromCoords(target.getPosition());
+            const pos = proj.containerPointFromCoords(target.getPosition());
             
             // 지도 중심의 위치
-            var center = proj.containerPointFromCoords(map.getCenter());
+            const center = proj.containerPointFromCoords(map.getCenter());
 
             // 현재 보이는 지도의 영역의 남서쪽 화면 좌표
-            var sw = proj.containerPointFromCoords(bounds.getSouthWest());
+            const sw = proj.containerPointFromCoords(bounds.getSouthWest());
             
             // 현재 보이는 지도의 영역의 북동쪽 화면 좌표
-            var ne = proj.containerPointFromCoords(bounds.getNorthEast());
+            const ne = proj.containerPointFromCoords(bounds.getNorthEast());
             
             // 클리핑할 가상의 내부 영역을 만듭니다.
-            var top = ne.y + CLIP_BUFFER;
-            var right = ne.x - CLIP_BUFFER;
-            var bottom = sw.y - CLIP_BUFFER;
-            var left = sw.x + CLIP_BUFFER;
+            const top = ne.y + CLIP_BUFFER;
+            const right = ne.x - CLIP_BUFFER;
+            const bottom = sw.y - CLIP_BUFFER;
+            const left = sw.x + CLIP_BUFFER;
 
             // 계산된 모든 좌표를 클리핑 로직에 넣어 좌표를 얻습니다.
-            var clipPosition = getClipPosition(top, right, bottom, left, center, pos);
+            const clipPosition = getClipPosition(top, right, bottom, left, center, pos);
             
             // 클리핑된 좌표를 tracker의 위치로 사용합니다.
             tracker.style.top = clipPosition.y + 'px';
             tracker.style.left = clipPosition.x + 'px';
 
             // 말풍선의 회전각을 얻습니다.
-            var angle = getAngle(center, pos);
+            const angle = getAngle(center, pos);
             
             // 회전각을 CSS transform을 사용하여 지정합니다.
             // 브라우저 종류에따라 표현되지 않을 수도 있습니다.
@@ -331,8 +342,8 @@ function MarkerTracker(map, target) {
         // 주어진 bounds는 지도 좌표 정보로 표현되어 있습니다.
         // 이것을 BOUNDS_BUFFER 픽셀 만큼 확장하기 위해서는
         // 픽셀 단위인 화면 좌표로 변환해야 합니다.
-        var sw = proj.pointFromCoords(bounds.getSouthWest());
-        var ne = proj.pointFromCoords(bounds.getNorthEast());
+        const sw = proj.pointFromCoords(bounds.getSouthWest());
+        const ne = proj.pointFromCoords(bounds.getNorthEast());
 
         // 확장을 위해 각 좌표에 BOUNDS_BUFFER가 가진 수치만큼 더하거나 빼줍니다.
         sw.x -= BOUNDS_BUFFER;
@@ -354,7 +365,7 @@ function MarkerTracker(map, target) {
     // https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm
     function getClipPosition(top, right, bottom, left, inner, outer) {
         function calcOutcode(x, y) {
-            var outcode = OUTCODE.INSIDE;
+        	let outcode = OUTCODE.INSIDE;
 
             if (x < left) {
                 outcode |= OUTCODE.LEFT;
@@ -371,12 +382,12 @@ function MarkerTracker(map, target) {
             return outcode;
         }
 
-        var ix = inner.x;
-        var iy = inner.y;
-        var ox = outer.x;
-        var oy = outer.y;
+        let ix = inner.x;
+        let iy = inner.y;
+        let ox = outer.x;
+        let oy = outer.y;
 
-        var code = calcOutcode(ox, oy);
+        let code = calcOutcode(ox, oy);
 
         while(true) {
             if (!code) {
@@ -406,9 +417,9 @@ function MarkerTracker(map, target) {
     // 말풍선의 회전각을 구하기 위한 함수
     // 말풍선의 anchor가 TooltipMarker가 있는 방향을 바라보도록 회전시킬 각을 구합니다.
     function getAngle(center, target) {
-        var dx = target.x - center.x;
-        var dy = center.y - target.y ;
-        var deg = Math.atan2( dy , dx ) * 180 / Math.PI; 
+        const dx = target.x - center.x;
+        const dy = center.y - target.y ;
+        const deg = Math.atan2( dy , dx ) * 180 / Math.PI; 
 
         return ((-deg + 360) % 360 | 0) + 90;
     }
@@ -441,53 +452,53 @@ function MarkerTracker(map, target) {
 }
 
 ///////////////////////-------------------------------------------------------------------------------------------------
-	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+	const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 	    mapOption = {
 	        center: new kakao.maps.LatLng(37.53814589110931, 126.98135334065803), // 지도의 중심좌표
 	        level: 7 // 지도의 확대 레벨
 	    };  
 
 	// 지도를 생성합니다    
-	var map = new kakao.maps.Map(mapContainer, mapOption); 
-	var mapTypeControl = new kakao.maps.MapTypeControl();
-	var zoomControl = new kakao.maps.ZoomControl();
+	const map = new kakao.maps.Map(mapContainer, mapOption); 
+	const mapTypeControl = new kakao.maps.MapTypeControl();
+	const zoomControl = new kakao.maps.ZoomControl();
 	map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 	map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 	// 주소-좌표 변환 객체를 생성합니다
-	var geocoder = new kakao.maps.services.Geocoder();
+	const geocoder = new kakao.maps.services.Geocoder();
 	//현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
 	searchAddrFromCoords(map.getCenter(), displayCenterInfo);
 	
-	var startSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png', // 출발 마커이미지의 주소입니다    
+	const startSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png', // 출발 마커이미지의 주소입니다    
 	startSize = new kakao.maps.Size(50, 45), // 출발 마커이미지의 크기입니다 
 	startLocOption = {offset: new kakao.maps.Point(15, 43)}; // 출발 마커이미지에서 마커의 좌표에 일치시킬 좌표를 설정합니다 (기본값은 이미지의 가운데 아래입니다)
 	
 	//출발 마커 이미지를 생성합니다
-	var startMarkerImage = new kakao.maps.MarkerImage(startSrc, startSize, startLocOption);
+	const startMarkerImage = new kakao.maps.MarkerImage(startSrc, startSize, startLocOption);
 	
-	var startMarker = new kakao.maps.Marker({image:startMarkerImage}), // 클릭한 위치를 표시할 마커입니다
+	const startMarker = new kakao.maps.Marker({image:startMarkerImage}), // 클릭한 위치를 표시할 마커입니다
 	    startInfowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
 	
-	var nowLocSrc = '/searchCourseImg/myLoc.png', // 현위치 마커이미지의 주소입니다    
+  const nowLocSrc = '/searchCourseImg/myLoc.png', // 현위치 마커이미지의 주소입니다    
 		nowLocSize = new kakao.maps.Size(30, 30); // 현위치 마커이미지의 크기입니다
 
 	//현위치 마커의 이미지정보를 가지고 있는 현위치 마커이미지를 생성합니다
-	var nowLocImage = new kakao.maps.MarkerImage(nowLocSrc, nowLocSize);   
+	const nowLocImage = new kakao.maps.MarkerImage(nowLocSrc, nowLocSize);   
 
 	function nowLocDisplay(){   
 		if (navigator.geolocation) {	    
 		    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
 		    navigator.geolocation.getCurrentPosition(function(position) {
 		        
-		        var lat = position.coords.latitude, // 위도
+		      const lat = position.coords.latitude, // 위도
 		            lon = position.coords.longitude; // 경도
 		            
-		            document.getElementById("lat").value = lat; 
-		            document.getElementById("lon").value = lon;
-		            document.getElementById("latitude").value = lat; 
-		            document.getElementById("longitude").value = lon;
+		            myLat.value = lat; 
+		            myLon.value= lon;
+		            myLatitude.value = lat; 
+		            myLongitude.value = lon; 
 		            
-		        var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+		      const locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
 		            message = '<div style="padding:2px 0 0 25px;">라이더 현위치</div>'; // 인포윈도우에 표시될 내용입니다
 		        
 		        // 마커와 인포윈도우를 표시합니다
@@ -498,7 +509,7 @@ function MarkerTracker(map, target) {
 		} 
 		else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
 		    
-		    var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
+		  const locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
 		        message = '현위치를 찾을 수 없습니다'
 		        
 		    displayMarker(locPosition, message);
@@ -511,17 +522,17 @@ function MarkerTracker(map, target) {
 	function displayMarker(locPosition, message) {
 	
 	    // 마커를 생성합니다
-	    var marker = new kakao.maps.Marker({  
+	  const marker = new kakao.maps.Marker({  
 	        map: map, 
 	        position: locPosition,
 	        image: nowLocImage
 	    }); 
 	    
-	    var iwContent = message, // 인포윈도우에 표시할 내용
+	  const iwContent = message, // 인포윈도우에 표시할 내용
 	        iwRemoveable = true;
 	
 	    // 인포윈도우를 생성합니다
-	    var infowindow = new kakao.maps.InfoWindow({
+	  const infowindow = new kakao.maps.InfoWindow({
 	        content : iwContent,
 	        removable : iwRemoveable
 	    });
@@ -542,13 +553,14 @@ function MarkerTracker(map, target) {
 	            var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
 	            detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
 	            
-	            var content = '<div class="bAddr">' +
+	            let content = '<div class="bAddr">' +
 	                            '<span class="title">출발점</span>' + 
 	                            detailAddr + 
 	                        '</div>';
-		         var latlng = mouseEvent.latLng;
-		         document.getElementById("latitude").value = latlng.getLat(); //위도경도 값 가져오는거당
-		         document.getElementById("longitude").value = latlng.getLng();
+	            const latlng = mouseEvent.latLng;
+		   
+		          myLatitude.value = latlng.getLat(); //위도경도 값 가져오는거당
+		          myLongitude.value = latlng.getLng();
 	            // 마커를 클릭한 위치에 표시합니다 
 	            startMarker.setPosition(mouseEvent.latLng);
 	            startMarker.setMap(map);
@@ -579,9 +591,9 @@ function MarkerTracker(map, target) {
 	// 지도 좌측상단에 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
 	function displayCenterInfo(result, status) {
 	    if (status === kakao.maps.services.Status.OK) {
-	        var infoDiv = document.getElementById('centerAddr');
+	    	const infoDiv = document.getElementById('centerAddr');
 	
-	        for(var i = 0; i < result.length; i++) {
+	        for(let i = 0; i < result.length; i++) {
 	            // 행정동의 region_type 값은 'H' 이므로
 	            if (result[i].region_type === 'H') {
 	                infoDiv.innerHTML = result[i].address_name;
@@ -590,14 +602,20 @@ function MarkerTracker(map, target) {
 	        }
 	    }    
 	}
+
+	document.getElementById("nowLoc").onclick=myNowLoc;
 	
-	$("#nowLoc").click(function() {
-		var lat = $("#lat").val();
-		var lon = $("#lon").val();
+	function myNowLoc(){
+	//	var lat = $("#lat").val();
+	//	var lon = $("#lon").val();
+		const lat = myLat.value;
+		const lon = myLon.value;
 		if(lat != "0" && lon != "0"){
 			var locPosition = new kakao.maps.LatLng(lat, lon);
-			 $("#latitude").val(lat);
-			 $("#longitude").val(lon);
+			 myLatitude.value= lat;
+			 myLongitude.value = lon;
+			// $("#latitude").val(lat);
+			// $("#longitude").val(lon);
 			 map.setCenter(locPosition); 
 			 startInfowindow.open(null);
 			 startMarker.setMap(null);
@@ -605,9 +623,10 @@ function MarkerTracker(map, target) {
 		else{
 			alert("현위치를 찾을 수 없습니다");
 		}
-	})
+	}
+
 //////////////////////////////////////////////////// 코스마커표시기능	
-	var placeOverlay = new kakao.maps.CustomOverlay({zIndex:1}), 
+	const placeOverlay = new kakao.maps.CustomOverlay({zIndex:1}), 
     contentNode = document.createElement('div'); // 커스텀 오버레이의 컨텐츠 엘리먼트 입니다 
 
 	// 커스텀 오버레이의 컨텐츠 노드에 css class를 추가합니다 
@@ -629,29 +648,42 @@ function MarkerTracker(map, target) {
 	
 	// 커스텀 오버레이 컨텐츠를 설정합니다
 	placeOverlay.setContent(contentNode); 
-	
-	var courseMarkerArr = [];  //검색된 코스 마커를 담을 배열
-	var courseTrackerArr = [];  //검색된 코스 트랙커를 담을 배열
-	var courseSize = new kakao.maps.Size(32, 32); 
-	var searchList = $("#searchList");
-	var courseNum = $("#courseNum");
-	var courseNumSpan1 = $("<sapn></sapn>").css({fontSize: "18px",fontWeight: "bold"});
-	var courseNumSpan2 = $("<sapn></sapn>").css({fontSize: "14px"}).html("개 코스가 검색되었습니다");
+//----------------------검색된 코스 만드는 곳 ------
+	let courseMarkerArr = [];  //검색된 코스 마커를 담을 배열
+	let courseTrackerArr = [];  //검색된 코스 트랙커를 담을 배열
+	const courseSize = new kakao.maps.Size(32, 32); 
+	const searchList = document.getElementById("searchList");
+	const courseNum = document.getElementById("courseNum");
+	const courseNumSpan1 = document.createElement("span");
+	courseNumSpan1.style.fontSize="18px";
+	courseNumSpan1.style.fontWeight="bold";
+	const courseNumSpan2 = document.createElement("span");
+	courseNumSpan2.style.fontSize="14px";
+	courseNumSpan2.innerHTML = "개 코스가 검색되었습니다";
 
-	var scList = [];
-	var currArray = 0;
-	$("#search").click(function() {
-		$("#search").prop({disabled: true});
-		$("#spinner").addClass("spinner-border spinner-border-sm");
-		$("#searchWord").html(" 검색중..");
-		var latitude = $.trim($("#latitude").val());
-		var longitude = $.trim($("#longitude").val());
-		var distance = $("#distance :checked").val();
-		var time = $("#time :checked").val();
+	let scList = [];
+	let currArray = 0;
+	const search = document.getElementById("search");
+	const spinner = document.getElementById("spinner");
+	const searchWord = document.getElementById("searchWord");
+	const searchListBox = document.getElementById("searchListBox");
+
+	
+	search.addEventListener("click", function(e) {
+		search.setAttribute("disabled", true);
+		spinner.className="spinner-border spinner-border-sm";
+		searchWord.innerHTML=" 검색중..";
 		
-		var view = [];
-		$("input[name=view]:checked").each(function() {
-			view.push($(this).val());
+		const latitude = myLatitude.value.trim();
+		const longitude = myLongitude.value.trim();	
+		const distance = document.querySelector("#distance :checked").value;		
+		const time = document.querySelector("#time :checked").value;
+		
+		const view = [];
+		var viewChecked = document.querySelectorAll("#view :checked");
+		console.log(viewChecked);
+		viewChecked.forEach(function(v) {
+			view.push(v.value);
 		})
 
 		console.log( "위도 : "+latitude);
@@ -673,68 +705,68 @@ function MarkerTracker(map, target) {
 			},
 			success:function(data){
 				currArray = 0;
-				$(searchList).empty();
-				$(courseNum).empty();
+				searchList.innerHTML="";
+				courseNum.innerHTML="";
 				removeMarker();
 				courseMarkerArr = [];
 				courseTrackerArr = [];
 				
 				scList = data;	
-				
-					
-				$(scList).each(function(i, c) {
-					setCourseMarker(i, c);
-					setCourseBox(c);	
-				});
-
+				scList.forEach(function(c, i, array) {
+					setCourseMarker(i,c);
+					setCourseBox(c);
+				})
+		
 				map.setLevel(7);
 				map.setCenter(new kakao.maps.LatLng(latitude, longitude));
-				$("#search").prop({disabled: false});
-				$("#spinner").removeClass("spinner-border spinner-border-sm");
-				$("#searchWord").html('<img src="/searchCourseImg/search.png" width="24px" height="24px">검색');
-				$("#searchListBox").css({visibility: "visible",display: "inline"});
-				$(courseNumSpan1).html(scList.length);
-				$(courseNum).append(courseNumSpan1,courseNumSpan2);
+				search.removeAttribute("disabled");
+				spinner.className="";
+				searchWord.innerHTML='<img src="/searchCourseImg/search.png" width="24px" height="24px">검색';
+				searchListBox.style.visibility="visible";
+				searchListBox.style.display="inline";
+				courseNumSpan1.innerHTML = scList.length;
+				courseNum.append(courseNumSpan1,courseNumSpan2);
 				if(scList.length == 0){
-					$("#courseArray").css({visibility: "hidden"});
+					courseArray.style.visibility = "hidden";
 				}
 				else{
-					$("#courseArray").css({visibility: "visible"});
+					courseArray.style.visibility = "visible";
 				}
 			},
 			error:function(){
 				alert("에러발생");
 			} 
 		})
+	}, false)
+	
+	const courseArrSpan = document.querySelectorAll("#courseArray span");
+
+	courseArrSpan.forEach(function(el, i) {
+		 
+		el.addEventListener("click", function(e) {
+		const val = e.target.getAttribute("val");
+			if(val == currArray){
+				return;
+			}
+			searchList.innerHTML = "";
+			currArray = val;
 			
-	})
-	
-	
-	$("#courseArray span").click(function() {
-		var val = $(this).attr("val");
-
-		if(val == currArray){
-			return;
-		}
-		$(searchList).empty();
-		currArray = val;
-		
-		if(val == 0){
-			$(scList).each(function(i, c) {
-				setCourseBox(c);	
-			});
-
-		}
-		else{
-			arrayCourse(val);
-		}	
-	
+			if(val == 0){
+				scList.forEach(function(c, i, array) {
+					setCourseBox(c);
+				})
+			}
+			else{
+				arrayCourse(val);
+			}	
+			
+		}, false)
 	})
 	
 	function arrayCourse(val){
-		var scArr =  scList.slice();
-		var preArr;
-		var nextArr;
+		const scArr =  scList.slice();
+		let preArr;
+		let nextArr;
 		
 		
 		for(i=0; i<scArr.length; i++){
@@ -759,13 +791,13 @@ function MarkerTracker(map, target) {
 				}
 			}
 		}
-		$(scArr).each(function(i, c) {
-			setCourseBox(c);	
-		});
+		scArr.forEach(function(c, i, array) {
+			setCourseBox(c);
+		})
 	}
 	
 	function removeMarker(){
-		$(courseMarkerArr).each(function(i, c) {
+		courseMarkerArr.forEach(function(c, i, array) {
 			c.setMap(null);
 			courseTrackerArr[i].stop();
 		})
@@ -773,19 +805,19 @@ function MarkerTracker(map, target) {
 
 	function setCourseMarker(i, c){
 
-		var courseMarkerSrc = '/courseMarkerImg/cMarker.png';  
+		let courseMarkerSrc = '/courseMarkerImg/cMarker.png';  
 		if(i <=2){
 			courseMarkerSrc = '/courseMarkerImg/cMarker'+(i+1)+'.png';
 		}
-		var coursePosition = new kakao.maps.LatLng(c.c_s_latitude, c.c_s_longitude);
+		const coursePosition = new kakao.maps.LatLng(c.c_s_latitude, c.c_s_longitude);
 
-		var courseMarkerImage = new kakao.maps.MarkerImage(courseMarkerSrc, courseSize);	
-		var courseMarker = new kakao.maps.Marker({  
+		const courseMarkerImage = new kakao.maps.MarkerImage(courseMarkerSrc, courseSize);	
+		const courseMarker = new kakao.maps.Marker({  
 		    map: map,
 		    position: coursePosition,
 		    image: courseMarkerImage
 		});	
-		var markerTracker = new MarkerTracker(map, courseMarker);
+		const markerTracker = new MarkerTracker(map, courseMarker);
 		markerTracker.run();
 		
 		courseMarkerArr.push(courseMarker);
@@ -798,13 +830,11 @@ function MarkerTracker(map, target) {
 	}
 	
 	function displayC (c) {
-	    var content = '<div class="placeinfo">' +
+	    let content = '<div class="placeinfo">' +
 	                    '   <a class="title" href="/detailCourse?c_no='+c.c_no+'" target="_blank" title="' + c.c_name + '">' + c.c_name + '</a>';   
 	
-	    
 	        content += '    <span title="' + c.c_loc + '">' + ""+c.c_loc + '</span>';
 	             
-	   
 	    content += '    <span class="tel">' + "코스거리 "+c.c_distance +" 소요시간 "+c.c_time+ '</span>' + 
 	                '</div>' + 
 	                '<div class="after"></div>';
@@ -815,69 +845,62 @@ function MarkerTracker(map, target) {
 	}
 
 	function setCourseBox(c){
-		var courseBox = $("<div></div>").attr("id", "courseBox");
-		var topRow = $("<div></div>").attr("id", "topRow");
-		var locSpan = $("<span></span>").html(c.c_loc);
-		var viewDiv = $("<div></div>").css({textAlign: "right"});
-		$(c.c_views).each(function(i, v) {
-			var vImg = $("<img/>").attr({
-							src: "/courseViewImg/"+v+".png"
-						});
-			$(viewDiv).append(vImg);
-		})
-		
-		$(topRow).append(locSpan,viewDiv);
-		
-		var courseAnchor = $("<a></a>").attr({
-								href: "/detailCourse?c_no="+c.c_no,
-								target: "_blank"
-							});
-		var coursePhoto = $("<div></div>").attr("id", "coursePhoto").css({backgroundImage:'url(/coursePhoto/'+c.c_photo[0].cp_name});
-		$(courseAnchor).append(coursePhoto);
-	
-		var courseNmaeDiv = $("<div></div>").attr("id", "courseName");
-		var nameStrong = $("<strong></strong>").html(c.c_name);
-		$(courseNmaeDiv).append(nameStrong);
-	
-		var courseSummaryDiv = $("<div></div>").attr("id", "courseSummary");
-		var disImg = $("<img/>").attr("src", "/searchCourseImg/distance.png");
-		var disSpan = $("<span></span>").html(c.c_distance);
-		var timeImg = $("<img/>").attr("src", "/searchCourseImg/time.png");
+		const courseBox = document.createElement("div");
+		courseBox.setAttribute("id", "courseBox");
 
-		var hour = parseInt(c.c_time/60);
-		var mi = c.c_time%60;
-		var timeSpan = $("<span></span>");
+		let courseTime;
+		const hour = parseInt(c.c_time/60);
+		const mi = c.c_time%60;
 		if(hour >= 1){
-			$(timeSpan).html(hour+'시간 '+mi+'분');
+			courseTime = hour+'시간 '+mi+'분';
 		}
 		else{
-			$(timeSpan).html(mi+'분');
+			courseTime = mi+'분';
 		}
-		var diffImg = $("<img/>").attr("src", "/searchCourseImg/difficulty.png");
-		var diffSpan = $("<span></span>");
-		var diff = c.c_difficulty;
+		
+		let courseContent = '<div id="topRow"><span>'+c.c_loc+'</span><div style="text-align: right;">';
+		
+		c.c_views.forEach(function(v, i) {
+			courseContent += '<img src="/courseViewImg/'+v+'.png">';
+		});
+		
+		courseContent += '</div></div>';
+		
+		courseContent += '<a href="/detailCourse?c_no='+c.c_no+'" target="_blank">';
+		
+		if(c.c_photo.length != 0){
+			courseContent += '<div id="coursePhoto" style="background-image: url(/coursePhoto/'+c.c_photo[0].cp_name+');"></div></a>';
+		}
+		else{
+			courseContent += '<div id="coursePhoto" style="background-image: url(/coursePhoto/nullcPhoto.png);"></div></a>';
+		}
+		
+		courseContent += '<div id="courseName"><strong>'+c.c_name+'</strong></div>';
+		
+		courseContent += '<div id="courseSummary"><img src="/searchCourseImg/distance.png"><span>'+c.c_distance+'</span><span>km</span>';
+		
+		courseContent += '<img src="/searchCourseImg/time.png"><span>'+courseTime+'</span>';
+		
+		courseContent += '<img src="/searchCourseImg/difficulty.png">';
+		
+		const diff = c.c_difficulty;
 		if(diff == 1){
-			$(diffSpan).css("color",  "#88bea6").html("쉬움");
+			courseContent += '<span style="color:#88bea6;">쉬움</span>';
 		}
 		else if(diff == 2){
-			$(diffSpan).css("color",  "#eccb6a").html("보통");
+			courseContent += '<span style="color: #eccb6a;">보통</span>';
 		}
 		else if(diff == 3){
-			$(diffSpan).css("color",  "#c8572d").html("어려움");
+			courseContent += '<span style="color: #c8572d;">어려움</span>';
 		}
 		else if(diff == 4){
-			$(diffSpan).css("color",  "red").html("매우어려움");
+			courseContent += '<span style="color:red;">매우어려움</span>';
 		}
-		var br = $("<br>");
-	
-		var userDisImg =  $("<img/>").attr("src", "/searchCourseImg/userDis.png");
-		var userDisSpan = $("<span></span>").html(c.userDis);
-		var kmSpan = $("<span></span>").html("km");
-		var kmSpan2 = $("<span></span>").html("km");
-		$(courseSummaryDiv).append(disImg,disSpan,kmSpan,timeImg,timeSpan,diffImg,diffSpan,br,userDisImg,userDisSpan,kmSpan2);
-	
-		$(courseBox).append(topRow,courseAnchor,courseNmaeDiv,courseSummaryDiv);
-		$(searchList).append(courseBox);
+		
+		courseContent += '<br><img src="/searchCourseImg/userDis.png"><span>'+c.userDis+'</span><span>km</span></div>';
+		
+		courseBox.innerHTML = courseContent;
+		searchList.append(courseBox);
 
 	}
 	
@@ -888,19 +911,20 @@ function MarkerTracker(map, target) {
 	var mapTypes = { //자전거맵 표시변수
 		    bicycle : kakao.maps.MapTypeId.BICYCLE
 		};
-	
-	$("#chkBicycle").change(function(){
-		var check = $(this).is(":checked");
+
+	const chkBicycle = document.getElementById("chkBicycle");
+	chkBicycle.addEventListener("change", function(e) {
+		const check = e.target.checked;
 		if(check){
 			map.addOverlayMapTypeId(mapTypes.bicycle);
 		}
 		else{
 			map.removeOverlayMapTypeId(mapTypes.bicycle);
 		}
-	
-	});
+	}, false)
 
-})
+
+}
 </script>
 </head>
 <body>
@@ -914,7 +938,7 @@ function MarkerTracker(map, target) {
         <span id="centerAddr"></span>
     </div>
 </div>
-	<div><strong>원하는 위치를 클릭하여 출발점을 정하세요!</strong>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="nowLoc" value="현위치"></div>
+	<div><strong>원하는 위치를 클릭하여 출발점을 정하세요!</strong>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="nowLoc"  onclick="myNowLoc()" value="현위치"></div>
 	<div style="text-align: left;">
   		<input type="checkbox" id="chkBicycle" /> 자전거도로 정보 보기
   		</div>
@@ -927,51 +951,51 @@ function MarkerTracker(map, target) {
  
   			 <div class="btn-group btn-group-toggle" data-toggle="buttons" id="distance" >
 					&nbsp;거리&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="btn btn-success btn-line btn-small active" >
-							<input type="radio" name="distance"  value="0" > 전체
+							<input type="radio" id="distanceAll" name="distance" value="0" checked> 전체
 						</label>
 						<label class="btn btn-success btn-line btn-small">
-							<input type="radio" name="distance"  value="10" > 0-10km
+							<input type="radio" id="distance1" name="distance"  value="10" > 0-10km
 						</label>
 						<label class="btn btn-success btn-line btn-small">
-							<input type="radio" name="distance"  value="30" > 10-30km
+							<input type="radio" id="distance2" name="distance"  value="30" > 10-30km
 						</label>
 						<label class="btn btn-success btn-line btn-small">
-							<input type="radio" name="distance"  value="50" > 30-50km
+							<input type="radio" id="distance3" name="distance"  value="50" > 30-50km
 						</label>
 						<label class="btn btn-success btn-line btn-small">
-							<input type="radio" name="distance"  value="1000" > 50km 이상
+							<input type="radio" id="distance4" name="distance"  value="1000" > 50km 이상
 						</label>
 					</div>
 					<div class="btn-group btn-group-toggle" data-toggle="buttons" id="view">
 						&nbsp;풍경&nbsp;&nbsp;&nbsp; 
 						<label class="btn btn-success btn-line btn-small">
-							<input type="checkbox" name="view"  value="강" > 강
+							<input type="checkbox" id="viewAll" name="view"  value="강" > 강
 						</label>
 						<label class="btn btn-success btn-line btn-small">
-							<input type="checkbox" name="view" value="산" > 산
+							<input type="checkbox" id="view1" name="view" value="산" > 산
 						</label>
 						<label class="btn btn-success btn-line btn-small">
-							<input type="checkbox" name="view" value="명소" > 명소
+							<input type="checkbox" id="view2" name="view" value="명소" > 명소
 						</label>
 						<label class="btn btn-success btn-line btn-small">
-							<input type="checkbox" name="view"  value="바다" > 바다
+							<input type="checkbox" id="view3" name="view"  value="바다" > 바다
 						</label>
 					</div><br><br>
 					<div class="btn-group btn-group-toggle" data-toggle="buttons" id="time">
 						&nbsp;소요시간&nbsp;&nbsp;<label class="btn btn-success btn-line btn-small active">
-							<input type="radio" name="time" id="time" value="0" > 전체
+							<input type="radio" id="timeAll" name="time" id="time" value="0" checked> 전체
 						</label>
 						<label class="btn btn-success btn-line btn-small">
-							<input type="radio" name="time"  value="60" > 1시간 미만
+							<input type="radio" id="time1" name="time"  value="60" > 1시간 미만
 						</label>
 						<label class="btn btn-success btn-line btn-small">
-							<input type="radio" name="time"  value="120" > 1-2시간
+							<input type="radio" id="time2" name="time"  value="120" > 1-2시간
 						</label>
 						<label class="btn btn-success btn-line btn-small">
-							<input type="radio" name="time"  value="180" > 2-3시간
+							<input type="radio" id="time3" name="time"  value="180" > 2-3시간
 						</label>
 						<label class="btn btn-success btn-line btn-small">
-							<input type="radio" name="time"  value="1000" > 3시간 이상
+							<input type="radio" id="time4" name="time"  value="1000" > 3시간 이상
 						</label>
 					</div>			
 					<br>

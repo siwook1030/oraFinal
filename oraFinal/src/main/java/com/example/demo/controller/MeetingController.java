@@ -39,7 +39,7 @@ public class MeetingController {
 	public static int totPage = 0; // 총 페이지 수
 	public static int pageSize = 2; // 한 번에 보이는 페이지 수
 	
-	public static int recordSizeR = 5; // 한 번에 보이는 게시글 수
+	public static int recordSizeR = 3; // 한 번에 보이는 게시글 수
 	public static int totPageR = 0; // 총 페이지 수
 	public static int pageSizeR = 5; // 한 번에 보이는 페이지 수
 	
@@ -105,7 +105,7 @@ public class MeetingController {
 		map.put("m_no", m_no);
 		
 		Gson gson = new Gson();
-		model.addAttribute("mrList", gson.toJson(mdao.detailMRep(map)));
+		//model.addAttribute("mrList", gson.toJson(mdao.detailMRep(map)));
 		model.addAttribute("m_no", gson.toJson(m_no));
 		model.addAttribute("totalRecordR", gson.toJson(totalRecordR));
 		model.addAttribute("totalPageNum", gson.toJson(totalPageNum));
