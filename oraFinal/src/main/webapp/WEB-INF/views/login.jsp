@@ -11,7 +11,8 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/js/login.js"></script>
+<script type="text/javascript" src="/js/login.js">
+</script>
 </head>
 <body>
 <div class="container">
@@ -20,13 +21,13 @@
   <form action="/action_page.php" class="was-validated">
     <div class="form-group">
       <label for="member-id">아이디</label>
-      <input type="text" class="form-control" id="member-id" placeholder="Enter id" name="member-id"  maxlength="12" required>
+      <input type="text" class="form-control" id="member-id" onkeyup="enterkey()" placeholder="Enter id" name="member-id"  maxlength="12" required>
       <div class="valid-feedback">입력완료.</div>
       <div class="invalid-feedback">입력해주세요.</div>
     </div>
     <div class="form-group">
       <label for="member-password">비밀번호</label>
-      <input type="password" class="form-control" id="member-password" placeholder="Enter password" name="member-password" maxlength="12" required>
+      <input type="password" class="form-control" id="member-password" onkeyup="enterkey()" placeholder="Enter password" name="member-password" maxlength="12" required>
       <input type="hidden" id="token" data-token-name="${_csrf.headerName}" placeholder="Password" value="${_csrf.token}">
       <div class="valid-feedback">입력완료.</div>
       <div class="invalid-feedback">입력해주세요.</div>

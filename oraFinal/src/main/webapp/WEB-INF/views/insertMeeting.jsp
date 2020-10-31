@@ -82,45 +82,45 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
-$(function(){
-   var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+window.onload = function(){
+   const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = {
         center: new kakao.maps.LatLng(37.53814589110931, 126.98135334065803), // 지도의 중심좌표
         level: 7 // 지도의 확대 레벨
     };  
 
 // 지도를 생성합니다    
-var map = new kakao.maps.Map(mapContainer, mapOption); 
-var mapTypeControl = new kakao.maps.MapTypeControl();
-var zoomControl = new kakao.maps.ZoomControl();
+const map = new kakao.maps.Map(mapContainer, mapOption); 
+const mapTypeControl = new kakao.maps.MapTypeControl();
+const zoomControl = new kakao.maps.ZoomControl();
 map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 // 주소-좌표 변환 객체를 생성합니다
-var geocoder = new kakao.maps.services.Geocoder();
+const geocoder = new kakao.maps.services.Geocoder();
 
 //현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
 searchAddrFromCoords(map.getCenter(), displayCenterInfo);
 
 //////////////////출발도착마커이미지 생성
-var startSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png', // 출발 마커이미지의 주소입니다    
+const startSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png', // 출발 마커이미지의 주소입니다    
       startSize = new kakao.maps.Size(50, 45), // 출발 마커이미지의 크기입니다 
       startOption = { 
       offset: new kakao.maps.Point(15, 43) // 출발 마커이미지에서 마커의 좌표에 일치시킬 좌표를 설정합니다 (기본값은 이미지의 가운데 아래입니다)
       };
       //출발 마커 이미지를 생성합니다
-      var startImage = new kakao.maps.MarkerImage(startSrc, startSize, startOption);
+      const startImage = new kakao.maps.MarkerImage(startSrc, startSize, startOption);
 
-      var arriveSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/blue_b.png', // 도착 마커이미지 주소입니다    
+      const arriveSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/blue_b.png', // 도착 마커이미지 주소입니다    
       arriveSize = new kakao.maps.Size(50, 45), // 도착 마커이미지의 크기입니다 
       arriveOption = { 
       offset: new kakao.maps.Point(15, 43) // 도착 마커이미지에서 마커의 좌표에 일치시킬 좌표를 설정합니다 (기본값은 이미지의 가운데 아래입니다)
       };
       //도착 마커 이미지를 생성합니다
-      var arriveImage = new kakao.maps.MarkerImage(arriveSrc, arriveSize, arriveOption);
+      const arriveImage = new kakao.maps.MarkerImage(arriveSrc, arriveSize, arriveOption);
 
-      var startMarker = new kakao.maps.Marker({image:startImage}); //출발마커담을 변수
-      var arriveMarker = new kakao.maps.Marker({image:arriveImage});//도칙마커담을 변수
-      var coursePolyline = new kakao.maps.Polyline({
+      const startMarker = new kakao.maps.Marker({image:startImage}); //출발마커담을 변수
+      const arriveMarker = new kakao.maps.Marker({image:arriveImage});//도칙마커담을 변수
+      const coursePolyline = new kakao.maps.Polyline({
          strokeWeight: 5,
           strokeColor: '#FF2400',
           strokeOpacity: 0.9,
@@ -128,25 +128,25 @@ var startSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.p
          });//경로라인담을 변수
 /////////////////출발도착마커이미지 생성 끝
 
-var meetingSrc = '/insertMeetingImg/meetingSpot.png', // 미팅 마커이미지의 주소입니다    
+const meetingSrc = '/insertMeetingImg/meetingSpot.png', // 미팅 마커이미지의 주소입니다    
 meetingSize = new kakao.maps.Size(40, 40); // 미팅 마커이미지의 크기입니다 
 /*meetingOption = { 
     offset: new kakao.maps.Point(27, 69) // 미팅 마커이미지에서 마커의 좌표에 일치시킬 좌표를 설정합니다 (기본값은 이미지의 가운데 아래입니다)
 };*/
 //미팅 마커 이미지를 생성합니다
-var meetingImage = new kakao.maps.MarkerImage(meetingSrc, meetingSize);
+const meetingImage = new kakao.maps.MarkerImage(meetingSrc, meetingSize);
 
-var meetingMarker = new kakao.maps.Marker({image:meetingImage}), // 클릭한 위치를 표시할 미팅마커입니다
+const meetingMarker = new kakao.maps.Marker({image:meetingImage}), // 클릭한 위치를 표시할 미팅마커입니다
     meetingInfowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 미팅 인포윈도우입니다
 
 
 ////////////////////////////////////////////////////////////////////////////
-var nowLocSrc = '/mainPageImg/myLoc.png', // 현위치 마커이미지의 주소입니다    
+const nowLocSrc = '/mainPageImg/myLoc.png', // 현위치 마커이미지의 주소입니다    
 nowLocSize = new kakao.maps.Size(40, 40), // 현위치 마커이미지의 크기입니다
 nowLocOption = {offset: new kakao.maps.Point(27, 69)}; // 현위치 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 //현위치 마커의 이미지정보를 가지고 있는 현위치 마커이미지를 생성합니다
-var nowLocImage = new kakao.maps.MarkerImage(nowLocSrc, nowLocSize, nowLocOption);
-var nowLocMarker = new kakao.maps.Marker({image:nowLocImage}),
+const nowLocImage = new kakao.maps.MarkerImage(nowLocSrc, nowLocSize, nowLocOption);
+const nowLocMarker = new kakao.maps.Marker({image:nowLocImage}),
    nowLocInfowindow = new kakao.maps.InfoWindow({zindex:1,removable:true});
 
 function nowLocDisplay(){
@@ -155,7 +155,7 @@ function nowLocDisplay(){
        // GeoLocation을 이용해서 접속 위치를 얻어옵니다
        navigator.geolocation.getCurrentPosition(function(position) {
            
-           var lat = position.coords.latitude, // 위도
+         const lat = position.coords.latitude, // 위도
                lon = position.coords.longitude; // 경도
                
                document.getElementById("latitude").value = lat; 
@@ -171,7 +171,7 @@ function nowLocDisplay(){
        
    } else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
        
-       var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
+     const locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
            message = '현위치를 찾을 수 없습니다'
            
        displayMarker(locPosition, message);
@@ -186,7 +186,7 @@ function displayMarker(locPosition, message) {
         nowLocMarker.setPosition(locPosition);
         nowLocMarker.setMap(map);
     
-    var iwContent = message; // 인포윈도우에 표시할 내용
+    const iwContent = message; // 인포윈도우에 표시할 내용
 
     // 인포윈도우를 생성합니다
        nowLocInfowindow.setContent(iwContent);
@@ -202,15 +202,14 @@ function displayMarker(locPosition, message) {
 //지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
 kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
-        if (status === kakao.maps.services.Status.OK) {
-            var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
-            detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
+        if (status === kakao.maps.services.Status.OK) {         
+          const detailAddr = '<div>주소 : ' + result[0].address.address_name + '</div>';
             
-            var content = '<div class="bAddr">' +
+            let content = '<div class="bAddr">' +
                             '<span class="title">미팅장소</span>' + 
                             detailAddr + 
                         '</div>';
-         var latlng = mouseEvent.latLng;
+         const latlng = mouseEvent.latLng;
          document.getElementById("latitude").value = latlng.getLat(); //위도경도 값 가져오는거당
          document.getElementById("longitude").value = latlng.getLng();
          document.getElementById("addr").value = result[0].address.address_name;
@@ -244,9 +243,9 @@ function searchDetailAddrFromCoords(coords, callback) {
 // 지도 좌측상단에 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
 function displayCenterInfo(result, status) {
     if (status === kakao.maps.services.Status.OK) {
-        var infoDiv = document.getElementById('centerAddr');
+        const infoDiv = document.getElementById('centerAddr');
 
-        for(var i = 0; i < result.length; i++) {
+        for(let i = 0; i < result.length; i++) {
             // 행정동의 region_type 값은 'H' 이므로
             if (result[i].region_type === 'H') {
                 infoDiv.innerHTML = result[i].address_name;
@@ -256,56 +255,53 @@ function displayCenterInfo(result, status) {
     }    
 }
 
-$("#selectCourse").change(function() {
-
-   var c_no = $(this).val();
-   console.log("셀렉번호 : " + c_no);
-   if(c_no == '0'){
-      startMarker.setMap(null); 
-      arriveMarker.setMap(null); 
-      coursePolyline.setMap(null);
-      meetingMarker.setMap(null);
-      meetingInfowindow.setMap(null);
-      nowLocDisplay();
-      map.setLevel(7);
-      $("#addr").val("");
-      
-   }
-   else{
-      nowLocInfowindow.setMap(null);
-      nowLocMarker.setMap(null);
-      meetingMarker.setMap(null);
-      meetingInfowindow.setMap(null);
-      $("#addr").val("");
-      $.ajax({
-         url: "/getCourseByMeeting",
-         type: "GET",
-         data:{
-            "c_no":c_no
-         },
-         success: function(data){
-            var c = data;
-            console.log(c.mapLevel);
-            var centerY = (c.c_s_latitude+c.c_e_latitude)/2;
-            var centerX = (c.c_s_longitude+c.c_e_longitude)/2;
-            startMarker.setPosition(new kakao.maps.LatLng(c.c_s_latitude, c.c_s_longitude));
-            arriveMarker.setPosition(new kakao.maps.LatLng(c.c_e_latitude, c.c_e_longitude));
-            coursePolyline.setPath(eval(c.c_line));
-            startMarker.setMap(map);
-            arriveMarker.setMap(map);
-            coursePolyline.setMap(map);
-            map.setCenter(new kakao.maps.LatLng(centerY, centerX));
-            map.setLevel(c.c_mapLevel);
-         },
-         error: function(){
-            alert("에러발생")
-         }
-      })
-   }
-
- })
-
+document.getElementById("selectCourse").addEventListener("change", function(e) {
+	const c_no = e.target.value;
+	 console.log("셀렉번호 : " + c_no);
+	   if(c_no == '0'){
+	      startMarker.setMap(null); 
+	      arriveMarker.setMap(null); 
+	      coursePolyline.setMap(null);
+	      meetingMarker.setMap(null);
+	      meetingInfowindow.setMap(null);
+	      nowLocDisplay();
+	      map.setLevel(7);
+	      document.getElementById("addr").value = "";      
+	   }
+	   else{
+	      nowLocInfowindow.setMap(null);
+	      nowLocMarker.setMap(null);
+	      meetingMarker.setMap(null);
+	      meetingInfowindow.setMap(null);
+	      document.getElementById("addr").value = ""; 
+	      $.ajax({
+	         url: "/getCourseByMeeting",
+	         type: "GET",
+	         data:{
+	            "c_no":c_no
+	         },
+	         success: function(data){
+	            const c = data;
+	            const centerY = (c.c_s_latitude+c.c_e_latitude)/2;
+	            const centerX = (c.c_s_longitude+c.c_e_longitude)/2;
+	            startMarker.setPosition(new kakao.maps.LatLng(c.c_s_latitude, c.c_s_longitude));
+	            arriveMarker.setPosition(new kakao.maps.LatLng(c.c_e_latitude, c.c_e_longitude));
+	            coursePolyline.setPath(eval(c.c_line));
+	            startMarker.setMap(map);
+	            arriveMarker.setMap(map);
+	            coursePolyline.setMap(map);
+	            map.setCenter(new kakao.maps.LatLng(centerY, centerX));
+	            map.setLevel(c.c_mapLevel);
+	         },
+	         error: function(){
+	            alert("에러발생")
+	         }
+	      })
+	   }
 })
+
+
+}
 </script>
 </head>
 <body>
