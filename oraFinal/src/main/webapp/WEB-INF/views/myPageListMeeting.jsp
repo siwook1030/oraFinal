@@ -118,7 +118,7 @@
    </header>
    <section>
    		<br>
-		<a href="/listMeeting?pageNo=1"><p style="font-size: 20px">번개 게시판</p></a>
+		<a href="/myPageListMeeting?pageNo=1"><p style="font-size: 20px">번개 게시판</p></a>
 		<p style="font-size: 15px">만나서 같이 라이딩 해요.</p>
 		<br><br><br>
 		<hr style="height: 10%; color: black;">
@@ -153,7 +153,6 @@
 			
 		</table>
 		<br>
-		<a href="/insertMeeting"><img src="meetingImg/insert.png" height="30px" align="right"></a><br><br>
 		<div id="pageStr">${pageStr }</div>
 	</section>
 	

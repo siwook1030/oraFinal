@@ -69,7 +69,6 @@ public class MeetingController {
 		HashMap map = new HashMap();
 		map.put("start", start);
 		map.put("end", end);
-		map.put("id", getMemberId(httpSession));
 		
 		System.out.println("===================");
 		System.out.println("totRecord: "+totRecord+" /totPage: "+totPage);
@@ -134,7 +133,7 @@ public class MeetingController {
 	
 	@RequestMapping("/myPageListMeeting")
 	public void myPageListMeeting(Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo, MeetingVo m,HttpSession httpSession) {
-		totRecord = mdao.totMRecord();
+		totRecord = mdao.myTotMRecord(getMemberId(httpSession));
 		totPage = (int)Math.ceil((double)totRecord/recordSize);
 		
 		// 페이지 버튼 숫자
@@ -146,13 +145,13 @@ public class MeetingController {
 		
 		String pageStr="";
 		if(startPage>1) {
-			pageStr += "<a href='listMeeting?pageNo="+(startPage-1)+"'> < </a>"+"  ";
+			pageStr += "<a href='myPageListMeeting?pageNo="+(startPage-1)+"'> < </a>"+"  ";
 		}
 		for(int i=startPage;i<=endPage;i++) {
-			pageStr += "<a href='listMeeting?pageNo="+i+"'>"+i+"</a>"+"  ";
+			pageStr += "<a href='myPageListMeeting?pageNo="+i+"'>"+i+"</a>"+"  ";
 		}
 		if(totPage>endPage) {
-			pageStr += "<a href='listMeeting?pageNo="+(endPage+1)+"'> > </a>";
+			pageStr += "<a href='myPageListMeeting?pageNo="+(endPage+1)+"'> > </a>";
 		}
 		
 		// 페이지에 출력되는 레코드 번호
