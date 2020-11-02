@@ -178,4 +178,14 @@ public class MeetingManager {
 		return re;
 	}
 	
+	
+	// 마이페이지 게시글 리스트
+		public static List<MeetingVo> myPageListMeeting(HashMap map) {
+			List<MeetingVo> list = null;
+			SqlSession session = sqlSessionFactory.openSession();
+			list = session.selectList("meeting.myPageSelectMAll", map);
+			session.close();
+			return list;
+		}
+	
 }

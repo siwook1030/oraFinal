@@ -79,5 +79,8 @@ public class MeetingDao {
 	public int cntRep(int m_no) {
 		return MeetingManager.cntRep(m_no);
 	}
+	public List<MeetingVo> myPageListMeeting(HashMap map){
+		return MeetingManager.myPageListMeeting(map);
+	}
 	
 }

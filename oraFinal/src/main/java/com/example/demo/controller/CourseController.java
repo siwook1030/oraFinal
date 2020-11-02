@@ -113,11 +113,24 @@ public class CourseController {
 		model.addAttribute("f", cdao.getFoodByFoodNo(food_no));
 	}
 	
-	@RequestMapping(value = "/saveCourse", produces = "application/json; charset=utf-8")
-	@ResponseBody
+	@GetMapping(value = "/myPageSaveCourse")
 	public void saveCourse(Model model,HttpSession httpSession) {
 		System.out.println("세이브 컨트롤러 작동!!!!");
 		List<CourseVo> courseList = cdao.getSaveCourse(httpSession);
+		List<CoursePhotoVo> photovo =null;
+		for (CourseVo c : courseList) {
+			photovo =(c.getC_photo());
+		}
+		model.addAttribute("courseList",courseList);
+		model.addAttribute("photovo",photovo);
+		System.out.println(courseList);
+		System.out.println("코스리스트");
+		System.out.println(photovo);
+	}
+	@GetMapping(value = "/myPageMyCourse")
+	public void myCourse(Model model,HttpSession httpSession) {
+		System.out.println("마이코스 컨트롤러 작동!!!!");
+		List<CourseVo> courseList = cdao.getMyCourseById(httpSession);
 		List<CoursePhotoVo> photovo =null;
 		for (CourseVo c : courseList) {
 			photovo =(c.getC_photo());

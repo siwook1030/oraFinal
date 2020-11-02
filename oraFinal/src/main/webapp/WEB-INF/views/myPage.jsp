@@ -22,15 +22,15 @@
              width: 1000px;
              background : ffffff;
            }
-           #tab-btn ul {
+           #tab-btn a {
              overflow: hidden;
 
            }
-           #tab-btn li {
+           #tab-btn a {
              padding-left: 80px;
-             float: left; width: 100px; text-align: center;
+             float: left; width: 130px; text-align: center;
            }
-           #tab-btn li a {
+           #tab-btn a {
              display: block; color: #pink;
              padding: 15px 10px;
              font-weight: bold;
@@ -41,6 +41,7 @@
            }
 
            #tab-cont {
+           clear:both;
              width: 100%;
              background: #fff;
              padding-top: 30px;
@@ -51,6 +52,7 @@
 
   <!-- 회원정보-->
           #myinfo {
+          
             padding-left: 800px;
             display: table;
             padding-top: 100px;
@@ -121,25 +123,7 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
 	$(function(){
-	      var tabBtn = $("#tab-btn > ul > li"); //각각의 버튼을 변수에 저장
-	      var tabCont = $("#tab-cont > div"); //각각의 콘텐츠를 변수에 저장
-	      
-	      //컨텐츠 내용을 숨겨주세요!
-	      tabCont.hide().eq(0).show();
-	      
-	      tabBtn.click(function () {
-	       var target = $(this); //버튼의 타겟(순서)을 변수에 저장
-	       var index = target.index(); //버튼의 순서를 변수에 저장
-	       tabBtn.removeClass("active"); //버튼의 클래스를 삭제
-	       target.addClass("active"); //타겟의 클래스를 추가
-	       tabCont.css("display", "none");
-	       tabCont.eq(index).css("display", "block");
-	       if(index == 1){
-				$.ajax("/saveCourse", {success:function(){
-					console.log("작동");
-				}});
-		    }
-	      });
+
 		
 		$("#btnUpdate").click(function() {
 			$(".updateMember").css({visibility: "visible"});
@@ -164,11 +148,12 @@
   <div id="tab-btn">
 
     <ul>
-      <li class="active">정보 수정</li>
-      <li>찜 목록</li>
-      <li>내코스</li>
-      <li>작성글</li>
-      <li>랭킹</li>
+      <a href="/myPage" class="active">정보 수정</a>
+      <a href="/myPageSaveCourse">찜 목록</a>
+      <a href="/myPageMyCourse">내코스</a>
+      <a href="/myPageListReview">내 후기게시판</a>
+      <a href="myPageListMeeting">내 게시판</a>
+      <a href="/myPageMyRank">랭킹</a>
     </ul>
   </div>
   <!--찜목록-->
@@ -228,31 +213,7 @@
       <button id="btnUpdate">수정</button>
       <button id="btnUpdate2" style="visibility: hidden">수정</button>
       </div>
-      
-      
-      <div>  
-      	  <c:forEach var="vo" items="${courseList}">
-		      <div id="container">
-			      <figure>       
-			         <figcaption>${vo.c_name} </figcaption>         
-			         <option value="${vo.c_difficulty}"></option>
-			      </figure>
-		   	  </div>
-  		 </c:forEach>
-  		 
-	</div>
-		
-      <div>
-        작성글 불러오기
 
-      </div>
-      <div>
-        랭킹
-      </div>
-    </div>
-
-  </div>
-</div>
 	<jsp:include page="footer.jsp"/>
 
 

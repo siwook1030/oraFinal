@@ -11,7 +11,7 @@
 		SELECT * FROM (SELECT ROWNUM N, M_NO, C_NAME, M_TIME, M_TITLE, RANK_ICON, NICKNAME, TO_CHAR(M_REGDATE, 'YYYY. MM. DD HH24:MI') AS M_REGDATE, M_HIT 
 		FROM (SELECT M_NO, C_NAME, M_TIME, M_TITLE, RANK_ICON, NICKNAME, M_REGDATE, M_HIT 
 		FROM meeting MT, MEMBER MB, COURSE C, RANK R 
-		WHERE MT.ID=MB.ID AND C.C_NO=MT.C_NO AND R.RANK_NAME = MB.RANK_NAME 
+		WHERE MT.ID=MB.ID AND C.C_NO=MT.C_NO AND R.RANK_NAME = MB.RANK_NAME
 		ORDER BY M_NO DESC)) WHERE N BETWEEN #{start} and #{end}
 	</select>
 	<select id="selectMByNo" resultType="meetingVo"> <!-- 게시글 상세 -->
@@ -70,4 +70,13 @@
 	<delete id="deleteMr" parameterType="meeting_repVo"> <!-- 댓글 삭제 -->
 		DELETE MEETING_REP WHERE M_NO=#{m_no}
 	</delete>
+	
+	
+	<select id="myPageSelectMAll" resultType="meetingVo"> <!-- 마이페이지 게시글 목록 -->
+		SELECT * FROM (SELECT ROWNUM N, M_NO, C_NAME, M_TIME, M_TITLE, RANK_ICON, NICKNAME, TO_CHAR(M_REGDATE, 'YYYY. MM. DD HH24:MI') AS M_REGDATE, M_HIT 
+		FROM (SELECT M_NO, C_NAME, M_TIME, M_TITLE, RANK_ICON, NICKNAME, M_REGDATE, M_HIT 
+		FROM meeting MT, MEMBER MB, COURSE C, RANK R 
+		WHERE MT.ID=MB.ID AND C.C_NO=MT.C_NO AND R.RANK_NAME = MB.RANK_NAME AND MB.ID=#{id}
+		ORDER BY M_NO DESC)) WHERE N BETWEEN #{start} and #{end}
+	</select>
 </mapper>	

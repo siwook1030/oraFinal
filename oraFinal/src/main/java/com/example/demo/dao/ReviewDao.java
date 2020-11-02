@@ -2,6 +2,8 @@ package com.example.demo.dao;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.db.ReviewManager;
@@ -13,6 +15,9 @@ import com.example.demo.vo.Review_repVo;
 public class ReviewDao {
 	public List<ReviewVo> selectList(){
 		return ReviewManager.selectList();
+	}
+	public List<ReviewVo> myPageSelectList(HttpSession httpSession){
+		return ReviewManager.MyPageSelectList(httpSession);
 	}
 	public int incHit(int r_no) {
 		return ReviewManager.incHit(r_no);

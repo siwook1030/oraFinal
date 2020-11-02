@@ -154,7 +154,7 @@ $(function(){
       		<a href="/login">로그인</a>&nbsp;&nbsp;&nbsp;<a href="/signUp">회원가입</a>
       	</c:when>
       	<c:when test="${m != null }">
-      		${m.nickName } 라이더! &nbsp;&nbsp;<a href="/logout">로그아웃</a>&nbsp;&nbsp;<a href="/myPage2">마이페이지</a>
+      		${m.nickName } 라이더! &nbsp;&nbsp;<a href="/logout">로그아웃</a>&nbsp;&nbsp;<a href="/myPage">마이페이지</a>
       	</c:when>
       </c:choose>
          <img src="/headerImg/myIcon.png" height="40">

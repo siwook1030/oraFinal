@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dao.MemberDao;
 import com.example.demo.vo.MemberVo;
+import com.example.demo.vo.RankVo;
 import com.google.gson.Gson;
 
 @Controller
@@ -26,7 +27,7 @@ public class MemberController {
 	@Autowired
 	private MemberDao dao;
 
-	@GetMapping(value = "/myPage2", produces = "application/json;charset=utf-8")
+	@GetMapping(value = "/myPage", produces = "application/json;charset=utf-8")
 	public void selectAll(HttpSession session) {
 
 	}
@@ -48,5 +49,9 @@ public class MemberController {
 		 int re = dao.updateMeber(orgin); 
 		 return gson.toJson(re); 
 	 }
-	 
+	 @GetMapping("/myPageMyRank")
+	 public void getRank(HttpSession httpSession,Model model) {	// 랭크아이콘 가져오기
+		 	RankVo r = dao.selectRank(((MemberVo)httpSession.getAttribute("m")).getRank_name());
+			model.addAttribute("r", r);
+		}
 }

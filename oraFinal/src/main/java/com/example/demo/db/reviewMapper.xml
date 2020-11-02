@@ -6,6 +6,9 @@
   <select id="selectList" resultType="reviewVo">
     SELECT * FROM review ORDER BY r_no DESC
   </select>
+   <select id="myPageSelectList" resultType="reviewVo">
+    SELECT * FROM review WHERE ID=#{id} ORDER BY r_no DESC
+  </select>
   <update id="incHit">
   	UPDATE review SET r_hit=r_hit+1 WHERE r_no=#{r_no}
   </update>

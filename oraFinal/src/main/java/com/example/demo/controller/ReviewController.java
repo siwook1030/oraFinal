@@ -7,6 +7,7 @@ import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -71,6 +72,16 @@ public class ReviewController {
 	@RequestMapping("/listReview")
 	public void listReview(Model model) {
 		List<ReviewVo> list = rdao.selectList();
+		for(ReviewVo rvo : list) {
+			rvo.setC_name(getC_name(rvo.getC_no()));			// 게시판 코스명 설정
+			rvo.setNickName(getNickName(rvo.getId()));			// 게시판 닉네임 설정
+			rvo.setRank_icon(getRankIcon(mvo.getRank_name()));	// 게시판 랭크아이콘 설정
+		}
+		model.addAttribute("list", list);
+	}
+	@RequestMapping("/myPageListReview")
+	public void myPageListReview(Model model,HttpSession httpSession) {
+		List<ReviewVo> list = rdao.myPageSelectList(httpSession);
 		for(ReviewVo rvo : list) {
 			rvo.setC_name(getC_name(rvo.getC_no()));			// 게시판 코스명 설정
 			rvo.setNickName(getNickName(rvo.getId()));			// 게시판 닉네임 설정

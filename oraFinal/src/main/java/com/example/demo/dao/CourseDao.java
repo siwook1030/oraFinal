@@ -53,4 +53,7 @@ public class CourseDao {
 	public List<CourseVo> getSaveCourse(HttpSession httpSession){
 		return CourseManager.getSaveCourse(httpSession);
 	}
+	public List<CourseVo> getMyCourseById(HttpSession httpSession){
+		return CourseManager.getMyCourseById(httpSession);
+	}
 }

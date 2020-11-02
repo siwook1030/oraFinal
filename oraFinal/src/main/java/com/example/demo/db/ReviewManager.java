@@ -3,11 +3,14 @@ package com.example.demo.db;
 import java.io.InputStream;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.ReviewVo;
 import com.example.demo.vo.Review_fileVo;
 import com.example.demo.vo.Review_repVo;
@@ -27,6 +30,14 @@ public class ReviewManager {
 		List<ReviewVo> list = null;
 		SqlSession session = sqlSessionFactory.openSession();
 		list = session.selectList("review.selectList");
+		session.close();
+		return list;
+	}
+	public static List<ReviewVo> MyPageSelectList(HttpSession httpSession){
+		List<ReviewVo> list = null;
+		SqlSession session = sqlSessionFactory.openSession();
+		MemberVo m = (MemberVo)httpSession.getAttribute("m");
+		list = session.selectList("review.myPageSelectList",m.getId());
 		session.close();
 		return list;
 	}

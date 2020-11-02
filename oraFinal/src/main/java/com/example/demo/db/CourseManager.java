@@ -232,6 +232,22 @@ private static final int recommendNum = 3;
 		session.close();
 		return SaveCourseList;
 	}
+	public static List<CourseVo> getMyCourseById(HttpSession httpSession) {
+		MemberVo m = (MemberVo)httpSession.getAttribute("m");
+		List<CourseVo> SaveCourseList;
+		SqlSession session = sqlSessionFactory.openSession();
+		SaveCourseList = session.selectList("course.selectMyCourse", m.getId());
+		List<CoursePhotoVo> cpList = null;
+		for (CourseVo c : SaveCourseList) {
+			cpList=session.selectList("course.selectCoursePhoto", c.getC_no());
+			Collections.shuffle(cpList);
+			c.setC_photo(cpList);
+		}
+		
+		session.close();
+		return SaveCourseList;
+	}
+	
 	
 	
 	private static String getTime(int minute) { // 디비에 분으로되어있는 시간을 시간과분으로 나타내기위한 처리작업
