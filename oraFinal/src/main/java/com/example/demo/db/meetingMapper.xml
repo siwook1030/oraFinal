@@ -21,16 +21,29 @@
 		SELECT COUNT(*) FROM MEETING
 	</select>
 	<insert id="insertM" parameterType="meetingVo"> <!-- 게시글 등록 -->
-		INSERT INTO MEETING VALUES (#{m_no}, #{c_no}, #{id}, #{m_title}, #{m_content}, SYSDATE, #{m_hit}, #{m_latitude}, #{m_longitude}, 0, #{m_numpeople})
+		INSERT INTO MEETING VALUES (#{m_no}, #{c_no}, #{id}, #{m_title}, #{m_content}, SYSDATE, 0, #{m_latitude}, #{m_longitude}, #{m_locname}, #{m_time}, #{m_numpeople})
 	</insert>
 	<update id="updateM" parameterType="meetingVo"> <!-- 게시글 수정 -->
-		UPDATE MEETING SET C_NO=#{c_no}, M_TITLE={m_title}, M_CONTENT=#{m_content} WHERE M_NO=#{m_no}
+		UPDATE MEETING SET C_NO=#{c_no}, M_TITLE=#{m_title}, M_CONTENT=#{m_content}, M_LATITUDE=#{m_latitude}, M_LONGITUDE=#{m_longitude}, M_LOCNAME=#{m_locname}, M_TIME=#{m_time}, M_NUMPEOPLE=#{m_numpeople} WHERE M_NO=#{m_no}
 	</update>
 	<update id="updateHit" parameterType="meetingVo"> <!-- 조회수 수정 -->
 		UPDATE MEETING SET M_HIT=M_HIT+1 WHERE M_NO=#{m_no}
 	</update>
 	<delete id="deleteM" parameterType="meetingVo"> <!-- 게시글 삭제 -->
 		DELETE MEETING WHERE M_NO=#{m_no}
+	</delete>
+	
+	<select id="selectMpByNo" resultType="meeting_peopleVo"> <!-- 모임인원 상세 -->
+		SELECT * FROM MEETING_PEOPLE WHERE M_NO=#{m_no}
+	</select>
+	<insert id="insertMp" parameterType="meeting_peopleVo"> <!-- 모임인원 등록 -->
+		INSERT INTO MEETING_PEOPLE VALUES(#{id}, #{m_no}, SYSDATE)
+	</insert>
+	<delete id="deleteOneMp" parameterType="meeting_peopleVo"> <!-- 모임인원 일부삭제 -->
+		DELETE MEETING_PEOPLE WHERE ID=#{id}
+	</delete>
+	<delete id="deleteMp" parameterType="meeting_peopleVo"> <!-- 모임인원 전체삭제 -->
+		DELETE MEETING_PEOPLE WHERE M_NO=#{m_no}
 	</delete>
 	
 

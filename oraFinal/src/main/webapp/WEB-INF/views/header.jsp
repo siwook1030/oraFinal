@@ -34,11 +34,11 @@ li{
 }
 
 #top li {
-	display: inline;
+   display: inline;
 }
 
 .menu{
-	margin: 0 20px 0 20px;
+   margin: 0 20px 0 20px;
 }
 
 #login {
@@ -54,6 +54,7 @@ a{
 </style>
 </head>
 <body>
+
 
 	<header>
 		<div id="logo">

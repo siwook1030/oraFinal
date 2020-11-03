@@ -7,70 +7,16 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
-   /* 공통 */
-   * {
-         padding : 0px;
-         margin : 0px;
-         font-family: 'NEXON Lv1 Gothic Low OTF';
+	section {
+		margin: 0 auto;
+		width: 1000px;
+		text-align: left;
    }
-   li {
-         list-style-type: none;
-    }
-   a {
-      text-decoration: none;
-      color: black;
-   }
-   header {
-      width: 1000px;
-         height: 100px;
-      margin-top: 10px;
-      margin: 10px auto;
-   }
-   #address {
-      margin: 10px 0 0 0;
-      font-size: 11px;
-   }
-   #logo {
-      float: left; 
-   }
-   #top {
-      margin: 30px 20px 0 0;
-      font-size: 12px;
-      float: right;
-      text-align: right;   
-   }
-   #top li {
-      display: inline;
-      margin-left: 18px;
-   }
-   #login {
-      font-size: 11px;
-      text-align: right;
-   }
-   section {
-      margin: 0 auto;
-      width: 1000px;
-      text-align: left;
-   }
-   footer {
-      width: 1000px;
-      height: 150px;
-      margin-top: 100px;
-      margin: 10px auto;
-   }
-   #footer_box {
-       width: 1000px;
-       height: 150px;
-       margin: 0 auto;
-       text-align: center;
-   }
-   #footer_icon{
-      margin: 0 auto;
-   }
-   
-   /* 개별 */
    #selectLoc {
-         text-align: center;
+		text-align: center;
+   }
+   input {
+   		border: none;
    }
    /*카카오 맵css*/
    .map_wrap {position:relative;width:100%;height:450px;font-size: 80%;}
@@ -303,50 +249,22 @@ document.getElementById("selectCourse").addEventListener("change", function(e) {
 	   }
 })
 
-
 }
 </script>
 </head>
 <body>
-	<header>
-		<div id="logo">
-			<a href="/mainPage"><img src='headerImg/logo.png' height="100"></a>
-		</div>
-		<nav>
-			<div id="login">
-            <c:choose>
-				<c:when test="${m == null }">
-					<a href="/login">로그인</a>&nbsp;&nbsp;&nbsp;<a href="/signUp">회원가입</a>
-				</c:when>
-				<c:when test="${m != null }">
-                     <a href="modify">${m.nickName } 라이더!</a> &nbsp;&nbsp;<a href="/logout">로그아웃</a>
-				</c:when>
-			</c:choose>
-			</div>
-			<ul id="top">
-				<li>오늘의 라이딩</li>
-	            <li>자전거 길</li>
-	            <li><a href="listReview">후기게시판</a></li>
-	            <li><a href="listMeeting">번개게시판</a></li>
-	            <li>정보게시판</li>
-			</ul>
-		</nav>
-	</header>
+	<jsp:include page="header.jsp"/>
 	<div id="clear"></div>
 	<section><br>
-		<p style="font-size: 20px">번개 게시판&nbsp;&gt;&nbsp;<font color="#c85725">게시글 등록</font></p>
+		<p style="font-size: 20px"><a href="listMeeting">번개 게시판</a>&nbsp;&gt;&nbsp;<a href="insertMeeting"><font color="#c85725">게시글 등록</font></a></p>
 		<p style="font-size: 15px">만나서 같이 라이딩 해요.</p>
 
 		<!-- 글등록 -->
 		<br><br>
-		<form action="insertMeetingOk.do" method="post" enctype="multipart/form-data">
-			작성자 ${m.nickName }
-			<input type="hidden" name="id" value="${m.nickName }"><br><br>
-			<!-- 제목 -->
+		<form action="/insertMeeting" method="post" enctype="multipart/form-data">
 			<input type="text" placeholder="제목을 입력해주세요." name="m_title" size="50"><br><br>
-			모임날짜 <input type="date" name="m_time">&nbsp;
-			모임인원 <input type="number" name="m_number"> 명<br>
-		
+			미팅날짜 <input type="date" name="m_time">&nbsp;
+			미팅인원 <input type="number" name="m_numpeople" min="1" placeholder="1"><br>
 			<!-- 코스 지도 & 만날 위치 -->
 			<div>
 			코스 <select id="selectCourse" name="c_no">
@@ -371,47 +289,21 @@ document.getElementById("selectCourse").addEventListener("change", function(e) {
 			<br><br>
 	       
 			<div id="selectLoc">
-				<strong>원하는 위치를 클릭하여 미팅장소를 정하세요!</strong><br><br>
-		
-					위도 <input type="text" name="m_latitude" id="latitude" value="37.53814589110931">
-					경도 <input type="text" name="m_longitude" id="longitude" value="126.98135334065803"><br><br>
-					주소 <input type="text" name="m_locname" id="addr" value="" size="60" readonly="readonly">
-		
+			<strong>원하는 위치를 클릭하여 미팅장소를 정하세요!</strong><br><br>
+			<!-- 위도 --> <input type="hidden" name="m_latitude" id="latitude" value="37.53814589110931">
+			<!-- 경도 --> <input type="hidden" name="m_longitude" id="longitude" value="126.98135334065803">
+			<input type="text" name="m_locname" id="addr" value="" size="60" readonly="readonly" placeholder="미팅장소의 주소가 출력됩니다." style="text-align: center">
+
 	        </div>
 			<br><br>
 			<hr><br>
-			
-			<!-- 글내용 -->
 			<textarea rows="30" cols="140" name="m_content"></textarea><br>		
-	      
-			<!-- 사진등록 -->
 			<input type="file" name="uploadFile"><br><br>
 	      
-			<div style="text-align: center;">
-				<button type="submit" style="border: none; background-color: transparent;"><img src="meetingImg/add.png"></button>
-				<button type="reset" style="border: none; background-color: transparent;"><img src="meetingImg/cancel.png"></button><br>
-			</div>
-			<!--
-			<input type="submit" value="등록">
-			<input type="reset" value="취소">
-			-->
+			<button type="submit" style="border: none; background-color: transparent;"><img src="meetingImg/add.png"></button>
+			<button type="reset" style="border: none; background-color: transparent;"><img src="meetingImg/cancel.png"></button><br>
 		</form>
 	</section>
-	<footer>
-		<hr style="width: 100%; color: gray;">
-		<br>
-		<div id='footer_box'>
-			<div id="footer_icon" >
-				<img src='footerImg/instagram.png' height="50px">
-				<img src='footerImg/facebook.png' height="50px">
-				<img src='footerImg/twitter.png' height="50px">
-				<ul id="address">
-					<li>04108 | 서울시 마포구 백범로 23 구프라자 3층</li>
-					<li>TEL: 02-707-1480 | Email: ora@bit.com</li>
-					<li>COPYRIGHT (C)2020 오늘의 라이딩 ALL RIGHTS RESERVED</li>
-				</ul>
-			</div>
-		</div>
-	</footer>
+	<jsp:include page="footer.jsp"/>
 </body>
 </html>

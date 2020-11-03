@@ -1,8 +1,11 @@
 package com.example.demo.controller;
 
+import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +21,14 @@ import com.example.demo.ResponseDataCode;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.dao.MeetingDao;
 import com.example.demo.vo.MeetingVo;
+
+import com.example.demo.vo.Meeting_fileVo;
+import com.example.demo.vo.Meeting_peopleVo;
+import com.example.demo.vo.Meeting_repVo;
+import com.example.demo.vo.MemberVo;
+
 import com.example.demo.vo.ResponseDataVo;
+
 import com.google.gson.Gson;
 
 import lombok.Setter;
@@ -41,6 +51,8 @@ public class MeetingController {
 	
 	public static int recordSizeR = 10; // 한 번에 보이는 댓글게시글 수
 	public static int pageSizeR = 5; // 한 번에 보이는 댓글페이지 수
+	
+	HashMap map = new HashMap();
 	
 	@RequestMapping("/listMeeting")
 	public void listMeeting(Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo, MeetingVo m) {
@@ -71,10 +83,9 @@ public class MeetingController {
 		if(end>totRecord) {
 			end = totRecord;
 		}
-		HashMap map = new HashMap();
+		//HashMap map = new HashMap();
 		map.put("start", start);
 		map.put("end", end);
-		
 		
 		System.out.println("===================");
 		System.out.println("totRecord: "+totRecord+" /totPage: "+totPage);
@@ -98,7 +109,7 @@ public class MeetingController {
 		int start = 1;
 		int end = start+recordSizeR-1;
 			
-		HashMap map = new HashMap();
+		//HashMap map = new HashMap();
 		map.put("start", start);
 		map.put("end", end);
 		map.put("m_no", m_no);
@@ -120,7 +131,8 @@ public class MeetingController {
 	public String detailMrep(int m_no, int num) {
 		int end = num*recordSizeR;
 		int start = end-recordSizeR+1;
-		HashMap map = new HashMap();
+		
+		//HashMap map = new HashMap();
 		map.put("start", start);
 		map.put("end", end);
 		map.put("m_no", m_no);
@@ -134,32 +146,108 @@ public class MeetingController {
 		return gson.toJson(map);
 	}
 	
+	@GetMapping("/updateMeeting")
+	public void updateMForm(int m_no, Model model, int c_no) {		
+		model.addAttribute("mt", mdao.detailMeeting(m_no));
+		model.addAttribute("mf", mdao.detailMFile(m_no));
+		model.addAttribute("cs", cdao.getCourseByCno(c_no));
+		model.addAttribute("cList", cdao.listCourse());
+	}
+	
+	@PostMapping("/updateMeeting")
+	public ModelAndView updateMSubmit(MeetingVo mt, Meeting_fileVo mf, HttpServletRequest request, HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		System.out.println("*** updtM : "+mt.toString());
+		MeetingVo mtvo = new MeetingVo();
+		mtvo.setM_no(mt.getM_no());
+		mtvo.setC_no(mt.getC_no());
+		MemberVo mbvo = (MemberVo)session.getAttribute("m");
+		mtvo.setId(mbvo.getId());
+		mtvo.setM_title(mt.getM_title());
+		mtvo.setM_content(mt.getM_content());
+		mtvo.setM_latitude(mt.getM_latitude());
+		mtvo.setM_longitude(mt.getM_longitude());
+		mtvo.setM_locname(mt.getM_locname());
+		mtvo.setM_time(mt.getM_time());
+		mtvo.setM_numpeople(mt.getM_numpeople());
+		
+		int re = mdao.updateMeeting(mtvo);
+		if(re>0 ) {
+			System.out.println("성공");
+		} else {
+			System.out.println("실패");
+		}
+		
+		System.out.println("*** mtvo(updtM cntr) : "+mtvo.toString());
+		
+		return mav;
+	}
+	
 	@RequestMapping("/deleteMeeting")
 	public ModelAndView deleteMeeting(int m_no, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("redirect:/listMeeting");
+		System.out.println("*** m_no(deleteM cntr) : "+m_no);
 		
-		/*
 		String path = request.getRealPath("meetingFile");
-		String oldFname = mdao.detailMFile(m_no).getMf_savename();
-		int mf_no = mdao.detailMFile(m_no).getMf_no();
-		
-		
-		
+		System.out.println("*** path (DltMtng Cntr) : "+path);		
+		File file = null;
 		int re = 0;
-		re = mdao.deleteMf(m_no);
-		if(re<=0) {
-			mav.addObject("msg", "죄송합니다.\n게시글 삭제에 오류가 발생했습니다.");
-			mav.setViewName("error");
-		} else {
-			mdao.deleteMeeting(m_no);
-			if (mf_no>0) {
-				File file = new File(path+"/"+oldFname);
-				file.delete();
+		
+		// 모임인원 삭제
+		List<Meeting_peopleVo> listMP = mdao.detailMPeople(m_no);
+		if(listMP.size()>0) {
+			re = mdao.deleteMPeople(m_no);
+			if(re<=0) {
+				mav.addObject("msg", "파일삭제에 실패했습니다.");
+				mav.setViewName("error");
 			}
 		}
-		*/
 		
+		// 댓글삭제
+		// 댓글사진삭제
+		map.put("start", 1);
+		map.put("end", mdao.cntRep(m_no));
+		map.put("m_no", m_no);
+		List<Meeting_repVo> listMR = mdao.detailMRep(map);
+		if(listMR.size()>0) {
+			re = mdao.deleteMRep(m_no);
+			if(re<=0) {
+				mav.addObject("msg", "파일삭제에 실패했습니다.");
+				mav.setViewName("error");
+			} else {
+				for(Meeting_repVo list:listMR) {
+					String oldFname = list.getMr_file1();
+					file = new File(path+"/"+oldFname);
+					file.delete();
+				}
+			}
+		}
 		
+
+		// 첨부파일삭제
+		// 저장된파일삭제
+		List<Meeting_fileVo> listMF = mdao.detailMFile(m_no);
+		if(listMF.size()>0) {
+			re = mdao.deleteMFile(m_no);
+			if(re<=0) {
+				mav.addObject("msg", "파일삭제에 실패했습니다.");
+				mav.setViewName("error");
+			} else {
+				for(Meeting_fileVo list:listMF) {
+					String oldFname = list.getMf_savename();
+					file = new File(path+"/"+oldFname);
+					file.delete();
+				}
+			}
+		}
+		
+		// 모임인원, 댓글, 첨부파일 삭제 성공시 미팅게시판 삭제
+		re = mdao.deleteMeeting(m_no);
+		if(re<=0) {
+			mav.addObject("msg", "파일삭제 실패했습니다.");
+			mav.setViewName("error");
+		}
+	
 		return mav;
 	}
 	
