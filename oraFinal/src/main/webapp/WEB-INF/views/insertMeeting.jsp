@@ -282,16 +282,19 @@ document.getElementById("selectCourse").addEventListener("change", function(e) {
 	         },
 	         success: function(data){
 	            const c = data;
-	            const centerY = (c.c_s_latitude+c.c_e_latitude)/2;
-	            const centerX = (c.c_s_longitude+c.c_e_longitude)/2;
 	            startMarker.setPosition(new kakao.maps.LatLng(c.c_s_latitude, c.c_s_longitude));
 	            arriveMarker.setPosition(new kakao.maps.LatLng(c.c_e_latitude, c.c_e_longitude));
-	            coursePolyline.setPath(eval(c.c_line));
+	            
+	            const courseLine = eval(c.c_line);
+	            const courseBounds = new kakao.maps.LatLngBounds();
+	            coursePolyline.setPath(courseLine); 
+	            courseLine.forEach(function(c, i) {
+	    			courseBounds.extend(c);
+	    		})
+	    		map.setBounds(courseBounds);
 	            startMarker.setMap(map);
 	            arriveMarker.setMap(map);
 	            coursePolyline.setMap(map);
-	            map.setCenter(new kakao.maps.LatLng(centerY, centerX));
-	            map.setLevel(c.c_mapLevel);
 	         },
 	         error: function(){
 	            alert("에러발생")

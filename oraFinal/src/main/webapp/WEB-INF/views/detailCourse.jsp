@@ -157,8 +157,8 @@ window.onload = function(){
 
 	    const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 	    mapOption = {
-		center: new kakao.maps.LatLng((${c.c_s_latitude}+${c.c_e_latitude})/2, (${c.c_s_longitude}+${c.c_e_longitude})/2),
-		level: ${c.c_mapLevel} // 지도의 확대 레벨
+		center: new kakao.maps.LatLng(37.55265499282206,126.9376211752318),
+		level: 7 // 지도의 확대 레벨
 	    };  
 
 	// 지도를 생성합니다    
@@ -351,14 +351,31 @@ window.onload = function(){
 	    } 
 	}
 	///////////////////////////////////////
+	const courseBounds = new kakao.maps.LatLngBounds(); 
+	const courseLine = eval(${c.c_line});
+	console.log(courseLine);
+	courseLine.forEach(function(c, i) {
+		courseBounds.extend(c);
+	});
 
+	document.getElementById("cBound").addEventListener("click", function(e) {
+		setBound(map, courseBounds);
+	});
+	
+	function setBound(m,bounds){  // 바운드설정함수
+		if(!bounds.isEmpty()){
+			m.setBounds(bounds);
+		}
+	}
+	setBound(map, courseBounds); 
+	
 	new kakao.maps.Polyline({
-		    map: map,
-		    path: eval(${c.c_line}),
-		    strokeWeight: 6,
-		    strokeColor: '#FF2400',
-		    strokeOpacity: 0.8,
-		    strokeStyle: 'solid'
+	    map: map,
+	    path: courseLine,
+	    strokeWeight: 6,
+	    strokeColor: '#FF2400',
+	    strokeOpacity: 0.8,
+	    strokeStyle: 'solid'
 	});
 
 	////////////////////////////////////////
@@ -479,18 +496,26 @@ window.onload = function(){
     	};
 	const PEmap = new kakao.maps.Map(PEmapContainer, PEmapOption); // 지도를 생성합니다
 
+	const psBounds = new kakao.maps.LatLngBounds();;
+	const peBounds = new kakao.maps.LatLngBounds();;
+	
 	const ptJson = ${ptJson};
 		console.log(ptJson);
 		ptJson.forEach(function(pt, i) { //대중교통 출발점 도착점 나누기
 			if(pt.code_value == "00201"){  
-				const psLine=new kakao.maps.Polyline({
+				const psLine = eval(pt.pt_line);
+				new kakao.maps.Polyline({
 				    map: PSmap,
-				    path:eval(pt.pt_line),
+				    path:psLine,
 				    strokeWeight: 4,
 				    strokeColor: '#FF2400',
 				    strokeOpacity: 0.7,
 				    strokeStyle: 'solid'
-				});	  
+				});	
+
+				psLine.forEach(function(ps, i) {
+					psBounds.extend(ps);
+				});
 				//출발점 대중교통 마커가 표시될 위치입니다 
 				const ptsPosition = new kakao.maps.LatLng(pt.pt_latitude, pt.pt_longitude);  
 				// 출발점 대중교통 마커를 생성합니다 
@@ -501,13 +526,17 @@ window.onload = function(){
 				});
 			}
 			else{
-				const peLine = new kakao.maps.Polyline({
+				const peLine = eval(pt.pt_line);
+				new kakao.maps.Polyline({
 				    map: PEmap,
-				    path: eval(pt.pt_line),
+				    path: peLine,
 				    strokeWeight: 4,
 				    strokeColor: '#FF2400',
 				    strokeOpacity: 0.7,
 				    strokeStyle: 'solid'
+				});
+				peLine.forEach(function(pe, i) {
+					peBounds.extend(pe);
 				});
 				//도작점 대중교통 마커가 표시될 위치입니다 
 				const ptePosition = new kakao.maps.LatLng(pt.pt_latitude, pt.pt_longitude); 
@@ -519,7 +548,8 @@ window.onload = function(){
 				});
 			}
 		})
-
+	setBound(PSmap, psBounds);
+	setBound(PEmap, peBounds);
 
 	//출발 마커가 표시될 위치입니다 
 	const PSstartPosition = new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude}); 
@@ -544,14 +574,10 @@ window.onload = function(){
 	const selectPS = document.getElementById("selectPS");
 	const selectPE = document.getElementById("selectPE");
 
-	function ptInitSetting(){
-		PSmap.setCenter(psCenter);
-		PSmap.setLevel(7);
-		PEmap.setCenter(peCenter);
-		PEmap.setLevel(7);
-	}
+
 	selectPS.addEventListener("change", function(e) {
-		ptInitSetting();
+		setBound(PSmap, psBounds);
+		setBound(PEmap, peBounds);
 		if(e.target.value == "1"){
 			tps.style.visibility="visible";
 			tps.style.display="inline-block";
@@ -568,7 +594,8 @@ window.onload = function(){
 	}, false)
 	
 	selectPE.addEventListener("change", function(e) {
-		ptInitSetting();
+		setBound(PSmap, psBounds);
+		setBound(PEmap, peBounds);
 		if( e.target.value == "1"){
 			tps.style.visibility="visible";
 			tps.style.display="inline-block";
@@ -583,7 +610,9 @@ window.onload = function(){
 		}
 			selectPE.selectedIndex = 0;
 	}, false)
+	
 	tpe.style.display = "none";  //지도가 뭉개지는것을 방지하기위해 맨 마지막에 걸어준다
+	
 ///////////////////////////////////////////////////////////////////////////////////// 자전거 지도표시
 	const mapTypes = { //자전거맵 표시변수
 		    bicycle : kakao.maps.MapTypeId.BICYCLE
@@ -773,7 +802,7 @@ window.onload = function(){
     </ul>
   		</div>
   		<div style="text-align: left;">
-  		<input type="checkbox" id="chkBicycle" /> 자전거도로 정보 보기
+  		<input type="checkbox" id="chkBicycle" /> 자전거도로 정보 보기  <button id="cBound">경로 한눈에 보기</button>
   		</div>
   		<div style="text-align: left;">
   		무인자전거대여소  서울(따릉이)<input type="checkbox" id="seoulCycle"> [대여가능수 <img src="/detailCourseImg/redC.png"> 0대 <img src="/detailCourseImg/yellowC.png"> 1~4대 <img src="/detailCourseImg/greenC.png"> 5대 이상]

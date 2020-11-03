@@ -74,6 +74,15 @@
  		cursor: pointer; 
  		cursor: hand;
  	}
+ 	.selectedArray{
+ 		font-weight: bold;
+ 		font-size: 120%;
+ 		text-decoration: underline;
+ 	}
+ 	
+ 	.notSelectedArray{
+ 		color: gray;
+ 	}
    /*메인섹션 끝css--------------------------*/
  
       a {
@@ -646,6 +655,8 @@ function MarkerTracker(map, target) {
 	// 커스텀 오버레이 컨텐츠를 설정합니다
 	placeOverlay.setContent(contentNode); 
 //----------------------검색된 코스 만드는 곳 ------
+	const courseArrSpan = document.querySelectorAll("#courseArray span"); // 정렬버튼 스판
+
 	let courseMarkerArr = [];  //검색된 코스 마커를 담을 배열
 	let courseTrackerArr = [];  //검색된 코스 트랙커를 담을 배열
 	const courseSize = new kakao.maps.Size(32, 32); 
@@ -709,7 +720,7 @@ function MarkerTracker(map, target) {
 				courseTrackerArr = [];
 				
 				scList = data;	
-				scList.forEach(function(c, i, array) {
+				scList.forEach(function(c, i) {
 					setCourseMarker(i,c);
 					setCourseBox(c);
 				})
@@ -723,6 +734,8 @@ function MarkerTracker(map, target) {
 				searchListBox.style.display="inline";
 				courseNumSpan1.innerHTML = scList.length;
 				courseNum.append(courseNumSpan1,courseNumSpan2);
+
+				toggleArray(courseArrSpan[0]); // 검색이되면 정확도순을 항상 첫어레이로 설정한다
 				if(scList.length == 0){
 					courseArray.style.visibility = "hidden";
 				}
@@ -736,8 +749,13 @@ function MarkerTracker(map, target) {
 		})
 	}, false)
 	
-	const courseArrSpan = document.querySelectorAll("#courseArray span");
-
+	
+	function toggleArray(target){  // 정렬버튼 토글함수
+		courseArrSpan.forEach(function(span, i){
+		span.className = "notSelectedArray";
+	});
+		target.className = "selectedArray";
+	}
 	courseArrSpan.forEach(function(el, i) {
 		 
 		el.addEventListener("click", function(e) {
@@ -747,7 +765,7 @@ function MarkerTracker(map, target) {
 			}
 			searchList.innerHTML = "";
 			currArray = val;
-			
+			toggleArray(e.target);
 			if(val == 0){
 				scList.forEach(function(c, i, array) {
 					setCourseBox(c);
@@ -1012,7 +1030,7 @@ function MarkerTracker(map, target) {
   		
   		</div>
   		<div id="courseArray">
-  			<span val="0">정확도순</span> <span val="1">거리순</span> <span val="2">코스거리</span> <span val="3">소요시간</span>
+  			<span val="0" class="selectedArray">정확도순</span> <span val="1" class="notSelectedArray">거리순</span> <span val="2" class="notSelectedArray">코스거리</span> <span val="3" class="notSelectedArray">소요시간</span>
   		</div>
   		<div id="searchList">
   		

@@ -193,42 +193,6 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 <script type="text/javascript">
 window.onload = function(){
-	const tps = document.getElementById("transportS");
-	const tpe = document.getElementById("transportE");
-	const selectPS = document.getElementById("selectPS");
-	const selectPE = document.getElementById("selectPE");
-	
-	selectPS.addEventListener("change", function(e) {
-		if(e.target.value == "1"){
-			tps.style.visibility="visible";
-			tps.style.display="inline-block";
-			tpe.style.visibility="hidden";
-			tpe.style.display="none";
-		}
-		else{
-			tpe.style.visibility="visible";
-			tpe.style.display="inline-block";
-			tps.style.visibility="hidden";
-			tps.style.display="none";
-		}
-			selectPS.selectedIndex = 0;
-	}, false)
-	
-	selectPE.addEventListener("change", function(e) {
-		if( e.target.value == "1"){
-			tps.style.visibility="visible";
-			tps.style.display="inline-block";
-			tpe.style.visibility="hidden";
-			tpe.style.display="none";
-		}
-		else{
-			tpe.style.visibility="visible";
-			tpe.style.display="inline-block";
-			tps.style.visibility="hidden";
-			tps.style.display="none";
-		}
-			selectPE.selectedIndex = 0;
-	}, false)
 
 	// 마커를 클릭했을 때 해당 장소의 상세정보를 보여줄 커스텀오버레이입니다
 	const placeOverlay = new kakao.maps.CustomOverlay({zIndex:1}), 
@@ -248,16 +212,6 @@ window.onload = function(){
 	const zoomControl = new kakao.maps.ZoomControl();
 	map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 	map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-
-	// 셋맵 센터, 맵레벨 할곳
-	const slat = ${c.c_s_latitude};
-	const slng = ${c.c_s_longitude};
-	const elat = ${c.c_e_latitude};
-	const elng = ${c.c_e_longitude};
-	if(slat != 0.0 && elat != 0.0 && slng != 0.0 && elng != 0.0){
-		map.setCenter(new kakao.maps.LatLng((slat+elat)/2, (slng+elng)/2));
-		map.setLevel(${c.c_mapLevel});
-	}
 
 	// 장소 검색 객체를 생성합니다
 	const ps = new kakao.maps.services.Places(map); 
@@ -443,7 +397,7 @@ window.onload = function(){
 	    } 
 	}
 	///////////////////////////////////////
-
+	// 폴리라인 셋할곳
 	const cPoly =  new kakao.maps.Polyline({
 		    map: map,
 		    path:[],
@@ -452,11 +406,26 @@ window.onload = function(){
 		    strokeOpacity: 0.8,
 		    strokeStyle: 'solid'
 	});
-	// 폴리라인 셋할곳
+
+	const courseBounds = new kakao.maps.LatLngBounds(); 
+	
 	const preCpoly = ${c.c_line};
 	if(preCpoly != 0){
 		cPoly.setPath(eval(${c.c_line}));
+		preCpoly.forEach(function(c, i) {
+			courseBounds.extend(c);
+		});
 	}
+	document.getElementById("cBound").addEventListener("click", function(e) {
+		setBound(map, courseBounds);
+	});
+	function setBound(m,bounds){  // 바운드설정함수
+		if(!bounds.isEmpty()){
+			m.setBounds(bounds);
+		}
+
+	}
+	setBound(map, courseBounds); 
 	
 	////////////////////////////////////////
 	const startSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png', // 출발 마커이미지의 주소입니다    
@@ -507,11 +476,6 @@ window.onload = function(){
 	        level: 6 // 지도의 확대 레벨
 	    };
 	const PSmap = new kakao.maps.Map(PSmapContainer, PSmapOption); // 지도를 생성합니다
-	// 대중교통 출발맵 센터 정할곳
-	if(slat != 0.0 && slng != 0.0){
-		PSmap.setCenter(new kakao.maps.LatLng(slat, slng));
-	}
-	
 	
 	const PEmapContainer = document.getElementById('PEmap'), // 지도를 표시할 div 
 		PEmapOption = { 
@@ -520,10 +484,9 @@ window.onload = function(){
     	};
 	const PEmap = new kakao.maps.Map(PEmapContainer, PEmapOption); // 지도를 생성합니다
 	// 대중교통 도착맵 센터 정할곳
-	if(elat != 0.0 && elng != 0.0){
-		PEmap.setCenter(new kakao.maps.LatLng(elat, elng));
-	}
 	
+	const psBounds = new kakao.maps.LatLngBounds();;
+	const peBounds = new kakao.maps.LatLngBounds();;
 	
 	let ptJson = ${ptJson}
 		console.log(ptJson);
@@ -539,7 +502,12 @@ window.onload = function(){
 				});	
 
 				if(pt.pt_line != null && pt.pt_line != ""){
-					psLine.setPath(eval(pt.pt_line));
+					const psLineArr = eval(pt.pt_line);
+					psLine.setPath(psLineArr);
+					psLineArr.forEach(function(ps, i) {
+						psBounds.extend(ps);
+					});
+					
 				}
 				  
 				//출발점 대중교통 마커가 표시될 위치입니다 
@@ -561,8 +529,12 @@ window.onload = function(){
 				    strokeStyle: 'solid'
 				});
 
-				if(pt.pt_line != null && pt.pt_line != ""){
-					peLine.setPath(eval(pt.pt_line));
+				if(pt.pt_line != null && pt.pt_line != ""){	
+					const peLineArr = eval(pt.pt_line);
+					peLine.setPath(peLineArr);
+					peLineArr.forEach(function(pe, i) {
+						peBounds.extend(pe);
+					});
 				}
 				
 				//도작점 대중교통 마커가 표시될 위치입니다 
@@ -573,9 +545,10 @@ window.onload = function(){
 				    position: ptePosition,
 				    image: ptImage // 대중교통 마커이미지를 설정합니다
 				});
-			}
+			}				
 		})
-
+	setBound(PSmap, psBounds);
+	setBound(PEmap, peBounds);
 	//출발 마커가 표시될 위치입니다 
 	const PSstartPosition = new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude}); 
 	// 출발 마커를 생성합니다
@@ -594,6 +567,48 @@ window.onload = function(){
 	    image: arriveImage // 도착 마커이미지를 설정합니다
 	});	
 
+	const tps = document.getElementById("transportS");
+	const tpe = document.getElementById("transportE");
+	const selectPS = document.getElementById("selectPS");
+	const selectPE = document.getElementById("selectPE");
+	
+	selectPS.addEventListener("change", function(e) {
+			setBound(PSmap, psBounds);
+			setBound(PEmap, peBounds);
+
+		if(e.target.value == "1"){
+			tps.style.visibility="visible";
+			tps.style.display="inline-block";
+			tpe.style.visibility="hidden";
+			tpe.style.display="none";
+		}
+		else{
+			tpe.style.visibility="visible";
+			tpe.style.display="inline-block";
+			tps.style.visibility="hidden";
+			tps.style.display="none";
+		}
+			selectPS.selectedIndex = 0;
+	}, false)
+	
+	selectPE.addEventListener("change", function(e) {
+			setBound(PSmap, psBounds);
+			setBound(PEmap, peBounds);
+		if( e.target.value == "1"){
+			tps.style.visibility="visible";
+			tps.style.display="inline-block";
+			tpe.style.visibility="hidden";
+			tpe.style.display="none";
+		}
+		else{
+			tpe.style.visibility="visible";
+			tpe.style.display="inline-block";
+			tps.style.visibility="hidden";
+			tps.style.display="none";
+		}
+			selectPE.selectedIndex = 0;
+	}, false)
+	
 ///////////////////////////////////////////////////////////////////////////////////// 자전거 지도표시
 	const mapTypes = { //자전거맵 표시변수
 		    bicycle : kakao.maps.MapTypeId.BICYCLE
@@ -608,6 +623,8 @@ window.onload = function(){
 		}
 	});	
 
+	tpe.style.display="none";
+	
 //////////////////////////////////////////////////////////////////////////////////////////// 따릉이마커 
 	kakao.maps.event.addListener(map, 'idle', removePlaceOveray);
 
@@ -700,7 +717,6 @@ window.onload = function(){
 		placeOverlay.setMap(null);
 	}
 
-	tpe.style.display="none";
 }
  </script>
 </head>
@@ -780,7 +796,7 @@ window.onload = function(){
     </ul>
   		</div>
   			<div style="text-align: left;">
-  		<input type="checkbox" id="chkBicycle" /> 자전거도로 정보 보기
+  		<input type="checkbox" id="chkBicycle" /> 자전거도로 정보 보기 <button id="cBound">경로 한눈에 보기</button>
   		</div>
   		<div style="text-align: left;">
   		무인자전거대여소  서울(따릉이)<input type="checkbox" id="seoulCycle"> [대여가능수 <img src="/detailCourseImg/redC.png"> 0대 <img src="/detailCourseImg/yellowC.png"> 1~4대 <img src="/detailCourseImg/greenC.png"> 5대 이상]

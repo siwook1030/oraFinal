@@ -39,9 +39,8 @@ public class MeetingController {
 	public static int totPage = 0; // 총 페이지 수
 	public static int pageSize = 2; // 한 번에 보이는 페이지 수
 	
-	public static int recordSizeR = 3; // 한 번에 보이는 게시글 수
-	public static int totPageR = 0; // 총 페이지 수
-	public static int pageSizeR = 5; // 한 번에 보이는 페이지 수
+	public static int recordSizeR = 10; // 한 번에 보이는 댓글게시글 수
+	public static int pageSizeR = 5; // 한 번에 보이는 댓글페이지 수
 	
 	@RequestMapping("/listMeeting")
 	public void listMeeting(Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo, MeetingVo m) {

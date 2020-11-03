@@ -107,11 +107,14 @@ window.onload = function(){
 	let totalRecordR = ${totalRecordR};  // 전체 레코드수
 	let totalPageNum = ${totalPageNum}; // 전체 페이지번호수
 	const pageSizeR = ${pageSizeR}; // 댓글페이징번호 보여주는수
-	let nowPageNum = 1; // 현재페이지번호르 담을변수
+	let nowPageNum = 1; // 현재페이지번호를 담을변수
 
 	const repCnt = document.getElementById("repCnt");
 	const reply = document.getElementById("reply");
 	const replyPgaeNum = document.getElementById("replyPgaeNum");
+
+	const repMaxCnt = 300; // 댓글 최대글자수 이것만 변경하면 댓글글자수제한 변경됨
+	const repMaxCntStr = " / "+repMaxCnt; // 댓글최대글자수 스트링
 	
 	function setPageNum(){  // 댓글 페이지번호를 나타내는 함수
 		replyPgaeNum.innerHTML = "";
@@ -169,7 +172,7 @@ window.onload = function(){
 		}
 	}
 	
- function setReply(mrList){
+ function setReply(mrList){  // 댓글동적노드 생성하는 함수
 	    const userId = checkM.item;
 	    repCnt.innerHTML=totalRecordR;
 	    reply.innerHTML="";
@@ -187,20 +190,20 @@ window.onload = function(){
 			const hr = document.createElement("hr");
 
 			let startNum = mr.mr_content.indexOf(" ");
-			let toName = mr.mr_content.substring(0, startNum);
-			let content = mr.mr_content.substring(startNum+1);
+			let toName = mr.mr_content.substring(0, startNum);  // @닉네임 분리
+			let content = mr.mr_content.substring(startNum+1);  // @닉네임에서 글내용만 분리
 			
-			let nodeContent="";
+			let li1Content="";
 			if(mr.mr_step > 0){
 				mrDiv.style.paddingLeft="30px";
 				mrDiv.style.backgroundColor="#EFEFEF";
 			}
-			nodeContent += '<img src="rank/'+mr.rank_icon+'" height="25">'+mr.nickName+'<br>';
-			nodeContent += '<p style="margin-left: 25px;"><span style="font-weight: bold;">'+toName+'&nbsp;</span>'+content+'</p>';
+			li1Content += '<img src="rank/'+mr.rank_icon+'" height="25">'+mr.nickName+'<br>';
+			li1Content += '<p style="margin-left: 25px;"><span style="font-weight: bold;">'+toName+'&nbsp;</span>'+content+'</p>';
 			if(mr.mr_file1 != "0"){  // 사진이없으면 0으로 db에 0으로 저장할예정
-				nodeContent += '<p style="margin-left: 25px;"><img src="meetingFile/'+mr.mr_file1+'" height="100"></p>';
+				li1Content += '<p style="margin-left: 25px;"><img src="meetingFile/'+mr.mr_file1+'" height="100"></p>';
 			}
-			nodeContent += '<p class="repInfo" style="float: left;">'+mr.mr_regdate+'<p>';
+			li1Content += '<p class="repInfo" style="float: left;">'+mr.mr_regdate+'<p>';
 			const repSpan = document.createElement("span");
 			repSpan.innerHTML="답글달기";
 			repSpan.className="btnRepSpan";
@@ -211,52 +214,51 @@ window.onload = function(){
 			deleteSpan.innerHTML="삭제";
 			deleteSpan.className="btnRepSpan";
 
-			li1.innerHTML=nodeContent;
+			li1.innerHTML=li1Content;
 			li1.append(repSpan);
 			if(userId == mr.id){ // 로그인이되어있고 로그인되어있는 아이디랑 댓글의 아이디랑 동일하면 수정삭제버튼을 어펜드해준다
 				li1.append(updateSpan,deleteSpan);
 			}
 			const repDiv = document.createElement("div");
 			const rep_input = document.createElement("textarea");
-			rep_input.setAttribute("rows", "5");
-			rep_input.setAttribute("cols", "50");
-			rep_input.setAttribute("maxlength", "100");
+			rep_input.setAttribute("rows", "10");
+			rep_input.setAttribute("cols", "80");
+			rep_input.setAttribute("maxlength", repMaxCnt);
 			rep_input.className="repTa";
-			const txtCntStrong = document.createElement("strong");
-			txtCntStrong.innerHTML=0;
+			
 			const txtMaxCntSpan = document.createElement("span");
-			txtMaxCntSpan.innerHTML=" / 100자";
 			const txtDiv = document.createElement("div");
 			const btn_insert = document.createElement("button");
 			btn_insert.innerHTML="등록";
-			txtDiv.append(txtCntStrong, txtMaxCntSpan);
-			repDiv.append(rep_input,txtDiv,btn_insert);
+			const btn_insertCancel = document.createElement("button");
+			btn_insertCancel.className="btnCancel";
+			btn_insertCancel.innerHTML="취소";
+			txtDiv.append(txtMaxCntSpan);
+			repDiv.append(rep_input,txtDiv,btn_insertCancel,btn_insert);
 			li2.append(repDiv);
 
 			const updateDiv = document.createElement("div");
 			const updateContent = '<img src="rank/'+mr.rank_icon+'" height="25">'+mr.nickName+'<br>';
 			const update_input = document.createElement("textarea");
-			update_input.setAttribute("rows", "5");
-			update_input.setAttribute("cols", "50");
-			update_input.setAttribute("maxlength", "100");
+			update_input.setAttribute("rows", "10");
+			update_input.setAttribute("cols", "80");
+			update_input.setAttribute("maxlength", repMaxCnt);
 			update_input.className="updateTa";
-			update_input.innerHTML=content;
-			const uptxtCntStrong = document.createElement("strong");
-			uptxtCntStrong.innerHTML=0;
+			update_input.innerHTML=content;  // 글내용만 넣는다
+			
 			const uptxtMaxCntSpan = document.createElement("span");
-			uptxtMaxCntSpan.innerHTML=" / 100자";
 			const uptxtDiv = document.createElement("div");
 			
-			uptxtDiv.append(uptxtCntStrong, uptxtMaxCntSpan);
+			uptxtDiv.append(uptxtMaxCntSpan);
 			
-			const btn_cancle = document.createElement("button");
-			btn_cancle.setAttribute("oldContent", content);
-			btn_cancle.className="btnCancle";
-			btn_cancle.innerHTML="취소";
+			const btn_updateCancel = document.createElement("button");
+			btn_updateCancel.setAttribute("oldContent", content);
+			btn_updateCancel.className="btnCancel";
+			btn_updateCancel.innerHTML="취소";
 			const btn_update = document.createElement("button");
 			btn_update.innerHTML="수정";
 			updateDiv.innerHTML = updateContent;
-			updateDiv.append(update_input,uptxtDiv,btn_cancle,btn_update);
+			updateDiv.append(update_input,uptxtDiv,btn_updateCancel,btn_update);
 			li3.append(updateDiv);
 
 			// li1 댓글보여주는거 , li2 답글달기보여주는거, li3 수정하는거 보여주는거
@@ -265,20 +267,20 @@ window.onload = function(){
 			reply.append(mrDiv);
 
 			rep_input.addEventListener("keyup", function(e) {// 답글달기에 글자수 세는 이벤트
-				textCount(e.target,txtCntStrong);
+				textCount(e.target,txtMaxCntSpan);
 			});
 			rep_input.addEventListener("keydown", function(e) {
-				textCount(e.target,txtCntStrong);
+				textCount(e.target,txtMaxCntSpan);
 			});
 			update_input.addEventListener("keyup", function(e) {// 수정하기에 글자수 세는 이벤트
-				textCount(e.target,uptxtCntStrong);
+				textCount(e.target,uptxtMaxCntSpan);
 			});
 			update_input.addEventListener("keydown", function(e) {
-				textCount(e.target,uptxtCntStrong);
+				textCount(e.target,uptxtMaxCntSpan);
 			});
 
 			repSpan.addEventListener("click", function(e) {
-				repReply(li2); //답글달기 보여줘
+				repReply(li1,li2,li3); //답글달기 보여줘
 			});
 			updateSpan.addEventListener("click", function(e) {
 				showUpdate(li1,li2,li3); // 수정하기 보여줘
@@ -287,9 +289,12 @@ window.onload = function(){
 				deleteRep(mr.mr_no); // 삭제해줘
 			});
 			btn_insert.addEventListener("click", function(e) {
-				repSub(rep_input,mr.mr_ref,mr.nickName); // 대댓글 달아줘
+				insertRepSub(rep_input,mr.mr_ref,mr.nickName); // 대댓글 달아줘
 			});
-			btn_cancle.addEventListener("click", function(e) {
+			btn_insertCancel.addEventListener("click", function(e) {
+				insertRepSubCancel(li2);   //대댓글다는거 취소해줘
+			});
+			btn_updateCancel.addEventListener("click", function(e) {
 				updateRepCancel(li1,li3); // 수정취소해줘
 			});
 			btn_update.addEventListener("click", function(e) {
@@ -299,14 +304,14 @@ window.onload = function(){
 		
  };	
  	const mr_content = document.getElementById("mr_content");
- 	const mr_contentStrong = document.getElementById("mr_contentStrong");
+ 	const mr_contentSpan = document.getElementById("mr_contentSpan");
  	const btnInsertReply = document.getElementById("btnInsertReply");
  	
 	mr_content.addEventListener("keyup", function(e) {
-		textCount(e.target,mr_contentStrong);
+		textCount(e.target,mr_contentSpan);
 	});
 	mr_content.addEventListener("keydown", function(e) {
-		textCount(e.target,mr_contentStrong);
+		textCount(e.target,mr_contentSpan);
 	});
 	mr_content.addEventListener("click", function(e) {
 		if(checkM.code != "200"){
@@ -353,15 +358,19 @@ window.onload = function(){
 		});
 	}
 
-	function textCount(textArea, countStrong){  // 글자수세는 함수
+	function textCount(textArea, txtMaxCntSpan){  // 글자수세는 함수
 		const txtCnt = textArea.value.length;
-		if(txtCnt > 100){
-			txtCnt = 100;
+		if(txtCnt > repMaxCnt){
+			txtCnt = repMaxCnt;
 		}
-		countStrong.innerHTML = txtCnt;
+		txtMaxCntSpan.innerHTML = txtCnt+repMaxCntStr;
 	}
 
-	function repReply(li2){   // 답글달기 눌렀을때 작동
+	let li1Obj = null; // 댓글객체  담을 변수
+	let li2Obj = null; // 댓글의 등록객체 담을 변수
+	let li3Obj = null; // 댓글의 수정객체 담을 변수
+
+	function repReply(li1,li2,li3){   // 답글달기 눌렀을때 작동
 		if(checkM.code != "200"){
 			const cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
 			if(cfm){
@@ -369,9 +378,47 @@ window.onload = function(){
 			}
 			return;
 		}
-		li2.querySelector("strong").innerHTML=0; // 답글달기가 열리면 텍스트카운트를 0으로 초기화시킴
+
+		if(li2Obj){
+			if(li2 == li2Obj){  // 열려있는 답글등록이랑 같으면 리턴
+				return;
+			}
+			else{
+				if(insertRepSubCancel(li2Obj)){  // 열려있는 답글이랑 다른답글하기를 눌렀을때 
+					return;
+				}
+			}
+		}
+		if(li3Obj){
+			if(updateRepCancel(li1Obj,li3Obj)){  // 수정하기가 열려있는 상태에서 답글하기를 눌렀을때
+				return;
+			}
+		}
+		
+		li2.querySelector("span").innerHTML=0+repMaxCntStr; // 답글달기가 열리면 텍스트카운트를 0으로 초기화시킴
 		li2.querySelector("textarea").focus();
 		li2.style.display="inline";
+
+		li1Obj = li1;
+		li2Obj = li2;
+		li3Obj = null;
+	}
+
+	function insertRepSubCancel(li2){ // 답글달기 취소눌렀을때 작동
+		const repSubTa = li2.querySelector("textarea");
+		if(repSubTa.value.length > 0){
+			const cfm = confirm("답글달기를 취소하시겠습니까?");
+			if(!cfm){
+				return true;
+			}
+		}
+		repSubTa.value = "";
+		li2.style.display="none";
+		
+		li1Obj = null;
+		li2Obj = null;
+		li3Obj = null;
+		return false;
 	}
 
 	function showUpdate(li1,li2,li3){   // 수정하기 눌렀을때 작동
@@ -382,24 +429,55 @@ window.onload = function(){
 			}
 			return;
 		}
-		const oldContentCnt = li3.querySelector(".btnCancle").getAttribute("oldContent").length;
+
+		if(li2Obj){
+			if(insertRepSubCancel(li2Obj)){  // 답글하기가 열려있는 상태에서 수정하기를 눌렀을떄
+				return;
+			}
+		}
+		if(li3Obj){
+			if(updateRepCancel(li1Obj,li3Obj)){  // 수정하기가 열려있을때 다른 수정하기를 눌렀을때
+				return;
+			}
+		}
+		const updateTa = li3.querySelector(".updateTa");
+		const oldContent = li3.querySelector(".btnCancel").getAttribute("oldContent");
+		
 		li1.style.display="none";
+		
 		li2.style.display="none";
 		li2.querySelector(".repTa").value="";
-		li3.querySelector("strong").innerHTML=oldContentCnt;
+		
+		li3.querySelector("span").innerHTML=oldContent.length+repMaxCntStr;
 		li3.style.display="inline";
-		li3.querySelector("textarea").focus();
+		updateTa.focus();
+
+		li1Obj = li1;
+		li2Obj = null;
+		li3Obj = li3;
 	}
 
 	function updateRepCancel(li1,li3){   // 수정화면에서 취소 눌렀을때 작동
+		const updateTa = li3.querySelector(".updateTa");
+		const oldContent = li3.querySelector(".btnCancel").getAttribute("oldContent");
+		if(updateTa.value != oldContent){
+			const cfm = confirm("수정하기를 취소하시겠습니까?");
+			if(!cfm){
+				return true;
+			}
+		}
+		updateTa.value = oldContent;
 		li3.style.display="none";
 		li1.style.display="inline";
-		const oldContent = li3.querySelector(".btnCancle").getAttribute("oldContent");
-		li3.querySelector(".updateTa").value=oldContent;
+		li1Obj = null;
+		li2Obj = null;
+		li3Obj = null;
+		return false;
+
 	}
 
 	
-	function repSub(rep_input, mr_ref,nickName){  // 답글달기의 등록버튼을 눌렀을때 작동
+	function insertRepSub(rep_input, mr_ref,nickName){  // 답글달기의 등록버튼을 눌렀을때 작동
 		if(checkM.code != "200"){
 			const cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
 			if(cfm){
@@ -429,8 +507,11 @@ window.onload = function(){
 			success: function(response){
 				if(response.code == "200"){
 					alert("등록에 성공하였습니다");
+					li1Obj = null;
+					li2Obj = null;
+					li3Obj = null;
 					mr_content.value = "";
-					mr_contentStrong.innerHTML=0;
+					mr_contentSpan.innerHTML="";
 					getMrListByPageNum(nowPageNum);
 				}
 				else{
@@ -469,6 +550,9 @@ window.onload = function(){
 			success: function(response){
 				if(response.code == "200"){
 					alert("수정에 성공하였습니다");
+					li1Obj = null;
+					li2Obj = null;
+					li3Obj = null;
 					getMrListByPageNum(nowPageNum);
 				}
 				else{
@@ -563,23 +647,30 @@ window.onload = function(){
 	const meetingImage = new kakao.maps.MarkerImage(meetingSrc, meetingSize);
 	const meetingMarker = new kakao.maps.Marker({image:meetingImage}); 
 	const meetingInfowindow = new kakao.maps.InfoWindow({removable:true,zindex:1});
+
+	const courseBounds = new kakao.maps.LatLngBounds();  // 맵바운드 설정객체
 	
 	if(${c.c_no} != 0){
 		startMarker.setPosition(new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude}));
 		arriveMarker.setPosition(new kakao.maps.LatLng(${c.c_e_latitude}, ${c.c_e_longitude}));
-		coursePolyline.setPath(${c.c_line});
+		const courseLine = eval(${c.c_line});
+		coursePolyline.setPath(courseLine);
+		courseLine.forEach(function(c, i) {
+			courseBounds.extend(c);
+		})
 		startMarker.setMap(map);
 		arriveMarker.setMap(map);
 		coursePolyline.setMap(map);
-		map.setLevel(${c.c_mapLevel});
 		
 	}	
-	map.setCenter(new kakao.maps.LatLng(${mt.m_latitude}, ${mt.m_longitude}));
-	meetingMarker.setPosition(new kakao.maps.LatLng(${mt.m_latitude}, ${mt.m_longitude}));
+	const meetingLatLon = new kakao.maps.LatLng(${mt.m_latitude}, ${mt.m_longitude});
+	meetingMarker.setPosition(meetingLatLon);
 	meetingMarker.setMap(map);
 	meetingInfowindow.setContent("<div>미팅장소</div>"); // 나중에 html꾸며서 넣기
     meetingInfowindow.open(map, meetingMarker);
-	
+
+    courseBounds.extend(meetingLatLon);
+    map.setBounds(courseBounds);
 	/////////////////////////////////////////////////////////////////////////////////// 맵표시 끝
 
 	
@@ -665,9 +756,9 @@ window.onload = function(){
 				<!--  <input type="hidden" name="rank_icon" id="rank_icon">
 				<input type="hidden" name="nickname" id="nickname">
 				<input type="hidden" name="regdate" id="regdate">-->
-				<textarea rows="10" cols="80" name="mr_content" id="mr_content" maxlength="100"></textarea>
+				<textarea rows="10" cols="80" name="mr_content" id="mr_content" maxlength="300"></textarea>
 				<button id="btnInsertReply" type="button"><img src="/meetingImg/add.png" id="btnImg"></button>
-				<div><strong id="mr_contentStrong">0</strong> / 100자</div>
+				<div><span id="mr_contentSpan"></span></div>
 				<input type="file" name="mr_file1" id="mr_file1">
 				
 			</form>

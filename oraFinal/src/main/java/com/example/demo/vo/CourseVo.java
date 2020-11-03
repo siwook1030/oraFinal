@@ -32,7 +32,6 @@ public class CourseVo {
 	private String c_words;
 	private String c_line;
 	private String c_temp;
-	private int  c_mapLevel;
 	private double userDis; //코스와 유저의현재위치와의  거리
 	private List<CoursePhotoVo> c_photo;
 	//private List<PublicTransportVo> pt;
