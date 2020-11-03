@@ -70,6 +70,7 @@
 	</style>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="/js/loginCheck.js"></script>
 	<script type="text/javascript">
 window.onload = function(){
 
@@ -85,21 +86,6 @@ window.onload = function(){
 		});
 	}});*/
 ///////////////////////////////////////////////////
-	function checkLogin(){
-	let check;
-		$.ajax({
-			url: "/checkLogin",
-			type: "POST",
-			async: false,
-			success: function(response){
-				check =  response;
-			},
-			error: function(){
-				alert("에러발생");
-			}
-		})
-	return check;
-	}
 	const checkM = checkLogin(); // 로그인이 되어있는 상태인지 체크한다
 	console.log(checkM);
 	
@@ -173,7 +159,7 @@ window.onload = function(){
 	}
 	
  function setReply(mrList){  // 댓글동적노드 생성하는 함수
-	    const userId = checkM.item;
+	    const userId = checkM.item.id;
 	    repCnt.innerHTML=totalRecordR;
 	    reply.innerHTML="";
 
@@ -198,8 +184,11 @@ window.onload = function(){
 				mrDiv.style.paddingLeft="30px";
 				mrDiv.style.backgroundColor="#EFEFEF";
 			}
-			li1Content += '<img src="rank/'+mr.rank_icon+'" height="25">'+mr.nickName+'<br>';
-			li1Content += '<p style="margin-left: 25px;"><span style="font-weight: bold;">'+toName+'&nbsp;</span>'+content+'</p>';
+			li1Content += '<img src="rank/'+mr.rank_icon+'" height="25">'+mr.nickName;
+	//		if(userId == mr.id){ // 내가쓴 댓글이면 내댓글이라 표현  // 이건 추후에 디자인다시할때 if문 하나로 밑에있는 if문이랑 합쳐서 처리할거임
+	//			li1Content +=' (내 댓글)';
+	//		}
+			li1Content += '<br><p style="margin-left: 25px;"><span style="font-weight: bold;">'+toName+'&nbsp;</span>'+content+'</p>';
 			if(mr.mr_file1 != "0"){  // 사진이없으면 0으로 db에 0으로 저장할예정
 				li1Content += '<p style="margin-left: 25px;"><img src="meetingFile/'+mr.mr_file1+'" height="100"></p>';
 			}
