@@ -10,6 +10,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import com.example.demo.vo.Meeting_fileVo;
+import com.example.demo.vo.Meeting_peopleVo;
 import com.example.demo.vo.Meeting_repVo;
 import com.example.demo.vo.MeetingVo;
 
@@ -68,7 +69,16 @@ public class MeetingManager {
 	public static int insertMeeting(MeetingVo m) {
 		int re = -1;
 		SqlSession session = sqlSessionFactory.openSession(true);
-		re = session.selectOne("meeting.insertM", m);
+		re = session.insert("meeting.insertM", m);
+		session.close();
+		return re;
+	}
+	
+	// 게시글 수정
+	public static int updateMeeting(MeetingVo m) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession(true);
+		re = session.update("meeting.updateM", m);
 		session.close();
 		return re;
 	}
@@ -87,6 +97,33 @@ public class MeetingManager {
 		int re = -1;
 		SqlSession session = sqlSessionFactory.openSession(true);
 		re = session.update("meeting.updateHit", m_no);
+		session.close();
+		return re;
+	}
+	
+	// 모임인원 상세
+	public static List<Meeting_peopleVo> detailMPeople(int m_no) {
+		List<Meeting_peopleVo> list = null;
+		SqlSession session = sqlSessionFactory.openSession();
+		list = session.selectList("meeting.selectMpByNo", m_no);
+		session.close();
+		return list;
+	}
+	
+	// 모임인원 등록
+	public static int insertMPeople(Meeting_peopleVo mp) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession(true);
+		re = session.insert("meeting.insertMp", mp);
+		session.close();
+		return re;
+	}
+		
+	// 모임인원 전체삭제
+	public static int deleteMPeople(int m_no) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession(true);
+		re = session.delete("meeting.deleteMp", m_no);
 		session.close();
 		return re;
 	}
@@ -117,7 +154,16 @@ public class MeetingManager {
 	public static int insertMFile(Meeting_fileVo mf) {
 		int re = -1;
 		SqlSession session = sqlSessionFactory.openSession(true);
-		re = session.selectOne("meeting.insertMf", mf);
+		re = session.insert("meeting.insertMf", mf);
+		session.close();
+		return re;
+	}
+	
+	// 첨부파일 수정
+	public static int updateMFile(Meeting_fileVo mf) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession(true);
+		re = session.update("meeting.updateMf", mf);
 		session.close();
 		return re;
 	}

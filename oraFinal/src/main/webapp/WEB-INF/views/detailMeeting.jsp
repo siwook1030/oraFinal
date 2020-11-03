@@ -8,15 +8,12 @@
 <title>Insert title here</title>
 	<style>
 		/* 공통 */
-	
 		section {
 			margin: 0 auto;
 			padding: 10px;
 			width: 1000px;
 			text-align: left;
 		}
-	
-	
 		/* 개별 */
 		.btnImg {
 			height: 30px;
@@ -264,7 +261,7 @@ $(function(){
 	</script>
 </head>
 <body>
-<jsp:include page="header.jsp"/>
+	<jsp:include page="header.jsp"/>
 	<section>
 		<br><br>
 		<p style="font-size: 20px;"><a href="/listMeeting">번개 게시판</a>&nbsp;&gt;&nbsp;<font color="#c85725">번개 상세</font></p>
@@ -272,7 +269,7 @@ $(function(){
 		<br><br>
 	
 		<div id="contents">
-			<p style="font-size: 30px; padding: 30px 0 20px;">${mt.m_title }</p><br>	
+			<p style="font-size: 30px; padding: 30px 0 20px;"><a href="detailMeeting?m_no=${mt.m_no }">${mt.m_title }</a></p><br>	
 			<img src="rank/${mt.rank_icon }" height="25" style="float: left; margin-right: 5px;">
 			<div style="padding-top: 5px;">
 				<p style="margin-right: 15px; float: left;">${mt.nickName }</p>
@@ -312,8 +309,9 @@ $(function(){
 			<br><br><br><br>
 			
 			<!-- 수정,삭제 버튼 -->
+			
 			<a href="deleteMeeting?m_no=${mt.m_no }"><img src="meetingImg/delete.png" class="btnImg"></a>
-			<a href="updateMeeting?m_no=${mt.m_no }"><img src="meetingImg/edit.png" class="btnImg"></a>
+			<a href="updateMeeting?m_no=${mt.m_no }&c_no=${mt.c_no}"><img src="meetingImg/edit.png" class="btnImg"></a>
 			<br><br>
 			<img src="meetingImg/speech.png" style="size: 20px; float: left; padding-right: 10px;">
 			<h3>댓글&nbsp;${cntRep }</h3>
@@ -323,18 +321,6 @@ $(function(){
 			</div>
 			<div id="replyPgaeNum">
 			</div>
-			
-			<!-- jQuery -->
-			<!-- 여기에 댓글출력 -->
-			<!-- <div id="loadComment">
-			</div>
-			<button>[답글달기]</button>
-			
-			<img>rank_icon
-			<p>nickName</p>
-			<p>mr_content</p><br>
-			<img>mr_file1
-			<p>regdate</p> -->
 			
 			<br>
 			댓글등록<br>
@@ -346,8 +332,6 @@ $(function(){
 				<input type="file" name="mr_file1" id="mr_file1">
 				<button id="btnAdd"><img src="meetingImg/add.png" id="btnImg"></button>
 			</form>
-			
-
 		</div>
 	</section>
 	<jsp:include page="footer.jsp"/>
