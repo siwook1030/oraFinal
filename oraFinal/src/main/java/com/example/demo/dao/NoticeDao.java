@@ -26,4 +26,8 @@ public class NoticeDao {
 	public int insert(NoticeVo n) {
 		return NoticeManager.insertNotice(n);
 	}
+	
+	public int updateHit(int n_no) {
+		return NoticeManager.updateHit(n_no);
+	}
 }
