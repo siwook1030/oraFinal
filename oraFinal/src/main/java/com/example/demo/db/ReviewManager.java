@@ -1,6 +1,7 @@
 package com.example.demo.db;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.io.Resources;
@@ -23,10 +24,10 @@ public class ReviewManager {
 			e.printStackTrace();
 		}
 	}
-	public static List<ReviewVo> selectList(){
+	public static List<ReviewVo> selectList(HashMap<String, Integer> record_map){
 		List<ReviewVo> list = null;
 		SqlSession session = sqlSessionFactory.openSession();
-		list = session.selectList("review.selectList");
+		list = session.selectList("review.selectList", record_map);
 		session.close();
 		return list;
 	}
@@ -113,5 +114,12 @@ public class ReviewManager {
 		re = session.delete("review.deleteRep", r_no);
 		session.close();
 		return re;
+	}
+	public static int count() {
+		int cnt = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		cnt = session.selectOne("review.count");
+		session.close();
+		return cnt;
 	}
 }

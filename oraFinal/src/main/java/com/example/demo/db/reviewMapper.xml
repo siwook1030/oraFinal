@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="review">
   <select id="selectList" resultType="reviewVo">
-    SELECT * FROM review ORDER BY r_no DESC
+	SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY r_no DESC) row_num, r.* FROM review r ORDER BY r_no DESC) WHERE row_num BETWEEN #{begin_record} AND #{end_record}
   </select>
   <update id="incHit">
   	UPDATE review SET r_hit=r_hit+1 WHERE r_no=#{r_no}
@@ -42,4 +42,7 @@
   <delete id="deleteRep">
   	DELETE FROM review_rep WHERE r_no=#{r_no}
   </delete>
+  <select id="count" resultType="java.lang.Integer">
+  	SELECT COUNT(*) FROM review
+  </select>
 </mapper>
