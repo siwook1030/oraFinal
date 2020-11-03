@@ -1009,11 +1009,10 @@ window.onload = function(){
 
 	function getCourseData(){  // 미리보기,등록할때 데이터를 전달할 함수		
 		const uploadFiles = [];
-		const formData = new FormData();
 		uploadFiles.forEach(function(file, i) {
 			if(file.upload != 'disable'){
-				formData.append("uploadfile", file, file.name);
-				//uploadFiles.push(file);
+				//formData.append("uploadfile", file, file.name);
+				uploadFiles.push(file);
 			}
 		});
 		
@@ -1078,7 +1077,7 @@ window.onload = function(){
 		console.log("대도이미지: "+pte_img);
 		console.log("대도역: "+pte_station);
 		console.log("대도라인: "+pte_line);
-	 	 courseData = {
+	 	const courseData = {
 				 "c_name": c_name,
 			     "c_s_latitude" : c_s_latitude,
 				 "c_s_longitude" : c_s_longitude,
@@ -1109,7 +1108,8 @@ window.onload = function(){
 				 "pte_station" : pte_station,
 				 "pte_line" : pte_line
 			};
-			formData.append("courseData", courseData);
+			//formData.append("courseData", courseData);
+			const formData = new FormData(courseData);
 			return formData;
 	}
 	
