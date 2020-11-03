@@ -866,7 +866,6 @@ window.onload = function(){
 			e.preventDefault();
 		}).on('drop', function(e) { //드래그한 항목을 떨어뜨렸을때
 			e.preventDefault();
-			
 			$(this).removeClass('drag-over');
 			var files = e.originalEvent.dataTransfer.files; //드래그&드랍 항목
 			for(let i = 0; i < files.length; i++) {
@@ -1008,7 +1007,16 @@ window.onload = function(){
 		return 0;
 	}
 
-	function getCourseData(){  // 미리보기,등록할때 데이터를 전달할 함수
+	function getCourseData(){  // 미리보기,등록할때 데이터를 전달할 함수		
+		const uploadFiles = [];
+		const formData = new FormData();
+		uploadFiles.forEach(function(file, i) {
+			if(file.upload != 'disable'){
+				formData.append("uploadfile", file, file.name);
+				//uploadFiles.push(file);
+			}
+		});
+		
 		const c_name =  courseName.value.trim();
 		const c_s_latitude = slat.value.trim();
 		const c_s_longitude = slon.value.trim();
@@ -1070,7 +1078,7 @@ window.onload = function(){
 		console.log("대도이미지: "+pte_img);
 		console.log("대도역: "+pte_station);
 		console.log("대도라인: "+pte_line);
-	 return courseData = {
+	 	 courseData = {
 				 "c_name": c_name,
 			     "c_s_latitude" : c_s_latitude,
 				 "c_s_longitude" : c_s_longitude,
@@ -1079,12 +1087,14 @@ window.onload = function(){
 				 "c_e_longitude" : c_e_longitude,
 				 "c_e_locname" : c_e_locname,
 				 "c_views" : c_views,
+				 "uploadFiles" : uploadFiles,
+				 
 				 "c_words" : c_words,
 				 "c_difficulty" : c_difficulty,
 				 "c_distance" : c_distance,
 				 "c_time" : c_time,
 				 "c_line" : c_line,
-				
+
 				 "pts_latitude" : pts_latitude,
 				 "pts_longitude" : pts_longitude,
 				 "pts_distance" : pts_distance,
@@ -1099,6 +1109,8 @@ window.onload = function(){
 				 "pte_station" : pte_station,
 				 "pte_line" : pte_line
 			};
+			formData.append("courseData", courseData);
+			return formData;
 	}
 	
 	document.getElementById("previewMakingCourse").addEventListener("click", function(e) {
@@ -1112,6 +1124,8 @@ window.onload = function(){
 			url:"/user/previewMakingCourse",
 			type: "POST",
 			data: getCourseData(),
+			contentType: false,
+			processData: false,
 			success: function(){
 				window.open("/user/preview","newWin","width=1200px,height=1000px,toolbar=no,resizable=no,location=no,menubar=no,directories=no,status=no");
 			},

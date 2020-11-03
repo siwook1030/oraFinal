@@ -32,7 +32,7 @@ window.onload = function(){
 	console.log("작동함22");
 function signUp(){
 		console.log("작동함");
-		const idAvail = /^[a-z][a-z\d]{8,12}$/;
+		const idAvail = /^[a-z0-9]{8,12}$/;
 		const pwAvail = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^*()\-_=+\\\|\[\]{};:\'",.<>\/?]).{8,12}$/;
 		const nameAvail = /^[가-힣]{2,6}$/;
 		const nickNameAvail = /^[가-힣a-zA-Z0-9]{2,8}$/;

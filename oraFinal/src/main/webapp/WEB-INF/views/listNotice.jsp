@@ -113,11 +113,32 @@ td {
 	height: 20px;
 }
 
+#insertNotice{
+	display: none;
+}
+
    /*float 초기화 아이디*/
 #clear{
 	clear: both; 
 }
 </style> 
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="/js/loginCheck.js"></script>
+<script type="text/javascript">
+window.onload = function(){
+	const checkM = checkLogin(); // 로그인이 되어있는 상태인지 체크한다
+	console.log(checkM);
+//
+	const insertNotice = document.getElementById("insertNotice");
+	if(checkM.item.code_value != null && checkM.item.code_value == "00101"){
+		insertNotice.style.display = "inline";
+	}
+	
+}
+	
+
+	
+</script>
 </head>
 <body>
 	<jsp:include page="header.jsp"/>
@@ -160,7 +181,10 @@ td {
 				</c:forEach>
 			</table>
 		</div>
-		<a href="/insertNotice"><button id="btn_write" type="button">글쓰기</button></a><br>
+		<div id="insertNotice">
+			<a href="/admin/insertNotice"><button id="btn_write" type="button">글쓰기</button></a><br>
+		</div>
+		
 	</section>
 	<br>
 	<jsp:include page="footer.jsp"/>
