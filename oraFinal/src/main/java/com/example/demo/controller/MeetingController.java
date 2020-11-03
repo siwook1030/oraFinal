@@ -150,7 +150,7 @@ public class MeetingController {
 	public void updateMForm(int m_no, Model model, int c_no) {		
 		model.addAttribute("mt", mdao.detailMeeting(m_no));
 		model.addAttribute("mf", mdao.detailMFile(m_no));
-		model.addAttribute("cs", cdao.getCourseByCno(c_no));
+		//model.addAttribute("cs", cdao.getCourseByCno(c_no));
 		model.addAttribute("cList", cdao.listCourse());
 	}
 	

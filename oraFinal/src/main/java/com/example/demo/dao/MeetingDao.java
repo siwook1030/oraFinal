@@ -25,6 +25,7 @@ public class MeetingDao {
   
 	public int insertMeeting(MeetingVo m) {
 		return MeetingManager.insertMeeting(m);
+	}
 
 	public Meeting_repVo getMRep(int mr_no) {
 		return MeetingManager.getMRep(mr_no);
@@ -57,6 +58,7 @@ public class MeetingDao {
     
 	public int insertMFile(Meeting_fileVo mf) {
 		return MeetingManager.insertMFile(mf);
+	}
 
 	public int updateMRep(Meeting_repVo mr) {
 		return MeetingManager.updateMRep(mr);
