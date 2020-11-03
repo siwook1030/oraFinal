@@ -8,31 +8,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
-      * {
-      margin: 0px;
-      padding: 0px;
-   }
-   header {
-      width: 1000px;
-      height: 100px;
-      margin-top: 10px;
-      font-family: 'NEXON Lv1 Gothic Low OTF';
-      border: solid 1px red;
-       margin: 0 auto;
-   }
-   #logo {
-       float: left; 
-   }
-   #top {
-      margin: 30px 20px 0px 0;
-      font-size: 12px;
-      float: right;
-      text-align: right;   
-   }
-   #login {
-      font-size: 11px;
-      text-align: right;
-   }
+   
    /*매인섹션부분css------------ ----------------*/
    section {
     margin: 0 auto;
@@ -109,7 +85,7 @@
 		font-size: 120%;
 		color: gray;
 	}
-	#foodBox{
+	.foodBox{
 		display: inline-table;
 		border: solid 1px white;
 		width: 30%;
@@ -117,8 +93,8 @@
 		margin: 10px 5px 10px 5px;
 		word-break:break-all;
 	}
- 	
- 	#foodBoxName{
+
+ 	.foodBoxName{
  		background-color: black; 
  		padding: 5px 0 5px 0;
    		text-align : center;
@@ -126,34 +102,12 @@
     	margin-top: 80px;
     	font-size: 130%;
  	}
- 	#foodBoxName span{
+ 	.foodBoxName span{
  		color: white;
  		
  	}
 	
    /*메인섹션 끝css--------------------------*/
-   footer {
-       width: 1000px;
-       height: 150px;
-        margin: 30px auto;
-       font-family: 'NEXON Lv1 Gothic Low OTF';
-       border: solid 1px green;
-      }
-    #footer_box {
-       width: 1000px;
-       height: 150px;
-       margin: 0 auto;
-       text-align: center;
-      
-    }
-    #footer_icon{
-       margin: 0 auto;
-      
-    }
-    #address {
-       margin: 10px 0 0 0;
-       font-size: 11px;
-    }
 
    /*float 초기화 아이디*/
    #clear{
@@ -186,70 +140,35 @@
 .placeinfo a, .placeinfo span {display: block;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
 .placeinfo span {margin:5px 5px 0 5px;cursor: default;font-size:13px;}
 .placeinfo .title {font-weight: bold; font-size:14px;border-radius: 6px 6px 0 0;margin: -1px -1px 0 -1px;padding:10px; color: #fff;background: #d95050;background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
+.placeinfo .foodTitle {font-weight: bold; font-size:14px;border-radius: 6px 6px 0 0;margin: -1px -1px 0 -1px;padding:10px; color: #fff;background: #d95050;background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
 .placeinfo .tel {color:#0f7833;}
 .placeinfo .jibun {color:#999;font-size:11px;margin-top:0;}
 </style>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 <script>
-function init() {
-	ts = document.getElementById("transportS");
-	te = document.getElementById("transportE");
-	ts.style.visibility="visible";
-	ts.style.display="inline-block";
-	te.style.visibility="hidden";
-	te.style.display="none";
-}
-$(function(){
-	var ts = $("#transportS");
-	var te = $("#transportE");
-
-	$("#selectPS").change(function() {
-		if($(this).val() == "1"){
-			ts.css({visibility: "visible",display: "inline-block"});
-			te.css({visibility: "hidden",display: "none"});
-		}
-		else{
-			ts.css({visibility: "hidden",display: "none"});
-			te.css({visibility: "visible",display: "inline-block"});
-		}
-			document.getElementById("selectPS").selectedIndex = 0;
-		// $("#selectPS>option:eq(0)").attr("selected", "selected");
-	
-	})
-	$("#selectPE").change(function() {
-		if($(this).val() == "1"){
-			ts.css({visibility: "visible",display: "inline-block"});
-			te.css({visibility: "hidden",display: "none"});
-		}
-		else{
-			ts.css({visibility: "hidden",display: "none"});
-			te.css({visibility: "visible",display: "inline-block"});
-		}
-		document.getElementById("selectPE").selectedIndex = 0;
-		// $("#selectPE>option:eq(0)").attr("selected", "selected");
-	})	
+window.onload = function(){
 	
 	// 마커를 클릭했을 때 해당 장소의 상세정보를 보여줄 커스텀오버레이입니다
-	var placeOverlay = new kakao.maps.CustomOverlay({zIndex:1}), 
-	    contentNode = document.createElement('div'), // 커스텀 오버레이의 컨텐츠 엘리먼트 입니다 
-	    markers = [], // 마커를 담을 배열입니다
+	const placeOverlay = new kakao.maps.CustomOverlay({zIndex:1}), 
+	    contentNode = document.createElement('div'); // 커스텀 오버레이의 컨텐츠 엘리먼트 입니다 
+	let markers = [], // 마커를 담을 배열입니다
 	    currCategory = ''; // 현재 선택된 카테고리를 가지고 있을 변수입니다
-	 
-	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+
+	    const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 	    mapOption = {
-		center: new kakao.maps.LatLng((${c.c_s_latitude}+${c.c_e_latitude})/2, (${c.c_s_longitude}+${c.c_e_longitude})/2),
-		level: ${c.c_mapLevel} // 지도의 확대 레벨
+		center: new kakao.maps.LatLng(37.55265499282206,126.9376211752318),
+		level: 7 // 지도의 확대 레벨
 	    };  
 
 	// 지도를 생성합니다    
-	var map = new kakao.maps.Map(mapContainer, mapOption); 
-	var mapTypeControl = new kakao.maps.MapTypeControl();
-	var zoomControl = new kakao.maps.ZoomControl();
+	const map = new kakao.maps.Map(mapContainer, mapOption); 
+	const mapTypeControl = new kakao.maps.MapTypeControl();
+	const zoomControl = new kakao.maps.ZoomControl();
 	map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 	map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 	// 장소 검색 객체를 생성합니다
-	var ps = new kakao.maps.services.Places(map); 
+	const ps = new kakao.maps.services.Places(map); 
 
 	// 지도에 idle 이벤트를 등록합니다
 	kakao.maps.event.addListener(map, 'idle', searchPlaces);
@@ -320,12 +239,12 @@ $(function(){
 
 	    // 몇번째 카테고리가 선택되어 있는지 얻어옵니다
 	    // 이 순서는 스프라이트 이미지에서의 위치를 계산하는데 사용됩니다
-	    var order = document.getElementById(currCategory).getAttribute('data-order');   
+	    const order = document.getElementById(currCategory).getAttribute('data-order');   
 
-	    for ( var i=0; i<places.length; i++ ) {
+	    for ( let i=0; i<places.length; i++ ) {
 
 	            // 마커를 생성하고 지도에 표시합니다
-	            var marker = addMarker(new kakao.maps.LatLng(places[i].y, places[i].x), order);
+	            const marker = addMarker(new kakao.maps.LatLng(places[i].y, places[i].x), order);
 
 	            // 마커와 검색결과 항목을 클릭 했을 때
 	            // 장소정보를 표출하도록 클릭 이벤트를 등록합니다
@@ -339,7 +258,7 @@ $(function(){
 
 	// 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
 	function addMarker(position, order) {
-	    var imageSrc = '/detailCourseImg/cc.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+		const imageSrc = '/detailCourseImg/cc.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
 	        imageSize = new kakao.maps.Size(27, 28),  // 마커 이미지의 크기
 	        imgOptions =  {
 	            spriteSize : new kakao.maps.Size(72, 208), // 스프라이트 이미지의 크기
@@ -360,7 +279,7 @@ $(function(){
 
 	// 지도 위에 표시되고 있는 마커를 모두 제거합니다
 	function removeMarker() {
-	    for ( var i = 0; i < markers.length; i++ ) {
+	    for ( let i = 0; i < markers.length; i++ ) {
 	        markers[i].setMap(null);
 	    }   
 	    markers = [];
@@ -368,7 +287,7 @@ $(function(){
 
 	// 클릭한 마커에 대한 장소 상세정보를 커스텀 오버레이로 표시하는 함수입니다
 	function displayPlaceInfo (place) {
-	    var content = '<div class="placeinfo">' +
+	    let content = '<div class="placeinfo">' +
 	                    '   <a class="title" href="' + place.place_url + '" target="_blank" title="' + place.place_name + '">' + place.place_name + '</a>';   
 
 	    if (place.road_address_name) {
@@ -391,17 +310,17 @@ $(function(){
 
 	// 각 카테고리에 클릭 이벤트를 등록합니다
 	function addCategoryClickEvent() {
-	    var category = document.getElementById('category'),
+		const category = document.getElementById('category'),
 	        children = category.children;
 
-	    for (var i=0; i<children.length; i++) {
+	    for (let i=0; i<children.length; i++) {
 	        children[i].onclick = onClickCategory;
 	    }
 	}
 
 	// 카테고리를 클릭했을 때 호출되는 함수입니다
 	function onClickCategory() {
-	    var id = this.id,
+		const id = this.id,
 	        className = this.className;
 
 	    placeOverlay.setMap(null);
@@ -420,11 +339,10 @@ $(function(){
 
 	// 클릭된 카테고리에만 클릭된 스타일을 적용하는 함수입니다
 	function changeCategoryClass(el) {
-	    var category = document.getElementById('category'),
-	        children = category.children,
-	        i;
+		const category = document.getElementById('category'),
+	        children = category.children;
 
-	    for ( i=0; i<children.length; i++ ) {
+	    for(let i=0; i<children.length; i++ ) {
 	        children[i].className = '';
 	    }
 
@@ -433,41 +351,58 @@ $(function(){
 	    } 
 	}
 	///////////////////////////////////////
+	const courseBounds = new kakao.maps.LatLngBounds(); 
+	const courseLine = eval(${c.c_line});
+	console.log(courseLine);
+	courseLine.forEach(function(c, i) {
+		courseBounds.extend(c);
+	});
 
+	document.getElementById("cBound").addEventListener("click", function(e) {
+		setBound(map, courseBounds);
+	});
+	
+	function setBound(m,bounds){  // 바운드설정함수
+		if(!bounds.isEmpty()){
+			m.setBounds(bounds);
+		}
+	}
+	setBound(map, courseBounds); 
+	
 	new kakao.maps.Polyline({
-		    map: map,
-		    path: eval(${c.c_line}),
-		    strokeWeight: 6,
-		    strokeColor: '#FF2400',
-		    strokeOpacity: 0.8,
-		    strokeStyle: 'solid'
+	    map: map,
+	    path: courseLine,
+	    strokeWeight: 6,
+	    strokeColor: '#FF2400',
+	    strokeOpacity: 0.8,
+	    strokeStyle: 'solid'
 	});
 
 	////////////////////////////////////////
-	var startSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png', // 출발 마커이미지의 주소입니다    
+	const startSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png', // 출발 마커이미지의 주소입니다    
 	startSize = new kakao.maps.Size(50, 45), // 출발 마커이미지의 크기입니다 
 	startOption = {offset: new kakao.maps.Point(15, 43)}; // 출발 마커이미지에서 마커의 좌표에 일치시킬 좌표를 설정합니다 (기본값은 이미지의 가운데 아래입니다)
 	
 	//출발 마커 이미지를 생성합니다
-	var startImage = new kakao.maps.MarkerImage(startSrc, startSize, startOption);
+	const startImage = new kakao.maps.MarkerImage(startSrc, startSize, startOption);
 
-	var arriveSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/blue_b.png', // 도착 마커이미지 주소입니다    
+	const arriveSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/blue_b.png', // 도착 마커이미지 주소입니다    
 	arriveSize = new kakao.maps.Size(50, 45), // 도착 마커이미지의 크기입니다 
 	arriveOption = {offset: new kakao.maps.Point(15, 43)}; // 도착 마커이미지에서 마커의 좌표에 일치시킬 좌표를 설정합니다 (기본값은 이미지의 가운데 아래입니다)
 	
 	//도착 마커 이미지를 생성합니다
-	var arriveImage = new kakao.maps.MarkerImage(arriveSrc, arriveSize, arriveOption);
+	const arriveImage = new kakao.maps.MarkerImage(arriveSrc, arriveSize, arriveOption);
 
-	var ptSrc = '/publictransport/blue.png', // 대중교통표시마커  
+	const ptSrc = '/publictransport/blue.png', // 대중교통표시마커  
 	ptSize = new kakao.maps.Size(40, 35), // 대중교통표시마커   크기입니다 
 	ptOption = {offset: new kakao.maps.Point(15, 43)}; // 대중교통표시마커  에서 마커의 좌표에 일치시킬 좌표를 설정합니다 (기본값은 이미지의 가운데 아래입니다)
 	// 대중교통 마커 이미지를 생성합니다
-	var ptImage = new kakao.maps.MarkerImage(ptSrc, ptSize, ptOption);
+	const ptImage = new kakao.maps.MarkerImage(ptSrc, ptSize, ptOption);
 
 	//코스 출발 마커가 표시될 위치입니다 
-	var startPosition = new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude}); 
+	const startPosition = new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude}); 
 	//코스 출발 마커를 생성합니다
-	var startMarker = new kakao.maps.Marker({
+	const startMarker = new kakao.maps.Marker({
 			map: map, // 출발 마커가 지도 위에 표시되도록 설정합니다
 			position: startPosition,
 			image: startImage // 출발 마커이미지를 설정합니다
@@ -475,25 +410,25 @@ $(function(){
 
 
 	//코스 도착 마커가 표시될 위치입니다 
-	var arrivePosition = new kakao.maps.LatLng(${c.c_e_latitude}, ${c.c_e_longitude});  
+	const arrivePosition = new kakao.maps.LatLng(${c.c_e_latitude}, ${c.c_e_longitude});  
 	//코스 도착 마커를 생성합니다 
-	var arriveMarker = new kakao.maps.Marker({  
+	const arriveMarker = new kakao.maps.Marker({  
 			map: map, // 도착 마커가 지도 위에 표시되도록 설정합니다
 			position: arrivePosition,
 			image: arriveImage // 도착 마커이미지를 설정합니다
 		});
 	
 ////--------------------------------------------------------------------------------오라픽 음식점 마커표시
-	var geocoder = new kakao.maps.services.Geocoder();
-	var foodSrc = '/detailFoodImg/foodLoc.png', // 음식점 마커이미지의 주소입니다    
+	const geocoder = new kakao.maps.services.Geocoder();
+	const foodSrc = '/detailFoodImg/foodLoc.png', // 음식점 마커이미지의 주소입니다    
 	foodSize = new kakao.maps.Size(30, 25); // 음식점 마커이미지의 크기입니다 
 	//음식점 마커 이미지를 생성합니다
-	var foodImage = new kakao.maps.MarkerImage(foodSrc, foodSize);
+	const foodImage = new kakao.maps.MarkerImage(foodSrc, foodSize);
 
-		var fJson = ${fJson};
-		$(fJson).each(function(i,f) {
-			var latlngFood;
-			var foodMarker;
+		const listFoods = ${fJson};
+		listFoods.forEach(function(f, i) {
+			let latlngFood;
+			let foodMarker;
 			geocoder.addressSearch(f.food_addr, function(result, status) {			
 			    // 정상적으로 검색이 완료됐으면 
 			     if (status === kakao.maps.services.Status.OK) {
@@ -510,13 +445,12 @@ $(function(){
 			            });
 			    } 
 			});
-
-			 
 		})
 	
+	
 	function displayFood(f,latlngFood) {
-	    var content = '<div class="placeinfo">' +
-	                    '   <span class="title" id="foodLink" val="/detailFood?c_no='+f.c_no+'&food_no='+f.food_no +'" style="cursor: pointer; cursor: hand"  title="' + f.food_name + '">' +  f.food_name + '</span>';   
+	    let content = '<div class="placeinfo">' +
+	                    '   <span class="foodTitle"  val="/detailFood?c_no='+f.c_no+'&food_no='+f.food_no +'" style="cursor: pointer; cursor: hand"  title="' + f.food_name + '">' +  f.food_name + '</span>';   
 	    
 	        content += '    <span title="' + f.food_tag + '">' + ""+f.food_tag + '</span>';	             
 	   
@@ -527,135 +461,198 @@ $(function(){
 	    contentNode.innerHTML = content;
 	    placeOverlay.setPosition(latlngFood);
 	    placeOverlay.setMap(map);
-	    $("#foodLink").click(function() {
-			var link = $(this).attr("val");
-			window.open(link,"newWin","width=800px,height=450px,toolbar=no,resizable=no,location=no,menubar=no,directories=no,status=no");
-		})  
+	   
 	}
-		
-	$("#foodLink").click(function() {
-		var link = $(this).attr("val");
-		window.open(link,"newWin","width=800px,height=450px,toolbar=no,resizable=no,location=no,menubar=no,directories=no,status=no");
-	})
+
+	document.addEventListener("click", function(e) {
+		console.log(e.target);
+		//console.log(e.currentTarget);
+		if(e.target.className == 'foodTitle' || e.target.className =='foodBox'){
+			//foodDetail(e.target);
+			const link = e.target.getAttribute("val");
+			window.open(link,"newWin","width=800px,height=450px,toolbar=no,resizable=no,location=no,menubar=no,directories=no,status=no");
+		}
+	});
+	
+	
 	
 	//----------------------------------------------------음식점 마커표시 끝
 	
 	//////////////////////////////////////////////////////////////////// 대중교통출발점 지도
-
-	var PSmapContainer = document.getElementById('PSmap'), // 지도를 표시할 div 
+	const psCenter = new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude});
+	const peCenter = new kakao.maps.LatLng(${c.c_e_latitude}, ${c.c_e_longitude});
+	
+	const PSmapContainer = document.getElementById('PSmap'), // 지도를 표시할 div 
 		PSmapOption = { 
-	        center: new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude}),
+	        center: psCenter,
 	        level: 7 // 지도의 확대 레벨
 	    };
-	var PSmap = new kakao.maps.Map(PSmapContainer, PSmapOption); // 지도를 생성합니다
+	const PSmap = new kakao.maps.Map(PSmapContainer, PSmapOption); // 지도를 생성합니다
 
-	var PEmapContainer = document.getElementById('PEmap'), // 지도를 표시할 div 
+	const PEmapContainer = document.getElementById('PEmap'), // 지도를 표시할 div 
 		PEmapOption = { 
-	        center: new kakao.maps.LatLng(${c.c_e_latitude}, ${c.c_e_longitude}),
+	        center: peCenter,
 	        level: 7 // 지도의 확대 레벨
     	};
-	var PEmap = new kakao.maps.Map(PEmapContainer, PEmapOption); // 지도를 생성합니다
+	const PEmap = new kakao.maps.Map(PEmapContainer, PEmapOption); // 지도를 생성합니다
 
-	var ptJson = ${ptJson};
+	const psBounds = new kakao.maps.LatLngBounds();;
+	const peBounds = new kakao.maps.LatLngBounds();;
+	
+	const ptJson = ${ptJson};
 		console.log(ptJson);
-	$(ptJson).each(function(i, pt) {  //대중교통 출발점 도착점 나누기
-		if(pt.code_value == "00201"){  
-			var psLine=new kakao.maps.Polyline({
-			    map: PSmap,
-			    path:eval(pt.pt_line),
-			    strokeWeight: 4,
-			    strokeColor: '#FF2400',
-			    strokeOpacity: 0.7,
-			    strokeStyle: 'solid'
-			});	  
-			//출발점 대중교통 마커가 표시될 위치입니다 
-			var ptsPosition = new kakao.maps.LatLng(pt.pt_latitude, pt.pt_longitude);  
-			// 출발점 대중교통 마커를 생성합니다 
-			var ptsMarker = new kakao.maps.Marker({  
-			    map: PSmap, // 출발점 대중교통 마커가 지도 위에 표시되도록 설정합니다
-			    position: ptsPosition,
-			    image: ptImage // 출발점 대중교통 마커이미지를 설정합니다
-			});
-		}
-		else{
-			var peLine = new kakao.maps.Polyline({
-			    map: PEmap,
-			    path: eval(pt.pt_line),
-			    strokeWeight: 4,
-			    strokeColor: '#FF2400',
-			    strokeOpacity: 0.7,
-			    strokeStyle: 'solid'
-			});
-			//도작점 대중교통 마커가 표시될 위치입니다 
-			var ptePosition = new kakao.maps.LatLng(pt.pt_latitude, pt.pt_longitude); 
-			// 도착점 대중교통 마커를 생성합니다
-			var PEstartMarker = new kakao.maps.Marker({
-			    map: PEmap, // 대중교통 마커가 지도 위에 표시되도록 설정합니다
-			    position: ptePosition,
-			    image: ptImage // 대중교통 마커이미지를 설정합니다
-			});
-		}
-	})
+		ptJson.forEach(function(pt, i) { //대중교통 출발점 도착점 나누기
+			if(pt.code_value == "00201"){  
+				const psLine = eval(pt.pt_line);
+				new kakao.maps.Polyline({
+				    map: PSmap,
+				    path:psLine,
+				    strokeWeight: 4,
+				    strokeColor: '#FF2400',
+				    strokeOpacity: 0.7,
+				    strokeStyle: 'solid'
+				});	
+
+				psLine.forEach(function(ps, i) {
+					psBounds.extend(ps);
+				});
+				//출발점 대중교통 마커가 표시될 위치입니다 
+				const ptsPosition = new kakao.maps.LatLng(pt.pt_latitude, pt.pt_longitude);  
+				// 출발점 대중교통 마커를 생성합니다 
+				const ptsMarker = new kakao.maps.Marker({  
+				    map: PSmap, // 출발점 대중교통 마커가 지도 위에 표시되도록 설정합니다
+				    position: ptsPosition,
+				    image: ptImage // 출발점 대중교통 마커이미지를 설정합니다
+				});
+			}
+			else{
+				const peLine = eval(pt.pt_line);
+				new kakao.maps.Polyline({
+				    map: PEmap,
+				    path: peLine,
+				    strokeWeight: 4,
+				    strokeColor: '#FF2400',
+				    strokeOpacity: 0.7,
+				    strokeStyle: 'solid'
+				});
+				peLine.forEach(function(pe, i) {
+					peBounds.extend(pe);
+				});
+				//도작점 대중교통 마커가 표시될 위치입니다 
+				const ptePosition = new kakao.maps.LatLng(pt.pt_latitude, pt.pt_longitude); 
+				// 도착점 대중교통 마커를 생성합니다
+				const PEstartMarker = new kakao.maps.Marker({
+				    map: PEmap, // 대중교통 마커가 지도 위에 표시되도록 설정합니다
+				    position: ptePosition,
+				    image: ptImage // 대중교통 마커이미지를 설정합니다
+				});
+			}
+		})
+	setBound(PSmap, psBounds);
+	setBound(PEmap, peBounds);
 
 	//출발 마커가 표시될 위치입니다 
-	var PSstartPosition = new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude}); 
+	const PSstartPosition = new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude}); 
 	// 출발 마커를 생성합니다
-	var PSstartMarker = new kakao.maps.Marker({
+	const PSstartMarker = new kakao.maps.Marker({
 	    map: PSmap, // 출발 마커가 지도 위에 표시되도록 설정합니다
 	    position: PSstartPosition,
 	    image: startImage // 출발 마커이미지를 설정합니다
 	});
 	  
 	//도착 마커가 표시될 위치입니다 
-	var PEarrivePosition = new kakao.maps.LatLng(${c.c_e_latitude}, ${c.c_e_longitude});  
+	const PEarrivePosition = new kakao.maps.LatLng(${c.c_e_latitude}, ${c.c_e_longitude});  
 	// 도착 마커를 생성합니다 
-	var PEarriveMarker = new kakao.maps.Marker({  
+	const PEarriveMarker = new kakao.maps.Marker({  
 	    map: PEmap, // 도착 마커가 지도 위에 표시되도록 설정합니다
 	    position: PEarrivePosition,
 	    image: arriveImage // 도착 마커이미지를 설정합니다
 	});	
+
+	const tps = document.getElementById("transportS");
+	const tpe = document.getElementById("transportE");
+	const selectPS = document.getElementById("selectPS");
+	const selectPE = document.getElementById("selectPE");
+
+
+	selectPS.addEventListener("change", function(e) {
+		setBound(PSmap, psBounds);
+		setBound(PEmap, peBounds);
+		if(e.target.value == "1"){
+			tps.style.visibility="visible";
+			tps.style.display="inline-block";
+			tpe.style.visibility="hidden";
+			tpe.style.display="none";
+		}
+		else{
+			tpe.style.visibility="visible";
+			tpe.style.display="inline-block";
+			tps.style.visibility="hidden";
+			tps.style.display="none";
+		}
+			selectPS.selectedIndex = 0;
+	}, false)
+	
+	selectPE.addEventListener("change", function(e) {
+		setBound(PSmap, psBounds);
+		setBound(PEmap, peBounds);
+		if( e.target.value == "1"){
+			tps.style.visibility="visible";
+			tps.style.display="inline-block";
+			tpe.style.visibility="hidden";
+			tpe.style.display="none";
+		}
+		else{
+			tpe.style.visibility="visible";
+			tpe.style.display="inline-block";
+			tps.style.visibility="hidden";
+			tps.style.display="none";
+		}
+			selectPE.selectedIndex = 0;
+	}, false)
+	
+	tpe.style.display = "none";  //지도가 뭉개지는것을 방지하기위해 맨 마지막에 걸어준다
+	
 ///////////////////////////////////////////////////////////////////////////////////// 자전거 지도표시
-	var mapTypes = { //자전거맵 표시변수
+	const mapTypes = { //자전거맵 표시변수
 		    bicycle : kakao.maps.MapTypeId.BICYCLE
 		};
-	
-	$("#chkBicycle").change(function(){
-		var check = $(this).is(":checked");
+	document.getElementById("chkBicycle").addEventListener("change", function(e) {
+		const check = e.target.checked;
 		if(check){
 			map.addOverlayMapTypeId(mapTypes.bicycle);
 		}
 		else{
 			map.removeOverlayMapTypeId(mapTypes.bicycle);
 		}
-	
 	});
 	
 
 //////////////////////////////////////////////////////////////////////////////////////////// 따릉이마커 
 	kakao.maps.event.addListener(map, 'idle', removePlaceOveray);
 
-	var redC = '/detailCourseImg/redC.png'; // 따릉이 0개
-	var yellowC = '/detailCourseImg/yellowC.png'; // 따릉이 1~4개  
-	var greenC = '/detailCourseImg/greenC.png'; // 따릉이 5개 이상  
+	const redC = '/detailCourseImg/redC.png'; // 따릉이 0개
+	const yellowC = '/detailCourseImg/yellowC.png'; // 따릉이 1~4개  
+	const greenC = '/detailCourseImg/greenC.png'; // 따릉이 5개 이상  
 
-    var cycleSize = new kakao.maps.Size(8, 8); 
+	const cycleSize = new kakao.maps.Size(8, 8); 
 	
 	// 따릉 마커 이미지를 생성합니다
-	var redImage = new kakao.maps.MarkerImage(redC, cycleSize);
-	var yellowImage = new kakao.maps.MarkerImage(yellowC, cycleSize);
-	var greenImage = new kakao.maps.MarkerImage(greenC, cycleSize);
+	const redImage = new kakao.maps.MarkerImage(redC, cycleSize);
+	const yellowImage = new kakao.maps.MarkerImage(yellowC, cycleSize);
+	const greenImage = new kakao.maps.MarkerImage(greenC, cycleSize);
 		
 		
-	var cycleMakerArr = [];
-	$("#seoulCycle").change(function(){
-		var check = $(this).is(":checked");
-		var cnt = 0;
+	let cycleMakerArr = [];
+	document.getElementById("seoulCycle").addEventListener("change", function(e) {
+		const check = e.target.checked;
+		let cnt = 0;
 		if(check){
-			for(i=1; i<=2001; i+=1000){
+			for(let i=1; i<=2001; i+=1000){
 				$.ajax({
 					url:"http://openapi.seoul.go.kr:8088/6a625562487369773231685a644f53/json/bikeList/"+i+"/"+(i+999),
 					success:function(data){
-						var cycList = data.rentBikeStatus.row;
+						const cycList = data.rentBikeStatus.row;
 						$(cycList).each(function(i, el) {
 							cnt++;
 							console.log(cnt);
@@ -670,18 +667,19 @@ $(function(){
 			}
 		}
 		else{
-			$(cycleMakerArr).each(function(i, el) {
+			cycleMakerArr.forEach(function(el, i) {
 				el.setMap(null);
 			})
 
 			placeOverlay.setMap(null);
 			cycleMakerArr = [];
 		}
-	})
+	});
+
 	
 	function setCycleMarker(el){
-		var parkingCnt = el.parkingBikeTotCnt;
-		var cImg = greenImage;
+		const parkingCnt = el.parkingBikeTotCnt;
+		let cImg = greenImage;
 		if(parkingCnt == 0){
 			cImg = redImage;
 		}
@@ -689,9 +687,9 @@ $(function(){
 			cImg = yellowImage;
 		}
 		
-		var cyclePosition = new kakao.maps.LatLng(el.stationLatitude, el.stationLongitude);  
+		const cyclePosition = new kakao.maps.LatLng(el.stationLatitude, el.stationLongitude);  
 		// 따릉이 마커를 생성합니다 
-		var cycleMarker = new kakao.maps.Marker({  
+		const cycleMarker = new kakao.maps.Marker({  
 		    map: map,
 		    position: cyclePosition,
 		    image: cImg
@@ -703,7 +701,7 @@ $(function(){
 	}
 	
 	function displayC (place) {
-	    var content = '<div class="placeinfo">' +
+	    let content = '<div class="placeinfo">' +
 	                    '   <a class="title" href="https://www.bikeseoul.com/main.do" target="_blank" title="' + place.stationName + '">' + place.stationName + '</a>';   
 	
 	    
@@ -722,31 +720,13 @@ $(function(){
 	function removePlaceOveray(){
 		placeOverlay.setMap(null);
 	}
-
-})
+	
+	
+}
  </script>
 </head>
-<body onload="init()">
-<header>
-      <div id="logo">
-         <a href="/mainPage"><img src='/headerImg/logo.png' height="100"></a>
-      </div>
-      <div id="login">
-         <c:choose>
-      	<c:when test="${m == null }">
-      		<a href="/login">로그인</a>&nbsp;&nbsp;&nbsp;<a href="/signUp">회원가입</a>
-      	</c:when>
-      	<c:when test="${m != null }">
-      		${m.nickName } 라이더! &nbsp;&nbsp;<a href="/logout">로그아웃</a>&nbsp;&nbsp;<a href="modify.do">마이페이지</a>
-      	</c:when>
-      </c:choose>
-         <img src="img/myIcon.png" height="40">
-         &nbsp;&nbsp;
-      </div>
-      <div id="top">
-         오늘의 라이딩&nbsp;&nbsp;&nbsp;&nbsp;자전거길&nbsp;&nbsp;&nbsp;&nbsp;<a href="listReview.do">후기게시판</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="listMeeting.do">번개게시판</a>&nbsp;&nbsp;&nbsp;&nbsp;정보게시판
-      </div>
-   </header>
+<body>
+<jsp:include page="header.jsp"/>
       <div id="clear"></div>
   	<section>
   		<div id="detailTitle">
@@ -822,7 +802,7 @@ $(function(){
     </ul>
   		</div>
   		<div style="text-align: left;">
-  		<input type="checkbox" id="chkBicycle" /> 자전거도로 정보 보기
+  		<input type="checkbox" id="chkBicycle" /> 자전거도로 정보 보기  <button id="cBound">경로 한눈에 보기</button>
   		</div>
   		<div style="text-align: left;">
   		무인자전거대여소  서울(따릉이)<input type="checkbox" id="seoulCycle"> [대여가능수 <img src="/detailCourseImg/redC.png"> 0대 <img src="/detailCourseImg/yellowC.png"> 1~4대 <img src="/detailCourseImg/greenC.png"> 5대 이상]
@@ -906,15 +886,14 @@ $(function(){
   				</div>
   			</div>
   		</div>
+  		
   		<div id="addInfo">
   			<div style="border-bottom: solid 1px gray;" id="addInfoTitle"><img src="/detailCourseImg/food.png"> 맛집-오라pick</div>
   			<c:forEach var="f" items="${fList }">
   				<c:if test='${f.food_photo != null && f.food_photo.size() != 0}'>
-	  				<span id="foodLink" val="/detailFood?c_no=${f.c_no }&food_no=${f.food_no }" style="cursor: pointer; cursor: hand" >
-		  				<div id="foodBox" style="background-image: url('food/${f.food_photo.get(0).fp_name}'); background-size: cover;">		
-		  					<div id="foodBoxName"><span>${f.food_name }</span></div> 				
-	  					</div>
-	  				</span>
+		  				<div class="foodBox" val="/detailFood?c_no=${f.c_no }&food_no=${f.food_no }" style="background-image: url('food/${f.food_photo.get(0).fp_name}'); background-size: cover;cursor: pointer; cursor: hand;">
+		  					<div class="foodBoxName"><span>${f.food_name }</span></div> 				
+	  					</div>		
   				</c:if>
   			</c:forEach>
   		</div>
@@ -924,21 +903,6 @@ $(function(){
   	</section>
   	
   	<div id="clear"></div>
-  	
-   <footer>
-      <div id='footer_box'>
-            <div id="footer_icon" >
-               <img src='/footerImg/instagram.png' height="50px">
-               <img src='/footerImg/facebook.png' height="50px">
-               <img src='/footerImg/twitter.png' height="50px">
-               <ul id="address">
-                  <li>04108 | 서울시 마포구 백범로 23 구프라자 3층</li>
-                  <li>TEL: 02-707-1480 | Email: ora@bit.com</li>
-                  <li>COPYRIGHT (C)2020 오늘의 라이딩 ALL RIGHTS RESERVED</li>
-               </ul>
-            </div>
-            
-         </div>
-   </footer>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>

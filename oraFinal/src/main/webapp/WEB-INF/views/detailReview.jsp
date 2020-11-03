@@ -36,15 +36,28 @@ section {
 $(document).ready(function(){
 	var textarea = $("<textarea></textarea>").attr({
 		rows: "3",
-		cols: "60"
+		cols: "65"
 	});
-	var button = $("<button></button>").text("등록");
-	$("#replyTextArea").append(textarea,button);
 
+	
+	var button = $("<button></button>").text("등록");
 	$(".btnReply").click(function(){
 		$(this).parent(".reply").children(".replyTextArea").append(textarea,button);
 	});
+	$("#btnReply").click(function(){
+		$("#replyTextArea").append(textarea,button);
+	});
+	$(".btnReply").click(function(event){
+		event.preventDefault();
+	});
+
+	var querystring = location.search;	// r_no=1
+	var n = querystring.indexOf("=");	// 4
+	var r_no = querystring.substring(n+1,querystring.length);	// 1
 });
+function getRvo(){
+	$.ajax({});
+}
 </script>
 </head>
 <body>
@@ -55,15 +68,13 @@ $(document).ready(function(){
 		<p style="font-size: 15px">라이딩 경험을 공유해요.</p>
 		
 		<br><br>
-	
+		
 		<p style="font-size: 30px">${rvo.r_title }</p><br>	
 			<img src="rank/${rvo.rank_icon }" height="25">
 			${rvo.nickName }&nbsp;&nbsp;
 			${rvo.r_regdate }&nbsp;&nbsp;
 			조회수 ${rvo.r_hit }
-	
 		<br>
-		
 		<hr>
 		<div style="padding: 3px;">코스 : ${rvo.c_name }</div>
 		<hr>
@@ -77,10 +88,14 @@ $(document).ready(function(){
 		${rvo.r_content }
 		<br><br><br><br>
 		
+		<div id="replyTextArea"></div>
 		<!-- 수정,삭제 버튼 -->
 		<c:if test="${rvo.id == m.id }">
 			<a href="deleteReview?r_no=${rvo.r_no }"><img src="buttons/delete.png" class="button"></a>
 			<a href="updateReview?r_no=${rvo.r_no }"><img src="buttons/edit.png" class="button"></a>
+		</c:if>
+		<c:if test="${m != null }">
+			<a href="" class="btnReply"><img src="buttons/reply.png" width="50px" align="right" id="btnReply"></a>
 		</c:if>
 		<br><br>
 	
@@ -101,12 +116,14 @@ $(document).ready(function(){
 					</c:if>
 					${rrvo.rr_content }<br>
 				</div>
-				<img src="buttons/reply.png" width="50px" align="right" class="btnReply">
+				<c:if test="${m != null }">
+					<a href="" class="btnReply"><img src="buttons/reply.png" width="50px" align="right" class="btnReply"></a>
+				</c:if>
 				<div class="replyTextArea"></div>
 			</div>
 			<br><br><br>
 		</c:forEach>
-		<div id="replyTextArea"></div>
+		
 		
 		<!-- 
 		댓글등록

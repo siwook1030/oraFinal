@@ -20,13 +20,17 @@ public class MeetingDao {
 		return MeetingManager.detailMeeting(m_no);
 	}
 	
+	public Meeting_repVo getMRep(int mr_no) {
+		return MeetingManager.getMRep(mr_no);
+	}
+	
 	public List<Meeting_fileVo> detailMFile(int m_no) {
 		return MeetingManager.detailMFile(m_no);
 	}
 	
 	
-	public List<Meeting_repVo> detailMRep(int m_no) {
-		return MeetingManager.detailMRep(m_no);
+	public List<Meeting_repVo> detailMRep(HashMap map) {
+		return MeetingManager.detailMRep(map);
 	}
 	
 	
@@ -42,6 +46,9 @@ public class MeetingDao {
 		return MeetingManager.insertMRep(mr);
 	}
 	
+	public int updateMRep(Meeting_repVo mr) {
+		return MeetingManager.updateMRep(mr);
+	}
 	
 	public int deleteMeeting(int m_no) {
 		return MeetingManager.deleteMeeting(m_no);
@@ -51,8 +58,8 @@ public class MeetingDao {
 		return MeetingManager.deleteMFile(m_no);
 	}
 	
-	public int deleteMr(int m_no) {
-		return MeetingManager.deleteMRep(m_no);
+	public int deleteMr(int mr_no) {
+		return MeetingManager.deleteMRep(mr_no);
 	}
 	
 	
@@ -85,6 +92,9 @@ public class MeetingDao {
 	}
 	public List<MeetingVo> myPageListMeeting(HashMap map){
 		return MeetingManager.myPageListMeeting(map);
+	}
+	public int nextStep(int mr_ref) {
+		return MeetingManager.nextStep(mr_ref);
 	}
 	
 }

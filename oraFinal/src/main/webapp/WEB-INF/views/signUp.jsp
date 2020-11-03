@@ -61,7 +61,8 @@
 
 </style>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script type="text/javascript" src="/js/signUp.js"></script>
+<script type="text/javascript" src="/js/signUp.js">
+</script>
 </head>
 <body>
 <h1>ORA 회원가입</h1>
@@ -80,8 +81,8 @@
 					<input id="name" name="name" type="text"  maxlength="6" placeholder="name ex)홍길동">
 				</div>
 				<div id="radioBox">
-					여자<input type="radio" id="gender" name="gender" value="W" checked="checked">
-					남자<input type="radio" id="gender" name="gender" value="M">
+					여자<input type="radio" id="genderW" name="gender" value="W" checked="checked">
+					남자<input type="radio" id="genderM" name="gender" value="M">
 				</div>
 				<div id="form">
 					<input id="nickName" name="nickName" type="text" maxlength="8" placeholder="닉네임(최대 8자리)">

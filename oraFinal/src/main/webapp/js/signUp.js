@@ -1,84 +1,101 @@
-$(function(){
+window.onload = function(){
+	console.log("작동함");
+	const id = document.getElementById("id");
+	const pwd = document.getElementById("password");
+	const pwdCheck = document.getElementById("passwordCheck");
+	const name = document.getElementById("name");
+	const nickName = document.getElementById("nickName");
+	const phone = document.getElementById("phone");
+	const sendPhone = document.getElementById("sendPhone");
+	const chekingPhone = document.getElementById("chekingPhone");
+	const chekedPhone = document.getElementById("chekedPhone");
+	const checkNum = document.getElementById("checkNum");
+	const inputNum = document.getElementById("inputNum");
+	const inf = document.getElementById("inputNumForm");
+	const signUpBtn = document.getElementById("signUp");
 
+
+	sendPhone.onclick=sendPhoneReq;	
+	checkNum.onclick=checkNumReq;	
+	signUpBtn.onclick=signUp;
+	/*
 	$('#sendPhone').click(function(){
 		sendPhone();
 	})
-	
 	$('#checkNum').click(function(){
 		checkNum();
 	})
-	
-	
 	$('#signUp').click(function(){
 		signUp();
-	})				
+	})	*/
 
-
+	console.log("작동함22");
 function signUp(){
-		var idAvail = /^[a-z][a-z\d]{8,12}$/;
-		var pwAvail = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^*()\-_=+\\\|\[\]{};:\'",.<>\/?]).{8,12}$/;
-		var nameAvail = /^[가-힣]{2,6}$/;
-		var nickNameAvail = /^[가-힣a-zA-Z0-9]{2,8}$/;
+		console.log("작동함");
+		const idAvail = /^[a-z][a-z\d]{8,12}$/;
+		const pwAvail = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^*()\-_=+\\\|\[\]{};:\'",.<>\/?]).{8,12}$/;
+		const nameAvail = /^[가-힣]{2,6}$/;
+		const nickNameAvail = /^[가-힣a-zA-Z0-9]{2,8}$/;
 		
-		var idAvailCheck = idAvail.test($.trim($('#id').val()));
-		var pwAvailCheck = pwAvail.test($.trim($('#password').val()));
-		var nameAvailCheck = nameAvail.test($.trim($('#name').val()));
-		var nickNameAvailCheck = nickNameAvail.test($.trim($('#nickName').val()));
+		const idAvailCheck = idAvail.test(id.value.trim());
+		const pwAvailCheck = pwAvail.test(pwd.value.trim());
+		const nameAvailCheck = nameAvail.test(name.value.trim());
+		const nickNameAvailCheck = nickNameAvail.test(nickName.value.trim());
 		
 		console.log(idAvailCheck);
 		console.log(pwAvailCheck);
 		console.log(nameAvailCheck);
 		console.log(nickNameAvailCheck);
 
-			if($.trim($('#id').val()) == ''){
+			if(id.value.trim() == ''){
 				alert("ID를 입력하세요.");
-				$('#id').focus();
+				id.focus();
 				return;
 			}
 			else if(idAvailCheck == false){
 				alert("ID형식이 올바르지 않습니다(8~12자 영어소문자,숫자).");
-				$('#id').focus();
+				id.focus();
 				return;
 			}
-			else if($.trim($('#password').val()) == ''){
+			else if(pwd.value.trim() == ''){
 				alert("Password를 입력하세요.");
-				$('#password').focus();
+				pwd.focus();
 				return;
 			}
 			else if(pwAvailCheck == false){
 				alert("비밀번호 형식이 올바르지 않습니다(8~12자 영문자+숫자+특수문자1개이상).");
-				$('#password').focus();
+				pwd.focus();
 				return;
 			}
 			//패스워드 확인
-			else if($('#password').val() != $('#passwordCheck').val()){
+			else if(pwd.value != pwdCheck.value ){
 				alert('Password가 일치하지 않습니다.');
-				$('#password').focus();
+				pwd.focus();
 				return;
 			}
-			else if($.trim($('#name').val()) == ''){
+			else if(name.value.trim() == ''){
 				alert("이름을 입력하세요");
-				$('#name').focus();
+				name.focus();
 				return;
 			}
 			else if(nameAvailCheck == false){
 				alert("이름 형식이 올바르지 않습니다(한글 2~6자).");
-				$('#name').focus();
+				name.focus();
 				return;
 			}
-			else if($.trim($('#nickName').val()) == ''){
+			else if(nickName.value.trim() == ''){
 				alert("닉네임을 입력하세요.");
-				$('#nickName').focus();
+				nickName.focus();
 				return;
 			}
 			else if(nickNameAvailCheck == false){
 				alert("닉네임 형식이 올바르지 않습니다(한글,영문자,숫자 2~8자).");
-				$('#nickName').focus();
+				nickName.focus();
 				return;
 			}
-			else if($.trim($('#phone').val()) == ''){
+			else if(phone.value.trim() == ''){
 				alert("휴대전화를 입력하세요");
-				$('#phone').focus();
+				phone.focus();
 				return;
 			}
 			
@@ -86,24 +103,24 @@ function signUp(){
 
 			if(check() != 0){
 				alert("중복된 아이디입니다");
-				$('#id').focus();
+				id.focus();
 				return;
 			}
 			if(checkNick() != 0){
 				alert("중복된 닉네임입니다");
-				$('#nickName').focus();
+				nickName.focus();
 				return;
 			}
 
 
-			if($('#chekingPhone').val() == 'N'){
+			if(chekingPhone.value == 'N'){
 				alert("휴대전화를 인증해주세요.");
-				$('#sendPhone').focus();
+				sendPhone.focus();
 				return;
 			}
-			else if($('#chekedPhone').val() != $.trim($('#phone').val())){
+			else if(chekedPhone.value != phone.value.trim()){
 				alert("휴대전화를 인증해주세요.");
-				$('#sendPhone').focus();
+				sendPhone.focus();
 				return;
 			}
 			else{
@@ -114,7 +131,7 @@ function signUp(){
 }		
 
 function signUpOk(){
-		
+
 		$.ajax({
 				url: "/signUp",
 				type: "POST",
@@ -135,19 +152,19 @@ function signUpOk(){
 }
 
 	
-function sendPhone(){
-	inf = document.getElementById("inputNumForm");
-	var phAvail = /^01[0179][0-9]{7,8}$/;
-	var phAvailCheck = phAvail.test($.trim($('#phone').val()));	
+function sendPhoneReq(){
 	
-			if($.trim($('#phone').val()) == ''){
+	const phAvail = /^01[0179][0-9]{7,8}$/;
+	const phAvailCheck = phAvail.test(phone.value.trim());	
+	
+			if(phone.value.trim() == ''){
 				alert("휴대전화번호를 입력하세요.");
-				$('#phone').focus();
+				phone.focus();
 				return;
 			}
 			else if(phAvailCheck == false){
 				alert("유효하지 않은 번호입니다.");
-				$('#phone').focus();
+				phone.focus();
 				return;
 			}
 			
@@ -155,15 +172,18 @@ function sendPhone(){
 				url: "/smsSend",
 				type: "GET",
 				data:{
-					"phoneNum":$.trim($('#phone').val())
+					"phoneNum":phone.value.trim()
 				},
 				success: function(data){
 					if(data == "1"){
-						$('#chekedPhone').attr("value",$.trim($('#phone').val()));
+						chekedPhone.value = phone.value.trim();
+						//$('#chekedPhone').attr("value",$.trim($('#phone').val()));
 						alert("인증번호가 발송되었습니다.");
 						inf.style.visibility="visible";
-						$('#inputNum').val('');
-						$('#inputNum').focus();
+						inputNum.value="";
+						inputNum.focus();
+						//$('#inputNum').val('');
+						//$('#inputNum').focus();
 					}else{
 						alert("인증번호 발송에 실패하였습니다.");
 					}
@@ -175,17 +195,16 @@ function sendPhone(){
 			
 }
 
-function checkNum(){
-	 inf = document.getElementById("inputNumForm");
+function checkNumReq(){
 	
-			if($.trim($('#inputNum').val()) == ''){
+			if(inputNum.value.trim() == ''){
 				alert("인증번호를 입력하세요.");
-				$('#inputNum').focus();
+				inputNum.focus();
 				return;
 			}
-			else if($.trim($('#inputNum').val()).length != 6){
+			else if(inputNum.value.trim().length != 6){
 				alert("인증번호는 6자리입니다.");
-				$('#inputNum').focus();
+				inputNum.focus();
 				return;
 			}
 					
@@ -193,13 +212,15 @@ function checkNum(){
 				url: "/smsSend",
 				type: "POST",
 				data:{
-					"num":$.trim($('#inputNum').val())
+					"num":inputNum.value.trim()
 				},
 				success: function(data){
 					if(data == '1'){
 						alert("인증되었습니다.");
-						$('#chekingPhone').attr("value","Y");
-						$('#inputNum').val('');
+						chekingPhone.value="Y";
+						inputNum.value="";
+						//$('#chekingPhone').attr("value","Y");
+					//	$('#inputNum').val('');
 						inf.style.visibility="hidden";
 					}else{
 						alert("인증번호가 일치하지 않습니다.");
@@ -213,13 +234,13 @@ function checkNum(){
 }
 
 function check(){
-		var idCheckNum = 1;
+		let idCheckNum = 1;
 			 $.ajax({
 				url: "/idCheck",
 				async: false,
 				type: "POST",
 				data:{
-					"id":$.trim($('#id').val())
+					"id":id.value.trim()
 				},
 				success: function(data){
 					if(data == "0"){
@@ -238,13 +259,13 @@ function check(){
 }
 
 function checkNick(){
-		var nickCheck = 1;
+		let nickCheck = 1;
 			$.ajax({
 				url: "/nickCheck",
 				type: "POST",
 				async: false,
 				data:{
-					"nickName":$.trim($('#nickName').val())
+					"nickName":nickName.value.trim()
 				},
 				success: function(data){
 					if(data == 0){
@@ -261,4 +282,4 @@ function checkNick(){
 		return nickCheck;		
 }
 
-})
+}

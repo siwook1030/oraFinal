@@ -8,16 +8,20 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.ResponseDataCode;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.dao.MeetingDao;
 import com.example.demo.dao.MemberDao;
 import com.example.demo.vo.MeetingVo;
 import com.example.demo.vo.MemberVo;
+import com.example.demo.vo.ResponseDataVo;
 import com.google.gson.Gson;
 
 import lombok.Setter;
@@ -25,17 +29,18 @@ import lombok.Setter;
 @Controller
 public class MeetingController {
 	@Autowired
-	@Setter
 	private MeetingDao mdao;
 	
 	@Autowired
-	@Setter
 	private CourseDao cdao;
 	
 	public static int totRecord = 0; // 총 게시글 수
 	public static int recordSize = 3; // 한 번에 보이는 게시글 수
 	public static int totPage = 0; // 총 페이지 수
 	public static int pageSize = 2; // 한 번에 보이는 페이지 수
+	
+	public static int recordSizeR = 10; // 한 번에 보이는 댓글게시글 수
+	public static int pageSizeR = 5; // 한 번에 보이는 댓글페이지 수
 	
 	@RequestMapping("/listMeeting")
 	public void listMeeting(Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo, MeetingVo m ,HttpSession httpSession) {
@@ -79,22 +84,53 @@ public class MeetingController {
 		model.addAttribute("list", mdao.listMeeting(map));
 	}
 	
-	@RequestMapping("/detailMeeting")
-	public void detailMeeting(Model model, int m_no, MeetingVo m) {
+	@RequestMapping(value = "/detailMeeting", produces = "application/json;charset=utf-8")
+	public void detailMeeting(HttpServletRequest request, Model model, int m_no, MeetingVo m) {
+		String path = request.getRealPath("/courseLine")+"/";
 		mdao.updateHit(m_no);
 		MeetingVo mt = mdao.detailMeeting(m_no);
 		int c_no = mt.getC_no();
-		model.addAttribute("mt", mt);
-		model.addAttribute("cntRep", mdao.cntRep(m_no));
-		model.addAttribute("mr", mdao.detailMRep(m_no));
+		
+		int totalRecordR = mdao.cntRep(m_no);
+		int totalPageNum = (int)Math.ceil((double)totalRecordR/recordSizeR);
+		System.out.println("토탈페이지넘 : " +totalPageNum);
+		int start = 1;
+		int end = start+recordSizeR-1;
+			
+		HashMap map = new HashMap();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("m_no", m_no);
+		
+		Gson gson = new Gson();
+		//model.addAttribute("mrList", gson.toJson(mdao.detailMRep(map)));
+		model.addAttribute("m_no", gson.toJson(m_no));
+		model.addAttribute("totalRecordR", gson.toJson(totalRecordR));
+		model.addAttribute("totalPageNum", gson.toJson(totalPageNum));
+		model.addAttribute("pageSizeR", gson.toJson(pageSizeR));
+		model.addAttribute("c", cdao.getCourseByCno(c_no, path));
+		
+		model.addAttribute("mt", mt);			
 		model.addAttribute("mf", mdao.detailMFile(m_no));
 	}
 	
-	@RequestMapping(value = "/detailMRep", produces = "application/json;charset=utf-8")
+	@GetMapping(value = "/detailMRep", produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public String detailMrep(int m_no) {
+	public String detailMrep(int m_no, int num) {
+		int end = num*recordSizeR;
+		int start = end-recordSizeR+1;
+		HashMap map = new HashMap();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("m_no", m_no);
+		
+		int totalRecordR = mdao.cntRep(m_no);
+		int totalPageNum = (int)Math.ceil((double)totalRecordR/MeetingController.recordSizeR);
+		map.put("mrList", mdao.detailMRep(map));
+		map.put("totalRecordR", totalRecordR);
+		map.put("totalPageNum", totalPageNum);
 		Gson gson = new Gson();
-		return gson.toJson(mdao.detailMRep(m_no));
+		return gson.toJson(map);
 	}
 	
 	@RequestMapping("/deleteMeeting")
@@ -172,6 +208,20 @@ public class MeetingController {
 		
 		model.addAttribute("pageStr", pageStr);
 		model.addAttribute("list", mdao.myPageListMeeting(map));
+	}
+	
+	@PostMapping(value = "/user/deleteMeetingRep", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String deleteMeetingRep(int m_no, int mr_no) {
+		int re = 0;
+		re = mdao.deleteMr(mr_no);
+		
+		ResponseDataVo responseDataVo = new ResponseDataVo();
+		responseDataVo.setCode(ResponseDataCode.ERROR);
+		if(re>0) {
+			responseDataVo.setCode(ResponseDataCode.SUCCESS);
+		}
+		return new Gson().toJson(responseDataVo);
 	}
 	
 }

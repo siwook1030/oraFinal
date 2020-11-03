@@ -8,31 +8,7 @@
 <link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
 <title>오늘의라이딩</title>
 <style type="text/css">
-     * {
-      margin: 0px;
-      padding: 0px;
-   }
-   header {
-      width: 1000px;
-      height: 100px;
-      margin-top: 10px;
-      font-family: 'NEXON Lv1 Gothic Low OTF';
-      border: solid 1px red;
-      margin: 10px auto;
-   }
-   #logo {
-       float: left; 
-   }
-   #top {
-      margin: 30px 20px 0 0;
-      font-size: 12px;
-      float: right;
-      text-align: right;   
-   }
-   #login {
-      font-size: 11px;
-      text-align: right;
-   }
+  
    /*매인섹션부분css------------ ----------------*/
    section {
    	margin: 0 auto;
@@ -104,27 +80,7 @@
   	background-size: cover;
   }
    /*메인섹션 끝css--------------------------*/
-   footer {
-   margin: 30px auto;
-       width: 1000px;
-       height: 150px;
-       font-family: 'NEXON Lv1 Gothic Low OTF';
-       border: solid 1px green;
-      }
-    #footer_box {
-       width: 1000px;
-       height: 150px;
-       margin: 0 auto;
-       text-align: center;
-      
-    }
-    #footer_icon{
-       margin: 0 auto;
-    }
-    #address {
-       margin: 10px 0 0 0;
-       font-size: 11px;
-    }
+
    /*float 초기화 아이디*/
    #clear{
    	clear: both; 
@@ -136,10 +92,49 @@
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="/js/shuffleArray.js"></script>
 <script type="text/javascript">
-$(function(){
+window.onload = function(){
 
-})
+	const rcViewWord = document.getElementById("rcViewWord");
+	const rcList = document.getElementById("rcList");
+	
+	const cListByView = ${cListByView}; // 뷰를 구분으로 코스리스트를 담은 리스트 헤더에 사용할거임
+
+	const vNameList = ${vNameList}; // 뷰단어를 담은 리스트
+	const recomendList = ${cListByView};  // 추천코스리스트 랜덤을 돌려야하기때문에 따로 또 받음
+	const recomendNum = 3; // 추천코스리스트를 보여줄 수 0부터시작함
+
+	function setRecomendList(){  // 추천코스부분 만들어줄 함수
+		const rNum =  Math.floor(Math.random()*recomendList.length);
+		const vName = vNameList[rNum];
+		const vList = recomendList[rNum];
+		vList.shuffle();
+		const subVlist = vList.slice(0, recomendNum);
+		console.log(subVlist);
+		let rcContent = "";
+		
+		subVlist.forEach(function(c, i) {
+			rcContent += '<a href="detailCourse?c_no='+c.c_no+'">';
+			if(c.c_photo.length == 0){
+				rcContent += '<div id="rcBox" style="background-image: url(/coursePhoto/nullcPhoto.png); background-size: cover;">';
+			}
+			else{
+				rcContent += '<div id="rcBox" style="background-image: url(/coursePhoto/'+c.c_photo[0].cp_name+'); background-size: cover;">';
+			}
+			
+			rcContent += '<div id="rcBoxName"><span>'+c.c_name+'</span></div></div></a>';			
+		})
+		rcViewWord.innerHTML = vName;
+		rcList.innerHTML = rcContent;
+	}
+	
+	setRecomendList(); // 처음 로드시 나타내준다
+	setInterval(setRecomendList, 3000);  // 계속하여 랜덤으로 보여주기위해 인터벌걸어준다
+	
+
+
+}
 </script>
 </head>
 <body>
@@ -165,23 +160,19 @@ $(function(){
          <a href="listMeeting">번개게시판</a>&nbsp;&nbsp;&nbsp;&nbsp;정보게시판
       </div>
  </header>
+<jsp:include page="header.jsp"/>
       <div id="clear"></div>
   	<section>
   	<div id="mainPhoto" style="width: 100%; height: 500px; background-image: url('/mainPageImg/mainPhoto1.png');background-size: cover;"></div>
   		<h4><span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
   		<font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></font>과 함께 달려보세요!</h4>
-  		
+  		<  
   		<div id="recommendCourse">
   		<div id="rcTitle">
-  		Today's&nbsp;Riding<span style="font: italic bold 1.5em/1em Georgia,serif; font-size:15px; color: gray;">&nbsp;&nbsp;&nbsp;view is ${view }</span>
+  		Today's&nbsp;Riding<span style="font: italic bold 1.5em/1em Georgia,serif; font-size:15px; color: gray;">&nbsp;&nbsp;&nbsp;view is <span id="rcViewWord">${view }</span></span>
   		</div>
   		<br>
   		<div id="rcList">
-  				<c:forEach var="c" items="${clist }">
-  				<a href="detailCourse?c_no=${c.c_no }"><div id="rcBox" style="background-image: url('/coursePhoto/${c.c_photo.get(0).cp_name}'); background-size: cover;">		
-  				<div id="rcBoxName"><span>${c.c_name }</span></div> 				
-  				</div></a>
-  				</c:forEach>
   		</div>
   		</div>
   		<div id="helpDesk">
@@ -197,23 +188,7 @@ $(function(){
   		</div>
   		</div>
   	</section>
-  	
   	<div id="clear"></div>
-  	
-   <footer>
-      <div id='footer_box'>
-            <div id="footer_icon" >
-               <img src='/footerImg/instagram.png' height="50px">
-               <img src='/footerImg/facebook.png' height="50px">
-               <img src='/footerImg/twitter.png' height="50px">
-               <ul id="address">
-                  <li>04108 | 서울시 마포구 백범로 23 구프라자 3층</li>
-                  <li>TEL: 02-707-1480 | Email: ora@bit.com</li>
-                  <li>COPYRIGHT (C)2020 오늘의 라이딩 ALL RIGHTS RESERVED</li>
-               </ul>
-            </div>
-            
-         </div>
-   </footer>
+  	<jsp:include page="footer.jsp"/>
 </body>
 </html>

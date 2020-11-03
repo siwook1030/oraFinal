@@ -11,6 +11,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -65,29 +67,27 @@ private static final int recommendNum = 3;
 		return re;
 	}
 	
-	public static List<CourseVo> recommendList(String view) {  // 메인페이지 추천
+	public static List<CourseVo> getCourseByView(String view) {  // 메인페이지 추천
 		List<CourseVo> clist = new ArrayList<CourseVo>();
 		SqlSession session = sqlSessionFactory.openSession();
 		clist = session.selectList("course.selectByView", view);
-		Collections.shuffle(clist);
-		clist = clist.subList(0, recommendNum);
 		for(CourseVo c : clist) {
 			c.setC_views(c.getC_view().split("-"));
 			List<CoursePhotoVo> cpList = session.selectList("course.selectCoursePhoto", c.getC_no());
 			Collections.shuffle(cpList);
 			c.setC_photo(cpList);
 		}
-		System.out.println(clist);
+	//	System.out.println(clist);
 		session.close();
 		return clist;
 	}
 	
-	public static CourseVo getCourseByCno(int c_no) {
+	public static CourseVo getCourseByCno(int c_no, String path) {
 		CourseVo c = null;
 		SqlSession session = sqlSessionFactory.openSession();
 		c = session.selectOne("course.selectByCno", c_no);
 		c.setC_views(c.getC_view().split("-"));
-		c.setC_line(getCline(c.getC_line()));
+		c.setC_line(getCline(c.getC_line(), path));
 		List<CoursePhotoVo> cpList = session.selectList("course.selectCoursePhoto", c_no);			
 		Collections.shuffle(cpList);
 		if(cpList.size() == 0 ) {
@@ -149,17 +149,14 @@ private static final int recommendNum = 3;
 		return scList;
 	}
 	
-	public static CourseVo selectByCnoandUserDis(HashMap map) {
-		CourseVo c = null;
+	public static int cnameDupCheck(String c_name) {
+		int re = 1;
 		SqlSession session = sqlSessionFactory.openSession();
-		c = session.selectOne("course.selectByCnoandUserDis", map);
-		c.setC_views(c.getC_view().split("-"));
-		List<CoursePhotoVo> cpList = session.selectList("course.selectCoursePhoto", (int)map.get("c_no"));
-		Collections.shuffle(cpList);
-		c.setC_photo(cpList);
+		re = session.selectOne("course.cnameDupCheck", c_name);
 		session.close();
 		
-		return c;
+		return re;
+		
 	}
 	
 	public static List<PublicTransportVo> getPublicTransportByCno(int c_no){
@@ -197,11 +194,23 @@ private static final int recommendNum = 3;
 		return f;
 	}
 	
+	private static CourseVo selectByCnoandUserDis(HashMap map) {
+		CourseVo c = null;
+		SqlSession session = sqlSessionFactory.openSession();
+		c = session.selectOne("course.selectByCnoandUserDis", map);
+		c.setC_views(c.getC_view().split("-"));
+		List<CoursePhotoVo> cpList = session.selectList("course.selectCoursePhoto", (int)map.get("c_no"));
+		Collections.shuffle(cpList);
+		c.setC_photo(cpList);
+		session.close();
+		
+		return c;
+	}
 	
-	private static String getCline(String filename) {
+	private static String getCline(String filename, String path) {
 		String c_line = "";
 		try {
-			File file = new File(CourseController.c_linePath+filename);
+			File file = new File(path+filename);
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			String line = "";
@@ -251,16 +260,6 @@ private static final int recommendNum = 3;
 	
 	
 	
-	private static String getTime(int minute) { // 디비에 분으로되어있는 시간을 시간과분으로 나타내기위한 처리작업
-		 String c_time = "";  
-		 if(minute/60 >0) {
-			 c_time += (minute/60)+"시간 ";
-		 }
-		 if(minute%60 >0) {
-			 c_time += (minute%60)+"분";
-		 }
-		 return c_time;
-	}
 }
 
 
