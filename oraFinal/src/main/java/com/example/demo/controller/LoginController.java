@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.HashMap;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -45,13 +47,15 @@ public class LoginController {
 	@PostMapping(value = "/checkLogin", produces = "application/json;charset=utf-8")
 	@ResponseBody
 	public String checkLogin(HttpSession session) {
+		HashMap map = new HashMap();
 		ResponseDataVo responseDataVo = new ResponseDataVo();
-		responseDataVo.setCode(ResponseDataCode.ERROR);
-		responseDataVo.setItem("");
+		map.put("id", "");
+		map.put("code_value", "");
 		if(session.getAttribute("m") != null) {
 			MemberVo m = (MemberVo)session.getAttribute("m");
-			responseDataVo.setCode(ResponseDataCode.SUCCESS);
-			responseDataVo.setItem(m.getId());
+			map.put("id", m.getId());
+			map.put("code_value", m.getCode_value());
+			responseDataVo.setItem(map);
 		}
 		System.out.println("리스폰스대이타브이오 : " + responseDataVo);
 		return new Gson().toJson(responseDataVo);
