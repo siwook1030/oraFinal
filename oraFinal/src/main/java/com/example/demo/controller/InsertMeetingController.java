@@ -1,7 +1,8 @@
 package com.example.demo.controller;
 
 import java.io.FileOutputStream;
-import java.io.UnsupportedEncodingException;
+
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -15,11 +16,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.ResponseDataCode;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.dao.MeetingDao;
 import com.example.demo.vo.MeetingVo;
 import com.example.demo.vo.Meeting_fileVo;
+
 import com.example.demo.vo.MemberVo;
+import com.example.demo.vo.Meeting_repVo;
+import com.example.demo.vo.MemberVo;
+import com.example.demo.vo.ResponseDataVo;
+
 import com.google.gson.Gson;
 
 import lombok.Setter;
@@ -112,9 +119,44 @@ public class InsertMeetingController {
 	
 	@GetMapping(value = "/getCourseByMeeting", produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String getCourseByMeeting(int c_no) {
+	public String getCourseByMeeting(HttpServletRequest request,int c_no) {
+		String path = request.getRealPath("/courseLine")+"/";
 		Gson gson = new Gson();
-		return gson.toJson(cdao.getCourseByCno(c_no));
+		return gson.toJson(cdao.getCourseByCno(c_no, path));
+	}
+	
+	@PostMapping(value = "/user/insertMeetingRep", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String insertMeetingRep(HttpSession session, int m_no, int pmr_ref, String content, String nickName) throws Exception {
+		if(session.getAttribute("m") == null) {
+			throw new Exception();
+		}
+		
+		MemberVo m = (MemberVo)session.getAttribute("m");
+
+		int mr_no = mdao.NextMrNum();
+		String id = m.getId();
+		int mr_ref = mr_no;
+		int mr_step = 0;
+		String mr_content = " "+content; // 한칸띄우는건 @닉네임 없을 시 그냥 나오게끔 하기위함임
+		if(pmr_ref > 0) {  // 그냥 댓글일경우 부모댓글레퍼런스를 0번으로 줄거임
+			mr_ref = pmr_ref;
+			mr_step = mdao.nextStep(mr_ref);
+			if(!m.getNickName().equals(nickName)) {
+				mr_content = "@"+ nickName + mr_content;
+			}	
+		}
+		Meeting_repVo mr = new Meeting_repVo(mr_no, m_no, id, mr_content, null, mr_ref, mr_step, "0", null, null);
+		System.out.println(mr);
+		int re = 0;
+		re = mdao.insertMRep(mr);
+
+		ResponseDataVo responseDataVo = new ResponseDataVo();
+		responseDataVo.setCode(ResponseDataCode.ERROR);
+		if(re>0) {
+			responseDataVo.setCode(ResponseDataCode.SUCCESS);
+		}
+		return new Gson().toJson(responseDataVo);
 	}
 
 }

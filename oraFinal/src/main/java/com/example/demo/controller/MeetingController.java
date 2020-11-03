@@ -17,13 +17,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.ResponseDataCode;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.dao.MeetingDao;
 import com.example.demo.vo.MeetingVo;
+
 import com.example.demo.vo.Meeting_fileVo;
 import com.example.demo.vo.Meeting_peopleVo;
 import com.example.demo.vo.Meeting_repVo;
 import com.example.demo.vo.MemberVo;
+
+import com.example.demo.vo.ResponseDataVo;
+
 import com.google.gson.Gson;
 
 import lombok.Setter;
@@ -44,9 +49,8 @@ public class MeetingController {
 	public static int totPage = 0; // 총 페이지 수
 	public static int pageSize = 2; // 한 번에 보이는 페이지 수
 	
-	public static int recordSizeR = 3; // 한 번에 보이는 게시글 수
-	public static int totPageR = 0; // 총 페이지 수
-	public static int pageSizeR = 2; // 한 번에 보이는 페이지 수
+	public static int recordSizeR = 10; // 한 번에 보이는 댓글게시글 수
+	public static int pageSizeR = 5; // 한 번에 보이는 댓글페이지 수
 	
 	HashMap map = new HashMap();
 	
@@ -93,12 +97,8 @@ public class MeetingController {
 	}
 	
 	@RequestMapping(value = "/detailMeeting", produces = "application/json;charset=utf-8")
-	public void detailMeeting(Model model, int m_no, MeetingVo m, HttpServletRequest request) {
-		try {
-		request.setCharacterEncoding("utf-8");
-		} catch (Exception e) {
-			// TODO: handle exception 
-		}
+	public void detailMeeting(HttpServletRequest request, Model model, int m_no, MeetingVo m) {
+		String path = request.getRealPath("/courseLine")+"/";
 		mdao.updateHit(m_no);
 		MeetingVo mt = mdao.detailMeeting(m_no);
 		int c_no = mt.getC_no();
@@ -115,13 +115,14 @@ public class MeetingController {
 		map.put("m_no", m_no);
 		
 		Gson gson = new Gson();
-		model.addAttribute("mrList", gson.toJson(mdao.detailMRep(map)));
+		//model.addAttribute("mrList", gson.toJson(mdao.detailMRep(map)));
 		model.addAttribute("m_no", gson.toJson(m_no));
+		model.addAttribute("totalRecordR", gson.toJson(totalRecordR));
 		model.addAttribute("totalPageNum", gson.toJson(totalPageNum));
-		model.addAttribute("c", cdao.getCourseByCno(c_no));
+		model.addAttribute("pageSizeR", gson.toJson(pageSizeR));
+		model.addAttribute("c", cdao.getCourseByCno(c_no, path));
 		
-		model.addAttribute("mt", mt);
-		model.addAttribute("cntRep", totalRecordR);	
+		model.addAttribute("mt", mt);			
 		model.addAttribute("mf", mdao.detailMFile(m_no));
 	}
 	
@@ -135,9 +136,14 @@ public class MeetingController {
 		map.put("start", start);
 		map.put("end", end);
 		map.put("m_no", m_no);
-
+		
+		int totalRecordR = mdao.cntRep(m_no);
+		int totalPageNum = (int)Math.ceil((double)totalRecordR/MeetingController.recordSizeR);
+		map.put("mrList", mdao.detailMRep(map));
+		map.put("totalRecordR", totalRecordR);
+		map.put("totalPageNum", totalPageNum);
 		Gson gson = new Gson();
-		return gson.toJson(mdao.detailMRep(map));
+		return gson.toJson(map);
 	}
 	
 	@GetMapping("/updateMeeting")
@@ -243,6 +249,20 @@ public class MeetingController {
 		}
 	
 		return mav;
+	}
+	
+	@PostMapping(value = "/user/deleteMeetingRep", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String deleteMeetingRep(int m_no, int mr_no) {
+		int re = 0;
+		re = mdao.deleteMr(mr_no);
+		
+		ResponseDataVo responseDataVo = new ResponseDataVo();
+		responseDataVo.setCode(ResponseDataCode.ERROR);
+		if(re>0) {
+			responseDataVo.setCode(ResponseDataCode.SUCCESS);
+		}
+		return new Gson().toJson(responseDataVo);
 	}
 	
 }

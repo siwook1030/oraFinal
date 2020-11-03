@@ -201,27 +201,55 @@ public class MeetingManager {
 	public static List<Meeting_repVo> detailMRep(HashMap map) {
 		List<Meeting_repVo> list = null;
 		SqlSession session = sqlSessionFactory.openSession();
-		list = session.selectList("meeting.selectMrByNo", map);
+		list = session.selectList("meeting.selectMrList", map);
 		session.close();
 		return list;
+	}
+	
+	// 댓글 한개가져오기(수정위해서)
+	public static Meeting_repVo getMRep(int mr_no) {
+		Meeting_repVo mr = null;
+		SqlSession session = sqlSessionFactory.openSession();
+		mr = session.selectOne("meeting.selectMrByNo", mr_no);
+		session.close();
+		
+		return mr;
 	}
 	
 	// 댓글 달기
 	public static int insertMRep(Meeting_repVo mr) {
 		int re = -1;
 		SqlSession session = sqlSessionFactory.openSession(true);
-		re = session.selectOne("meeting.insertMr", mr);
+		re = session.insert("meeting.insertMr", mr);
+		session.close();
+		return re;
+	}
+	
+	// 댓글 수정
+	public static int updateMRep(Meeting_repVo mr) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession(true);
+		re = session.insert("meeting.updateMr", mr);
 		session.close();
 		return re;
 	}
 	
 	// 댓글 삭제
-	public static int deleteMRep(int m_no) {
+	public static int deleteMRep(int mr_no) {
 		int re = -1;
 		SqlSession session = sqlSessionFactory.openSession(true);
-		re = session.delete("meeting.deleteMr", m_no);
+		re = session.delete("meeting.deleteMr", mr_no);
 		session.close();
 		return re;
+	}
+	
+	// 맥스 스텝값
+	public static int nextStep(int mr_ref) {
+		int n = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		n = session.selectOne("meeting.nextStep", mr_ref);
+		session.close();
+		return n;
 	}
 	
 }

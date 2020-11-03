@@ -72,7 +72,7 @@
 	<select id="nextMrNum" resultType="int"> <!-- 게시글 첨부파일 번호 -->
 		SELECT NVL(MAX(MR_NO),0)+1 FROM MEETING_REP
 	</select>
-	<select id="selectMrByNo" resultType="meeting_repVo" parameterType="map"> <!-- 댓글 상세 -->
+	<select id="selectMrList" resultType="meeting_repVo" parameterType="map"> <!-- 댓글 리스트 -->
 		SELECT MR_NO, M_NO, ID, MR_CONTENT, TO_CHAR(MR_REGDATE,'YYYY. MM. DD HH24:MI') AS MR_REGDATE, MR_REF, MR_STEP, MR_FILE1, RANK_ICON, NICKNAME
 		FROM
 		(SELECT ROWNUM AS RNUM, MR_NO, M_NO, ID, MR_CONTENT, MR_REGDATE, MR_REF, MR_STEP, MR_FILE1, RANK_ICON, NICKNAME 
@@ -81,10 +81,21 @@
 		FROM MEETING_REP MR, MEMBER MB, RANK R 
 		WHERE MR.ID=MB.ID AND R.RANK_NAME=MB.RANK_NAME AND M_NO=#{m_no} ORDER BY MR_REF, MR_STEP)) WHERE RNUM BETWEEN #{start} AND #{end}
 	</select>
+	
+	<select id="selectMrByNo" resultType="meeting_repVo">
+		SELECT MR_NO, M_NO, ID, MR_CONTENT, MR_REF, MR_STEP, MR_FILE1 FROM MEETING_REP WHERE MR_NO=#{mr_no}
+	</select>
+	
+	<select id="nextStep" resultType="int"> <!-- 댓글 맥스 스텝값 -->
+		SELECT MAX(MR_STEP)+1 FROM MEETING_REP WHERE MR_REF=#{mr_ref}
+	</select>
 	<insert id="insertMr"> <!-- 댓글등록 -->
-		INSERT INTO MEETING_REP VALUES(#{mr_no}, #{m_no}, #{id}, #{mr_content}, #{mr_regdate}, #{mr_ref}, #{mr_step}, #{mr_file1})
+		INSERT INTO MEETING_REP VALUES(#{mr_no}, #{m_no}, #{id}, #{mr_content}, SYSDATE, #{mr_ref}, #{mr_step}, #{mr_file1})
 	</insert>
+	<update id="updateMr">
+		UPDATE MEETING_REP SET MR_CONTENT=#{mr_content}, MR_FILE1=#{mr_file1} WHERE MR_NO = #{mr_no}
+	</update>
 	<delete id="deleteMr" parameterType="meeting_repVo"> <!-- 댓글 삭제 -->
-		DELETE MEETING_REP WHERE M_NO=#{m_no}
+		DELETE MEETING_REP WHERE MR_NO=#{mr_no}
 	</delete>
 </mapper>	

@@ -10,10 +10,10 @@
 	
 	<insert id="insertCourse">
 		INSERT INTO COURSE(C_NO, CODE_VALUE, ID, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
-		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP,  C_MAPLEVEL)
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP)
 		VALUES (#{c_no}, #{code_value}, #{id}, #{c_name}, #{c_s_locname}, #{c_s_latitude}, #{c_s_longitude}, #{c_e_locname},
 		#{c_e_latitude}, #{c_e_longitude}, #{c_loc}, #{c_distance}, #{c_time}, #{c_difficulty}, 
-		#{c_view}, #{c_words}, #{c_line}, #{c_temp},  #{c_mapLevel} )
+		#{c_view}, #{c_words}, #{c_line}, #{c_temp})
 	</insert>
 	
 	<insert id="insertPT">
@@ -23,19 +23,19 @@
 
 	<select id="selectByView" resultType="courseVo">
 		SELECT C_NO, CODE_VALUE, ID, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
-		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP, C_MAPLEVEL 
-		FROM COURSE WHERE C_TEMP ='N' AND C_VIEW LIKE #{view} || '%'
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP 
+		FROM COURSE WHERE C_TEMP ='N' AND C_VIEW LIKE #{view} || '%' ORDER BY C_NAME
 	</select>
 	
 	<select id="selectByCno" resultType="courseVo">
 		SELECT C_NO, CODE_VALUE, ID, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
-		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP,  C_MAPLEVEL 
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP 
 		FROM COURSE WHERE C_NO = #{c_no}
 	</select>
 	
 	<select id="selectCourseList" resultType="courseVo">
 		SELECT C_NO, CODE_VALUE, ID, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
-		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP, C_MAPLEVEL 
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP 
 		FROM COURSE WHERE  C_TEMP ='N' ORDER BY C_NO
 	</select>
 	
@@ -61,10 +61,13 @@
 	<select id="selectByCnoandUserDis" resultType="courseVo" parameterType="map">
 		SELECT C_NO, CODE_VALUE, ID, C_NAME, CALC_DISTANCE(#{latitude},#{longitude},C_S_LATITUDE,C_S_LONGITUDE) AS userDis,
 		C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
-		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP,  C_MAPLEVEL 
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP 
 		FROM COURSE WHERE C_TEMP ='N' AND C_NO = #{c_no} 
 	</select>
 	
+	<select id="cnameDupCheck" resultType="int">
+		SELECT COUNT(*) FROM COURSE WHERE C_NAME = #{c_name}
+	</select>
 		
 	<select id="selectCoursePhoto" resultType="coursePhotoVo">
 		SELECT CP_NO, C_NO, CP_NAME, CP_PATH, CP_LATITUDE, CP_LONGITUDE FROM COURSEPHOTO WHERE C_NO = #{c_no}

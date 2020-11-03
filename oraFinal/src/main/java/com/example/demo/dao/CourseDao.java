@@ -21,16 +21,20 @@ public class CourseDao {
 		return CourseManager.insertCourse(c, sPT, ePT);
 	}
 	
-	public List<CourseVo> recommendList(String view) {
-		return CourseManager.recommendList(view);
+	public List<CourseVo> getCourseByView(String view) {
+		return CourseManager.getCourseByView(view);
 	}
 	
-	public CourseVo getCourseByCno(int c_no) {
-		return CourseManager.getCourseByCno(c_no);
+	public CourseVo getCourseByCno(int c_no, String path) {
+		return CourseManager.getCourseByCno(c_no, path);
 	}
 	
 	public List<CourseVo> listCourse(){
 		return CourseManager.listCourse();
+	}
+	
+	public int cnameDupCheck(String c_name) {
+		return CourseManager.cnameDupCheck(c_name);
 	}
 	
 	public List<PublicTransportVo> getPublicTransportByCno(int c_no){

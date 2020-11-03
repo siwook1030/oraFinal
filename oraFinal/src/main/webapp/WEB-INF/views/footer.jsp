@@ -38,9 +38,9 @@ footer {
       <br>
       <div id='footer_box'>
             <div id="footer_icon" >
-               <img src='footerImg/instagram.png' height="50px">
-               <img src='footerImg/facebook.png' height="50px">
-               <img src='footerImg/twitter.png' height="50px">
+               <img src='/footerImg/instagram.png' height="50px">
+               <img src='/footerImg/facebook.png' height="50px">
+               <img src='/footerImg/twitter.png' height="50px">
                <ul id="address">
                   <li>04108 | 서울시 마포구 백범로 23 구프라자 3층</li>
                   <li>TEL: 02-707-1480 | Email: ora@bit.com</li>

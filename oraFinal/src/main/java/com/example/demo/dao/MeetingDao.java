@@ -22,9 +22,12 @@ public class MeetingDao {
 	public MeetingVo detailMeeting(int m_no) {
 		return MeetingManager.detailMeeting(m_no);
 	}
-	
+  
 	public int insertMeeting(MeetingVo m) {
 		return MeetingManager.insertMeeting(m);
+
+	public Meeting_repVo getMRep(int mr_no) {
+		return MeetingManager.getMRep(mr_no);
 	}
 	
 	public int updateMeeting(MeetingVo m) {
@@ -51,9 +54,12 @@ public class MeetingDao {
 	public List<Meeting_fileVo> detailMFile(int m_no) {
 		return MeetingManager.detailMFile(m_no);
 	}
-	
+    
 	public int insertMFile(Meeting_fileVo mf) {
 		return MeetingManager.insertMFile(mf);
+
+	public int updateMRep(Meeting_repVo mr) {
+		return MeetingManager.updateMRep(mr);
 	}
 	
 	public int updateMFile(Meeting_fileVo mf) {
@@ -64,8 +70,13 @@ public class MeetingDao {
 		return MeetingManager.deleteMFile(m_no);
 	}
 	
+
 	public int NextMfNum() {
 		return MeetingManager.nextMFileNum();
+  }
+
+	public int deleteMr(int mr_no) {
+		return MeetingManager.deleteMRep(mr_no);
 	}
 	
 	// meeting_rep
@@ -100,5 +111,9 @@ public class MeetingDao {
 	
 	public int deleteMPeople(int m_no) {
 		return MeetingManager.deleteMPeople(m_no);
+	}
+
+	public int nextStep(int mr_ref) {
+		return MeetingManager.nextStep(mr_ref);
 	}
 }

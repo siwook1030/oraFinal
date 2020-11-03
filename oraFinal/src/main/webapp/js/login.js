@@ -1,25 +1,31 @@
-$(function(){
-	$("#member-id,#member-password").keydown(function(key) {
-		if (key.keyCode == 13) {
+window.onload = function(){
+	
+	
+	document.getElementById("member-id").onkeyup=enterkey;
+	document.getElementById("member-password").onkeyup=enterkey;
+	function enterkey(){
+		if(window.event.keyCode == 13){
 			login();
 		}
-});
+	}
 
-	$("#login-button").click(function(){
-		login();
-	});		
+	document.getElementById("login-button").onclick = login;
+
 
 /**
 * 로그인 
 */
 function login(){
-	if($.trim($("#member-id").val()) == ''){
+	const id = document.getElementById("member-id");
+	const pwd = document.getElementById("member-password");
+		
+	if(id.value.trim() == ''){
 				alert("아이디를 입력해 주세요.");
-				$("#member-id").focus();
+				id.focus();
 				return;
-			}else if($.trim($("#member-password").val()) == ''){
+			}else if(pwd.value.trim() == ''){
 				alert("패스워드를 입력해 주세요.");
-				$("#member-password").focus();
+				pwd.focus();
 				return;
 			}
 	
@@ -28,8 +34,8 @@ function login(){
 		type :  "POST",
 		dataType : "json",
 		data : {
-			memberId :$.trim($("#member-id").val()),
-			memberPassword : $.trim($("#member-password").val())
+			memberId :id.value.trim(),
+			memberPassword : pwd.value.trim()
 		},
 		/*beforeSend : function(xhr)
 		{
@@ -55,4 +61,4 @@ function login(){
 	
 }
 
-})
+}
