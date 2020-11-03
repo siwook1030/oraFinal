@@ -4,6 +4,7 @@ package com.example.demo.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -71,14 +72,52 @@ public class ReviewController {
 		return rank_icon;
 	}
 	@RequestMapping("/listReview")
-	public void listReview(Model model) {
+	public void listReview() {
+		
+	}
+	/*@RequestMapping("/listReviewJson")
+	@ResponseBody
+	public String listReviewJson() {
 		List<ReviewVo> list = rdao.selectList();
 		for(ReviewVo rvo : list) {
 			rvo.setC_name(getC_name(rvo.getC_no()));			// 게시판 코스명 설정
 			rvo.setNickName(getNickName(rvo.getId()));			// 게시판 닉네임 설정
 			rvo.setRank_icon(getRankIcon(mvo.getRank_name()));	// 게시판 랭크아이콘 설정
 		}
-		model.addAttribute("list", list);
+		Gson gson = new Gson();
+		return gson.toJson(list);
+	}*/
+	@RequestMapping("/listReviewJson")
+	@ResponseBody
+	public String listReviewJson(int page, int RECORDS_PER_PAGE) {
+		System.out.println("page입니다 : " + page);
+		int total_records = rdao.count();
+		int total_pages = total_records / RECORDS_PER_PAGE;
+		if(total_records % RECORDS_PER_PAGE > 0) {
+			total_pages++;
+		}
+		
+		int end_record = page * RECORDS_PER_PAGE;
+		int begin_record = end_record - (RECORDS_PER_PAGE - 1);
+		if(end_record > total_records) {
+			end_record = total_records;
+		}
+		HashMap<String, Integer> record_map = new HashMap<String, Integer>();
+		record_map.put("begin_record", begin_record);
+		record_map.put("end_record", end_record);
+		List<ReviewVo> list = rdao.selectList(record_map);
+		for(ReviewVo rvo : list) {
+			rvo.setC_name(getC_name(rvo.getC_no()));			// 게시판 코스명 설정
+			rvo.setNickName(getNickName(rvo.getId()));			// 게시판 닉네임 설정
+			rvo.setRank_icon(getRankIcon(mvo.getRank_name()));	// 게시판 랭크아이콘 설정
+		}
+		
+		HashMap map = new HashMap();
+		map.put("list", list);
+		map.put("total_pages", total_pages);
+		
+		Gson gson = new Gson();
+		return gson.toJson(map);
 	}
 	@RequestMapping("/detailReview")
 	public void detailReview(int r_no, Model model, HttpServletRequest request) {

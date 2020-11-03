@@ -1,5 +1,6 @@
 package com.example.demo.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -11,8 +12,8 @@ import com.example.demo.vo.Review_repVo;
 
 @Repository
 public class ReviewDao {
-	public List<ReviewVo> selectList(){
-		return ReviewManager.selectList();
+	public List<ReviewVo> selectList(HashMap<String, Integer> record_map){
+		return ReviewManager.selectList(record_map);
 	}
 	public int incHit(int r_no) {
 		return ReviewManager.incHit(r_no);
@@ -49,5 +50,8 @@ public class ReviewDao {
 	}
 	public int deleteRep(int r_no) {
 		return ReviewManager.deleteRep(r_no);
+	}
+	public int count() {
+		return ReviewManager.count();
 	}
 }
