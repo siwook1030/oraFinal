@@ -42,16 +42,22 @@ public class MakingCourseController {
 		
 	}
 	
+	@PostMapping(value = "/user/cnameDupCheck", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String cnameDupCheck(String c_name) {
+		int re = 1;
+		re = cdao.cnameDupCheck(c_name);
+		return Integer.toString(re);
+	}
+	
 	@PostMapping("/user/previewMakingCourse")
 	@ResponseBody
-	public String makingCoursePreview(HttpSession session,Model model,@RequestParam Map<String, Object> map,@RequestParam(value="c_views[]",required = false) String[] c_views){
-		 
+	public String makingCoursePreview(HttpSession session,Model model,@RequestParam Map<String, Object> map){
+		 //,@RequestParam(value="c_views[]",required = false) String[] c_views
 		MemberVo m = (MemberVo)session.getAttribute("m");
 			
 		 int c_no = 0;
-		// String code_value =null;
-		String code_value = m.getCode_value();
-		 //String id = null;
+		 String code_value = m.getCode_value();
 		 String id = m.getId();
 		 String c_name = (String)map.get("c_name")+".feat "+m.getNickName(); 
 		 String c_s_locname =(String)map.get("c_s_locname");
@@ -71,17 +77,19 @@ public class MakingCourseController {
 		 int c_difficulty = Integer.parseInt((String)map.get("c_difficulty"));
 		 String c_view = null;
 		 //String[] c_views = (String[])map.get("c_views"); // 디비에서 꺼내온 뷰를 "-" 나눠서 다시 배열로 넣기위해
+		 ArrayList<String> c_v = (ArrayList<String>)map.get("c_views");
+		 System.out.println("풍경이다!!" + c_v);
+		 String[] c_views = null;
 		 String c_words = (String)map.get("c_words");
 		 String c_line=(String)map.get("c_line");
 		 if(c_line == null || c_line.equals("")) {
 			 c_line = "0";
 		 }
 		 String c_temp = "Y";
-		 int  c_mapLevel = Integer.parseInt((String)map.get("c_mapLevel"));
 		 double userDis = 0; //코스와 유저의현재위치와의  거리
 		 List<CoursePhotoVo> c_photo = null;
 		
-		 CourseVo c = new CourseVo(c_no, code_value, id, c_name, c_s_locname, c_s_latitude, c_s_longitude, c_e_locname, c_e_latitude, c_e_longitude, c_loc, c_distance, c_time, c_difficulty, c_view, c_views, c_words, c_line, c_temp, c_mapLevel, userDis, c_photo);
+		 CourseVo c = new CourseVo(c_no, code_value, id, c_name, c_s_locname, c_s_latitude, c_s_longitude, c_e_locname, c_e_latitude, c_e_longitude, c_loc, c_distance, c_time, c_difficulty, c_view, c_views, c_words, c_line, c_temp, userDis, c_photo);
 		
 		 int pt_noPS = 0;
 		 String code_valuePS = "00201";
@@ -109,17 +117,12 @@ public class MakingCourseController {
 		 
 		 PublicTransportVo ePT = new PublicTransportVo(pt_noPE, code_valuePE, c_noPE, pt_latitudePE, pt_longitudePE, pt_imgPE, pt_stationPE, pt_distancePE, pt_linePE);
 		 
-		 System.out.println(c);
-		 System.out.println(sPT);
-		 System.out.println(ePT);
 		 List<PublicTransportVo> ptList = new ArrayList<PublicTransportVo>();
 		 ptList.add(sPT);
 		 ptList.add(ePT);
 		 
-		// Gson gson = new Gson();
 		 model.addAttribute("c", c);
 		 model.addAttribute("ptList", ptList);
-		// model.addAttribute("ptJson", gson.toJson(ptList));
 		 session.setAttribute("c", c);
 		 session.setAttribute("ptList", ptList);
 		 
@@ -137,8 +140,7 @@ public class MakingCourseController {
 		 model.addAttribute("ptJson", gson.toJson(ptList));
 		 session.removeAttribute("c");
 		 session.removeAttribute("ptList");
-		System.out.println(c);
-		System.out.println(ptList);
+
 		return "/user/previewMakingCourse";
 	}
 	
@@ -192,11 +194,10 @@ public class MakingCourseController {
 		  
 		 
 		 String c_temp = "Y";
-		 int  c_mapLevel = Integer.parseInt((String)map.get("c_mapLevel"));
 		 double userDis = 0; //코스와 유저의현재위치와의  거리
 		 List<CoursePhotoVo> c_photo = null;
 		
-		 CourseVo c = new CourseVo(c_no, code_value, id, c_name, c_s_locname, c_s_latitude, c_s_longitude, c_e_locname, c_e_latitude, c_e_longitude, c_loc, c_distance, c_time, c_difficulty, c_view, c_views, c_words, c_line, c_temp, c_mapLevel, userDis, null);
+		 CourseVo c = new CourseVo(c_no, code_value, id, c_name, c_s_locname, c_s_latitude, c_s_longitude, c_e_locname, c_e_latitude, c_e_longitude, c_loc, c_distance, c_time, c_difficulty, c_view, c_views, c_words, c_line, c_temp, userDis, c_photo);
 		
 		 int pt_noPS = 0;
 		 String code_valuePS = "00201";
@@ -232,7 +233,7 @@ public class MakingCourseController {
 		 
 		 if( re > 0) {
 			 responseDataVo.setCode(ResponseDataCode.SUCCESS);
-			 responseDataVo.setMessage("등록에 성공하였습니다.\r\n(최종 등록은 관리자 승인 후 진행되며 마이페이지 'My Making-Course'에서 2~3일 후 등록을 확인 할 수 있습니다.\r\n코스를 등록해주셔서 감사합니다.-오늘의 라이더-)");
+			 responseDataVo.setMessage("등록에 성공하였습니다.\r\n(최종 등록은 관리자 승인 후 진행되며 등록문자가 발송됩니다. 마이페이지 'My Making-Course'에서 확인 할 수 있습니다.\r\n코스를 등록해주셔서 감사합니다.-오늘의 라이더-)");
 		 }
 		 
 		 

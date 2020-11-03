@@ -31,15 +31,6 @@ public class CourseController {
 	@Autowired
 	private CourseDao cdao;
 	
-	@RequestMapping("/mainPage")
-	public void mainPage(Model model) {
-		Random rand = new Random();
-		String []view = {"강","산","명소","바다"};
-		int r = rand.nextInt(view.length);
-		model.addAttribute("clist", cdao.recommendList(view[r]));
-		model.addAttribute("view", view[r]);
-	}
-	
 	@GetMapping("/searchCourse")
 	public void searchCourse() {
 		

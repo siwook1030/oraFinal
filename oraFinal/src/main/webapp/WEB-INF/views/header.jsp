@@ -53,7 +53,7 @@ li{
 
 	<header>
 		<div id="logo">
-			<a href="/mainPage"><img src='headerImg/logo.png' height="100"></a>
+			<a href="/mainPage"><img src='/headerImg/logo.png' height="100"></a>
 		</div>
 		
 		<div id="login">
@@ -71,9 +71,9 @@ li{
 			<li>|</li>
 			<li class="menu"><a href="/searchCourse">라이딩 코스</a></li>
 			<li>|</li>
-			<li class="menu"><a href="listReview">라이딩 후기</a></li>
+			<li class="menu"><a href="/listReview">라이딩 후기</a></li>
 			<li>|</li>
-			<li class="menu"><a href="listMeeting">번개 라이딩</a></li>
+			<li class="menu"><a href="/listMeeting">번개 라이딩</a></li>
 			<li>|</li>
 			<li class="menu">라이딩 정보</li>
 		</ul>
