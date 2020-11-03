@@ -101,4 +101,8 @@
 		FROM COURSE WHERE ID=#{id}
 	</select>
 	
+	<delete id="deleteMyCourse">
+		DELETE SAVE_COURSE WHERE ID=#{id} AND C_NO=#{c_no}
+	</delete>
+	
 </mapper>

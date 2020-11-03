@@ -250,6 +250,7 @@ private static final int recommendNum = 3;
 	
 	
 	
+	
 	private static String getTime(int minute) { // 디비에 분으로되어있는 시간을 시간과분으로 나타내기위한 처리작업
 		 String c_time = "";  
 		 if(minute/60 >0) {
