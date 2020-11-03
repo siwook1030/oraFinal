@@ -20,4 +20,8 @@
   <insert id="insertNotice">
     insert into notice values(#{n_no},#{code_value},#{n_title},#{n_content},sysdate,#{n_hit})
   </insert>
+  
+  <update id="updateHit">
+  	UPDATE notice SET n_hit=n_hit+1 WHERE n_no=#{n_no}
+  </update>
 </mapper>

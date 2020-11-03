@@ -41,6 +41,14 @@ public class NoticeManager {
 		return list;
 	}
 	
+	public static int updateHit(int n_no) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession(true);
+		re = session.update("notice.updateHit", n_no);
+		session.close();
+		return re;
+	}
+	
 	public static NoticeVo detailNotice(int n_no) {
 		NoticeVo n = null;
 		SqlSession session = sqlSessionFactory.openSession();
