@@ -139,34 +139,13 @@ window.onload = function(){
 </head>
 <body>
 
-<header>
-  <div id="logo">
-         <a href="/mainPage"><img src='/headerImg/logo.png' height="100"></a>
-      </div>
-      <div id="login">
-      <c:choose>
-      	<c:when test="${m == null }">
-      		<a href="/login">로그인</a>&nbsp;&nbsp;&nbsp;<a href="/signUp">회원가입</a>
-      	</c:when>
-      	<c:when test="${m != null }">
-      		${m.nickName } 라이더! &nbsp;&nbsp;<a href="/logout">로그아웃</a>&nbsp;&nbsp;<a href="/myPage">마이페이지</a>
-      	</c:when>
-      </c:choose>
-         <img src="/headerImg/myIcon.png" height="40">
-         &nbsp;&nbsp;
-      </div>
-      <div id="top">
-         <a href="/searchCourse">오늘의 라이딩</a>&nbsp;&nbsp;&nbsp;&nbsp;자전거길&nbsp;&nbsp;&nbsp;&nbsp;<a href="listReview">후기게시판</a>&nbsp;&nbsp;&nbsp;&nbsp;
-         <a href="listMeeting">번개게시판</a>&nbsp;&nbsp;&nbsp;&nbsp;정보게시판
-      </div>
- </header>
 <jsp:include page="header.jsp"/>
       <div id="clear"></div>
   	<section>
   	<div id="mainPhoto" style="width: 100%; height: 500px; background-image: url('/mainPageImg/mainPhoto1.png');background-size: cover;"></div>
   		<h4><span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
   		<font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></font>과 함께 달려보세요!</h4>
-  		<  
+  		  
   		<div id="recommendCourse">
   		<div id="rcTitle">
   		Today's&nbsp;Riding<span style="font: italic bold 1.5em/1em Georgia,serif; font-size:15px; color: gray;">&nbsp;&nbsp;&nbsp;view is <span id="rcViewWord">${view }</span></span>

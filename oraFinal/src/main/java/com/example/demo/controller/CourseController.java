@@ -23,6 +23,7 @@ import com.example.demo.db.CourseManager;
 import com.example.demo.vo.CoursePhotoVo;
 import com.example.demo.vo.CourseVo;
 import com.example.demo.vo.FoodVo;
+import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.PublicTransportVo;
 import com.google.gson.Gson;
 
@@ -106,6 +107,7 @@ public class CourseController {
 		model.addAttribute("f", cdao.getFoodByFoodNo(food_no));
 	}
 	
+	//나의 찜코스 ~
 	@GetMapping(value = "/myPageSaveCourse")
 	public void saveCourse(Model model,HttpSession httpSession) {
 		System.out.println("세이브 컨트롤러 작동!!!!");
@@ -120,6 +122,7 @@ public class CourseController {
 		System.out.println("코스리스트");
 		System.out.println(photovo);
 	}
+	//내가 만든코스~
 	@GetMapping(value = "/myPageMyCourse")
 	public void myCourse(Model model,HttpSession httpSession) {
 		System.out.println("마이코스 컨트롤러 작동!!!!");
@@ -133,5 +136,14 @@ public class CourseController {
 		System.out.println(courseList);
 		System.out.println("코스리스트");
 		System.out.println(photovo);
+	}
+	@GetMapping(value = "/deleteSaveCourse")
+	public int deleteSaveCourse(HttpSession httpSession,int c_no) {
+		MemberVo m = (MemberVo)httpSession.getAttribute("m");
+		HashMap map = new HashMap();
+		map.put("id", m.getId());
+		map.put("c_no", c_no);
+		int re = cdao.deleteSaveCourse(map);
+		return re;
 	}
 }

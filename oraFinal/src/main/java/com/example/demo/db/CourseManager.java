@@ -226,7 +226,7 @@ private static final int recommendNum = 3;
 		
 		return c_line;
 	}
-	
+	//나의 찜코스 가져오기
 	public static List<CourseVo> getSaveCourse(HttpSession httpSession) {
 		MemberVo m = (MemberVo)httpSession.getAttribute("m");
 		List<CourseVo> SaveCourseList;
@@ -241,6 +241,7 @@ private static final int recommendNum = 3;
 		session.close();
 		return SaveCourseList;
 	}
+	//내가만든 코스 가져오기
 	public static List<CourseVo> getMyCourseById(HttpSession httpSession) {
 		MemberVo m = (MemberVo)httpSession.getAttribute("m");
 		List<CourseVo> SaveCourseList;
@@ -255,6 +256,15 @@ private static final int recommendNum = 3;
 		
 		session.close();
 		return SaveCourseList;
+	}
+	//찜코스 삭제
+	public static int deleteSaveCourse(HashMap map) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.delete("course.deleteMyCourse", map);
+		session.commit();
+		session.close();
+		return re;
 	}
 	
 	

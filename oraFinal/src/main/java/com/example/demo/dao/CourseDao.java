@@ -54,10 +54,14 @@ public class CourseDao {
 	public List<CourseVo> searchCourseList(HashMap map){
 		return CourseManager.searchCourseList(map);
 	}
+	
 	public List<CourseVo> getSaveCourse(HttpSession httpSession){
 		return CourseManager.getSaveCourse(httpSession);
 	}
 	public List<CourseVo> getMyCourseById(HttpSession httpSession){
 		return CourseManager.getMyCourseById(httpSession);
+	}
+	public int deleteSaveCourse(HashMap map) {
+		return CourseManager.deleteSaveCourse(map);
 	}
 }
