@@ -22,16 +22,12 @@ import com.example.demo.dao.CourseDao;
 import com.example.demo.dao.MeetingDao;
 import com.example.demo.dao.MemberDao;
 import com.example.demo.vo.MeetingVo;
-<<<<<<< HEAD
-import com.example.demo.vo.MemberVo;
-=======
 
 import com.example.demo.vo.Meeting_fileVo;
 import com.example.demo.vo.Meeting_peopleVo;
 import com.example.demo.vo.Meeting_repVo;
 import com.example.demo.vo.MemberVo;
 
->>>>>>> refs/remotes/origin/master
 import com.example.demo.vo.ResponseDataVo;
 
 import com.google.gson.Gson;

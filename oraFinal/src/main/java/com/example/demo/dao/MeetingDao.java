@@ -102,14 +102,12 @@ public class MeetingDao {
 		return MeetingManager.cntRep(m_no);
 	}
 	
-<<<<<<< HEAD
 	public int myTotMRecord(String id) {
 		return MeetingManager.myTotMRecord(id);
 	}
 	public List<MeetingVo> myPageListMeeting(HashMap map){
 		return MeetingManager.myPageListMeeting(map);
 	}
-=======
 	// meeting_people
 	public List<Meeting_peopleVo> detailMPeople(int m_no) {
 		return MeetingManager.detailMPeople(m_no);
@@ -123,7 +121,6 @@ public class MeetingDao {
 		return MeetingManager.deleteMPeople(m_no);
 	}
 
->>>>>>> refs/remotes/origin/master
 	public int nextStep(int mr_ref) {
 		return MeetingManager.nextStep(mr_ref);
 	}
