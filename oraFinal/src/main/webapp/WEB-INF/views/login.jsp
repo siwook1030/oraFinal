@@ -18,7 +18,7 @@
 <div class="container">
  <h2>오늘의 라이딩 로그인</h2>
   <p>오늘도 힘차게 달려볼까요?</p>
-  <form action="/action_page.php" class="was-validated">
+  <form  class="was-validated">
     <div class="form-group">
       <label for="member-id">아이디</label>
       <input type="text" class="form-control" id="member-id" onkeyup="enterkey()" placeholder="Enter id" name="member-id"  maxlength="12" required>

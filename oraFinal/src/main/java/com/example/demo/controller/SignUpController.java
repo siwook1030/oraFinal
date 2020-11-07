@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,9 @@ public class SignUpController {
 	@Setter
 	private MemberDao mdao;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@RequestMapping(value = "/signUp",method = RequestMethod.GET)
 	public void formSignUp() {
 		//model.addAttribute("signUpOk", "0");
@@ -32,7 +36,7 @@ public class SignUpController {
 	@ResponseBody
 	public String submitSignUp(MemberVo m, Model model) throws Exception {
 		String password = m.getPassword();
-		m.setPassword(PasswordEncoderFactories.createDelegatingPasswordEncoder().encode(password));		
+		m.setPassword(passwordEncoder.encode(password));		
 		m.setCode_value("00101"); //관리자 00101, 정회원 00102
 		m.setRank_name("Lv1"); //처음 회원가입하면 기본으로 레벨1 제공
 		System.out.println(m);
@@ -56,6 +60,15 @@ public class SignUpController {
 		System.out.println("닉체크 작동");
 		int result=mdao.nickCheck(nickName);
 		System.out.println("닉체크 검증 : " + result);
+		return Integer.toString(result);
+	}
+	
+	@RequestMapping(value = "/phoneNumCheck",method = RequestMethod.POST, produces = "application/text; charset=utf8")
+	@ResponseBody
+	public String phoneNumCheck(String phone) {
+		System.out.println("폰번호체크 작동");
+		int result=mdao.phoneNumCheck(phone);
+		System.out.println("폰번호체크 검증 : " + result);
 		return Integer.toString(result);
 	}
 }

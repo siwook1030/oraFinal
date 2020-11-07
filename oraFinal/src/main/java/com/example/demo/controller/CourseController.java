@@ -89,18 +89,18 @@ public class CourseController {
 		String path = request.getRealPath("/courseLine")+"/";
 		Gson gson = new Gson();
 		List<PublicTransportVo> ptList = cdao.getPublicTransportByCno(c_no);
-		List<FoodVo> fList = cdao.getFoodByCno(c_no);
+	//	List<FoodVo> fList = cdao.getFoodByCno(c_no);
 		model.addAttribute("c", cdao.getCourseByCno(c_no, path));
 		model.addAttribute("ptList", ptList);
 		model.addAttribute("ptJson", gson.toJson(ptList));
-		model.addAttribute("fList", fList);
-		model.addAttribute("fJson", gson.toJson(fList));
+	//	model.addAttribute("fList", fList);
+	//	model.addAttribute("fJson", gson.toJson(fList));
 	}
 	
-	@RequestMapping("/detailFood")
-	public void detailFood(HttpServletRequest request,Model model,int c_no ,int food_no) {
-		String path = request.getRealPath("/courseLine")+"/";
-		model.addAttribute("c", cdao.getCourseByCno(c_no, path));
-		model.addAttribute("f", cdao.getFoodByFoodNo(food_no));
-	}
+//	@RequestMapping("/detailFood")
+//	public void detailFood(HttpServletRequest request,Model model,int c_no ,int food_no) {
+//		String path = request.getRealPath("/courseLine")+"/";
+//		model.addAttribute("c", cdao.getCourseByCno(c_no, path));
+//		model.addAttribute("f", cdao.getFoodByFoodNo(food_no));
+//	}
 }
