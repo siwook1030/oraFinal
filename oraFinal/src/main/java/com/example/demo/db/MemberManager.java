@@ -41,6 +41,14 @@ public class MemberManager {
 		return re;
 	}
 	
+	public static int phoneNumCheck(String phone) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.selectOne("member.phoneNumCheck", phone);
+		session.close();
+		return re;
+	}
+	
 	public static int insertMember(MemberVo m) {
 		int re = -1;
 		SqlSession session = sqlSessionFactory.openSession();

@@ -9,14 +9,18 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;import org.springframework.boot.web.embedded.undertow.ConfigurableUndertowWebServerFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.embedded.undertow.ConfigurableUndertowWebServerFactory;
 
 import com.example.demo.controller.CourseController;
+import com.example.demo.util.FileUtilCollection;
 import com.example.demo.vo.CoursePhotoVo;
 import com.example.demo.vo.CourseVo;
 import com.example.demo.vo.FoodPhotoVo;
@@ -25,8 +29,8 @@ import com.example.demo.vo.PublicTransportVo;
 
 public class CourseManager {
 	
-private static SqlSessionFactory sqlSessionFactory;
-private static final int recommendNum = 3;	
+	private static SqlSessionFactory sqlSessionFactory;
+	
 	static {
 		try {
 			String resource = "com/example/demo/db/sqlMapConfig.xml";
@@ -52,7 +56,16 @@ private static final int recommendNum = 3;
 		int resPT = session.insert("course.insertPT",sPT); 
 		int reePT = session.insert("course.insertPT",ePT);
 		
-		if(rec > 0 && resPT > 0 && reePT > 0) {
+		int recP = 0;
+		List<CoursePhotoVo> cPhotoList = c.getC_photo();
+		for(CoursePhotoVo cp : cPhotoList) {
+			recP = session.insert("course.insertCphoto", cp);
+			if(recP <= 0) {
+				recP = 0;
+			}
+		}
+		
+		if(rec > 0 && resPT > 0 && reePT > 0 && recP > 0) {
 			session.commit();
 			re = 1;
 		}
@@ -84,7 +97,7 @@ private static final int recommendNum = 3;
 		SqlSession session = sqlSessionFactory.openSession();
 		c = session.selectOne("course.selectByCno", c_no);
 		c.setC_views(c.getC_view().split("-"));
-		c.setC_line(getCline(c.getC_line(), path));
+		c.setC_line(FileUtilCollection.readText(c.getC_line(), path));
 		List<CoursePhotoVo> cpList = session.selectList("course.selectCoursePhoto", c_no);			
 		Collections.shuffle(cpList);
 		if(cpList.size() == 0 ) {
@@ -147,9 +160,21 @@ private static final int recommendNum = 3;
 	}
 	
 	public static int cnameDupCheck(String c_name) {
-		int re = 1;
+		int re = 0;
 		SqlSession session = sqlSessionFactory.openSession();
-		re = session.selectOne("course.cnameDupCheck", c_name);
+		List<String> cNameList = session.selectList("course.cnameDupCheck", c_name);
+		
+		for(String cn : cNameList) {
+			String cname = cn;
+			int idx = cn.indexOf(".");
+			if(idx != -1) {
+				cname = cn.substring(0, idx);
+			}
+			
+			if(cname.equals(c_name)) {
+				re = 1;
+			}
+		}
 		session.close();
 		
 		return re;
@@ -204,25 +229,6 @@ private static final int recommendNum = 3;
 		return c;
 	}
 	
-	private static String getCline(String filename, String path) {
-		String c_line = "";
-		try {
-			File file = new File(path+filename);
-			FileReader fileReader = new FileReader(file);
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
-			String line = "";
-			while((line= bufferedReader.readLine()) != null) {
-				c_line += line;
-			}
-			
-			bufferedReader.close();
-			System.out.println(c_line);
-		}catch (Exception e) {
-			System.out.println("코스매니저 겟시라인 예외 " +e.getMessage());
-		}
-		
-		return c_line;
-	}
 	
 	
 }
