@@ -107,6 +107,7 @@ public class CourseController {
 		model.addAttribute("f", cdao.getFoodByFoodNo(food_no));
 	}
 	
+	
 	//나의 찜코스 ~
 	@GetMapping(value = "/myPageSaveCourse")
 	public void saveCourse(Model model,HttpSession httpSession) {
@@ -137,6 +138,7 @@ public class CourseController {
 		System.out.println("코스리스트");
 		System.out.println(photovo);
 	}
+	//찜코스 삭제~
 	@GetMapping(value = "/deleteSaveCourse")
 	public int deleteSaveCourse(HttpSession httpSession,int c_no) {
 		MemberVo m = (MemberVo)httpSession.getAttribute("m");

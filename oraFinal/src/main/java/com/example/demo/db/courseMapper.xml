@@ -92,18 +92,21 @@
 		SELECT FP_NO, FOOD_NO, FP_NAME, FP_PATH FROM FOODPHOTO WHERE FOOD_NO=#{food_no}
 	</select>
 	
+	<!-- 찜코스 출력 -->
 	<select id="selectSaveCourse" resultType="courseVo">
 		SELECT C_NO, CODE_VALUE, ID, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
 		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP FROM COURSE
 		WHERE C_NO in (SELECT C_NO FROM SAVE_COURSE WHERE ID=#{id})
 	</select>
 	
+	<!-- 내가만든코스 출력 -->
 	<select id="selectMyCourse" resultType="courseVo">
 		SELECT C_NO, CODE_VALUE, ID, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
 		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP
 		FROM COURSE WHERE ID=#{id}
 	</select>
 	
+	<!-- 찜코스 삭제 -->
 	<delete id="deleteMyCourse">
 		DELETE SAVE_COURSE WHERE ID=#{id} AND C_NO=#{c_no}
 	</delete>

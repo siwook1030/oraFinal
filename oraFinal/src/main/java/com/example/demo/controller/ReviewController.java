@@ -32,12 +32,14 @@ import com.google.gson.Gson;
 
 @Controller
 public class ReviewController {
+	
 	@Autowired
 	private ReviewDao rdao;
 	@Autowired
 	private CourseDao cdao;
 	@Autowired
 	private MemberDao mdao;
+	
 	public void setRdao(ReviewDao rdao) {
 		this.rdao = rdao;
 	}
@@ -81,6 +83,7 @@ public class ReviewController {
 		}
 		model.addAttribute("list", list);
 	}
+	//내가쓴 게시물목록
 	@RequestMapping("/myPageListReview")
 	public void myPageListReview(Model model,HttpSession httpSession) {
 		List<ReviewVo> list = rdao.myPageSelectList(httpSession);

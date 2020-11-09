@@ -26,6 +26,6 @@
 	</select>
 	
 	<update id="updateMember">
-		UPDATE MEMBER SET NICKNAME=#{nickName},PHONE=#{phone} WHERE ID=#{id}
+		UPDATE MEMBER SET PASSWORD=#{password},NICKNAME=#{nickName},PHONE=#{phone} WHERE ID=#{id}
 	</update>
 </mapper>

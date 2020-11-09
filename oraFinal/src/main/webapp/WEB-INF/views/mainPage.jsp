@@ -5,6 +5,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
+
+
 <link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
 <title>오늘의라이딩</title>
 <style type="text/css">
@@ -131,7 +134,7 @@ window.onload = function(){
 	
 	setRecomendList(); // 처음 로드시 나타내준다
 	setInterval(setRecomendList, 3000);  // 계속하여 랜덤으로 보여주기위해 인터벌걸어준다
-	
+
 
 
 }
@@ -168,6 +171,10 @@ window.onload = function(){
   		</div>
   	</section>
   	<div id="clear"></div>
+  	
+  	
+  	
+  	
   	<jsp:include page="footer.jsp"/>
 </body>
 </html>

@@ -6,6 +6,8 @@
   <select id="selectList" resultType="reviewVo">
     SELECT * FROM review ORDER BY r_no DESC
   </select>
+  
+  <!-- 내 게시물 목록-->
    <select id="myPageSelectList" resultType="reviewVo">
     SELECT * FROM review WHERE ID=#{id} ORDER BY r_no DESC
   </select>

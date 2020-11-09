@@ -86,10 +86,11 @@
 		DELETE MEETING_REP WHERE MR_NO=#{mr_no}
 	</delete>
 	
-	
+	<!--실시간 게시글 페이징 -->
 	<select id="MyTotMRecord" resultType="int"> <!-- 게시글 수 -->
 		SELECT COUNT(*) FROM MEETING WHERE ID=#{id}
 	</select>
+	<!-- 내가 쓴 게시글만 출력 -->
 	<select id="myPageSelectMAll" resultType="meetingVo"> <!-- 마이페이지 게시글 목록 -->
 		SELECT * FROM (SELECT ROWNUM N, M_NO, C_NAME, M_TIME, M_TITLE, RANK_ICON, NICKNAME, TO_CHAR(M_REGDATE, 'YYYY. MM. DD HH24:MI') AS M_REGDATE, M_HIT, id
 	FROM (SELECT M_NO, C_NAME, M_TIME, M_TITLE, RANK_ICON, NICKNAME, M_REGDATE, M_HIT, mb.id

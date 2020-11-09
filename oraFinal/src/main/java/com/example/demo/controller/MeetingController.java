@@ -166,7 +166,7 @@ public class MeetingController {
 		return m.getId();
 	}
 	
-	
+	//내 게시물 목록
 	@RequestMapping("/myPageListMeeting")
 	public void myPageListMeeting(Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo, MeetingVo m,HttpSession httpSession) {
 		totRecord = mdao.myTotMRecord(getMemberId(httpSession));
