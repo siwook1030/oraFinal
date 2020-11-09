@@ -77,6 +77,57 @@ public class CourseManager {
 		return re;
 	}
 	
+	public static int updateCourse(CourseVo c, PublicTransportVo sPT, PublicTransportVo ePT) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession();
+		int rec = session.update("course.updateCourse", c);
+		int resPT = session.update("course.updatePT",sPT); 
+		int reePT = session.update("course.updatePT",ePT);
+		int reDelPhoto = session.delete("course.deleteCoursePhoto", c.getC_no());
+		
+		int recP = 0;
+		List<CoursePhotoVo> cPhotoList = c.getC_photo();
+		for(CoursePhotoVo cp : cPhotoList) {
+			recP = session.insert("course.insertCphoto", cp);
+			if(recP <= 0) {
+				recP = 0;
+			}
+		}
+		
+		if(rec > 0 && resPT > 0 && reePT > 0 && reDelPhoto > 0 && recP > 0) {
+			session.commit();
+			re = 1;
+		}
+		else {
+			session.rollback();
+		}
+		
+		session.close();
+		return re;
+	}
+	
+	public static int deleteCourse(int c_no) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession();
+		
+		int rePT = session.update("course.deletePT",c_no); 
+		int reDelPhoto = session.delete("course.deleteCoursePhoto", c_no);
+		int rec = session.update("course.deleteCourse", c_no);
+		
+		if( rePT > 0 && reDelPhoto > 0 && rec > 0) {
+			session.commit();
+			re = 1;
+		}
+		else {
+			session.rollback();
+		}
+		
+		session.close();
+		return re;
+		
+	}
+	
+	
 	public static List<CourseVo> getCourseByView(String view) {  // 메인페이지 추천
 		List<CourseVo> clist = new ArrayList<CourseVo>();
 		SqlSession session = sqlSessionFactory.openSession();

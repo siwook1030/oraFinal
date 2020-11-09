@@ -412,16 +412,20 @@ window.onload = function(){
 
 	const courseBounds = new kakao.maps.LatLngBounds(); 
 	
-	const preCpoly =${c.c_line};
-	const courseLine = preCpoly.courseLine;
-	const altitudeData = preCpoly.altitudeData;
-	console.log(preCpoly);
-	if(preCpoly != null && preCpoly != ""){
-		cPoly.setPath(courseLine);
-		courseLine.forEach(function(c, i) {
-			courseBounds.extend(c);
-		});
-	}
+	const cJson =${cJson};
+
+	const preStartLatLng = new kakao.maps.LatLng(cJson.c_s_latitude, cJson.c_s_longitude);
+	const preArriveLatLng = new kakao.maps.LatLng(cJson.c_e_latitude, cJson.c_e_longitude);
+	
+	const cLineObj = JSON.parse(cJson.c_line);
+	const courseLine = eval(cLineObj.courseLine);
+	const altitudeData = eval(cLineObj.altitudeData);
+	
+	cPoly.setPath(courseLine);
+	courseLine.forEach(function(c, i) {
+		courseBounds.extend(c);
+	});
+		
 	google.charts.load('current', {'packages':['corechart']});
 	google.charts.setOnLoadCallback(drawAltitude); 
 	
@@ -466,7 +470,7 @@ window.onload = function(){
 	const arriveImage = new kakao.maps.MarkerImage(arriveSrc, arriveSize, arriveOption);
 
 	//코스 출발 마커가 표시될 위치입니다 
-	const startPosition = new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude}); 
+	const startPosition = preStartLatLng; 
 	//코스 출발 마커를 생성합니다
 	const startMarker = new kakao.maps.Marker({
 			map: map, // 출발 마커가 지도 위에 표시되도록 설정합니다
@@ -476,7 +480,7 @@ window.onload = function(){
 
 
 	//코스 도착 마커가 표시될 위치입니다 
-	const arrivePosition = new kakao.maps.LatLng(${c.c_e_latitude}, ${c.c_e_longitude});  
+	const arrivePosition = preArriveLatLng;  
 	//코스 도착 마커를 생성합니다 
 	const arriveMarker = new kakao.maps.Marker({  
 			map: map, // 도착 마커가 지도 위에 표시되도록 설정합니다
@@ -511,7 +515,8 @@ window.onload = function(){
 	//-----------------------
 	const psBounds = new kakao.maps.LatLngBounds();;
 	const peBounds = new kakao.maps.LatLngBounds();;
-	
+	psBounds.extend(preStartLatLng);
+	peBounds.extend(preArriveLatLng);
 	let ptJson = ${ptJson}
 		console.log(ptJson);
 		ptJson.forEach(function(pt, i) { //대중교통 출발점 도착점 나누기
@@ -574,7 +579,7 @@ window.onload = function(){
 	setBound(PSmap, psBounds);
 	setBound(PEmap, peBounds);
 	//출발 마커가 표시될 위치입니다 
-	const PSstartPosition = new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude}); 
+	const PSstartPosition = preStartLatLng; 
 	// 출발 마커를 생성합니다
 	const PSstartMarker = new kakao.maps.Marker({
 	    map: PSmap, // 출발 마커가 지도 위에 표시되도록 설정합니다
@@ -583,7 +588,7 @@ window.onload = function(){
 	});
 	  
 	//도착 마커가 표시될 위치입니다 
-	const PEarrivePosition = new kakao.maps.LatLng(${c.c_e_latitude}, ${c.c_e_longitude});  
+	const PEarrivePosition = preArriveLatLng;  
 	// 도착 마커를 생성합니다 
 	const PEarriveMarker = new kakao.maps.Marker({  
 	    map: PEmap, // 도착 마커가 지도 위에 표시되도록 설정합니다
@@ -743,7 +748,8 @@ window.onload = function(){
 	}
 
 	//------------------------ 사진 세팅
-	const uploadFilesName = eval(${uploadFilesName});
+	const uploadFilesName = ${uploadFilesName};
+	console.log(uploadFilesName);
 	if(uploadFilesName != undefined && uploadFilesName.length != 0){
 		document.getElementById("mainPhoto").style.backgroundImage = "url(/previewPhoto/"+uploadFilesName[0]+")";
 		let cPhotoStr = "";
@@ -845,9 +851,7 @@ window.onload = function(){
 			<div id="courseWordsTitle" style="margin-bottom: 20px; font-size: 110%;">
 				<span style="text-decoration: underline;">&nbsp;&nbsp;${c.c_name } 코스만의&nbsp;&nbsp;'<span style="color: #eccb6a;font-weight: bold;">갬</span><span style="color: #c8572d; font-weight: bold; ">성</span>' 포인트&nbsp;&nbsp;&nbsp;</span>
 			</div>
-			<div id="courseWordsContent" style="font-size: 90%;">
-				${c.c_words }
-			</div>
+			<div id="courseWordsContent" style="font-size: 90%; white-space:pre;">${c.c_words }</div>
   		</div>
   		<div id="coursePhotoBox">
   		</div>

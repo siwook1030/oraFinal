@@ -37,6 +37,14 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=drawing,services"></script>
 <script>
 window.onload = function(){
+	const oldCourseName = document.getElementById("oldCourseName");
+	const featNickName = document.getElementById("featNickName");
+	
+	const courseNum = document.getElementById("courseNum");
+	const courseId = document.getElementById("courseId");
+	const courseCodeValue = document.getElementById("courseCodeValue");
+	
+	
 	const courseName =  document.getElementById("courseName");
 	const slat =  document.getElementById("slat");
 	const slon =  document.getElementById("slon");
@@ -57,6 +65,8 @@ window.onload = function(){
 	const photoInput = document.getElementById("photoInput");
 	const fixC =  document.getElementById("fixC"); // 수정시 가져오기필요문구 나타낼스판
 ////////////////////////////////////////////////////
+	const pt_noPS = document.getElementById("pt_noPS");
+
 	const latPS = document.getElementById("latPS");
 	const lonPS = document.getElementById("lonPS");
 	const sPT = document.getElementById("sPT");
@@ -65,6 +75,8 @@ window.onload = function(){
 	const linePS = document.getElementById("linePS");
 	const fixPS = document.getElementById("fixPS"); // 수정시 가져오기필요문구 나타낼스판
 ////////////////////////////////////////////////////////////
+	const pt_noPE = document.getElementById("pt_noPE");
+
 	const latPE = document.getElementById("latPE");
 	const lonPE = document.getElementById("lonPE");
 	const ePT = document.getElementById("ePT");
@@ -74,7 +86,7 @@ window.onload = function(){
 	const fixPE = document.getElementById("fixPE");;  // 수정시 가져오기필요문구 나타낼스판
 
 ////////////////////////////////////////////////////////////// 변수선언끝 	
-	const courseNameCnt = document.getElementById("courseNameCnt");  // 10자
+	const courseNameCnt = document.getElementById("courseNameCnt");  // 10자 
 	const wordsCnt = document.getElementById("wordsCnt");  // 3000자
 	const sPTStationCnt = document.getElementById("sPTStationCnt"); // 14자
 	const ePTStationCnt = document.getElementById("ePTStationCnt"); // 14자
@@ -117,10 +129,7 @@ window.onload = function(){
 	}
 
 // ------------------------- 글자수 세기 이벤트끝 (코스명,코스설명,출발도착대중교통역)
-const checkM = checkLogin(); // 로그인정보
-const mId = checkM.item.id;
-const mCode_value = checkM.item.code_value;
-const mNickName = checkM.item.nickName;
+
 // ------------------------------------------------------- 풍경 셀렉트 노드생성
 	const viewNameStr = "강,산,명소,바다";
 	const noSelectView = '<option value="0">--선택안함--</option>';
@@ -136,7 +145,7 @@ const mNickName = checkM.item.nickName;
 	thirdView.addEventListener("change", function(e) {
 		thirdViewChange(e.target);
 	});
-
+	
 	function firstViewChange(target){
 		let optionNode = noSelectView;   // 동적으로 만들 셀렉트의 옵션노드들을 담을 변수선언 // 첫번째값으로 --선택안함--을 넣고 시작
 		const optionValue = target.value;
@@ -546,7 +555,7 @@ const mNickName = checkM.item.nickName;
 	    manager3.put(kakao.maps.drawing.OverlayType.POLYLINE, latlonArr);
     	fixC.innerHTML=""; // 새로 라인을 그리기 후 가져오기눌러주세요 글을 없앤다
     	fixC.setAttribute("val", "n");
-    	line.value = JSON.stringify({"courseLine":pathStr,"altitudeData":altitudeData});
+    	line.value = JSON.stringify({"courseLine":pathStr,"altitudeData":altitudeData});	
 		//line.value = '{"courseLine":'+pathStr+',"altitudeData":'+JSON.stringify(altitudeData)+'}';
 	    dis.value = distance;
 	    time.value = (distance/20*60).toFixed(0);
@@ -958,7 +967,8 @@ const mNickName = checkM.item.nickName;
 	
 	const uploadFiles = [];
 	const drop = document.getElementById("drop");
-
+	const thumbnails = document.getElementById("thumbnails");
+	
 	drop.addEventListener("dragenter", function(e) {
 		this.className = "drag-over";
 	})
@@ -975,15 +985,14 @@ const mNickName = checkM.item.nickName;
 		const cpFiles = e.dataTransfer.files;
 		addPhoto(cpFiles);
 	})
-
 	photoInput.addEventListener("change", function(e) {
-		console.log(e.target.files);
 		const cpFiles = e.target.files;
 		addPhoto(cpFiles);
 	});
 	
 	function addPhoto(cpFiles){
 		const files = cpFiles; //드래그&드랍 항목
+		console.log(files);
 		for(let i = 0; i < files.length; i++) {
 			const file = files[i];
 			if (!file.type.match(photoReg)) {
@@ -995,11 +1004,14 @@ const mNickName = checkM.item.nickName;
 				return;
 			}
 			const size = uploadFiles.push(file); //업로드 목록에 추가
+			console.log(file);
+			console.log("파일들어감");
 			previewPhoto(file, size - 1); //미리보기 만들기
 		}
 	}
 	
 	function previewPhoto(file, idx) {
+		console.log("작동함");
 		const reader = new FileReader();
 		reader.onload = (function(f, idx) {
 			return function(e) {
@@ -1007,12 +1019,12 @@ const mNickName = checkM.item.nickName;
 				<div class="close" data-idx="' + idx + '">X</div> \
 				<img src="' + e.target.result + '" title="' + escape(f.name) + '"/> \
 				</div>';
-				$("#thumbnails").append(div);
+				thumbnails.append(div);
 			};
 		})(file, idx);
 			reader.readAsDataURL(file);
 	}
-	
+
 	$("#thumbnails").on("click", ".close", function(e) {
 		const $target = $(e.target);
 		const idx = $target.attr('data-idx');
@@ -1058,6 +1070,10 @@ const mNickName = checkM.item.nickName;
 
 		function cnameDupCheck(){  // 코스명 중복검사 함수
 			let check = "1";
+			if(oldCourseName.value == cname+featNickName.value){  // 수정전 코스명과 수정 후 코스명이 같을경우 대비
+				return "0";
+			}
+			
 			$.ajax({
 				url: "/user/cnameDupCheck",
 				type: "POST",
@@ -1128,10 +1144,8 @@ const mNickName = checkM.item.nickName;
 		sPTStation.value = sPTStation.value.trim();
 		ePTStation.value = ePTStation.value.trim();
 			
-		let c_name = courseName.value.trim();
-		if(mCode_value != "00101"){     // 관리자코드가 아니면 코스명뒤에 닉네임을 붙여준다
-			c_name += ".feat "+mNickName;
-		}
+		const c_name = courseName.value.trim()+featNickName.value;
+
 		const sLocName = "#"+sLoc.value.trim().split(" ", 1);  // 주소 맨처음 단어(도시이름)만 때온다 ex) '서울 양천구 목동' 일 경우  '서울'을 갖고옴
 		const eLocName = "#"+eLoc.value.trim().split(" ", 1);
 		let c_loc = sLocName;
@@ -1153,7 +1167,7 @@ const mNickName = checkM.item.nickName;
 			c_views.push(fourthView.value);
 		}
 		const c_view = c_views.join("-");
-		
+
 		const pt_stationPS = sPT.value.trim()+" "+sPTStation.value.trim();
 		const pt_stationPE = ePT.value.trim()+" "+ePTStation.value.trim();
 		const pt_imgPS = sPT.value.trim()+".png";
@@ -1164,10 +1178,10 @@ const mNickName = checkM.item.nickName;
 		const formData = new FormData(courseForm);
 		formData.set("c_name", c_name);
 		formData.set("c_loc", c_loc);
-		formData.set("code_value", mCode_value);
-		formData.set("id", mId);
+
 		formData.set("c_view", c_view);
 		formData.set("c_views", c_views);
+		
 		formData.set("pt_stationPS", pt_stationPS);
 		formData.set("pt_stationPE", pt_stationPE);
 		formData.set("pt_imgPS", pt_imgPS);
@@ -1182,7 +1196,7 @@ const mNickName = checkM.item.nickName;
 		return formData;
 	}
 	
-	document.getElementById("previewMakingCourse").addEventListener("click", function(e) {
+	document.getElementById("previewUpdateCourse").addEventListener("click", function(e) {
 		const fixCVal = fixC.getAttribute("val");
 		if(fixCVal != "n"){
 			alert("상단 첫 코스 가져오기를 실행해야만 미리보기를 볼 수 있습니다.");
@@ -1204,19 +1218,19 @@ const mNickName = checkM.item.nickName;
 		})
 	});
 
-	document.getElementById("regCourse").addEventListener("click", function(e) {
+	document.getElementById("updateCourse").addEventListener("click", function(e) {
 		const check = preCheck();
 		if(check == 1){
 			return;
 		}
-		const preConfirm = confirm("등록하면 더 이상 수정이 불가능합니다.\r\n등록하시겠습니까?(미리보기를 통해 충분히 확인 후 진행해도 좋습니다)");
+		const preConfirm = confirm("정말로 수정을 완료하시겠습니까?");
 
 		if(preConfirm == false){
 			return;
 		}
 
 		$.ajax({
-			url:"/user/regCourse",
+			url:"/admin/updateCourse",
 			type: "POST",
 			data: getCourseData(),
 			contentType: false,
@@ -1236,6 +1250,143 @@ const mNickName = checkM.item.nickName;
 		});
 	});
 
+	//--------------- 수정내용 세팅장소  변수명 uc는 update course 줄임말 
+	const cJson = ${cJson};
+	const ptJson = ${ptJson};
+	console.log(cJson.c_photo);
+	console.log(typeof(cJson.c_photo));
+	function setUpdateCourse(){   // 업데이트코스 데이타 설정 함수
+		const courseBounds = new kakao.maps.LatLngBounds();
+		courseNum.value = cJson.c_no;
+		courseId.value = cJson.id;
+		courseCodeValue.value = cJson.code_value;
+		oldCourseName.value = cJson.c_name;
+
+		//----히든으로 넘길값들 (유지해야할 값)
+		courseName.value = cJson.c_name;
+		if(cJson.code_value == "00102" ){ // 일반유저가 등록한 코스였을경우
+			const idx = cJson.c_name.indexOf(".");
+			if(idx != -1){
+				courseName.value = cJson.c_name.substring(0,idx);
+				featNickName.value = cJson.c_name.substring(idx);
+			}
+			
+		} 
+		
+		const ucLine = JSON.parse(cJson.c_line);
+
+		const cLineArr = eval(ucLine.courseLine);   // 코스 위도경도 객체 배열
+		altitudeData = eval(ucLine.altitudeData); // 코스 고도를 전역변수 얼티튜드데이타에 담는다
+		manager.put(kakao.maps.drawing.OverlayType.MARKER, cLineArr[0],0);  // 출발점마커 
+		manager2.put(kakao.maps.drawing.OverlayType.MARKER, cLineArr[cLineArr.length-1],0); // 도착점 마커
+		manager3.put(kakao.maps.drawing.OverlayType.POLYLINE, cLineArr); // 코스폴리라인 
+		cLineArr.forEach(function(latlng, i) {
+			courseBounds.extend(latlng);
+		});
+		map.setBounds(courseBounds);  // 맵 바운드 설정
+		getInfo(); // 코스가져오기를 실행시킴
+		const c_views = cJson.c_views;
+		console.log(c_views);
+		c_views.forEach(function(v, i) {  // 코스풍경 셀렉트 선택
+			if(i == 0){
+				const firstViewOp = document.querySelectorAll("#firstView option");
+				firstViewOp.forEach(function(op, i) {
+					if(op.value == v){
+						op.selected = true;
+						firstViewChange(op);
+					}
+				});
+			}
+			if(i == 1){
+				const secondViewOp = document.querySelectorAll("#secondView option");
+				secondViewOp.forEach(function(op, i) {
+					if(op.value == v){
+						op.selected = true;
+						secondViewChange(op);
+					}
+				});
+			}
+			if(i == 2){
+				const thirdViewOp = document.querySelectorAll("#thirdView option");
+				thirdViewOp.forEach(function(op, i) {
+					if(op.value == v){
+						op.selected = true;
+						thirdViewChange(op);
+					}
+				});
+			}
+			if(i == 3){
+				const fourthViewOp = document.querySelectorAll("#fourthView option");
+				fourthViewOp.forEach(function(op, i) {
+					if(op.value == v){
+						op.selected = true;
+					}
+				});
+			}
+		});
+		diff.options[cJson.c_difficulty].selected = true;  // 난이도 셀렉트선택
+		words.value = cJson.c_words;  // 코스설명 
+
+		ptJson.forEach(function(p, i) {
+			const ptLine = eval(p.pt_line);
+			const ptValue = p.pt_img.substring(0,p.pt_img.indexOf("."));
+			console.log(ptValue);
+			
+			if(p.code_value == "00201"){
+				pt_noPS.value = p.pt_no;
+	
+				managerPS.put(kakao.maps.drawing.OverlayType.MARKER, ptLine[0],0);
+				managerPS.put(kakao.maps.drawing.OverlayType.POLYLINE, ptLine);
+				getInfoPS();
+				const ptOptions = document.querySelectorAll('#sPT option');
+				ptOptions.forEach(function(op, i) {
+					if(op.value == ptValue){
+						op.selected = true;
+					}
+				});
+				sPTStation.value = p.pt_station.substring(p.pt_station.indexOf(" ")+1);
+			}
+			else{
+				pt_noPE.value = p.pt_no;
+					
+				managerPE.put(kakao.maps.drawing.OverlayType.MARKER, ptLine[0],0);
+				managerPE.put(kakao.maps.drawing.OverlayType.POLYLINE, ptLine);
+				getInfoPE();
+				const ptOptions = document.querySelectorAll('#ePT option');
+				ptOptions.forEach(function(op, i) {
+					if(op.value == ptValue){
+						op.selected = true;
+					}
+				});
+				ePTStation.value = p.pt_station.substring(p.pt_station.indexOf(" ")+1);
+			}
+		})
+		
+		cJson.c_photo.forEach(function(cp, i) {
+			const imgUrl = cp.cp_path+"/"+cp.cp_name;
+			const req = new XMLHttpRequest();
+			req.open('GET',imgUrl);
+			req.responseType="blob";
+			req.send(null);
+			req.addEventListener("load", function(e) {
+				const imgFile = this.response;
+				addPhoto([imgFile]);
+				
+			})
+			req.addEventListener("error", function(e) {
+				alert("에러발생");
+			})	
+		
+		});
+		
+		
+	};	
+	setUpdateCourse();
+	
+	
+	
+	
+	//--------------- 수정내용 세팅장소 끝
 
 }
 </script>
@@ -1249,6 +1400,8 @@ const mNickName = checkM.item.nickName;
 <form id="courseForm">
 <span id="cTitle">코스명 :</span><input type="text" name="c_name"  id="courseName" maxlength="10"><span id="courseNameCnt"></span>
 <br>
+(수정전 코스명)<input type="text" id="oldCourseName" readonly="readonly">
+<input type="hidden" id="featNickName" value="">
 <br>
 
 <div id="map" style="width:1000px;height:500px;"></div>
@@ -1264,6 +1417,10 @@ const mNickName = checkM.item.nickName;
     <button type="button" id="infoC" >가져오기</button><span id="fixC" val="y"></span> <br>
    <input type="checkbox" id="chkBicycle" /> 자전거도로 정보 보기
 </p>
+<input type="hidden" id="courseNum" name="c_no" > 
+<input type="hidden" id="courseId" name="id"> 
+<input type="hidden" id="courseCodeValue" name="code_value">
+
 
 출발 - 위도 : <input type="text" id="slat" name="c_s_latitude" value="0" readonly="readonly">
 경도 : <input type="text" id="slon" name="c_s_longitude" value="0" readonly="readonly">
@@ -1314,7 +1471,7 @@ const mNickName = checkM.item.nickName;
 <span id="wordsCnt"></span>
 <br>
 [코스사진]<br>
-<div id="drop" style="border:1px solid black; width:800px; height:300px; padding:3px;">
+<div id="drop" style="border:1px solid black; width:800px; height:300px; padding:3px">
 <div id="thumbnails">
 </div>
 </div>
@@ -1329,6 +1486,7 @@ const mNickName = checkM.item.nickName;
     <button type="button" id="infoPS" >가져오기</button><span id="fixPS" val="y"></span> <br>
      <input type="checkbox" id="chkBicyclePS" /> 자전거도로 정보 보기
     <br>
+    <input type="hidden" id="pt_noPS" name="pt_noPS">
 대중교통위치 - 위도 : <input type="text" id="latPS" name="pt_latitudePS" value="0" readonly="readonly"> 경도 : <input type="text" id="lonPS" name="pt_longitudePS" value="0" readonly="readonly">
 <br>
 거리 :  <input type="text" id="disPS" name="pt_distancePS" value="0" readonly="readonly">km 
@@ -1353,7 +1511,7 @@ const mNickName = checkM.item.nickName;
     <button type="button" id="infoPE" >가져오기</button><span id="fixPE" val="y"></span> <br>
      <input type="checkbox" id="chkBicyclePE" /> 자전거도로 정보 보기
     <br>
-
+<input type="hidden" id="pt_noPE" name="pt_noPE">
 대중교통위치 - 위도 : <input type="text" id="latPE" name="pt_latitudePE" value="0" readonly="readonly"> 경도 : <input type="text" id="lonPE" name="pt_longitudePE" value="0" readonly="readonly">
 <br>
 거리 :  <input type="text" id="disPE" name="pt_distancePE" value="0" readonly="readonly">km
@@ -1370,7 +1528,7 @@ const mNickName = checkM.item.nickName;
 <textarea rows="10" cols="80" id="linePE" name="pt_linePE" readonly="readonly"></textarea>
 </form>
 <br><br>
-<button type="button" id="previewMakingCourse">미리보기</button> <button type="button" id="regCourse">등록</button>
+<button type="button" id="previewUpdateCourse">미리보기</button> <button type="button" id="updateCourse">수정</button>
 </section>
 	<div id="clear"></div>
 <jsp:include page="../footer.jsp"/>
