@@ -38,8 +38,10 @@ import lombok.Setter;
 @Controller
 public class MakingCourseController {
 	
-	public static String courseLinePath = "/courseLine";
-	public static String coursePhotoPath = "/coursePhoto";
+	public static String courseLinePath = "/courseLine";    // 코스라인 경로
+	public static String courseLineName = "_c_line.dat";    // 코스라인파일 이름 (앞에는 기본키 코스번호 붙임)
+	public static String coursePhotoPath = "/coursePhoto";  // 코스포토 경로
+	public static String coursePhotoPathSub = "/course";    // 각 코스번호마다 공통 폴더명 (뒤에는 기본키 코스번호 붙임)
 	
 	@Autowired
 	@Setter
@@ -81,7 +83,7 @@ public class MakingCourseController {
 		 double c_distance = Double.parseDouble((String)map.get("c_distance"));
 		 int c_time = Integer.parseInt((String)map.get("c_time"));
 		 int c_difficulty = Integer.parseInt((String)map.get("c_difficulty"));
-		 String c_view = null;
+		 String c_view = (String)map.get("c_view");
 		 String c_words = (String)map.get("c_words");
 		 String c_line=(String)map.get("c_line");
 		 String c_temp = "Y";
@@ -125,7 +127,7 @@ public class MakingCourseController {
 		 List<String> uploadFilesName = new ArrayList<String>();
 		 try {
 			 for(MultipartFile mf : uploadfile) {
-					String fname = FileUtilCollection.filePrefixName()+mf.getOriginalFilename();
+					String fname = FileUtilCollection.filePrefixName()+".png";
 					uploadFilesName.add(fname);
 					//mf.transferTo(new File(previewPhotoPath+fname));
 					FileUtilCollection.saveImage(mf, previewPhotoPath+fname);
@@ -150,6 +152,7 @@ public class MakingCourseController {
 		List<String> uploadFilesName = (ArrayList<String>)session.getAttribute("uploadFilesName");
 		Gson gson = new Gson();
 		 model.addAttribute("c", c);
+		 model.addAttribute("cJson", new Gson().toJson(c));
 		 model.addAttribute("ptList", ptList);
 		 model.addAttribute("ptJson", gson.toJson(ptList));
 		 model.addAttribute("uploadFilesName", gson.toJson(uploadFilesName));
@@ -179,30 +182,23 @@ public class MakingCourseController {
 		 double c_distance = Double.parseDouble((String)map.get("c_distance"));
 		 int c_time = Integer.parseInt((String)map.get("c_time"));
 		 int c_difficulty = Integer.parseInt((String)map.get("c_difficulty"));
-		 String c_view = "";
-		 for(int i=0; i<c_views.length; i++) {
-			 c_view += c_views[i];
-			 if(i < c_views.length-1) {
-				 c_view += "-";
-			 }
-		 }
+		 String c_view = (String)map.get("c_view");
 		 String c_words = (String)map.get("c_words");
 		 String c_temp = "Y";
 		 double userDis = 0; //코스와 유저의현재위치와의  거리
 		 
 		 String cLinepath = request.getRealPath(courseLinePath);
-		 String c_line=c_no+"_"+ FileUtilCollection.filePrefixName() +"_c_line.dat";
+		 String c_line=c_no+courseLineName;
 		 String c_lineDat = (String)map.get("c_line");
 		 	 	 
 		 List<CoursePhotoVo> c_photo = new ArrayList<CoursePhotoVo>();
 		 String cPhotoPath = request.getRealPath(coursePhotoPath);
-		 String cPhotoPathSub = "/course"+c_no;
+		 String cPhotoPathSub = coursePhotoPathSub+c_no;
 		 
 		 int cpCnt = 1;
 		 for(MultipartFile mf : uploadfile) {
-			 String cp_name =  "cp"+c_no+"_"+cpCnt+"_"+FileUtilCollection.filePrefixName()+mf.getOriginalFilename();
+			 String cp_name =  "cp"+c_no+"_"+cpCnt+"_"+FileUtilCollection.filePrefixName()+".png";
 			 c_photo.add(new CoursePhotoVo(0, c_no,cp_name, coursePhotoPath+cPhotoPathSub, 0, 0));
-			 cpCnt++;
 		 }
 		
 		 CourseVo c = new CourseVo(c_no, code_value, id, c_name, c_s_locname, c_s_latitude, c_s_longitude, c_e_locname, c_e_latitude, c_e_longitude, c_loc, c_distance, c_time, c_difficulty, c_view, c_views, c_words, c_line, c_temp, userDis, c_photo);
@@ -244,21 +240,11 @@ public class MakingCourseController {
 		 
 		 if( re > 0) {
 			 try {
-//				 BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(cLinepath+"/"+c_line, false));
-//				 bufferedWriter.write(c_lineDat);
-//				 bufferedWriter.flush();
-//				 bufferedWriter.close();
 				 FileUtilCollection.saveText(c_lineDat, cLinepath+"/"+c_line);
 				 
-				 FileUtilCollection.createFolder(cPhotoPath+cPhotoPathSub);
-//				 File cpFolder = new File(cPhotoPath+cPhotoPathSub);
-//				 if(!cpFolder.exists()) {
-//					 cpFolder.mkdir();
-//				 }
-				 
+				 FileUtilCollection.createFolder(cPhotoPath+cPhotoPathSub); 
 				 for(int i=0; i<uploadfile.size(); i++) {
 					 FileUtilCollection.saveImage(uploadfile.get(i), cPhotoPath+cPhotoPathSub+"/"+c_photo.get(i).getCp_name());
-					 //uploadfile.get(i).transferTo(new File(cPhotoPath+cPhotoPathSub+"/"+c_photo.get(i).getCp_name()));
 				 }		 
 			 }catch (Exception e) {
 				System.out.println("메이킹코스 파일예외 " + e.getMessage());

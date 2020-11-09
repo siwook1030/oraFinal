@@ -72,6 +72,19 @@ public class FileUtilCollection {
 		}
 	}
 	
+	public static void deleteFolder(String pathFolder) {  // 폴더 삭제 메소드 (스트링 경로+폴더명을 매개변수로 받음)
+		try {
+			deleteFilesInFolder(pathFolder);
+			File folder = new File(pathFolder);
+			if(folder.isDirectory()) {
+				folder.delete();
+			}
+			
+		}catch (Exception e) {
+			System.out.println("파일유틸컬렉션 딜리트폴더 예외 " +e.getMessage());
+		}
+	}
+	
 	public static void deleteFile(String path) {  // 특정파일 한개 삭제 메소드 (파일경로를 매개변수로 받음)
 		try {
 			File file = new File(path);

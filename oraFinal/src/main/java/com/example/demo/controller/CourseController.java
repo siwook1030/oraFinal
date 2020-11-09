@@ -17,11 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.ResponseDataCode;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.db.CourseManager;
+import com.example.demo.util.FileUtilCollection;
 import com.example.demo.vo.CourseVo;
 import com.example.demo.vo.FoodVo;
 import com.example.demo.vo.PublicTransportVo;
+import com.example.demo.vo.ResponseDataVo;
 import com.google.gson.Gson;
 
 @Controller
@@ -88,16 +91,44 @@ public class CourseController {
 	public void detailCourse(HttpServletRequest request,Model model, int c_no) {
 		String path = request.getRealPath("/courseLine")+"/";
 		Gson gson = new Gson();
+		CourseVo c = cdao.getCourseByCno(c_no, path);
 		List<PublicTransportVo> ptList = cdao.getPublicTransportByCno(c_no);
 	//	List<FoodVo> fList = cdao.getFoodByCno(c_no);
-		model.addAttribute("c", cdao.getCourseByCno(c_no, path));
+		model.addAttribute("c", c);
+		model.addAttribute("cJson", gson.toJson(c));
 		model.addAttribute("ptList", ptList);
 		model.addAttribute("ptJson", gson.toJson(ptList));
 	//	model.addAttribute("fList", fList);
 	//	model.addAttribute("fJson", gson.toJson(fList));
 	}
+	@RequestMapping(value = "/admin/deleteCourse", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String deleteCourse(HttpServletRequest request, int c_no) {
+		
+		 ResponseDataVo responseDataVo = new ResponseDataVo();
+		 responseDataVo.setCode(ResponseDataCode.ERROR);
+		 responseDataVo.setMessage("삭제에 실패하였습니다.");
+		 int re = -1;
+		 re = cdao.deleteCourse(c_no);
+		 String cLinepath = request.getRealPath(MakingCourseController.courseLinePath);
+		 String cLineName = c_no + MakingCourseController.courseLineName;
+		 String cPhotoFolderPath = request.getRealPath(MakingCourseController.coursePhotoPath)+MakingCourseController.coursePhotoPathSub+c_no;
+		 if( re > 0) {
+			 try {
+				 FileUtilCollection.deleteFile(cLinepath+"/"+cLineName);
+				 FileUtilCollection.deleteFolder(cPhotoFolderPath);
+			 }catch (Exception e) {
+				System.out.println("딜리트코스 파일예외 " + e.getMessage());
+			}	 
+			 responseDataVo.setCode(ResponseDataCode.SUCCESS);
+			 responseDataVo.setMessage("삭제에 성공하였습니다");
+		 }
+		 	 
+		 Gson gson = new Gson();
+		 return gson.toJson(responseDataVo);
+	}
 	
-//	@RequestMapping("/detailFood")
+//	@RequestMapping("/detailFood")  포기... crud가 너무 힘들다
 //	public void detailFood(HttpServletRequest request,Model model,int c_no ,int food_no) {
 //		String path = request.getRealPath("/courseLine")+"/";
 //		model.addAttribute("c", cdao.getCourseByCno(c_no, path));

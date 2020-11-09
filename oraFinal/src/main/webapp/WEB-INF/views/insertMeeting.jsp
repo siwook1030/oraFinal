@@ -230,8 +230,8 @@ document.getElementById("selectCourse").addEventListener("change", function(e) {
 	            const c = data;
 	            startMarker.setPosition(new kakao.maps.LatLng(c.c_s_latitude, c.c_s_longitude));
 	            arriveMarker.setPosition(new kakao.maps.LatLng(c.c_e_latitude, c.c_e_longitude));
-	            
-	            const courseLine = eval(c.c_line);
+				const cLineOnj = JSON.parse(c.c_line);
+	            const courseLine = eval(cLineOnj.courseLine);
 	            const courseBounds = new kakao.maps.LatLngBounds();
 	            coursePolyline.setPath(courseLine); 
 	            courseLine.forEach(function(c, i) {

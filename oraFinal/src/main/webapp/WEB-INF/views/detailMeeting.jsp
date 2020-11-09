@@ -639,7 +639,7 @@ window.onload = function(){
 	if(${c.c_no} != 0){
 		startMarker.setPosition(new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude}));
 		arriveMarker.setPosition(new kakao.maps.LatLng(${c.c_e_latitude}, ${c.c_e_longitude}));
-		const courseLine = eval(${c.c_line});
+		const courseLine = JSON.parse(${c.c_line});
 		coursePolyline.setPath(courseLine);
 		courseLine.forEach(function(c, i) {
 			courseBounds.extend(c);
