@@ -102,6 +102,12 @@ public class MeetingDao {
 		return MeetingManager.cntRep(m_no);
 	}
 	
+	public int myTotMRecord(String id) {
+		return MeetingManager.myTotMRecord(id);
+	}
+	public List<MeetingVo> myPageListMeeting(HashMap map){
+		return MeetingManager.myPageListMeeting(map);
+	}
 	// meeting_people
 	public List<Meeting_peopleVo> detailMPeople(int m_no) {
 		return MeetingManager.detailMPeople(m_no);

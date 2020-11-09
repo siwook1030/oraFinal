@@ -3,6 +3,8 @@ package com.example.demo.dao;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.db.CourseManager;
@@ -59,5 +61,15 @@ public class CourseDao {
 	
 	public List<CourseVo> searchCourseList(HashMap map){
 		return CourseManager.searchCourseList(map);
+	}
+	
+	public List<CourseVo> getSaveCourse(HttpSession httpSession){
+		return CourseManager.getSaveCourse(httpSession);
+	}
+	public List<CourseVo> getMyCourseById(HttpSession httpSession){
+		return CourseManager.getMyCourseById(httpSession);
+	}
+	public int deleteSaveCourse(HashMap map) {
+		return CourseManager.deleteSaveCourse(map);
 	}
 }

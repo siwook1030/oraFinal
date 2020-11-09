@@ -243,6 +243,22 @@ public class MeetingManager {
 		return re;
 	}
 	
+	//마이페이지 토탈
+	public static int myTotMRecord(String id) {
+		int n = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		n = session.selectOne("meeting.MyTotMRecord",id);
+		session.close();
+		return n;
+	}
+	// 마이페이지 게시글 리스트
+		public static List<MeetingVo> myPageListMeeting(HashMap map) {
+			List<MeetingVo> list = null;
+			SqlSession session = sqlSessionFactory.openSession();
+			list = session.selectList("meeting.myPageSelectMAll", map);
+			session.close();
+			return list;
+		}
 	// 맥스 스텝값
 	public static int nextStep(int mr_ref) {
 		int n = 0;

@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,6 +26,7 @@ import com.example.demo.vo.CoursePhotoVo;
 import com.example.demo.vo.CourseVo;
 import com.example.demo.vo.FoodPhotoVo;
 import com.example.demo.vo.FoodVo;
+import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.PublicTransportVo;
 
 public class CourseManager {
@@ -279,6 +281,67 @@ public class CourseManager {
 		
 		return c;
 	}
+	
+	private static String getCline(String filename, String path) {
+		String c_line = "";
+		try {
+			File file = new File(path+filename);
+			FileReader fileReader = new FileReader(file);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			String line = "";
+			while((line= bufferedReader.readLine()) != null) {
+				c_line += line;
+			}
+			
+			bufferedReader.close();
+			System.out.println(c_line);
+		}catch (Exception e) {
+			System.out.println("코스매니저 겟시라인 예외 " +e.getMessage());
+		}
+		
+		return c_line;
+	}
+	//나의 찜코스 가져오기
+	public static List<CourseVo> getSaveCourse(HttpSession httpSession) {
+		MemberVo m = (MemberVo)httpSession.getAttribute("m");
+		List<CourseVo> SaveCourseList;
+		SqlSession session = sqlSessionFactory.openSession();
+		SaveCourseList = session.selectList("course.selectSaveCourse", m.getId());
+		List<CoursePhotoVo> cpList = null;
+		for (CourseVo c : SaveCourseList) {
+			cpList=session.selectList("course.selectCoursePhoto", c.getC_no());
+			Collections.shuffle(cpList);
+			c.setC_photo(cpList);
+		}
+		session.close();
+		return SaveCourseList;
+	}
+	//내가만든 코스 가져오기
+	public static List<CourseVo> getMyCourseById(HttpSession httpSession) {
+		MemberVo m = (MemberVo)httpSession.getAttribute("m");
+		List<CourseVo> SaveCourseList;
+		SqlSession session = sqlSessionFactory.openSession();
+		SaveCourseList = session.selectList("course.selectMyCourse", m.getId());
+		List<CoursePhotoVo> cpList = null;
+		for (CourseVo c : SaveCourseList) {
+			cpList=session.selectList("course.selectCoursePhoto", c.getC_no());
+			Collections.shuffle(cpList);
+			c.setC_photo(cpList);
+		}
+		
+		session.close();
+		return SaveCourseList;
+	}
+	//찜코스 삭제
+	public static int deleteSaveCourse(HashMap map) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.delete("course.deleteMyCourse", map);
+		session.commit();
+		session.close();
+		return re;
+	}
+	
 	
 	
 	

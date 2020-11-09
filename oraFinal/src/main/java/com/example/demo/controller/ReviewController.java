@@ -35,12 +35,14 @@ import com.google.gson.Gson;
 
 @Controller
 public class ReviewController {
+	
 	@Autowired
 	private ReviewDao rdao;
 	@Autowired
 	private CourseDao cdao;
 	@Autowired
 	private MemberDao mdao;
+	
 	public void setRdao(ReviewDao rdao) {
 		this.rdao = rdao;
 	}
@@ -126,6 +128,17 @@ public class ReviewController {
 		
 		Gson gson = new Gson();
 		return gson.toJson(map);
+	}
+	//내가쓴 게시물목록
+	@RequestMapping("/myPageListReview")
+	public void myPageListReview(Model model,HttpSession httpSession) {
+		List<ReviewVo> list = rdao.myPageSelectList(httpSession);
+		for(ReviewVo rvo : list) {
+			rvo.setC_name(getC_name(rvo.getC_no()));			// 게시판 코스명 설정
+			rvo.setNickName(getNickName(rvo.getId()));			// 게시판 닉네임 설정
+			rvo.setRank_icon(getRankIcon(mvo.getRank_name()));	// 게시판 랭크아이콘 설정
+		}
+		model.addAttribute("list", list);
 	}
 	@RequestMapping("/detailReview")
 	public void detailReview(int r_no, Model model, HttpServletRequest request) {

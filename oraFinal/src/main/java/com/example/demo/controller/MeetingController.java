@@ -21,7 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.demo.ResponseDataCode;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.dao.MeetingDao;
+import com.example.demo.dao.MemberDao;
 import com.example.demo.vo.MeetingVo;
+import com.example.demo.vo.MemberVo;
 
 import com.example.demo.vo.Meeting_fileVo;
 import com.example.demo.vo.Meeting_peopleVo;
@@ -36,19 +38,16 @@ import lombok.Setter;
 
 @Controller
 public class MeetingController {
-	
 	@Autowired
-	@Setter
 	private MeetingDao mdao;
 	
 	@Autowired
-	@Setter
 	private CourseDao cdao;
 	
-//	public static int totRecord = 0; // 총 게시글 수
-//	public static int recordSize = 5; // 한 번에 보이는 게시글 수
-//	public static int totPage = 0; // 총 페이지 수
-//	public static int pageSize = 2; // 한 번에 보이는 페이지 수
+	public static int totRecord = 0; // 총 게시글 수
+	public static int recordSize = 5; // 한 번에 보이는 게시글 수
+	public static int totPage = 0; // 총 페이지 수
+	public static int pageSize = 2; // 한 번에 보이는 페이지 수
 	
 	public static int recordSizeR = 10; // 한 번에 보이는 댓글게시글 수
 	public static int pageSizeR = 5; // 한 번에 보이는 댓글페이지 수
@@ -56,6 +55,10 @@ public class MeetingController {
 	HashMap map = new HashMap();
 	
 	@RequestMapping("/listMeeting")
+	public void listMeeting(Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo, MeetingVo m ,HttpSession httpSession) {
+		totRecord = mdao.totMRecord();
+		totPage = (int)Math.ceil((double)totRecord/recordSize);
+	}
 	public void listMeeting() {
 	}
 
@@ -73,7 +76,6 @@ public class MeetingController {
 		map.put("list", mdao.listMeeting());
 		//System.out.println("*** : "+gson.toJson(map));
 		return gson.toJson(map);
-		
 	}
 	
 	
@@ -243,6 +245,54 @@ public class MeetingController {
 		}
 	
 		return mav;
+	}
+	public String getMemberId(HttpSession httpSession) {
+		MemberVo m = (MemberVo)httpSession.getAttribute("m");
+		return m.getId();
+	}
+	
+	//내 게시물 목록
+	@RequestMapping("/myPageListMeeting")
+	public void myPageListMeeting(Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo, MeetingVo m,HttpSession httpSession) {
+		totRecord = mdao.myTotMRecord(getMemberId(httpSession));
+		totPage = (int)Math.ceil((double)totRecord/recordSize);
+		
+		// 페이지 버튼 숫자
+		int startPage = (pageNo-1)/pageSize*pageSize+1;
+		int endPage = startPage+pageSize-1;
+		if(endPage>totPage) {
+			endPage = totPage;
+		}
+		
+		String pageStr="";
+		if(startPage>1) {
+			pageStr += "<a href='myPageListMeeting?pageNo="+(startPage-1)+"'> < </a>"+"  ";
+		}
+		for(int i=startPage;i<=endPage;i++) {
+			pageStr += "<a href='myPageListMeeting?pageNo="+i+"'>"+i+"</a>"+"  ";
+		}
+		if(totPage>endPage) {
+			pageStr += "<a href='myPageListMeeting?pageNo="+(endPage+1)+"'> > </a>";
+		}
+		
+		// 페이지에 출력되는 레코드 번호
+		int start = (pageNo-1)*recordSize+1;
+		int end = start+recordSize-1;
+		if(end>totRecord) {
+			end = totRecord;
+		}
+		HashMap map = new HashMap();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("id", getMemberId(httpSession));
+		
+		System.out.println("===================");
+		System.out.println("totRecord: "+totRecord+" /totPage: "+totPage);
+		System.out.println("start: "+start+" /end: "+end);
+		System.out.println("startPage: "+startPage+" /endPage: "+endPage);
+		
+		model.addAttribute("pageStr", pageStr);
+		model.addAttribute("list", mdao.myPageListMeeting(map));
 	}
 	
 	@PostMapping(value = "/user/deleteMeetingRep", produces = "application/json; charset=utf-8")

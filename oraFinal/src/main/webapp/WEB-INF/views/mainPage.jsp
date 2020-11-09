@@ -5,6 +5,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
+
+
 <link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
 <title>오늘의라이딩</title>
 <style type="text/css">
@@ -131,19 +134,25 @@ window.onload = function(){
 	
 	setRecomendList(); // 처음 로드시 나타내준다
 	setInterval(setRecomendList, 3000);  // 계속하여 랜덤으로 보여주기위해 인터벌걸어준다
-	
+
 
 
 }
 </script>
 </head>
 <body>
+
 <jsp:include page="header.jsp"/>
       <div id="clear"></div>
   	<section>
   	<div id="mainPhoto" style="width: 100%; height: 500px; background-image: url('/mainPageImg/mainPhoto1.png');background-size: cover;"></div>
   		<h4><span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
+<<<<<<< HEAD
+  		<font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></font>과 함께 달려보세요!</h4>
+  		  
+=======
   		<font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></font>과 함께 달려보세요!</h4> 
+>>>>>>> branch 'master' of https://github.com/siwook1030/oraFinal.git
   		<div id="recommendCourse">
   		<div id="rcTitle">
   		Today's&nbsp;Riding<span style="font: italic bold 1.5em/1em Georgia,serif; font-size:15px; color: gray;">&nbsp;&nbsp;&nbsp;view is <span id="rcViewWord">${view }</span></span>
@@ -166,6 +175,10 @@ window.onload = function(){
   		</div>
   	</section>
   	<div id="clear"></div>
+  	
+  	
+  	
+  	
   	<jsp:include page="footer.jsp"/>
 </body>
 </html>

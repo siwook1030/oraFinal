@@ -8,6 +8,11 @@
   	현재시간-레코드등록시간 결과값의 정수는 일단위임. 초단위 결과를 반환하기 위해 곱연산함. 결과값이 소수점까지 나오기때문에 INT로 형변환해서 소수점 이하 제거. -->
 	SELECT r2.*, CAST(24*60*60*(SYSDATE-r2.r_regdate) AS INT) date_diff FROM (SELECT ROW_NUMBER() OVER (ORDER BY r_no DESC) row_num, r.* FROM review r ORDER BY r_no DESC) r2 WHERE row_num BETWEEN #{begin_record} AND #{end_record}
   </select>
+  
+  <!-- 내 게시물 목록-->
+   <select id="myPageSelectList" resultType="reviewVo">
+    SELECT * FROM review WHERE ID=#{id} ORDER BY r_no DESC
+  </select>
   <update id="incHit">
   	UPDATE review SET r_hit=r_hit+1 WHERE r_no=#{r_no}
   </update>
