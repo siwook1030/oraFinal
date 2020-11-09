@@ -218,7 +218,7 @@ private static final int recommendNum = 3;
 			bufferedReader.close();
 			System.out.println(c_line);
 		}catch (Exception e) {
-			//System.out.println("코스매니저 겟시라인 예외 " +e.getMessage());
+			System.out.println("코스매니저 겟시라인 예외 " +e.getMessage());
 		}
 		
 		return c_line;
