@@ -73,6 +73,7 @@ public class MeetingController {
 		map.put("list", mdao.listMeeting());
 		//System.out.println("*** : "+gson.toJson(map));
 		return gson.toJson(map);
+		
 	}
 	
 	
