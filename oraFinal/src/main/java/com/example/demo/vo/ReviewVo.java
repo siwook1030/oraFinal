@@ -16,5 +16,7 @@ public class ReviewVo {
 	private String c_name;
 	private String nickName;
 	private String rank_icon;
-	private int total_reply;
+	//private int total_reply;	// 총 답글 수
+	private long date_diff;		// 현재시간-글등록시간
+	private String date_diff_str;	// 현재시간-글등록시간을 문자열로
 }
