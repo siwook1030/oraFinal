@@ -47,10 +47,10 @@ public class MeetingManager {
 	}
 	
 	// 게시글 리스트
-	public static List<MeetingVo> listMeeting(HashMap map) {
+	public static List<MeetingVo> listMeeting() {
 		List<MeetingVo> list = null;
 		SqlSession session = sqlSessionFactory.openSession();
-		list = session.selectList("meeting.selectMAll", map);
+		list = session.selectList("meeting.selectMAll");
 		session.close();
 		return list;
 	}

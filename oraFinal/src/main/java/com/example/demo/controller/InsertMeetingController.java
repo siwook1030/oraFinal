@@ -50,24 +50,14 @@ public class InsertMeetingController {
 	@PostMapping("/insertMeeting")
 	public ModelAndView insertSubmit(HttpServletRequest request, HttpSession session, MeetingVo mt, Meeting_fileVo mf) {
 		ModelAndView mav = new ModelAndView("redirect:/listMeeting");
-		MeetingVo mtvo = new MeetingVo();
-		
 		int m_no = mdao.NextMNum();
-		mtvo.setM_no(m_no);
-		mtvo.setC_no(mt.getC_no());
-		MemberVo mbvo = (MemberVo)session.getAttribute("m");
-		mtvo.setId(mbvo.getId());
-		mtvo.setM_title(mt.getM_title());
-		mtvo.setM_content(mt.getM_content());
-		mtvo.setM_latitude(mt.getM_latitude());
-		mtvo.setM_longitude(mt.getM_longitude());
-		mtvo.setM_locname(mt.getM_locname());
-		mtvo.setM_time(mt.getM_time());
-		mtvo.setM_numpeople(mt.getM_numpeople());
-	
-		System.out.println("*** mtvo(IsrtM cntr) : "+mtvo.toString());
-		int re = 0;
-		re = mdao.insertMeeting(mtvo);
+		mt.setM_no(m_no);
+		MemberVo mbvo = (MemberVo) session.getAttribute("m");
+		mt.setId(mbvo.getId());
+		//System.out.println("*** mt(isrtMtng Cntr) : "+mt);
+		
+		int re = -1;
+		re = mdao.insertMeeting(mt);
 		
 		MultipartFile uploadFile = mf.getUploadFile();
 		String mf_name = uploadFile.getOriginalFilename();
@@ -80,20 +70,20 @@ public class InsertMeetingController {
 				String random = a.substring(7);
 				
 				// 사진 등록
-				Meeting_fileVo mfvo = new Meeting_fileVo();
-				mfvo.setMf_no(mdao.NextMfNum());
-				mfvo.setM_no(m_no);
-				mfvo.setMf_name(mf_name);
+				mf.setMf_no(mdao.NextMfNum());
+				mf.setM_no(m_no);
+				mf.setMf_name(mf_name);
 				String mf_savename = random+mf_name;
-				mfvo.setMf_savename(mf_savename);
-				mfvo.setMf_path("meetingFile");
-				mfvo.setMf_size(uploadFile.getSize());
+				mf.setMf_savename(mf_savename);
+				mf.setMf_path("meetingFile");
+				mf.setMf_size(uploadFile.getSize());
 				
-				System.out.println("*** mf_name(IsrtM Cntr) : "+mf_name);
-				System.out.println("*** mf_savename(IsrtM Cntr) : "+mf_savename);
-				System.out.println("*** mf(IsrtM Cntr) : "+mf.toString());
+//				System.out.println("*** mf(IsrtMtng Cntr) : "+mf);
+//				System.out.println("*** mf_name(IsrtMtng Cntr) : "+mf_name);
+//				System.out.println("*** mf_savename(IsrtMtng Cntr) : "+mf_savename);
+
 				int re_mf = 0;
-				re_mf = mdao.insertMFile(mfvo);
+				re_mf = mdao.insertMFile(mf);
 				
 				if(re_mf>0) {
 					String path = request.getRealPath("/meetingFile");

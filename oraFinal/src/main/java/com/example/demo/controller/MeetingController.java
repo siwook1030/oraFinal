@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.ResponseDataCode;
@@ -28,7 +29,7 @@ import com.example.demo.vo.Meeting_repVo;
 import com.example.demo.vo.MemberVo;
 
 import com.example.demo.vo.ResponseDataVo;
-
+import com.fasterxml.jackson.annotation.JacksonInject.Value;
 import com.google.gson.Gson;
 
 import lombok.Setter;
@@ -44,10 +45,10 @@ public class MeetingController {
 	@Setter
 	private CourseDao cdao;
 	
-	public static int totRecord = 0; // 총 게시글 수
-	public static int recordSize = 3; // 한 번에 보이는 게시글 수
-	public static int totPage = 0; // 총 페이지 수
-	public static int pageSize = 2; // 한 번에 보이는 페이지 수
+//	public static int totRecord = 0; // 총 게시글 수
+//	public static int recordSize = 5; // 한 번에 보이는 게시글 수
+//	public static int totPage = 0; // 총 페이지 수
+//	public static int pageSize = 2; // 한 번에 보이는 페이지 수
 	
 	public static int recordSizeR = 10; // 한 번에 보이는 댓글게시글 수
 	public static int pageSizeR = 5; // 한 번에 보이는 댓글페이지 수
@@ -55,46 +56,25 @@ public class MeetingController {
 	HashMap map = new HashMap();
 	
 	@RequestMapping("/listMeeting")
-	public void listMeeting(Model model, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo, MeetingVo m) {
-		totRecord = mdao.totMRecord();
-		totPage = (int)Math.ceil((double)totRecord/recordSize);
+	public void listMeeting() {
+	}
+
+	@RequestMapping(value = "/listMeetingJson", produces = "appliction/json;charset=utf-8")
+	@ResponseBody
+	public String listMeetingJson(Model model) {
+		Gson gson = new Gson();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		//System.out.println("*** nowPage : "+nowPage);
 		
 		// 페이지 버튼 숫자
-		int startPage = (pageNo-1)/pageSize*pageSize+1;
-		int endPage = startPage+pageSize-1;
-		if(endPage>totPage) {
-			endPage = totPage;
-		}
-		
-		String pageStr="";
-		if(startPage>1) {
-			pageStr += "<a href='listMeeting?pageNo="+(startPage-1)+"'> < </a>"+"  ";
-		}
-		for(int i=startPage;i<=endPage;i++) {
-			pageStr += "<a href='listMeeting?pageNo="+i+"'>"+i+"</a>"+"  ";
-		}
-		if(totPage>endPage) {
-			pageStr += "<a href='listMeeting?pageNo="+(endPage+1)+"'> > </a>";
-		}
-		
-		// 페이지에 출력되는 레코드 번호
-		int start = (pageNo-1)*recordSize+1;
-		int end = start+recordSize-1;
-		if(end>totRecord) {
-			end = totRecord;
-		}
-		//HashMap map = new HashMap();
-		map.put("start", start);
-		map.put("end", end);
-		
-		System.out.println("===================");
-		System.out.println("totRecord: "+totRecord+" /totPage: "+totPage);
-		System.out.println("start: "+start+" /end: "+end);
-		System.out.println("startPage: "+startPage+" /endPage: "+endPage);
-		
-		model.addAttribute("pageStr", pageStr);
-		model.addAttribute("list", mdao.listMeeting(map));
+		int totRecord = mdao.totMRecord();
+		map.put("totRecord", totRecord);
+		map.put("list", mdao.listMeeting());
+		//System.out.println("*** : "+gson.toJson(map));
+		return gson.toJson(map);
 	}
+	
 	
 	@RequestMapping(value = "/detailMeeting", produces = "application/json;charset=utf-8")
 	public void detailMeeting(HttpServletRequest request, Model model, int m_no, MeetingVo m) {
@@ -115,7 +95,7 @@ public class MeetingController {
 		map.put("m_no", m_no);
 		
 		Gson gson = new Gson();
-		//model.addAttribute("mrList", gson.toJson(mdao.detailMRep(map)));
+		model.addAttribute("mrList", gson.toJson(mdao.detailMRep(map)));
 		model.addAttribute("m_no", gson.toJson(m_no));
 		model.addAttribute("totalRecordR", gson.toJson(totalRecordR));
 		model.addAttribute("totalPageNum", gson.toJson(totalPageNum));
@@ -125,6 +105,7 @@ public class MeetingController {
 		model.addAttribute("mt", mt);			
 		model.addAttribute("mf", mdao.detailMFile(m_no));
 	}
+	
 	
 	@GetMapping(value = "/detailMRep", produces = "application/json;charset=utf-8")
 	@ResponseBody
@@ -147,38 +128,50 @@ public class MeetingController {
 	}
 	
 	@GetMapping("/updateMeeting")
-	public void updateMForm(int m_no, Model model, int c_no) {		
+	public void updateMForm(HttpServletRequest request, int m_no, Model model, int c_no) {	
+		String path = request.getRealPath("/couraseLine");
+		MeetingVo mt = mdao.detailMeeting(m_no);
+		List<Meeting_fileVo> mf = mdao.detailMFile(m_no);
 		model.addAttribute("mt", mdao.detailMeeting(m_no));
 		model.addAttribute("mf", mdao.detailMFile(m_no));
-		//model.addAttribute("cs", cdao.getCourseByCno(c_no));
+		model.addAttribute("cs", cdao.getCourseByCno(c_no, path));
 		model.addAttribute("cList", cdao.listCourse());
+		
+		//System.out.println("*** mt(updtMtng) : "+mt);
+		//System.out.println("*** mf(updtMtng) : "+mf);
+
 	}
 	
 	@PostMapping("/updateMeeting")
 	public ModelAndView updateMSubmit(MeetingVo mt, Meeting_fileVo mf, HttpServletRequest request, HttpSession session) {
-		ModelAndView mav = new ModelAndView();
-		System.out.println("*** updtM : "+mt.toString());
+		ModelAndView mav = new ModelAndView("redirect:/listMeeting");
+		//System.out.println("*** mt(updtCntr Sbmt) : "+mt);
 		MeetingVo mtvo = new MeetingVo();
-		mtvo.setM_no(mt.getM_no());
-		mtvo.setC_no(mt.getC_no());
-		MemberVo mbvo = (MemberVo)session.getAttribute("m");
-		mtvo.setId(mbvo.getId());
-		mtvo.setM_title(mt.getM_title());
-		mtvo.setM_content(mt.getM_content());
-		mtvo.setM_latitude(mt.getM_latitude());
-		mtvo.setM_longitude(mt.getM_longitude());
-		mtvo.setM_locname(mt.getM_locname());
-		mtvo.setM_time(mt.getM_time());
-		mtvo.setM_numpeople(mt.getM_numpeople());
-		
-		int re = mdao.updateMeeting(mtvo);
+
+		int re = mdao.updateMeeting(mt);
 		if(re>0 ) {
-			System.out.println("성공");
+			//System.out.println("*** mf(updtCntr Sbmt) : "+mf);
+			
+			// 서버에 저장된 이전 파일 이름
+			String oldFname = mf.getMf_savename();
+			//System.out.println("*** oldFname : "+oldFname);
+			
+			// 저장경로
+			String path = request.getRealPath("meetingFile");
+			
+			// 새로 업로드 되는 파일 이름
+			String mf_name = null;
+			MultipartFile uploadFile = mf.getUploadFile();
+			//System.out.println("*** uploadFile : "+uploadFile);
+			mf_name = uploadFile.getOriginalFilename();
+			//System.out.println("*** mf_name : "+mf_name);
+			
+			
 		} else {
-			System.out.println("실패");
+			mav.addObject("msg", "게시글 수정에 실패했습니다.");
+			mav.setViewName("error");
 		}
 		
-		System.out.println("*** mtvo(updtM cntr) : "+mtvo.toString());
 		
 		return mav;
 	}

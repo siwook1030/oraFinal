@@ -15,8 +15,8 @@ import com.example.demo.vo.Meeting_repVo;
 public class MeetingDao {
 	
 	// meeting
-	public List<MeetingVo> listMeeting(HashMap map){
-		return MeetingManager.listMeeting(map);
+	public List<MeetingVo> listMeeting(){
+		return MeetingManager.listMeeting();
 	}
 	
 	public MeetingVo detailMeeting(int m_no) {
