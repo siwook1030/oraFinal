@@ -165,11 +165,11 @@ function sendPhoneReq(){
 				phone.focus();
 				return;
 			}
-		/*	else if(checkPhoneNum() == 1){
+			else if(checkPhoneNum() == 1){
 				alert("이미 가입되어있는 번호입니다");
 				phone.focus();
 				return;
-			}*/
+			}
 			
 			$.ajax({
 				url: "/smsSend",
