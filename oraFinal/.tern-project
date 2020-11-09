@@ -15,6 +15,12 @@
     },
     "jquery-mobile1.5": {
       
+    },
+    "browser-extension": {
+      
+    },
+    "jquery-extension": {
+      
     }
   },
   "libs": [

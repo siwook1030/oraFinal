@@ -25,6 +25,15 @@ public class NoticeManager {
 		}
 	}
 	
+	public static int getNextNoticeNo() {
+		int re = 1;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.selectOne("notice.nextNoticeNo");
+		session.close();
+		return re;
+		
+	}
+
 	public static List<NoticeVo> listNotice(){
 		List<NoticeVo> list = null;
 		SqlSession session = sqlSessionFactory.openSession();
@@ -33,12 +42,20 @@ public class NoticeManager {
 		return list;
 	}
 	
-	public static List<CodeVo> getBoardCategory(){
+	public static List<CodeVo> getBoardCategory(String code_type){
 		List<CodeVo> list = null;
 		SqlSession session = sqlSessionFactory.openSession();
-		list = session.selectList("notice.getBoardCategory");
+		list = session.selectList("notice.getBoardCategory", code_type);
 		session.close();
 		return list;
+	}
+	
+	public static int updateHit(int n_no) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession(true);
+		re = session.update("notice.updateHit", n_no);
+		session.close();
+		return re;
 	}
 	
 	public static NoticeVo detailNotice(int n_no) {
@@ -52,7 +69,7 @@ public class NoticeManager {
 	public static int insertNotice(NoticeVo n) {
 		int re = -1;
 		SqlSession session = sqlSessionFactory.openSession(true);
-		re = session.insert("notice.insert", n);
+		re = session.insert("notice.insertNotice", n);
 		session.close();
 		return re;
 	}

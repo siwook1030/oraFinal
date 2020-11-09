@@ -3,6 +3,9 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="notice">
+  <select id="nextNoticeNo" resultType="int">
+  	SELECT NVL(MAX(N_NO),0)+1 FROM NOTICE
+  </select>
   <select id="listNotice" resultType="noticeVo">
     SELECT n_no,n.code_value,code_name,n_title,n_content,TO_CHAR(n_regdate,'yyyy.mm.dd hh:mi'), 
     n_hit FROM NOTICE n, CODE c WHERE n.CODE_VALUE = c.CODE_VALUE
@@ -20,4 +23,8 @@
   <insert id="insertNotice">
     insert into notice values(#{n_no},#{code_value},#{n_title},#{n_content},sysdate,#{n_hit})
   </insert>
+  
+  <update id="updateHit">
+  	UPDATE notice SET n_hit=n_hit+1 WHERE n_no=#{n_no}
+  </update>
 </mapper>

@@ -7,68 +7,11 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 	<style>
-		/* 공통 */
-		* {
-	   		padding : 0px;
-	   		margin : 0px;
-	   		font-family: 'NEXON Lv1 Gothic Low OTF';
-		}
-		li {
-    		list-style-type: none;
-	    }
-		a {
-			text-decoration: none;
-			color: black;
-		}
-		header {
-			width: 1000px;
-	      	height: 100px;
-			margin-top: 10px;
-			margin: 10px auto;
-		}
-		#address {
-			margin: 10px 0 0 0;
-			font-size: 11px;
-		}
-		#logo {
-			float: left; 
-		}
-		#top {
-			margin: 30px 20px 0 0;
-			font-size: 12px;
-			float: right;
-			text-align: right;   
-		}
-		#top li {
-			display: inline;
-			margin-left: 18px;
-		}
-		#login {
-			font-size: 11px;
-			text-align: right;
-		}
 		section {
 			margin: 0 auto;
 			width: 1000px;
 			text-align: left;
 		}
-		footer {
-			width: 1000px;
-			height: 150px;
-			margin-top: 100px;
-			margin: 10px auto;
-		}
-		#footer_box {
-	       width: 1000px;
-	       height: 150px;
-	       margin: 0 auto;
-	       text-align: center;
-		}
-		#footer_icon{
-			margin: 0 auto;
-		}
-		
-		/* 개별 */
 		table {
 			border-collapse: collapse;
 			text-align: center;
@@ -84,38 +27,123 @@
 	</style>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script type="text/javascript">
-		$(function(){
-			$("table > #tr").hover(function(){
-				$(this).css("text-decoration","underline");
-			},function(){
-				$(this).css("text-decoration","none");
-			});
+	window.onload = function(){
+		listMeeting();
+
+
+		// 나우페이지를 주면 리스트를 띄울 함수 하나
+		// 페이징바를 만들 함수하나
+		
+		function listMeeting(){
+			$.ajax({
+				url: "/listMeetingJson",
+				type: "GET",
+				async: false,
+				/* data : {
+					pageNo: pageNo
+				}, */
+				success: function(r){
+					$('tbody').empty();
+					var arr = r.list;
+					/* var start = r.start;
+					var end = r.end;
+					console.log(start);
+					console.log(end); */
+
+					let pageNo = 1;
+					const recordSize = 5; // 한 번에 보이는 게시글 수
+					const pageSize = 3; // 한 번에 보이는 페이지 수
+
+					let totRecord = r.totRecord;
+					console.log(totRecord);
+
+					// 총 페이지 수
+					let totPage = Math.ceil(totRecord/recordSize);
+					console.log(totPage);
+
+					// 페이지 버튼 숫자
+					let startPage = (pageNo-1)/pageSize*pageSize+1;
+					let endPage = startPage+pageSize-1;
+					if(endPage>totPage) {
+						endPage = totPage;
+					}
+					console.log('*** startPage : '+startPage);
+					console.log('*** endPage : '+endPage);
+
+					
+					for(let i=startPage; i<=endPage; i++){
+						const a = $('<a></a>').attr('href','').html(i+' ');
+						$('#page').append(a);				
+					}
+					if(totPage>endPage){
+						const next = $('<a></a>').attr('href','').html('>');
+						$('#page').append(next);
+					}
+
+//					String pageStr="";
+//					if(startPage>1) {
+//						pageStr += "<a href='listMeeting?pageNo="+(startPage-1)+"'> < </a>"+"  ";
+//					}
+//					for(int i=startPage;i<=endPage;i++) {
+//						pageStr += "<a href='listMeeting?pageNo="+i+"'>"+i+"</a>"+"  ";
+//					}
+//					if(totPage>endPage) {
+//						pageStr += "<a href='listMeeting?pageNo="+(endPage+1)+"'> > </a>";
+//					}
+					
+					$.each(arr, function(idx, data){
+						
+						//console.log('*** arr length : '+arr.length);
+						const tr = $('<tr></tr>');
+						const m_no = $('<td></td>').html(data.m_no);
+						const c_name = $('<td></td>').html(data.c_name);
+						const m_time = $('<td></td>').html(data.m_time);
+						const m_titleLink = $('<a></a>').attr('href','detailMeeting?m_no='+data.m_no).html(data.m_title);
+						const m_title = $('<td></td>').html(m_titleLink).addClass('tdTitle');
+						const nickName_icon = $('<img/>').attr({src : 'rank/'+data.rank_icon, height : '20px'});
+						const nickName = $('<td></td>').append(nickName_icon, data.nickName);
+						const m_regdate = $('<td></td>').html(data.m_regdate);
+						const m_hit = $('<td></td>').html(data.m_hit);
+						tr.append(m_no, c_name, m_time, m_title, nickName, m_regdate, m_hit);
+						$('tbody').append(tr);
+					});
+				}
+			})						
+		}
+		
+		
+	}
+
+	function checkLogin(){
+		let check;
+			$.ajax({
+				url: "/checkLogin",
+				type: "POST",
+				async: false,
+				success: function(response){
+					check =  response;
+				},
+				error: function(){
+					alert("에러발생");
+				}
+			})
+		return check;
+		}
+
+	
+
+	
+	/* $(document).ready(function(){
+		$(".tdTitle").hover(function(){
+			$(this).css("text-decoration","underline");
+		},function(){
+			$(this).css("text-decoration","none");
 		});
+	}); */
 	</script>
 </head>
 <body>
-	<header>
-      <div id="logo">
-         <a href="/mainPage"><img src='headerImg/logo.png' height="100"></a>
-      </div>
-      <div id="login">
-         <c:choose>
-         	<c:when test="${m == null }">
-	      		<a href="/login">로그인</a>&nbsp;&nbsp;&nbsp;<a href="/signUp">회원가입</a>
-	      	</c:when>
-	      	<c:when test="${m != null }">
-	      		<a href="modify">${m.nickName } 라이더!</a> &nbsp;&nbsp;<a href="/logout">로그아웃</a>&nbsp;&nbsp;
-	      	</c:when>
-      	</c:choose>
-      </div>
-      <ul id="top">
-      	<li>오늘의 라이딩</li>
-      	<li>자전거 길</li>
-      	<li><a href="/listReview">후기게시판</a></li>
-      	<li><a href="/listMeeting">번개게시판</a></li>
-      	<li>정보게시판</li>
-      </ul>
-   </header>
+	<jsp:include page="header.jsp"/>
    <section>
    		<br>
 		<a href="/listMeeting?pageNo=1"><p style="font-size: 20px">번개 게시판</p></a>
@@ -124,54 +152,23 @@
 		<hr style="height: 10%; color: black;">
 		<br>
 		<table width="100%">
-			<tr>
-				<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-				 <th>코스</th>
-				 <th>모임날짜</th>
-				 <th>제목</th>
-				 <th>작성자</th>
-				 <th>작성시간</th>
-				 <th>조회</th>
-			</tr>
-				<c:forEach var="mt" items="${list }">	
-					<tr id="tr">
-						<td>${mt.m_no }</td>
-						<td>${mt.c_name }</td>
-						<td>${mt.m_time }</td>
-						<td>
-							<a href="detailMeeting?m_no=${mt.m_no }">
-							${mt.m_title }</a>
-						</td>
-						<td>
-							<img src="rank/${mt.rank_icon }" height='20px'">
-							${mt.nickName }
-						</td>
-						<td>${mt.m_regdate }</td>
-						<td>${mt.m_hit }</td>
-					</tr>
-				</c:forEach>
-			
+			<thead>
+				<tr>
+					<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+					 <th>코스</th>
+					 <th>모임날짜</th>
+					 <th>제목</th>
+					 <th>작성자</th>
+					 <th>작성시간</th>
+					 <th>조회</th>
+				</tr>
+			</thead>
+			<tbody></tbody>
 		</table>
 		<br>
+		<div id="page"></div>
 		<a href="/insertMeeting"><img src="meetingImg/insert.png" height="30px" align="right"></a><br><br>
-		<div id="pageStr">${pageStr }</div>
 	</section>
-	
-	<footer>
-		<hr style="width: 100%; color: gray;">
-		<br>
-		<div id='footer_box'>
-            <div id="footer_icon" >
-               <img src='footerImg/instagram.png' height="50px">
-               <img src='footerImg/facebook.png' height="50px">
-               <img src='footerImg/twitter.png' height="50px">
-               <ul id="address">
-                  <li>04108 | 서울시 마포구 백범로 23 구프라자 3층</li>
-                  <li>TEL: 02-707-1480 | Email: ora@bit.com</li>
-                  <li>COPYRIGHT (C)2020 오늘의 라이딩 ALL RIGHTS RESERVED</li>
-               </ul>
-            </div>
-         </div>
-   </footer>
+	<jsp:include page="footer.jsp"/>
 </body>
 </html>

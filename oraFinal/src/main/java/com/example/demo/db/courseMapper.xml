@@ -16,10 +16,40 @@
 		#{c_view}, #{c_words}, #{c_line}, #{c_temp})
 	</insert>
 	
+	<insert id="insertCphoto">
+		INSERT INTO COURSEPHOTO(CP_NO, C_NO, CP_NAME, CP_PATH, CP_LATITUDE, CP_LONGITUDE) 
+		VALUES(COURSEPHOTO_SEQ.NEXTVAL,#{c_no},#{cp_name},#{cp_path},#{cp_latitude},#{cp_longitude})
+	</insert>
+	
 	<insert id="insertPT">
 		INSERT INTO PUBLICTRANSPORT(PT_NO, CODE_VALUE, C_NO, PT_LATITUDE, PT_LONGITUDE, PT_IMG, PT_STATION, PT_DISTANCE, PT_LINE)
 		VALUES (PT_SEQ.NEXTVAL, #{code_value},#{c_no},#{pt_latitude},#{pt_longitude},#{pt_img},#{pt_station},#{pt_distance},#{pt_line})
 	</insert>
+
+	<update id="updateCourse">
+		UPDATE COURSE SET C_NAME=#{c_name}, C_S_LOCNAME=#{c_s_locname}, C_S_LATITUDE=#{c_s_latitude}, 
+		C_S_LONGITUDE=#{c_s_longitude}, C_E_LOCNAME=#{c_e_locname},C_E_LATITUDE=#{c_e_latitude}, C_E_LONGITUDE=#{c_e_longitude}, 
+		C_LOC=#{c_loc}, C_DISTANCE=#{c_distance}, C_TIME=#{c_time}, C_DIFFICULTY=#{c_difficulty}, C_VIEW=#{c_view}, 
+		C_WORDS=#{c_words}, C_LINE=#{c_line}, C_TEMP=#{c_temp} WHERE C_NO = #{c_no}
+	</update>
+		
+	<update id="updatePT">
+		UPDATE PUBLICTRANSPORT SET PT_LATITUDE=#{pt_latitude}, PT_LONGITUDE=#{pt_longitude}, PT_IMG=#{pt_img}, 
+		PT_STATION=#{pt_station}, PT_DISTANCE=#{pt_distance}, PT_LINE=#{pt_line} WHERE PT_NO = #{pt_no}
+	</update>
+	
+	<delete id="deleteCourse">
+		DELETE COURSE WHERE C_NO = #{c_no}
+	</delete>
+	
+	<delete id="deletePT">
+		DELETE PUBLICTRANSPORT WHERE C_NO = #{c_no}
+	</delete>
+	
+	<delete id="deleteCoursePhoto">
+		DELETE COURSEPHOTO WHERE C_NO = #{c_no}
+	</delete>
+
 
 	<select id="selectByView" resultType="courseVo">
 		SELECT C_NO, CODE_VALUE, ID, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
@@ -65,8 +95,8 @@
 		FROM COURSE WHERE C_TEMP ='N' AND C_NO = #{c_no} 
 	</select>
 	
-	<select id="cnameDupCheck" resultType="int">
-		SELECT COUNT(*) FROM COURSE WHERE C_NAME = #{c_name}
+	<select id="cnameDupCheck" resultType="String">
+		SELECT C_NAME FROM COURSE WHERE C_NAME LIKE #{c_name} || '%'
 	</select>
 		
 	<select id="selectCoursePhoto" resultType="coursePhotoVo">

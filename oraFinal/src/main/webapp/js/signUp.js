@@ -32,7 +32,7 @@ window.onload = function(){
 	console.log("작동함22");
 function signUp(){
 		console.log("작동함");
-		const idAvail = /^[a-z][a-z\d]{8,12}$/;
+		const idAvail = /^[a-z0-9]{8,12}$/;
 		const pwAvail = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^*()\-_=+\\\|\[\]{};:\'",.<>\/?]).{8,12}$/;
 		const nameAvail = /^[가-힣]{2,6}$/;
 		const nickNameAvail = /^[가-힣a-zA-Z0-9]{2,8}$/;
@@ -98,8 +98,7 @@ function signUp(){
 				phone.focus();
 				return;
 			}
-			
-			
+				
 
 			if(check() != 0){
 				alert("중복된 아이디입니다");
@@ -111,7 +110,7 @@ function signUp(){
 				nickName.focus();
 				return;
 			}
-
+			
 
 			if(chekingPhone.value == 'N'){
 				alert("휴대전화를 인증해주세요.");
@@ -153,7 +152,6 @@ function signUpOk(){
 
 	
 function sendPhoneReq(){
-	
 	const phAvail = /^01[0179][0-9]{7,8}$/;
 	const phAvailCheck = phAvail.test(phone.value.trim());	
 	
@@ -167,6 +165,11 @@ function sendPhoneReq(){
 				phone.focus();
 				return;
 			}
+		/*	else if(checkPhoneNum() == 1){
+				alert("이미 가입되어있는 번호입니다");
+				phone.focus();
+				return;
+			}*/
 			
 			$.ajax({
 				url: "/smsSend",
@@ -268,7 +271,7 @@ function checkNick(){
 					"nickName":nickName.value.trim()
 				},
 				success: function(data){
-					if(data == 0){
+					if(data == "0"){
 						nickCheck = 0;
 					}else{
 						nickCheck = 1;
@@ -280,6 +283,29 @@ function checkNick(){
 			});
 
 		return nickCheck;		
+}
+
+function checkPhoneNum(){
+	let check = 1;
+	const phoneNum = phone.value.trim();
+	
+	$.ajax({
+		url:"/phoneNumCheck",
+		type:"POST",
+		async: false,
+		data:{"phone":phoneNum},
+		success:function(data){
+			if(data == "0"){
+				check = 0;
+			}
+		},
+		error:function(){
+			alert("에러발생");
+		}
+	});
+	
+	
+	return check;
 }
 
 }

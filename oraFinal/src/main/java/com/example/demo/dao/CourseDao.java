@@ -23,6 +23,14 @@ public class CourseDao {
 		return CourseManager.insertCourse(c, sPT, ePT);
 	}
 	
+	public int updateCourse (CourseVo c, PublicTransportVo sPT, PublicTransportVo ePT) {
+		return CourseManager.updateCourse(c, sPT, ePT);
+	}
+	
+	public int deleteCourse(int c_no) {
+		return CourseManager.deleteCourse(c_no);
+	}
+	
 	public List<CourseVo> getCourseByView(String view) {
 		return CourseManager.getCourseByView(view);
 	}

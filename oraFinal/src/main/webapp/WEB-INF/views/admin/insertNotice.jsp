@@ -83,17 +83,55 @@ button,#btn_insert {
 #clear{
 	clear: both; 
 }
-</style> 
+</style>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript">
+window.onload = function(){
+	const nTitle = document.getElementById("title");
+	const nContent = document.getElementById("content");
+
+	const btnInsert = document.getElementById("btnInsert");
+	
+	btnInsert.addEventListener("click", function(e) {
+		if(nTitle.value.trim() === ""){
+			alert("야 빈칸으로하지마!");
+			return;
+		}
+		if(nContent.value.trim() === ""){
+			alert("야 빈칸으로하지마!");
+			return;
+		}
+		
+		$.ajax({
+			url: "/admin/insertNotice",
+			type: "POST",
+			data: $("#form").serialize(),
+			success: function(response){
+				if(response.code == "200"){
+					alert(response.message);
+					window.location = "/listNotice";
+				}
+				else{
+					alert(response.message);
+				}
+			},
+			error: function(){
+				alert("에러발생");
+			}
+		})
+	});
+}
+	
+</script>
 </head>
 <body>
-	<jsp:include page="header.jsp"/>
+	<jsp:include page="../header.jsp"/>
    
 	<a href="listNotice"><h2>공지사항</h2></a>
 	<section>
-		<form action="insertNotice" method="post">
+		<form id="form">
 			<select name="code_value" size="1">
-	     		<option value="0">전체</option>
-	     		<c:forEach var="c" items="${category }">
+	     		<c:forEach var="c" items="${category}">
 	     			<option value="${c.code_value }">${c.code_name }</option>
 	     		</c:forEach>
 	        </select>
@@ -106,12 +144,11 @@ button,#btn_insert {
 			<textarea rows="20" cols="95" name="n_content" id="content" placeholder="내용을 입력하세요"></textarea>
 			<br>
 			<br>
-			<button>취소</button>
-			<button id="btn_insert">등록</button>
-			
 		</form>
+		<button>취소</button>
+		<button type="button" id="btnInsert">등록</button>	
 	</section>	
 	<br>
-	<jsp:include page="footer.jsp"/>
+	<jsp:include page="../footer.jsp"/>
 </body>
 </html>

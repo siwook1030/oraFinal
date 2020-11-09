@@ -1,6 +1,7 @@
 package com.example.demo.db;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -26,10 +27,10 @@ public class ReviewManager {
 			e.printStackTrace();
 		}
 	}
-	public static List<ReviewVo> selectList(){
+	public static List<ReviewVo> selectList(HashMap<String, Integer> record_map){
 		List<ReviewVo> list = null;
 		SqlSession session = sqlSessionFactory.openSession();
-		list = session.selectList("review.selectList");
+		list = session.selectList("review.selectList", record_map);
 		session.close();
 		return list;
 	}
@@ -122,6 +123,35 @@ public class ReviewManager {
 		int re = 0;
 		SqlSession session = sqlSessionFactory.openSession(true);
 		re = session.delete("review.deleteRep", r_no);
+		session.close();
+		return re;
+	}
+	public static int count() {
+		int cnt = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		cnt = session.selectOne("review.count");
+		session.close();
+		return cnt;
+	}
+	public static int nextRr_no() {
+		int rr_no = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		rr_no = session.selectOne("review.nextRr_no");
+		session.close();
+		return rr_no;
+	}
+	public static int nextRr_step(int rr_ref) {
+		int rr_step = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		rr_step = session.selectOne("review.nextRr_step", rr_ref);
+		session.close();
+		return rr_step;
+	}
+	public static int insertRep(Review_repVo rrvo) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.insert("review.insertRep", rrvo);
+		session.commit();
 		session.close();
 		return re;
 	}

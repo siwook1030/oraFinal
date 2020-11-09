@@ -15,6 +15,9 @@ public class MemberDao {
 	public int nickCheck(String nickName) {
 		return MemberManager.nickCheck(nickName);
 	}
+	public int phoneNumCheck(String phone) {
+		return MemberManager.phoneNumCheck(phone);
+	}
 	
 	public int insertMember(MemberVo m ) {
 		return MemberManager.insertMember(m);

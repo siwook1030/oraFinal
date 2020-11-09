@@ -8,15 +8,12 @@
 <title>Insert title here</title>
 	<style>
 		/* 공통 */
-	
 		section {
 			margin: 0 auto;
 			padding: 10px;
 			width: 1000px;
 			text-align: left;
 		}
-	
-	
 		/* 개별 */
 		.btnImg {
 			height: 30px;
@@ -70,36 +67,11 @@
 	</style>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="/js/loginCheck.js"></script>
 	<script type="text/javascript">
 window.onload = function(){
 
-	/*$("#loadComment").empty();
-	$.ajax("/detailMRep",{function(arr){
-		$.each(arr,function(idx, mr){
-			var rank_icon = $("<img/>").attr("src","../meetingFile/"+mr.rank_icon);
-			var nickName = $("<p></p>").html(mr.nickName);
-			var mr_content = $("<p></p>").html(mr.mr_content);
-			var mr_file1 = $("<img/>").attr("src","../meetingFile/"+mr.mr_file1);
-			var regdate = $("<p></p>").html(mr.regdate);
-			$("#loadComment").append(rank_icon, nickName, mr_content, mr_file1, regdate);
-		});
-	}});*/
 ///////////////////////////////////////////////////
-	function checkLogin(){
-	let check;
-		$.ajax({
-			url: "/checkLogin",
-			type: "POST",
-			async: false,
-			success: function(response){
-				check =  response;
-			},
-			error: function(){
-				alert("에러발생");
-			}
-		})
-	return check;
-	}
 	const checkM = checkLogin(); // 로그인이 되어있는 상태인지 체크한다
 	console.log(checkM);
 	
@@ -173,7 +145,7 @@ window.onload = function(){
 	}
 	
  function setReply(mrList){  // 댓글동적노드 생성하는 함수
-	    const userId = checkM.item;
+	    const userId = checkM.item.id;
 	    repCnt.innerHTML=totalRecordR;
 	    reply.innerHTML="";
 
@@ -198,8 +170,11 @@ window.onload = function(){
 				mrDiv.style.paddingLeft="30px";
 				mrDiv.style.backgroundColor="#EFEFEF";
 			}
-			li1Content += '<img src="rank/'+mr.rank_icon+'" height="25">'+mr.nickName+'<br>';
-			li1Content += '<p style="margin-left: 25px;"><span style="font-weight: bold;">'+toName+'&nbsp;</span>'+content+'</p>';
+			li1Content += '<img src="rank/'+mr.rank_icon+'" height="25">'+mr.nickName;
+	//		if(userId == mr.id){ // 내가쓴 댓글이면 내댓글이라 표현  // 이건 추후에 디자인다시할때 if문 하나로 밑에있는 if문이랑 합쳐서 처리할거임
+	//			li1Content +=' (내 댓글)';
+	//		}
+			li1Content += '<br><p style="margin-left: 25px;"><span style="font-weight: bold;">'+toName+'&nbsp;</span>'+content+'</p>';
 			if(mr.mr_file1 != "0"){  // 사진이없으면 0으로 db에 0으로 저장할예정
 				li1Content += '<p style="margin-left: 25px;"><img src="meetingFile/'+mr.mr_file1+'" height="100"></p>';
 			}
@@ -653,7 +628,7 @@ window.onload = function(){
 	if(${c.c_no} != 0){
 		startMarker.setPosition(new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude}));
 		arriveMarker.setPosition(new kakao.maps.LatLng(${c.c_e_latitude}, ${c.c_e_longitude}));
-		const courseLine = eval(${c.c_line});
+		const courseLine = JSON.parse(${c.c_line});
 		coursePolyline.setPath(courseLine);
 		courseLine.forEach(function(c, i) {
 			courseBounds.extend(c);
@@ -678,7 +653,7 @@ window.onload = function(){
 	</script>
 </head>
 <body>
-<jsp:include page="header.jsp"/>
+	<jsp:include page="header.jsp"/>
 	<section>
 		<br><br>
 		<p style="font-size: 20px;"><a href="/listMeeting">번개 게시판</a>&nbsp;&gt;&nbsp;<font color="#c85725">번개 상세</font></p>
@@ -686,7 +661,7 @@ window.onload = function(){
 		<br><br>
 	
 		<div id="contents">
-			<p style="font-size: 30px; padding: 30px 0 20px;">${mt.m_title }</p><br>	
+			<p style="font-size: 30px; padding: 30px 0 20px;"><a href="detailMeeting?m_no=${mt.m_no }">${mt.m_title }</a></p><br>	
 			<img src="rank/${mt.rank_icon }" height="25" style="float: left; margin-right: 5px;">
 			<div style="padding-top: 5px;">
 				<p style="margin-right: 15px; float: left;">${mt.nickName }</p>
@@ -725,8 +700,12 @@ window.onload = function(){
 			${mt.m_content }
 			<br><br><br><br>
 			<!-- 수정,삭제 버튼 -->
-			<a href="deleteMeeting?m_no=${mt.m_no }"><img src="meetingImg/delete.png" class="btnImg"></a>
-			<a href="updateMeeting?m_no=${mt.m_no }"><img src="meetingImg/edit.png" class="btnImg"></a>
+			
+			
+			<c:if test="${m.id==mt.id }">
+				<a href="deleteMeeting?m_no=${mt.m_no }"><img src="meetingImg/delete.png" class="btnImg"></a>
+				<a href="updateMeeting?m_no=${mt.m_no }&c_no=${mt.c_no}"><img src="meetingImg/edit.png" class="btnImg"></a>
+			</c:if>
 			<br><br>
 			<img src="meetingImg/speech.png" style="size: 20px; float: left; padding-right: 10px;">
 			<h3>댓글&nbsp;<span id="repCnt"></span></h3>
@@ -736,18 +715,6 @@ window.onload = function(){
 			</div>
 			<div id="replyPgaeNum" style="text-align: center;">
 			</div>
-			
-			<!-- jQuery -->
-			<!-- 여기에 댓글출력 -->
-			<!-- <div id="loadComment">
-			</div>
-			<button>[답글달기]</button>
-			
-			<img>rank_icon
-			<p>nickName</p>
-			<p>mr_content</p><br>
-			<img>mr_file1
-			<p>regdate</p> -->
 			
 			<br>
 			<div>
@@ -762,9 +729,6 @@ window.onload = function(){
 				<input type="file" name="mr_file1" id="mr_file1">
 				
 			</form>
-			
-			
-		 </div>
 		</div>
 	</section>
 	<jsp:include page="footer.jsp"/>

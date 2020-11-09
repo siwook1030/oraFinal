@@ -10,13 +10,17 @@ import com.example.demo.vo.NoticeVo;
 
 @Repository
 public class NoticeDao {
+	
+	public int getNextNoticeNo() {
+		return NoticeManager.getNextNoticeNo();
+	}
 
 	public List<NoticeVo> listNotice(){
 		return NoticeManager.listNotice();
 	}
 	
-	public List<CodeVo> getBoardCategory(){
-		return NoticeManager.getBoardCategory();
+	public List<CodeVo> getBoardCategory(String code_type){
+		return NoticeManager.getBoardCategory(code_type);
 	}
 	
 	public NoticeVo detailNotice(int n_no) {
@@ -25,5 +29,9 @@ public class NoticeDao {
 	
 	public int insert(NoticeVo n) {
 		return NoticeManager.insertNotice(n);
+	}
+	
+	public int updateHit(int n_no) {
+		return NoticeManager.updateHit(n_no);
 	}
 }

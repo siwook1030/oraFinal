@@ -16,6 +16,10 @@
 	   	font-family: 'NEXON Lv1 Gothic Low OTF';
 	   	border: solid 1px white;
    }
+   #adminMenu{
+   	display: none;
+   	visibility: hidden;
+   }
    #detailTitle{
    		margin : 30px 0 30px 0;
    }
@@ -70,8 +74,6 @@
 		height: 300px;
 		margin-left: 150px;
 		margin-top: 50px;
-		visibility: hidden;
-
 
 	}
 	#addInfo{
@@ -144,10 +146,54 @@
 .placeinfo .tel {color:#0f7833;}
 .placeinfo .jibun {color:#999;font-size:11px;margin-top:0;}
 </style>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="/js/loginCheck.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 <script>
 window.onload = function(){
+	const adminMenu = document.getElementById("adminMenu");
+	const updateCourse = document.getElementById("updateCourse");
+	const deleteCourse = document.getElementById("deleteCourse");
+
+	//------------------------- 관리자확인 시작
+	const checkM = checkLogin(); // 로그인정보
+	const mId = checkM.item.id;
+	const mCode_value = checkM.item.code_value;
+	const mNickName = checkM.item.nickName;
+
+	if(mCode_value === "00101"){
+		adminMenu.style.display = "inline";
+		adminMenu.style.visibility = "visible";
+	}
+
+	updateCourse.addEventListener("click", function(e) {
+		const c_no = e.target.value;
+		window.open("/admin/updateCourse?c_no="+c_no,"코스수정(관리자)");
+	});
+
+	deleteCourse.addEventListener("click", function(e) {
+		const c_no = e.target.value;
+		const cfm = confirm("코스를 정말 삭제하시겠습니까?");
+		if(!cfm){
+			return;
+		}
+
+		const req = new XMLHttpRequest();
+		req.open("GET", "/admin/deleteCourse?c_no="+c_no);
+		req.responseType = "json";
+		req.send(null);
+		req.addEventListener("load", function(e) {
+			const response = req.response;
+			alert(response.message);
+			window.location = "/mainPage"
+		})
+		req.addEventListener("error", function(e){
+			alert("에러발생");
+		})
+	});	
+	
+	//------------------------- 관리자확인 끝
 	
 	// 마커를 클릭했을 때 해당 장소의 상세정보를 보여줄 커스텀오버레이입니다
 	const placeOverlay = new kakao.maps.CustomOverlay({zIndex:1}), 
@@ -352,8 +398,16 @@ window.onload = function(){
 	}
 	///////////////////////////////////////
 	const courseBounds = new kakao.maps.LatLngBounds(); 
-	const courseLine = eval(${c.c_line});
-	console.log(courseLine);
+
+	const cJson =${cJson};
+
+	const cStartLatLng = new kakao.maps.LatLng(cJson.c_s_latitude, cJson.c_s_longitude);
+	const cArriveLatLng = new kakao.maps.LatLng(cJson.c_e_latitude, cJson.c_e_longitude);
+	console.log(cJson);
+	const cLineObj = JSON.parse(cJson.c_line);
+	const courseLine = eval(cLineObj.courseLine);
+	const altitudeData = eval(cLineObj.altitudeData);
+
 	courseLine.forEach(function(c, i) {
 		courseBounds.extend(c);
 	});
@@ -378,6 +432,24 @@ window.onload = function(){
 	    strokeStyle: 'solid'
 	});
 
+	google.charts.load('current', {'packages':['corechart']});
+	google.charts.setOnLoadCallback(drawAltitude); 
+	
+	///////--------------------- 고도 차트
+	   function drawAltitude() {
+        const data = google.visualization.arrayToDataTable(altitudeData);
+
+        const options = {
+          title: '자전거코스 고도(m)',
+          hAxis: {title: '거리(km)',  titleTextStyle: {color: '#333'}},
+          vAxis: {minValue: 0}
+        };
+
+        const chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+	   
+	     
 	////////////////////////////////////////
 	const startSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png', // 출발 마커이미지의 주소입니다    
 	startSize = new kakao.maps.Size(50, 45), // 출발 마커이미지의 크기입니다 
@@ -400,7 +472,7 @@ window.onload = function(){
 	const ptImage = new kakao.maps.MarkerImage(ptSrc, ptSize, ptOption);
 
 	//코스 출발 마커가 표시될 위치입니다 
-	const startPosition = new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude}); 
+	const startPosition = cStartLatLng; 
 	//코스 출발 마커를 생성합니다
 	const startMarker = new kakao.maps.Marker({
 			map: map, // 출발 마커가 지도 위에 표시되도록 설정합니다
@@ -410,7 +482,7 @@ window.onload = function(){
 
 
 	//코스 도착 마커가 표시될 위치입니다 
-	const arrivePosition = new kakao.maps.LatLng(${c.c_e_latitude}, ${c.c_e_longitude});  
+	const arrivePosition = cArriveLatLng;  
 	//코스 도착 마커를 생성합니다 
 	const arriveMarker = new kakao.maps.Marker({  
 			map: map, // 도착 마커가 지도 위에 표시되도록 설정합니다
@@ -419,7 +491,7 @@ window.onload = function(){
 		});
 	
 ////--------------------------------------------------------------------------------오라픽 음식점 마커표시
-	const geocoder = new kakao.maps.services.Geocoder();
+/*	const geocoder = new kakao.maps.services.Geocoder();
 	const foodSrc = '/detailFoodImg/foodLoc.png', // 음식점 마커이미지의 주소입니다    
 	foodSize = new kakao.maps.Size(30, 25); // 음식점 마커이미지의 크기입니다 
 	//음식점 마커 이미지를 생성합니다
@@ -474,13 +546,13 @@ window.onload = function(){
 		}
 	});
 	
-	
+	*/
 	
 	//----------------------------------------------------음식점 마커표시 끝
 	
 	//////////////////////////////////////////////////////////////////// 대중교통출발점 지도
-	const psCenter = new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude});
-	const peCenter = new kakao.maps.LatLng(${c.c_e_latitude}, ${c.c_e_longitude});
+	const psCenter = cStartLatLng;
+	const peCenter = cArriveLatLng;
 	
 	const PSmapContainer = document.getElementById('PSmap'), // 지도를 표시할 div 
 		PSmapOption = { 
@@ -552,7 +624,7 @@ window.onload = function(){
 	setBound(PEmap, peBounds);
 
 	//출발 마커가 표시될 위치입니다 
-	const PSstartPosition = new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude}); 
+	const PSstartPosition = cStartLatLng; 
 	// 출발 마커를 생성합니다
 	const PSstartMarker = new kakao.maps.Marker({
 	    map: PSmap, // 출발 마커가 지도 위에 표시되도록 설정합니다
@@ -561,7 +633,7 @@ window.onload = function(){
 	});
 	  
 	//도착 마커가 표시될 위치입니다 
-	const PEarrivePosition = new kakao.maps.LatLng(${c.c_e_latitude}, ${c.c_e_longitude});  
+	const PEarrivePosition = cArriveLatLng;  
 	// 도착 마커를 생성합니다 
 	const PEarriveMarker = new kakao.maps.Marker({  
 	    map: PEmap, // 도착 마커가 지도 위에 표시되도록 설정합니다
@@ -611,7 +683,7 @@ window.onload = function(){
 			selectPE.selectedIndex = 0;
 	}, false)
 	
-	tpe.style.display = "none";  //지도가 뭉개지는것을 방지하기위해 맨 마지막에 걸어준다
+	
 	
 ///////////////////////////////////////////////////////////////////////////////////// 자전거 지도표시
 	const mapTypes = { //자전거맵 표시변수
@@ -721,6 +793,7 @@ window.onload = function(){
 		placeOverlay.setMap(null);
 	}
 	
+	tpe.style.display = "none";  //지도가 뭉개지는것을 방지하기위해 맨 마지막에 걸어준다
 	
 }
  </script>
@@ -732,8 +805,12 @@ window.onload = function(){
   		<div id="detailTitle">
   			<font style="font-size: 130%; ">자전거 길 > </font> <font style="font-size: 130%;  color: orange;" > 코스상세</font>
   		</div>
+  		<div id="adminMenu">
+  			<span>관리자 메뉴</span>
+  			<button id="updateCourse" value="${c.c_no}">코스수정</button>  <button id="deleteCourse" value="${c.c_no}">코스삭제</button>
+  		</div>
   			<c:if test="${c.c_photo != null }">
-  		 <div id="mainPhoto" style="background-image: url(/coursePhoto/${c.c_photo.get(0).cp_name}); background-size: cover;">
+  		 <div id="mainPhoto" style="background-image: url(${c.c_photo.get(0).cp_path}/${c.c_photo.get(0).cp_name}); background-size: cover;">
   		 <div id="mpTtitle"><h2>${c.c_name }</h2></div>
   		</div>
   		</c:if>
@@ -801,6 +878,7 @@ window.onload = function(){
         </li>              
     </ul>
   		</div>
+  		<div id="chart_div" style="width: 100%; height: 300px;"></div>
   		<div style="text-align: left;">
   		<input type="checkbox" id="chkBicycle" /> 자전거도로 정보 보기  <button id="cBound">경로 한눈에 보기</button>
   		</div>
@@ -813,14 +891,12 @@ window.onload = function(){
 			<div id="courseWordsTitle" style="margin-bottom: 20px; font-size: 110%;">
 				<span style="text-decoration: underline;">&nbsp;&nbsp;${c.c_name } 코스만의&nbsp;&nbsp;'<span style="color: #eccb6a;font-weight: bold;">갬</span><span style="color: #c8572d; font-weight: bold; ">성</span>' 포인트&nbsp;&nbsp;&nbsp;</span>
 			</div>
-			<div id="courseWordsContent" style="font-size: 90%;">
-				${c.c_words }
-			</div>
+		<div id="courseWordsContent" style="font-size: 90%; white-space:pre;">${c.c_words }</div>
   		</div>
   		<div id="coursePhotoBox">
   		<c:if test="${c.c_photo != null }">
   			<c:forEach var="p" items="${c.c_photo }">
-  				<div id="coursePhoto" style="background-image: url(/coursePhoto/${p.cp_name})">
+  				<div id="coursePhoto" style="background-image: url(${p.cp_path}/${p.cp_name})">
   				<div style="text-align: right;">
   				<c:if test="${p.cp_latitude != 0 }">
   				<a href="https://map.kakao.com/link/roadview/${p.cp_latitude },${p.cp_longitude}" target="_blank"><img src="/detailCourseImg/photoLoc.png"></a>		
@@ -886,8 +962,8 @@ window.onload = function(){
   				</div>
   			</div>
   		</div>
-  		
-  		<div id="addInfo">
+  	 	
+  	<!-- <div id="addInfo">
   			<div style="border-bottom: solid 1px gray;" id="addInfoTitle"><img src="/detailCourseImg/food.png"> 맛집-오라pick</div>
   			<c:forEach var="f" items="${fList }">
   				<c:if test='${f.food_photo != null && f.food_photo.size() != 0}'>
@@ -896,7 +972,7 @@ window.onload = function(){
 	  					</div>		
   				</c:if>
   			</c:forEach>
-  		</div>
+  		</div>-->
   		<div id="addInfo">
   			<div style="border-bottom: solid 1px gray;" id="addInfoTitle"><img src="/detailCourseImg/review.png">후기</div>
   		</div>

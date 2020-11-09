@@ -1,5 +1,6 @@
 package com.example.demo.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -13,8 +14,8 @@ import com.example.demo.vo.Review_repVo;
 
 @Repository
 public class ReviewDao {
-	public List<ReviewVo> selectList(){
-		return ReviewManager.selectList();
+	public List<ReviewVo> selectList(HashMap<String, Integer> record_map){
+		return ReviewManager.selectList(record_map);
 	}
 	public List<ReviewVo> myPageSelectList(HttpSession httpSession){
 		return ReviewManager.MyPageSelectList(httpSession);
@@ -54,5 +55,17 @@ public class ReviewDao {
 	}
 	public int deleteRep(int r_no) {
 		return ReviewManager.deleteRep(r_no);
+	}
+	public int count() {
+		return ReviewManager.count();
+	}
+	public int nextRr_no() {
+		return ReviewManager.nextRr_no();
+	}
+	public int nextRr_step(int rr_ref) {
+		return ReviewManager.nextRr_step(rr_ref);
+	}
+	public int insertRep(Review_repVo rrvo) {
+		return ReviewManager.insertRep(rrvo);
 	}
 }
