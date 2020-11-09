@@ -103,10 +103,27 @@
           
          <!-- <figcaption>    </figcaption> -->
        </figure>
+        </div>
+<table border="1">
+<c:forEach var="c" items="${courseList }">
+<tr>
+	<td>${c.c_no }</td>
+	<td>${c.c_name }</td>
+</tr>
+<div id="container">
+	<figure>
+		<!-- <img src="https://mblogthumb-phinf.pstatic.net/20160331_158/dgdonggu_14594173450858FAJx_PNG/_%B5%BF%B1%B8%C3%BB%C5%B8%C0%CC%C6%B2__%B1%DD%C8%A3%B0%AD_%C0%DA%C0%FC%B0%C5%B1%E6_png.png?type=w2"> -->
+	 	<img src=img/${c.c_photo }"> 
+        <figcaption>${c.c_no }. ${c.c_name }</figcaption>
+        <!-- <figcaption>    </figcaption> -->
+	</figure>
+</div>
 
+</c:forEach>
+</table>
        
-       
-            </div>
+           
+            
 
 
 </ul>
