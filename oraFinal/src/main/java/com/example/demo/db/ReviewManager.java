@@ -122,4 +122,26 @@ public class ReviewManager {
 		session.close();
 		return cnt;
 	}
+	public static int nextRr_no() {
+		int rr_no = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		rr_no = session.selectOne("review.nextRr_no");
+		session.close();
+		return rr_no;
+	}
+	public static int nextRr_step(int rr_ref) {
+		int rr_step = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		rr_step = session.selectOne("review.nextRr_step", rr_ref);
+		session.close();
+		return rr_step;
+	}
+	public static int insertRep(Review_repVo rrvo) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.insert("review.insertRep", rrvo);
+		session.commit();
+		session.close();
+		return re;
+	}
 }

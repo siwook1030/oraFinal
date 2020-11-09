@@ -54,4 +54,13 @@ public class ReviewDao {
 	public int count() {
 		return ReviewManager.count();
 	}
+	public int nextRr_no() {
+		return ReviewManager.nextRr_no();
+	}
+	public int nextRr_step(int rr_ref) {
+		return ReviewManager.nextRr_step(rr_ref);
+	}
+	public int insertRep(Review_repVo rrvo) {
+		return ReviewManager.insertRep(rrvo);
+	}
 }
