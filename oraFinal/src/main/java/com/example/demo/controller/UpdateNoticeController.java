@@ -16,24 +16,24 @@ import com.google.gson.Gson;
 import lombok.Setter;
 
 @Controller
-public class InsertNoticeController {
+public class UpdateNoticeController {
 
 	@Autowired
 	@Setter
 	private NoticeDao ndao;
 	
-	@GetMapping("/admin/insertNotice")
-	public void form(Model model) {
-		model.addAttribute("n_no", ndao.getNextNoticeNo());
+	@GetMapping(value = "/admin/updateNotice")
+	public void form(Model model, int n_no) {
+		System.out.println("받아씀");
+		model.addAttribute("n", ndao.selectByN_NO(n_no));
 		model.addAttribute("category", ndao.getBoardCategory("006")); // 006코드는 공지사항
-		
 	}
 	
-	@PostMapping(value = "/admin/insertNotice", produces = "application/json; charset=utf8")
+	@PostMapping(value = "/admin/updateNotice", produces = "application/json; charset=utf8")
 	@ResponseBody
 	public String submit(NoticeVo n) {
 		System.out.println("노티스 : " +n);
-		int re = ndao.insertNotice(n);
+		int re = ndao.updateNotice(n);
 		ResponseDataVo responseDataVo = new ResponseDataVo();
 		responseDataVo.setCode(ResponseDataCode.ERROR);
 		responseDataVo.setMessage("등록에 실패하였습니다");

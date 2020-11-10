@@ -20,20 +20,13 @@ h2 {
 	margin: 40px auto;
 	color: #c8572d;
 	text-align: center;
-	font-family: 'NEXON Lv1 Gothic Low OTF';
 	text-decoration: none;
-}
-
-a{
-	text-decoration: none;
-	color: black;
 }
    
 section {
 	width: 900px;
 	height: 700px;
 	margin: 50px auto;
-	font-family: 'NEXON Lv1 Gothic Low OTF';
 	float: center;
 }
 
@@ -44,7 +37,6 @@ section {
     border-radius:5px;
     color:#ffffff;
     padding: 5px 0;
-    font-family: 'NEXON Lv1 Gothic Low OTF';
     font: bold;
     text-align: center;
     text-decoration: none;
@@ -70,13 +62,12 @@ button:hover {
 }
 
 select {
-	font-size: 12px;
-	font-family: 'NEXON Lv1 Gothic Low OTF';
 	height: 30px;
-	width: 70px;
+	width: 100px;
+	font-size: 15px;
 }
 
-#container input#search{
+input#search{
 	height: 30px;
 	border: solid 1px;
 	font-size: 11pt;
@@ -129,10 +120,48 @@ window.onload = function(){
 	const checkM = checkLogin(); // 로그인이 되어있는 상태인지 체크한다
 	console.log(checkM);
 //
+    const tbody = document.getElementById("tbody");
+	const btn_search = document.getElementById("btn_search");
+	const code_value = document.getElementById("code_value");
+	const search = document.getElementById("search");
+	
 	const insertNotice = document.getElementById("insertNotice");
 	if(checkM.item.code_value != null && checkM.item.code_value == "00101"){
 		insertNotice.style.display = "inline";
 	}
+	btn_search.addEventListener("click", function(e){
+		const cvalue = code_value.value;
+		const searchText = search.value.trim();
+		$.ajax({
+			url:"/searchNotice",
+			type:"GET",
+			data:{
+				"code_value":cvalue,
+				"searchText":searchText
+			},
+			success:function(list){
+				setList(list);
+			},
+			error:function(){
+				alert("에러발생");
+			}
+		});
+
+	});
+
+	function setList(list){
+		tbody.innerHTML="";
+		list.forEach(function(n, i){
+		const tr = document.createElement("tr");
+		let nc = '<td>'+n.code_name+'</td>';
+			  nc+=    '<td><a href="detailNotice?n_no='+n.n_no+' ">'+n.n_title+'</a></td>';
+			  nc+= '<td>'+n.n_regdate+'</td>';
+			  nc+= '<td>'+n.n_hit+'</td>';
+		   tr.innerHTML=nc;
+		   tbody.append(tr);	
+		});
+		
+	};
 	
 }
 	
@@ -148,14 +177,14 @@ window.onload = function(){
 		<div id="box">
 			<div id="container">
 
-		     	<select name="code_value" size="1">
+		     	<select id="code_value" name="code_value" size="1">
 		     		<option value="0">전체</option>
 		     		<c:forEach var="c" items="${category }">
 		     			<option value="${c.code_value }">${c.code_name }</option>
 		     		</c:forEach>
 		        </select>
-					<input type="search" id="search" placeholder="Search..." />
-					<button id="btn_search">검색</button>
+				<input type="search" id="search" placeholder="Search..." />
+				<button id="btn_search">검색</button>
 
 			</div>
 
@@ -163,12 +192,15 @@ window.onload = function(){
 		
 		<div id="tb">
 			<table border="1" width="100%">
-				<tr>
-					<th>카테고리</th>
-					<th>제목</th>
-					<th>등록일</th>
-					<th>조회수</th>
-				</tr>
+				<thead>
+					<tr>
+						<th>카테고리</th>
+						<th>제목</th>
+						<th>등록일</th>
+						<th>조회수</th>
+					</tr>
+				</thead>
+				<tbody id="tbody">
 				<c:forEach var="n" items="${list }">
 				<tr>
 					<td>${n.code_name }</td>
@@ -179,10 +211,12 @@ window.onload = function(){
 					<td>${n.n_hit }</td>
 					</tr>
 				</c:forEach>
+				</tbody>
 			</table>
 		</div>
+
 		<div id="insertNotice">
-			<a href="/admin/insertNotice"><button id="btn_write" type="button">글쓰기</button></a><br>
+			<a href="/admin/insertNotice"><button id="btn_write">글쓰기</button></a><br>
 		</div>
 		
 	</section>

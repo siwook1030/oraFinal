@@ -69,7 +69,6 @@ select {
 }
 
 
-
    /*float 초기화 아이디*/
 #clear{
 	clear: both; 
@@ -81,7 +80,7 @@ window.onload = function(){
 	const nTitle = document.getElementById("title");
 	const nContent = document.getElementById("content");
 
-	const btnInsert = document.getElementById("btnInsert");
+	const btnInsert = document.getElementById("btnUpdate");
 	
 	btnInsert.addEventListener("click", function(e) {
 		if(nTitle.value.trim() === ""){
@@ -94,7 +93,7 @@ window.onload = function(){
 		}
 		
 		$.ajax({
-			url: "/admin/insertNotice",
+			url: "/admin/updateNotice",
 			type: "POST",
 			data: $("#form").serialize(),
 			success: function(response){
@@ -128,16 +127,16 @@ window.onload = function(){
 	        </select>
 	        <br>
 			<br>
-			<input type="hidden" name="n_no" value="${n_no }">
-			글 제목  <input type="text" name="n_title" id="title" placeholder="제목을 입력하세요" >
+			<input type="hidden" name="n_no" value="${n.n_no }">
+			글 제목  <input type="text" name="n_title" id="title" placeholder="제목을 입력하세요" value="${n.n_title }">
 			<br>
 			<br>
-			<textarea rows="20" cols="95" name="n_content" id="content" placeholder="내용을 입력하세요"></textarea>
+			<textarea rows="20" cols="95" name="n_content" id="content" placeholder="내용을 입력하세요">${n.n_content }</textarea>
 			<br>
 			<br>
-			<button type="reset" id="btnCancel">취소</button>
 		</form>
-		<button type="button" id="btnInsert">등록</button>	
+		<button type="button" id="btnCancel">취소</button>
+		<button type="button" id="btnUpdate">수정</button>	
 	</section>	
 	<br>
 	<jsp:include page="../footer.jsp"/>
