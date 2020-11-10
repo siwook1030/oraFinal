@@ -7,12 +7,16 @@
   	SELECT NVL(MAX(N_NO),0)+1 FROM NOTICE
   </select>
   <select id="listNotice" resultType="noticeVo">
-    SELECT n_no,n.code_value,code_name,n_title,n_content,TO_CHAR(n_regdate,'yyyy.mm.dd hh:mi'), 
-    n_hit FROM NOTICE n, CODE c WHERE n.CODE_VALUE = c.CODE_VALUE
+    SELECT n_no,n.code_value,code_name,n_title,n_content,TO_CHAR(n_regdate,'yyyy.mm.dd hh:mi') AS N_REGDATE, 
+    n_hit FROM NOTICE n, CODE c WHERE n.CODE_VALUE = c.CODE_VALUE ORDER BY N_REGDATE DESC
   </select>
   
   <select id="getBoardCategory" resultType="codeVo">
     select code_value,code_type,code_name from code where code_type=#{code_type}
+  </select>
+  
+  <select id="selectByN_NO" resultType="noticeVo">
+  	SELECT * FROM NOTICE WHERE N_NO=#{n_no}
   </select>
   
   <select id="detailNotice" resultType="noticeVo">
@@ -27,4 +31,25 @@
   <update id="updateHit">
   	UPDATE notice SET n_hit=n_hit+1 WHERE n_no=#{n_no}
   </update>
+  
+  <update id="updateNotice">
+  	UPDATE NOTICE SET N_TITLE=#{n_title},N_CONTENT=#{n_content} WHERE N_NO=#{n_no}
+  </update>
+  
+  <delete id="deleteNotice">
+  	DELETE NOTICE WHERE N_NO=#{n_no}
+  </delete>
+  
+  <select id="search" resultType="noticeVo">
+  	 SELECT n_no,n.code_value,code_name,n_title,n_content,TO_CHAR(n_regdate,'yyyy.mm.dd hh:mi') AS N_REGDATE, 
+    n_hit FROM NOTICE n, CODE c 
+    <where>
+   	 n.CODE_VALUE = c.CODE_VALUE  
+   	 <if test="code_value != 0">
+   	 AND n.CODE_VALUE = #{code_value}
+   	 </if>
+   	 AND (N_TITLE LIKE '%' || #{searchText} || '%' OR N_CONTENT LIKE '%' || #{searchText} || '%')
+    </where>  
+    ORDER BY N_REGDATE DESC 
+  </select>
 </mapper>

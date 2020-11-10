@@ -15,20 +15,13 @@ h2 {
 	margin: 40px auto;
 	color: #c8572d;
 	text-align: center;
-	font-family: 'NEXON Lv1 Gothic Low OTF';
 	text-decoration: none;
-}
-
-a{
-	text-decoration: none;
-	color: black;
 }
 
 #contents {
 	width: 900px;
 	height: 700px;
 	margin: 20px auto;
-	font-family: 'NEXON Lv1 Gothic Low OTF';
 	font-size: 15px;
 }
 
@@ -53,15 +46,14 @@ p {
 	height: 500px;
 }
 
-button,#btn_update {
+#btnList,#btnUpdate,#btnDelete {
 	width:50px;
 	height: 30px;
-    background-color: #eccb6a;
+    background-color: #88bea6;
     border: none;
     border-radius:5px;
     color:#ffffff;
     padding: 5px 0;
-    font-family: 'NEXON Lv1 Gothic Low OTF';
     font: bold;
     text-align: center;
     text-decoration: none;
@@ -72,8 +64,13 @@ button,#btn_update {
     float: right;
 }
 
-#btn_update{
-	background-color: #88bea6;
+#btnDelete{
+	background-color: #eccb6a;
+}
+
+#btnList{
+	background-color: #d0a183;
+	float: left;
 }
 
    /*float 초기화 아이디*/
@@ -81,11 +78,35 @@ button,#btn_update {
 	clear: both; 
 }
 </style> 
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="/js/loginCheck.js"></script>
+<script type="text/javascript">
+window.onload = function(){
+	const checkM = checkLogin(); // 로그인이 되어있는 상태인지 체크한다
+	console.log(checkM);
+//
+	const btnUD = document.getElementById("btnUD");
+	const btnUpdate = document.getElementById("btnUpdate");
+	
+	if(checkM.item.code_value != null && checkM.item.code_value == "00101"){
+		btnUD.style.display = "inline";
+	}
+
+	/*btnUpdate.addEventListener("click", function(e){
+		const n_no = btnUpdate.value;
+		console.log(n_no);
+		window.location = "/admin/updateNotice?n_no="+n_no;
+	}*/
+}
+	
+
+	
+</script>
 </head>
 <body>
 	<jsp:include page="header.jsp"/>
    
-	<a href="listNotice"><h2>공지사항</h2></a>
+	<a href="/listNotice"><h2>공지사항</h2></a>
 	<section id="contents">
 			<table border="1" width="100%">
 		      <tr>
@@ -98,8 +119,12 @@ button,#btn_update {
 
 			<br>
 			<p>${n.n_content }</p><br>
-		<a href="listNotice"><button>목록</button></a>
-		<a href="updateNotice"><button id="btn_update">수정</button></a>
+		<a href="listNotice"><button type="button" id="btnList">목록</button></a>
+		<div id="btnUD">
+			<button type="button" id="btnDelete">삭제</button>
+			<!-- <button type="button" id="btnUpdate" value="${n.n_no }">수정</button> -->
+		 <a href="/admin/updateNotice?n_no=${n.n_no}"><button type="button" id="btnUpdate" value="${n.n_no }">수정</button></a> 
+		</div>
 		</section>
 	<br>
 	<jsp:include page="footer.jsp"/>

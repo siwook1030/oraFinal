@@ -1,5 +1,6 @@
 package com.example.demo.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -27,11 +28,27 @@ public class NoticeDao {
 		return NoticeManager.detailNotice(n_no);
 	}
 	
-	public int insert(NoticeVo n) {
+	public int insertNotice(NoticeVo n) {
 		return NoticeManager.insertNotice(n);
 	}
 	
 	public int updateHit(int n_no) {
 		return NoticeManager.updateHit(n_no);
+	}
+	
+	public int updateNotice(NoticeVo n) {
+		return NoticeManager.updateNotice(n);
+	}
+	
+	public int deleteNotice(int n_no) {
+		return NoticeManager.deleteNotice(n_no);
+	}
+	
+	public NoticeVo selectByN_NO(int n_no) {
+		return NoticeManager.selectByN_NO(n_no);
+	}
+	
+	public List<NoticeVo> searchNotice(HashMap map){
+		return NoticeManager.searchNotice(map);
 	}
 }

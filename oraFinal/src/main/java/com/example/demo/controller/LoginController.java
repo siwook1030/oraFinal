@@ -49,14 +49,15 @@ public class LoginController {
 	public String checkLogin(HttpSession session) {
 		HashMap map = new HashMap();
 		ResponseDataVo responseDataVo = new ResponseDataVo();
-		map.put("id", "");
-		map.put("code_value", "");
+		map.put("id", " ");
+		map.put("code_value", " ");
 		if(session.getAttribute("m") != null) {
 			MemberVo m = (MemberVo)session.getAttribute("m");
 			map.put("id", m.getId());
 			map.put("code_value", m.getCode_value());
-			responseDataVo.setItem(map);
+			
 		}
+		responseDataVo.setItem(map);
 		System.out.println("리스폰스대이타브이오 : " + responseDataVo);
 		return new Gson().toJson(responseDataVo);
 	}
