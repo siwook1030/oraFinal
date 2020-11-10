@@ -4,10 +4,12 @@ package com.example.demo.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URLEncoder;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,14 +32,17 @@ import com.example.demo.vo.Review_repVo;
 import com.google.gson.Gson;
 
 
+
 @Controller
 public class ReviewController {
+	
 	@Autowired
 	private ReviewDao rdao;
 	@Autowired
 	private CourseDao cdao;
 	@Autowired
 	private MemberDao mdao;
+	
 	public void setRdao(ReviewDao rdao) {
 		this.rdao = rdao;
 	}
@@ -47,6 +52,7 @@ public class ReviewController {
 	public void setMdao(MemberDao mdao) {
 		this.mdao = mdao;
 	}
+	
 	int c_no;
 	String c_name;
 	String id;
@@ -71,42 +77,46 @@ public class ReviewController {
 		rank_icon = rkvo.getRank_icon();
 		return rank_icon;
 	}
+	public String getDate_diff_str(long date_diff, Date r_regdate) {
+		if(date_diff > 2592000) {					// 30일 : 30*24*60*60
+			return r_regdate.toString();
+		}else if (date_diff > 86400) {				// 1일 : 24*60*60
+			return (date_diff / 86400) + " 일 전";	
+		}else if (date_diff > 3600) {				// 1시간 : 60*60
+			return (date_diff / 3600) + " 시간 전";
+		}else if (date_diff > 60) {					// 1분 : 60
+			return (date_diff / 60) + " 분 전";
+		}else {										// 1분 미만
+			return "방금 전";
+		}
+	}
 	@RequestMapping("/listReview")
 	public void listReview() {
 		
 	}
-	/*@RequestMapping("/listReviewJson")
-	@ResponseBody
-	public String listReviewJson() {
-		List<ReviewVo> list = rdao.selectList();
-		for(ReviewVo rvo : list) {
-			rvo.setC_name(getC_name(rvo.getC_no()));			// 게시판 코스명 설정
-			rvo.setNickName(getNickName(rvo.getId()));			// 게시판 닉네임 설정
-			rvo.setRank_icon(getRankIcon(mvo.getRank_name()));	// 게시판 랭크아이콘 설정
-		}
-		Gson gson = new Gson();
-		return gson.toJson(list);
-	}*/
 	@RequestMapping("/listReviewJson")
 	@ResponseBody
 	public String listReviewJson(int page, int RECORDS_PER_PAGE) {
-		System.out.println("page입니다 : " + page);
-		int total_records = rdao.count();
-		int total_pages = total_records / RECORDS_PER_PAGE;
+		// System.out.println("리뷰page입니다 : " + page);
+		int total_records = rdao.count();		// 총 레코드 수
+		// 총 페이지 수 계산
+		int total_pages = total_records / RECORDS_PER_PAGE;	
 		if(total_records % RECORDS_PER_PAGE > 0) {
 			total_pages++;
 		}
-		
+		// 시작 레코드, 종료 레코드 계산 
 		int end_record = page * RECORDS_PER_PAGE;
 		int begin_record = end_record - (RECORDS_PER_PAGE - 1);
 		if(end_record > total_records) {
 			end_record = total_records;
 		}
+		// map에 시작 레코드, 종료 레코드 담아서 해당하는 범위의 레코드만 쿼리
 		HashMap<String, Integer> record_map = new HashMap<String, Integer>();
 		record_map.put("begin_record", begin_record);
 		record_map.put("end_record", end_record);
 		List<ReviewVo> list = rdao.selectList(record_map);
 		for(ReviewVo rvo : list) {
+			rvo.setDate_diff_str(getDate_diff_str(rvo.getDate_diff(),rvo.getR_regdate()));	// 게시글 등록시간차이
 			rvo.setC_name(getC_name(rvo.getC_no()));			// 게시판 코스명 설정
 			rvo.setNickName(getNickName(rvo.getId()));			// 게시판 닉네임 설정
 			rvo.setRank_icon(getRankIcon(mvo.getRank_name()));	// 게시판 랭크아이콘 설정
@@ -114,26 +124,39 @@ public class ReviewController {
 		
 		HashMap map = new HashMap();
 		map.put("list", list);
-		map.put("total_pages", total_pages);
+		map.put("total_pages", total_pages);	// JS에서 page계산 용도
 		
 		Gson gson = new Gson();
 		return gson.toJson(map);
+	}
+	//내가쓴 게시물목록
+	@RequestMapping("/myPageListReview")
+	public void myPageListReview(Model model,HttpSession httpSession) {
+		List<ReviewVo> list = rdao.myPageSelectList(httpSession);
+		for(ReviewVo rvo : list) {
+			rvo.setC_name(getC_name(rvo.getC_no()));			// 게시판 코스명 설정
+			rvo.setNickName(getNickName(rvo.getId()));			// 게시판 닉네임 설정
+			rvo.setRank_icon(getRankIcon(mvo.getRank_name()));	// 게시판 랭크아이콘 설정
+		}
+		model.addAttribute("list", list);
 	}
 	@RequestMapping("/detailReview")
 	public void detailReview(int r_no, Model model, HttpServletRequest request) {
 		rdao.incHit(r_no);		// 히트수 증가
 		ReviewVo rvo = rdao.selectOne(r_no);
-		rvo.setR_no(r_no);
+		//rvo.setR_no(r_no);
+		rvo.setDate_diff_str(getDate_diff_str(rvo.getDate_diff(),rvo.getR_regdate()));	// 게시글 등록시간차이
 		rvo.setC_name(getC_name(rvo.getC_no()));			// 게시글 코스명 설정
 		rvo.setNickName(getNickName(rvo.getId()));			// 게시글 닉네임 설정
 		rvo.setRank_icon(getRankIcon(mvo.getRank_name()));	// 게시글 랭크아이콘 설정
-		rvo.setTotal_reply(rdao.countRep(r_no));			// 게시글 답글 수 설정
+		//rvo.setTotal_reply(rdao.countRep(r_no));			// 게시글 답글 수 설정
 		
 		List<Review_fileVo> rflist = rdao.selectListFile(r_no);		// 게시글 사진 가져오기
 		for(Review_fileVo rfvo : rflist) {
 			try {
+				// 사진 파일명에 특수문자 있을 경우 엑박뜨기때문에 URL퍼센트인코딩해준다. 공백문자를 '+'로 바꾸기 때문에 ' '문자로 다시 바꿔준다.
 				String encodeResult = URLEncoder.encode(rfvo.getRf_savename(), "UTF-8").replace("+", "%20");
-				rfvo.setRf_savename(encodeResult);					// URL퍼센트인코딩
+				rfvo.setRf_savename(encodeResult);					
 			}catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -154,7 +177,49 @@ public class ReviewController {
 		model.addAttribute("rflist", rflist);
 		model.addAttribute("rrlist", rrlist);
 	}
-	@RequestMapping(value = "/getRvo", produces = "application/json;charset=utf-8")
+	@RequestMapping(value = "/detailReviewReply", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String detailReviewReply(int r_no) {
+		int total_reply = rdao.countRep(r_no);
+		List<Review_repVo> rrlist = rdao.selectListRep(r_no);		// 댓글 가져오기
+		for(Review_repVo rrvo : rrlist) {
+			rrvo.setDate_diff_str(getDate_diff_str(rrvo.getDate_diff(),rrvo.getRr_regdate()));	// 댓글 등록시간차이
+			rrvo.setNickName(getNickName(rrvo.getId()));			// 댓글 닉네임 설정
+			rrvo.setRank_icon(getRankIcon(mvo.getRank_name()));		// 댓글 랭크아이콘 설정
+		}
+		HashMap map = new HashMap();
+		map.put("total_reply", total_reply);
+		map.put("rrlist", rrlist);
+		Gson gson = new Gson();
+		return gson.toJson(map);
+	}
+	@RequestMapping("/insertReviewReply")
+	@ResponseBody
+	public int insertReviewReply(int r_no, int rr_ref, String rr_content, HttpSession session) {
+		int re = 0;
+		Review_repVo rrvo = new Review_repVo();
+		mvo = (MemberVo)session.getAttribute("m");
+		String id = mvo.getId();
+		int rr_no = rdao.nextRr_no();
+		int rr_step;
+		if(rr_ref == 0) {
+			rr_ref = rr_no;
+			rr_step = 0;
+		}else {
+			rr_step = rdao.nextRr_step(rr_ref);
+		}
+		rrvo.setRr_no(rr_no);
+		rrvo.setR_no(r_no);
+		rrvo.setId(id);
+		rrvo.setRr_content(rr_content);
+		rrvo.setRr_ref(rr_ref);
+		rrvo.setRr_step(rr_step);
+		re = rdao.insertRep(rrvo);
+		return re;
+	}
+	
+	
+	/*@RequestMapping(value = "/getRvo", produces = "application/json;charset=utf-8")
 	@ResponseBody
 	public String detailReviewRvo(int r_no) {
 		rdao.incHit(r_no);		// 히트수 증가
@@ -166,7 +231,7 @@ public class ReviewController {
 		rvo.setTotal_reply(rdao.countRep(r_no));			// 게시글 답글 수 설정
 		Gson gson = new Gson();
 		return gson.toJson(rvo);
-	}
+	}*/
 	@RequestMapping(value = "/insertReview", method = RequestMethod.GET)
 	public void insertReviewForm(Model model) {
 		List<CourseVo> list = cdao.listCourse();

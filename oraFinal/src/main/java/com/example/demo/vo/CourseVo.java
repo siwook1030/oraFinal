@@ -34,7 +34,7 @@ public class CourseVo {
 	private String c_temp;
 	private double userDis; //코스와 유저의현재위치와의  거리
 	private List<CoursePhotoVo> c_photo;
-	//private List<PublicTransportVo> pt;
+	//private List<PublicTransportVo> pt; 교통편은 경로표시를 위해 따로 뺏음
 	
 	
 

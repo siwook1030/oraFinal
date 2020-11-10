@@ -253,6 +253,7 @@
 		<p style="font-size: 15px; padding-top: 2px;">게시글을 수정 중 입니다.</p>
 		<br><br>
 		<form action="updateMeeting" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="m_no" value="${mt.m_no }">
 			<input type="text" name="m_title" value="${mt.m_title }" size="50"><br><br>
 			미팅날짜 <input type="date" name="m_time" value="${mt.m_time }">&nbsp;
 			미팅인원 <input type="number" name="m_numpeople" value="${mt.m_numpeople }" placeholder="1" min="1"><br>
@@ -290,7 +291,8 @@
 			<br><br>
 			<hr><br>
 			<textarea rows="30" cols="140" name="m_content">${mt.m_content }</textarea><br>		
-			<input type="file" name="uploadFile"><br><br>
+			<input type="file" name="uploadFile">
+
 	      
 			<button type="submit" style="border: none; background-color: transparent;"><img src="meetingImg/add.png"></button>
 			<button type="reset" style="border: none; background-color: transparent;"><img src="meetingImg/cancel.png"></button><br>

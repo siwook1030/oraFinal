@@ -71,17 +71,6 @@
 	<script type="text/javascript">
 window.onload = function(){
 
-	/*$("#loadComment").empty();
-	$.ajax("/detailMRep",{function(arr){
-		$.each(arr,function(idx, mr){
-			var rank_icon = $("<img/>").attr("src","../meetingFile/"+mr.rank_icon);
-			var nickName = $("<p></p>").html(mr.nickName);
-			var mr_content = $("<p></p>").html(mr.mr_content);
-			var mr_file1 = $("<img/>").attr("src","../meetingFile/"+mr.mr_file1);
-			var regdate = $("<p></p>").html(mr.regdate);
-			$("#loadComment").append(rank_icon, nickName, mr_content, mr_file1, regdate);
-		});
-	}});*/
 ///////////////////////////////////////////////////
 	const checkM = checkLogin(); // 로그인이 되어있는 상태인지 체크한다
 	console.log(checkM);
@@ -639,7 +628,7 @@ window.onload = function(){
 	if(${c.c_no} != 0){
 		startMarker.setPosition(new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude}));
 		arriveMarker.setPosition(new kakao.maps.LatLng(${c.c_e_latitude}, ${c.c_e_longitude}));
-		const courseLine = eval(${c.c_line});
+		const courseLine = JSON.parse(${c.c_line});
 		coursePolyline.setPath(courseLine);
 		courseLine.forEach(function(c, i) {
 			courseBounds.extend(c);
@@ -712,8 +701,11 @@ window.onload = function(){
 			<br><br><br><br>
 			<!-- 수정,삭제 버튼 -->
 			
-			<a href="deleteMeeting?m_no=${mt.m_no }"><img src="meetingImg/delete.png" class="btnImg"></a>
-			<a href="updateMeeting?m_no=${mt.m_no }&c_no=${mt.c_no}"><img src="meetingImg/edit.png" class="btnImg"></a>
+			
+			<c:if test="${m.id==mt.id }">
+				<a href="deleteMeeting?m_no=${mt.m_no }"><img src="meetingImg/delete.png" class="btnImg"></a>
+				<a href="updateMeeting?m_no=${mt.m_no }&c_no=${mt.c_no}"><img src="meetingImg/edit.png" class="btnImg"></a>
+			</c:if>
 			<br><br>
 			<img src="meetingImg/speech.png" style="size: 20px; float: left; padding-right: 10px;">
 			<h3>댓글&nbsp;<span id="repCnt"></span></h3>

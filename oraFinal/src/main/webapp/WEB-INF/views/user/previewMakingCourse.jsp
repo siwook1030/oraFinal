@@ -94,8 +94,6 @@
 		height: 300px;
 		margin-left: 150px;
 		margin-top: 50px;
-		visibility: hidden;
-
 
 	}
 	#addInfo{
@@ -159,7 +157,11 @@
    #clear{
    	clear: both; 
    }
-
+   /*파일업로드관련 css*/
+     drag-over { background-color: #ff0; }
+	.thumb { width:100px; height:100px; padding:5px; float:left; }
+	.thumb > img { width:100%; height: 100%; }
+	.thumb > .close { position:absolute; background-color:red; cursor:pointer; }
 </style>
     <style>
 .map_wrap, .map_wrap * {margin:0; padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
@@ -189,11 +191,12 @@
 .placeinfo .tel {color:#0f7833;}
 .placeinfo .jibun {color:#999;font-size:11px;margin-top:0;}
 </style>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 <script type="text/javascript">
 window.onload = function(){
-
+	
 	// 마커를 클릭했을 때 해당 장소의 상세정보를 보여줄 커스텀오버레이입니다
 	const placeOverlay = new kakao.maps.CustomOverlay({zIndex:1}), 
 	    contentNode = document.createElement('div'); // 커스텀 오버레이의 컨텐츠 엘리먼트 입니다 
@@ -409,13 +412,37 @@ window.onload = function(){
 
 	const courseBounds = new kakao.maps.LatLngBounds(); 
 	
-	const preCpoly = ${c.c_line};
-	if(preCpoly != 0){
-		cPoly.setPath(eval(${c.c_line}));
-		preCpoly.forEach(function(c, i) {
-			courseBounds.extend(c);
-		});
-	}
+	const cJson =${cJson};
+
+	const preStartLatLng = new kakao.maps.LatLng(cJson.c_s_latitude, cJson.c_s_longitude);
+	const preArriveLatLng = new kakao.maps.LatLng(cJson.c_e_latitude, cJson.c_e_longitude);
+	
+	const cLineObj = JSON.parse(cJson.c_line);
+	const courseLine = eval(cLineObj.courseLine);
+	const altitudeData = eval(cLineObj.altitudeData);
+	
+	cPoly.setPath(courseLine);
+	courseLine.forEach(function(c, i) {
+		courseBounds.extend(c);
+	});
+		
+	google.charts.load('current', {'packages':['corechart']});
+	google.charts.setOnLoadCallback(drawAltitude); 
+	
+	///////--------------------- 고도 차트
+	   function drawAltitude() {
+        const data = google.visualization.arrayToDataTable(altitudeData);
+
+        const options = {
+          title: '자전거코스 고도(m)',
+          hAxis: {title: '거리(km)',  titleTextStyle: {color: '#333'}},
+          vAxis: {minValue: 0}
+        };
+
+        const chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+	   
 	document.getElementById("cBound").addEventListener("click", function(e) {
 		setBound(map, courseBounds);
 	});
@@ -443,7 +470,7 @@ window.onload = function(){
 	const arriveImage = new kakao.maps.MarkerImage(arriveSrc, arriveSize, arriveOption);
 
 	//코스 출발 마커가 표시될 위치입니다 
-	const startPosition = new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude}); 
+	const startPosition = preStartLatLng; 
 	//코스 출발 마커를 생성합니다
 	const startMarker = new kakao.maps.Marker({
 			map: map, // 출발 마커가 지도 위에 표시되도록 설정합니다
@@ -453,7 +480,7 @@ window.onload = function(){
 
 
 	//코스 도착 마커가 표시될 위치입니다 
-	const arrivePosition = new kakao.maps.LatLng(${c.c_e_latitude}, ${c.c_e_longitude});  
+	const arrivePosition = preArriveLatLng;  
 	//코스 도착 마커를 생성합니다 
 	const arriveMarker = new kakao.maps.Marker({  
 			map: map, // 도착 마커가 지도 위에 표시되도록 설정합니다
@@ -485,9 +512,11 @@ window.onload = function(){
 	const PEmap = new kakao.maps.Map(PEmapContainer, PEmapOption); // 지도를 생성합니다
 	// 대중교통 도착맵 센터 정할곳
 	
+	//-----------------------
 	const psBounds = new kakao.maps.LatLngBounds();;
 	const peBounds = new kakao.maps.LatLngBounds();;
-	
+	psBounds.extend(preStartLatLng);
+	peBounds.extend(preArriveLatLng);
 	let ptJson = ${ptJson}
 		console.log(ptJson);
 		ptJson.forEach(function(pt, i) { //대중교통 출발점 도착점 나누기
@@ -550,7 +579,7 @@ window.onload = function(){
 	setBound(PSmap, psBounds);
 	setBound(PEmap, peBounds);
 	//출발 마커가 표시될 위치입니다 
-	const PSstartPosition = new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude}); 
+	const PSstartPosition = preStartLatLng; 
 	// 출발 마커를 생성합니다
 	const PSstartMarker = new kakao.maps.Marker({
 	    map: PSmap, // 출발 마커가 지도 위에 표시되도록 설정합니다
@@ -559,7 +588,7 @@ window.onload = function(){
 	});
 	  
 	//도착 마커가 표시될 위치입니다 
-	const PEarrivePosition = new kakao.maps.LatLng(${c.c_e_latitude}, ${c.c_e_longitude});  
+	const PEarrivePosition = preArriveLatLng;  
 	// 도착 마커를 생성합니다 
 	const PEarriveMarker = new kakao.maps.Marker({  
 	    map: PEmap, // 도착 마커가 지도 위에 표시되도록 설정합니다
@@ -609,6 +638,7 @@ window.onload = function(){
 			selectPE.selectedIndex = 0;
 	}, false)
 	
+	
 ///////////////////////////////////////////////////////////////////////////////////// 자전거 지도표시
 	const mapTypes = { //자전거맵 표시변수
 		    bicycle : kakao.maps.MapTypeId.BICYCLE
@@ -623,7 +653,7 @@ window.onload = function(){
 		}
 	});	
 
-	tpe.style.display="none";
+
 	
 //////////////////////////////////////////////////////////////////////////////////////////// 따릉이마커 
 	kakao.maps.event.addListener(map, 'idle', removePlaceOveray);
@@ -717,6 +747,22 @@ window.onload = function(){
 		placeOverlay.setMap(null);
 	}
 
+	//------------------------ 사진 세팅
+	const uploadFilesName = ${uploadFilesName};
+	console.log(uploadFilesName);
+	if(uploadFilesName != undefined && uploadFilesName.length != 0){
+		document.getElementById("mainPhoto").style.backgroundImage = "url(/previewPhoto/"+uploadFilesName[0]+")";
+		let cPhotoStr = "";
+		uploadFilesName.forEach(function(fname, i) {
+			cPhotoStr += '<div id="coursePhoto" style="background-image: url(/previewPhoto/'+fname+')"></div>';
+		})
+		document.getElementById("coursePhotoBox").innerHTML = cPhotoStr;
+		
+	}
+	
+	
+	// ---------------------------------
+	tpe.style.display="none";  // 교통도착점 지도 뭉개짐을 방지하기위해 다 구성완료 후 감춰준다
 }
  </script>
 </head>
@@ -725,44 +771,41 @@ window.onload = function(){
   		<div id="detailTitle">
   		<font style="font-size: 130%;  color: orange;" >미리보기</font>
   		</div>
-  		<c:if test="${c.c_photo != null }">
-  		 <div id="mainPhoto" style="background-image: url(/coursePhoto/${c.c_photo.get(0).cp_name}); background-size: cover;">
-  		 <div id="mpTtitle"><h2>${c.c_name }</h2></div>
-  		</div>
-  		</c:if>
-  		<c:if test="${c.c_photo == null }">
   		 <div id="mainPhoto" style="background-image: url(/coursePhoto/nullcPhoto.png); background-size: cover;">
   		 <div id="mpTtitle"><h2>${c.c_name }</h2></div>
   		</div>
-  		</c:if>
   		<div id="courseInfo">
   			<table  width="800px">
-  				<tr>
-  					<td style="border-bottom: solid 1px black;">위치</td>
-  					<td style="border-bottom: solid 1px black;">거리</td>
-  					<td style="border-bottom: solid 1px black;">소요시간</td>
-  					<td style="border-bottom: solid 1px black;">난이도</td>
-  					<td style="border-bottom: solid 1px black;">풍경</td>
-  				</tr>
-  				<tr>
-  					<td>${c.c_loc }</td>
-  					<td>${c.c_distance }km</td>
-  					<td>
-  					<c:if test="${c.c_time/60 >= 1 }">
-  						<fmt:formatNumber value="${c.c_time/60}" pattern="0" />시간
-  					</c:if> ${c.c_time%60}분</td>
-  					<td>
-  					<c:if test="${c.c_difficulty ==1 }"><span style="color: #88bea6;">쉬움</span><br></c:if>
-  					<c:if test="${c.c_difficulty ==2 }"><span style="color: #eccb6a;">보통</span><br></c:if>
-  					<c:if test="${c.c_difficulty ==3 }"><span style="color: #c8572d;">어려움</span><br></c:if>
-  					<c:if test="${c.c_difficulty ==4 }"><span style="color: red;">매우 어려움</span><br></c:if>
-  					</td>
-  					<td>
-  					<c:forEach var="v" items="${c.c_views }">
-  						<img src="/courseViewImg/${v}.png">&nbsp;
-  					</c:forEach>		
-  					</td>
-  				</tr>
+  				<thead>
+  					<tr>
+	  					<td style="border-bottom: solid 1px black;">위치</td>
+	  					<td style="border-bottom: solid 1px black;">거리</td>
+	  					<td style="border-bottom: solid 1px black;">소요시간</td>
+	  					<td style="border-bottom: solid 1px black;">난이도</td>
+	  					<td style="border-bottom: solid 1px black;">풍경</td>
+  					</tr>
+  				</thead>
+  				<tbody>
+  					<tr>
+	  					<td>${c.c_loc }</td>
+	  					<td>${c.c_distance }km</td>
+	  					<td>
+	  					<c:if test="${c.c_time/60 >= 1 }">
+	  						<fmt:formatNumber value="${c.c_time/60}" pattern="0" />시간
+	  					</c:if> ${c.c_time%60}분</td>
+	  					<td>
+	  					<c:if test="${c.c_difficulty ==1 }"><span style="color: #88bea6;">쉬움</span><br></c:if>
+	  					<c:if test="${c.c_difficulty ==2 }"><span style="color: #eccb6a;">보통</span><br></c:if>
+	  					<c:if test="${c.c_difficulty ==3 }"><span style="color: #c8572d;">어려움</span><br></c:if>
+	  					<c:if test="${c.c_difficulty ==4 }"><span style="color: red;">매우 어려움</span><br></c:if>
+	  					</td>
+	  					<td>
+	  					<c:forEach var="v" items="${c.c_views }">
+	  						<img src="/courseViewImg/${v}.png">&nbsp;
+	  					</c:forEach>		
+	  					</td>
+  					</tr>
+  				</tbody>
   			</table>
   		</div>
   		<div id="detailMap" style="text-align: center; margin: 20px 0 60px 0;">
@@ -795,6 +838,7 @@ window.onload = function(){
         </li>              
     </ul>
   		</div>
+  		<div id="chart_div" style="width: 100%; height: 300px;"></div>
   			<div style="text-align: left;">
   		<input type="checkbox" id="chkBicycle" /> 자전거도로 정보 보기 <button id="cBound">경로 한눈에 보기</button>
   		</div>
@@ -807,25 +851,9 @@ window.onload = function(){
 			<div id="courseWordsTitle" style="margin-bottom: 20px; font-size: 110%;">
 				<span style="text-decoration: underline;">&nbsp;&nbsp;${c.c_name } 코스만의&nbsp;&nbsp;'<span style="color: #eccb6a;font-weight: bold;">갬</span><span style="color: #c8572d; font-weight: bold; ">성</span>' 포인트&nbsp;&nbsp;&nbsp;</span>
 			</div>
-			<div id="courseWordsContent" style="font-size: 90%;">
-				${c.c_words }
-			</div>
+			<div id="courseWordsContent" style="font-size: 90%; white-space:pre;">${c.c_words }</div>
   		</div>
   		<div id="coursePhotoBox">
-  		<c:if test="${c.c_photo != null }">
-  			<c:forEach var="p" items="${c.c_photo }">
-  				<div id="coursePhoto" style="background-image: url(/coursePhoto/${p.cp_name})">
-  				<div style="text-align: right;">
-  				<c:if test="${p.cp_latitude != 0 }">
-  				<a href="https://map.kakao.com/link/roadview/${p.cp_latitude },${p.cp_longitude}" target="_blank"><img src="/detailCourseImg/photoLoc.png"></a>		
-  				</c:if>
-  				<c:if test="${p.cp_latitude == 0 }">
-  					<img src="/detailCourseImg/photoLoc.png" style="visibility: hidden;">
-  				</c:if>
-  				 </div>
-  				</div>
-  			</c:forEach>
-  		</c:if>
   		</div>
   		<div id="transportS">
   			<div style="border-bottom: solid 1px gray;" id="addInfoTitle"><img src="/detailCourseImg/subway.png">교통편</div>

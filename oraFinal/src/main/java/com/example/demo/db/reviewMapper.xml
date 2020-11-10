@@ -4,19 +4,26 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="review">
   <select id="selectList" resultType="reviewVo">
-	SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY r_no DESC) row_num, r.* FROM review r ORDER BY r_no DESC) WHERE row_num BETWEEN #{begin_record} AND #{end_record}
+  	<!-- ROW_NUMBER()함수를 써서 'ORDER BY r_no DESC' 후에 ROWNUM이 동작하도록 한다.
+  	현재시간-레코드등록시간 결과값의 정수는 일단위임. 초단위 결과를 반환하기 위해 곱연산함. 결과값이 소수점까지 나오기때문에 INT로 형변환해서 소수점 이하 제거. -->
+	SELECT r2.*, CAST(24*60*60*(SYSDATE-r2.r_regdate) AS INT) date_diff FROM (SELECT ROW_NUMBER() OVER (ORDER BY r_no DESC) row_num, r.* FROM review r ORDER BY r_no DESC) r2 WHERE row_num BETWEEN #{begin_record} AND #{end_record}
+  </select>
+  
+  <!-- 내 게시물 목록-->
+   <select id="myPageSelectList" resultType="reviewVo">
+    SELECT * FROM review WHERE ID=#{id} ORDER BY r_no DESC
   </select>
   <update id="incHit">
   	UPDATE review SET r_hit=r_hit+1 WHERE r_no=#{r_no}
   </update>
   <select id="selectOne" resultType="reviewVo">
-  	SELECT * FROM review WHERE r_no=#{r_no}
+  	SELECT r.*, CAST(24*60*60*(SYSDATE-r_regdate) AS INT) date_diff FROM review r WHERE r_no=#{r_no}
   </select>
   <select id="selectListFile" resultType="review_fileVo">
   	SELECT * FROM review_file WHERE r_no=#{r_no}
   </select>
   <select id="selectListRep" resultType="review_repVo">
-  	SELECT * FROM review_rep WHERE r_no=#{r_no} ORDER BY rr_ref, rr_step
+  	SELECT r.*, CAST(24*60*60*(SYSDATE-rr_regdate) AS INT) date_diff FROM review_rep r WHERE r_no=#{r_no} ORDER BY rr_ref, rr_step
   </select>
   <select id="nextR_no" resultType="java.lang.Integer">
   	SELECT NVL(MAX(r_no),0)+1 FROM review
@@ -45,4 +52,13 @@
   <select id="count" resultType="java.lang.Integer">
   	SELECT COUNT(*) FROM review
   </select>
+  <select id="nextRr_no" resultType="java.lang.Integer">
+  	SELECT NVL(MAX(rr_no),0)+1 FROM review_rep
+  </select>
+  <select id="nextRr_step" resultType="java.lang.Integer">
+  	SELECT MAX(rr_step)+1 FROM review_rep WHERE rr_ref=#{rr_ref}
+  </select>
+  <insert id="insertRep">
+  	INSERT INTO review_rep(rr_no,r_no,id,rr_content,rr_regdate,rr_ref,rr_step) VALUES(#{rr_no},#{r_no},#{id},#{rr_content},SYSDATE,#{rr_ref},#{rr_step})
+  </insert>
 </mapper>

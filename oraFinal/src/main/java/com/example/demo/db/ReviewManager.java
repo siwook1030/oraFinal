@@ -4,11 +4,14 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.ReviewVo;
 import com.example.demo.vo.Review_fileVo;
 import com.example.demo.vo.Review_repVo;
@@ -28,6 +31,14 @@ public class ReviewManager {
 		List<ReviewVo> list = null;
 		SqlSession session = sqlSessionFactory.openSession();
 		list = session.selectList("review.selectList", record_map);
+		session.close();
+		return list;
+	}
+	public static List<ReviewVo> MyPageSelectList(HttpSession httpSession){
+		List<ReviewVo> list = null;
+		SqlSession session = sqlSessionFactory.openSession();
+		MemberVo m = (MemberVo)httpSession.getAttribute("m");
+		list = session.selectList("review.myPageSelectList",m.getId());
 		session.close();
 		return list;
 	}
@@ -121,5 +132,27 @@ public class ReviewManager {
 		cnt = session.selectOne("review.count");
 		session.close();
 		return cnt;
+	}
+	public static int nextRr_no() {
+		int rr_no = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		rr_no = session.selectOne("review.nextRr_no");
+		session.close();
+		return rr_no;
+	}
+	public static int nextRr_step(int rr_ref) {
+		int rr_step = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		rr_step = session.selectOne("review.nextRr_step", rr_ref);
+		session.close();
+		return rr_step;
+	}
+	public static int insertRep(Review_repVo rrvo) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.insert("review.insertRep", rrvo);
+		session.commit();
+		session.close();
+		return re;
 	}
 }

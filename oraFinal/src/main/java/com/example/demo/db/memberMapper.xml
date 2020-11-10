@@ -11,6 +11,10 @@
 		SELECT COUNT(*) FROM MEMBER WHERE nickName=#{nickName}
 	</select>
 	
+	<select id="phoneNumCheck" resultType="int">
+		SELECT COUNT(*) FROM MEMBER WHERE PHONE=#{phone}
+	</select>
+	
 	<insert id="insertMember">
 		INSERT INTO MEMBER(id,code_value,password,name,nickName,gender,phone,rank_name,regdate) 
 		VALUES(#{id},#{code_value},#{password},#{name},#{nickName},#{gender},#{phone},#{rank_name},sysdate)
@@ -26,6 +30,6 @@
 	</select>
 	
 	<update id="updateMember">
-		UPDATE MEMBER SET NICKNAME=#{nickName},PHONE=#{phone} WHERE ID=#{id}
+		UPDATE MEMBER SET PASSWORD=#{password},NICKNAME=#{nickName},PHONE=#{phone} WHERE ID=#{id}
 	</update>
 </mapper>
