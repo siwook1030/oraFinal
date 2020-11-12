@@ -16,20 +16,35 @@
 			border-collapse: collapse;
 			text-align: center;
 		}
-		#pageStr {
-			text-align: center;
-			margin: 30px 0 70px;
-		}
 		td, th {
 			border-bottom: 1px #7a7a7a solid;
 			padding: 4px 0 4px;
+		}
+		#page {
+			text-align: center;
+			margin-top: 50px;
+		}
+		span {
+			margin: 3px;
+			padding: 4px 8px;
+		}
+		.btn {
+			color: white;
+			padding: 8px 12px;
+			background-color: #88BEA6;
+			float: right;
+			font-size: 15px;
+			border: none;
+			cursor: pointer;
 		}
 	</style>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script type="text/javascript">
 	window.onload = function(){
+		let pageNo = 1;
+		const recordSize = ${recordSize};
+		const pageSize = ${pageSize};
 		listMeeting();
-
 
 		// 나우페이지를 주면 리스트를 띄울 함수 하나
 		// 페이징바를 만들 함수하나
@@ -38,79 +53,101 @@
 			$.ajax({
 				url: "/listMeetingJson",
 				type: "GET",
-				async: false,
-				/* data : {
-					pageNo: pageNo
-				}, */
-				success: function(r){
+				data : {
+					"pageNo": pageNo
+				},
+				success: function(map){
 					$('tbody').empty();
-					var arr = r.list;
-					/* var start = r.start;
-					var end = r.end;
-					console.log(start);
-					console.log(end); */
-
-					let pageNo = 1;
-					const recordSize = 5; // 한 번에 보이는 게시글 수
-					const pageSize = 3; // 한 번에 보이는 페이지 수
-
-					let totRecord = r.totRecord;
-					console.log(totRecord);
-
-					// 총 페이지 수
-					let totPage = Math.ceil(totRecord/recordSize);
-					console.log(totPage);
-
-					// 페이지 버튼 숫자
-					let startPage = (pageNo-1)/pageSize*pageSize+1;
-					let endPage = startPage+pageSize-1;
-					if(endPage>totPage) {
-						endPage = totPage;
-					}
-					console.log('*** startPage : '+startPage);
-					console.log('*** endPage : '+endPage);
-
-					
-					for(let i=startPage; i<=endPage; i++){
-						const a = $('<a></a>').attr('href','').html(i+' ');
-						$('#page').append(a);				
-					}
-					if(totPage>endPage){
-						const next = $('<a></a>').attr('href','').html('>');
-						$('#page').append(next);
-					}
-
-//					String pageStr="";
-//					if(startPage>1) {
-//						pageStr += "<a href='listMeeting?pageNo="+(startPage-1)+"'> < </a>"+"  ";
-//					}
-//					for(int i=startPage;i<=endPage;i++) {
-//						pageStr += "<a href='listMeeting?pageNo="+i+"'>"+i+"</a>"+"  ";
-//					}
-//					if(totPage>endPage) {
-//						pageStr += "<a href='listMeeting?pageNo="+(endPage+1)+"'> > </a>";
-//					}
-					
-					$.each(arr, function(idx, data){
-						
-						//console.log('*** arr length : '+arr.length);
-						const tr = $('<tr></tr>');
-						const m_no = $('<td></td>').html(data.m_no);
-						const c_name = $('<td></td>').html(data.c_name);
-						const m_time = $('<td></td>').html(data.m_time);
-						const m_titleLink = $('<a></a>').attr('href','detailMeeting?m_no='+data.m_no).html(data.m_title);
-						const m_title = $('<td></td>').html(m_titleLink).addClass('tdTitle');
-						const nickName_icon = $('<img/>').attr({src : 'rank/'+data.rank_icon, height : '20px'});
-						const nickName = $('<td></td>').append(nickName_icon, data.nickName);
-						const m_regdate = $('<td></td>').html(data.m_regdate);
-						const m_hit = $('<td></td>').html(data.m_hit);
-						tr.append(m_no, c_name, m_time, m_title, nickName, m_regdate, m_hit);
-						$('tbody').append(tr);
-					});
+					setList(map.list);
+					setPage(map.totRecord);
 				}
 			})						
 		}
-		
+
+		function setPage(totRecord){
+			$('#page').empty();
+			$('#page').css('cursor','pointer');
+			//$('#page').css('cursor','pointer');
+			// 총 페이지 수
+			let totPage = Math.ceil(totRecord/recordSize);
+			console.log('*** totPage : '+totPage);
+
+			// 페이지 버튼 숫자
+			let startPage = parseInt((pageNo-1)/pageSize)*pageSize+1;
+			let endPage = startPage+pageSize-1;
+			if(endPage>totPage) {
+				endPage = totPage;
+			}
+			console.log('*** startPage : '+startPage);
+			console.log('*** endPage : '+endPage);
+
+
+			if(startPage>1) {
+				const prev = $('<span></span>').attr('idx',(startPage-1)).html('<');
+				$('#page').append(prev);
+				$(prev).click(function(){
+					const idx = $(this).attr('idx');
+					pageNo = idx;
+					listMeeting();
+				});
+			}
+			
+			for(let i=startPage; i<=endPage; i++){
+				const a = $('<span></span>').attr('idx',i).html(i);
+				if(i==pageNo){
+					$(a).css({
+						color: 'white',
+						backgroundColor: '#ECCB6A',
+						borderRadius: '15px'
+					});
+				}
+				$('#page').append(a);
+				$(a).click(function() {
+					const idx = $(this).attr('idx');
+					if(pageNo==idx){
+						return;
+					} 
+					console.log(idx);
+					pageNo = idx;
+					listMeeting();
+				});			
+			}
+ 			if(totPage>endPage){
+				const next = $('<span></span>').attr('idx',(endPage+1)).html('>');
+				$('#page').append(next);
+				$(next).click(function(){
+					const idx = $(this).attr('idx');
+					pageNo = idx;
+					listMeeting();
+				});
+			}			
+		}
+
+		function setList(arr){
+			$.each(arr, function(idx, data){
+				//console.log('*** arr length : '+arr.length);
+				const tr = $('<tr></tr>');
+				const m_no = $('<td></td>').html(data.m_no);
+				const c_name = $('<td></td>').html(data.c_name);
+				const m_time = $('<td></td>').html(data.m_time);
+				const m_titleLink = $('<a></a>').attr('href','detailMeeting?m_no='+data.m_no).html(data.m_title);
+				const m_title = $('<td></td>').html(m_titleLink).addClass('tdTitle');
+				const nickName_icon = $('<img/>').attr({src : 'rank/'+data.rank_icon, height : '20px'});
+				const nickName = $('<td></td>').append(nickName_icon, data.nickName);
+				const m_regdate = $('<td></td>').html(data.m_regdate);
+				const m_hit = $('<td></td>').html(data.m_hit);
+				tr.append(m_no, c_name, m_time, m_title, nickName, m_regdate, m_hit);
+				$('tbody').append(tr);
+
+				$(document).ready(function(){
+					$(".tdTitle").hover(function(){
+						$(this).css("text-decoration","underline");
+					},function(){
+						$(this).css("text-decoration","none");
+					});
+				});
+			});
+		}
 		
 	}
 
@@ -129,17 +166,7 @@
 			})
 		return check;
 		}
-
 	
-
-	
-	/* $(document).ready(function(){
-		$(".tdTitle").hover(function(){
-			$(this).css("text-decoration","underline");
-		},function(){
-			$(this).css("text-decoration","none");
-		});
-	}); */
 	</script>
 </head>
 <body>
@@ -166,8 +193,8 @@
 			<tbody></tbody>
 		</table>
 		<br>
+		<a href="/user/insertMeeting" class="btn">등록</a>
 		<div id="page"></div>
-		<a href="/insertMeeting"><img src="meetingImg/insert.png" height="30px" align="right"></a><br><br>
 	</section>
 	<jsp:include page="footer.jsp"/>
 </body>

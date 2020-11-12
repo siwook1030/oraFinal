@@ -1,8 +1,12 @@
 package com.example.demo.controller;
 
 import java.io.FileOutputStream;
-
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -12,13 +16,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.example.demo.ResponseDataCode;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.dao.MeetingDao;
+import com.example.demo.util.FileUtilCollection;
 import com.example.demo.vo.MeetingVo;
 import com.example.demo.vo.Meeting_fileVo;
 
@@ -41,56 +46,59 @@ public class InsertMeetingController {
 	@Setter
 	MeetingDao mdao;
 	
-	
-	@GetMapping("/insertMeeting")
+	@GetMapping("/user/insertMeeting")
 	public void insertMeetingForm(HttpSession session, Model model) {
 		model.addAttribute("cList", cdao.listCourse());
 	}
 
-	@PostMapping("/insertMeeting")
-	public ModelAndView insertSubmit(HttpServletRequest request, HttpSession session, MeetingVo mt, Meeting_fileVo mf) {
-		ModelAndView mav = new ModelAndView("redirect:/listMeeting");
+	@PostMapping(value = "/user/insertMeeting", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String insertSubmit(HttpServletRequest request, @RequestParam HashMap map, List<MultipartFile> uploadMtFiles) {
+		System.out.println("***map : "+map);
+		System.out.println("***uploadMtFiles : "+uploadMtFiles);
+		
 		int m_no = mdao.NextMNum();
-		mt.setM_no(m_no);
-		MemberVo mbvo = (MemberVo) session.getAttribute("m");
-		mt.setId(mbvo.getId());
-		//System.out.println("*** mt(isrtMtng Cntr) : "+mt);
+		int c_no = Integer.parseInt((String)map.get("c_no"));
+		String id = (String)map.get("id");
+		String m_title = (String)map.get("m_title");
+		String m_content = (String)map.get("m_content");
+		String m_regdate = null;
+		int m_hit = 0;
+		double m_latitude = Double.parseDouble((String)map.get("m_latitude"));
+		double m_longitude = Double.parseDouble((String)map.get("m_longitude"));
+		String m_locname = (String)map.get("m_locname");
+		Date m_time = Date.valueOf((String)map.get("m_time"));
+		int m_numpeople = Integer.parseInt((String)map.get("m_numpeople"));
+		String nickName = "";
+		String c_name = "";
+		String rank_icon = "";
 		
-		int re = -1;
-		re = mdao.insertMeeting(mt);
+		MeetingVo mtvo = new MeetingVo(m_no, c_no, id, m_title, m_content, m_regdate, m_hit, m_latitude, m_longitude, m_locname, m_time, m_numpeople, nickName, c_name, rank_icon);
+		//System.out.println(mtvo.toString());
+		int re = mdao.insertMeeting(mtvo);
 		
-		MultipartFile uploadFile = mf.getUploadFile();
-		String mf_name = uploadFile.getOriginalFilename();
+		List<Meeting_fileVo> mfvo = new ArrayList<Meeting_fileVo>();
+		String path = request.getRealPath("/meetingFile");
+		int re_mf = 0;
+		if(uploadMtFiles.size()>0) {
+			for(MultipartFile mf: uploadMtFiles) {
+				int mf_no = 0;
+				int mt_no = m_no;
+				String mf_name = mf.getOriginalFilename();
+				String mf_savename = FileUtilCollection.filePrefixName()+mf_name;
+				String mf_path = "meetingFile";
+				long mf_size = mf.getSize();	
+				mfvo.add(new Meeting_fileVo(mf_no, m_no, mf_name, mf_savename, mf_path, mf_size));
+			}
+			re_mf = mdao.insertMFile(mfvo);
+		}
 		
 		if(re>0) {
-			if(mf_name!=null&&!mf_name.equals("")) {
-				
-				// 랜덤한 숫자 6
-				String a = String.valueOf(System.currentTimeMillis());
-				String random = a.substring(7);
-				
-				// 사진 등록
-				mf.setMf_no(mdao.NextMfNum());
-				mf.setM_no(m_no);
-				mf.setMf_name(mf_name);
-				String mf_savename = random+mf_name;
-				mf.setMf_savename(mf_savename);
-				mf.setMf_path("meetingFile");
-				mf.setMf_size(uploadFile.getSize());
-				
-//				System.out.println("*** mf(IsrtMtng Cntr) : "+mf);
-//				System.out.println("*** mf_name(IsrtMtng Cntr) : "+mf_name);
-//				System.out.println("*** mf_savename(IsrtMtng Cntr) : "+mf_savename);
-
-				int re_mf = 0;
-				re_mf = mdao.insertMFile(mf);
-				
-				if(re_mf>0) {
-					String path = request.getRealPath("/meetingFile");
-					System.out.println("*** path(IsrtM Cntr) : "+path);
+			if(uploadMtFiles.size()>0) {
+				for(int i=0; i<uploadMtFiles.size(); i++) {
 					try {
-						byte []data = uploadFile.getBytes();
-						FileOutputStream fos = new FileOutputStream(path+"/"+mf_savename);
+						byte []data = uploadMtFiles.get(i).getBytes();
+						FileOutputStream fos = new FileOutputStream(path+"/"+mfvo.get(i).getMf_savename());
 						fos.write(data);
 						fos.close();
 					} catch (Exception e) {
@@ -99,12 +107,8 @@ public class InsertMeetingController {
 					}	
 				}
 			}
-		} else {
-			mav.addObject("msg", "게시글 등록에 실패하였습니다.");
-			mav.setViewName("error");
-		}
-		return mav;
-		
+		} 
+		return Integer.toString(m_no);
 	}
 	
 	@GetMapping(value = "/getCourseByMeeting", produces = "application/json; charset=utf-8")
@@ -137,7 +141,7 @@ public class InsertMeetingController {
 			}	
 		}
 		Meeting_repVo mr = new Meeting_repVo(mr_no, m_no, id, mr_content, null, mr_ref, mr_step, "0", null, null);
-		System.out.println(mr);
+		//System.out.println(mr);
 		int re = 0;
 		re = mdao.insertMRep(mr);
 

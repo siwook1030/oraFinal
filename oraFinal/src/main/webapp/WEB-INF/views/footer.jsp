@@ -7,8 +7,7 @@
 <title>Insert title here</title>
 <style type="text/css">
 footer {
-
-	margin: 30px auto;
+	margin: 100px auto;
 	width: 100%;
 	height: 150px;
 	font-family: 'NEXON Lv1 Gothic Low OTF';
@@ -21,7 +20,7 @@ footer {
 
 }
 #footer_icon{
-   margin: 0 auto;
+   margin: 30px auto;
 }
 #address {
 
@@ -34,8 +33,7 @@ footer {
 </head>
 <body>
 <footer>
-      <hr style="width: 100%; color: gray;">
-      <br>
+      <hr style="width: 100%;">
       <div id='footer_box'>
             <div id="footer_icon" >
                <img src='/footerImg/instagram.png' height="50px">

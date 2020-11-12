@@ -26,16 +26,20 @@
 			display:inline-block;
 			position:relative;
 		}
-		#btnImg {
+		.btnRep {
 			position:absolute;
-			bottom:30px;
-			right:10px;
-			border-style: none;
-			background-color: transparent;
-			width: 50px;
+			color: white;
+			padding: 6px 9px;
+			background-color: #c8572d;
+			float: right;
+			font-size: 13px;
+			border: none;
+			bottom: 30px;
+			right: 10px;
+			cursor: pointer;
 		}
 		textarea {
-		     display:block;
+		     display: block;
 		}
 		#contents {
 			border: 1px solid #D5D5D5;
@@ -53,7 +57,7 @@
 		.repInput-show{
 			display: inline;
 		}
-		 .repPageNum{
+		.repPageNum{
 			margin: 0 5px 0 5px;
 			cursor: pointer;
 		}
@@ -62,14 +66,76 @@
 			margin-left: 3px;
 			text-decoration: underline;
 		}
-		
-		.map_wrap {position:relative;width:100%;height:300px;font-size: 80%;}
+		.btn {
+			color: white;
+			padding: 8px 12px;
+			margin-left: 2px;
+			background-color: #88BEA6;
+			float: right;
+			font-size: 15px;
+			border: none;
+			cursor: pointer;
+		}
+		.mtIcon {
+			width: 40px;
+			padding: 3px;
+		}
+		.mtInfoAll {
+			display: flex;
+		}
+		.mtInfoAll .mtInfo {
+			width: 40%;
+			border: 1px #BDBDBD solid;
+			border-radius: 10px;
+			margin: 20px;
+			padding: 10px;
+		}
+		div .mtInfo {
+			text-align: center;
+		}
+		.photo_canvas {
+			position: relative;
+			background-color: skyblue;
+			width: 3000px; /*880*/
+			height: 300px;
+			overflow: hidden;
+		}
+		.myPhotoDiv {
+			width: 3000px;
+			position: relative;
+			background-color: orange;
+		}
+		.mfPhoto {
+			float: left;
+			height: 300px; /*300*/
+		}
+		.pointerDiv {
+			position: absolute;
+			top: 100px;
+			width: 880px;
+		}
+		#left {
+			width: 100px;
+			position: relative;
+			cursor: pointer;
+		}
+		#right {
+			width: 100px;
+			position: relative;
+			cursor: pointer;
+			left: 680px;
+		}
+		.map_wrap {position:relative; width:100%; height:300px; font-size: 80%; margin: 30px 0 15px;}
 	</style>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script src="/js/loginCheck.js"></script>
 	<script type="text/javascript">
 window.onload = function(){
+	$('#btnDel').click(function(){
+		alert('게시글이 삭제되었습니다.');
+	});
+	
 
 ///////////////////////////////////////////////////
 	const checkM = checkLogin(); // 로그인이 되어있는 상태인지 체크한다
@@ -615,7 +681,7 @@ window.onload = function(){
         strokeStyle: 'solid'
        });//경로라인담을 변수
 /////////////////출발도착마커이미지 생성 끝
-	const meetingSrc = '/insertMeetingImg/meetingSpot.png', // 미팅 마커이미지의 주소입니다    
+	const meetingSrc = '/searchCourseImg/mtLoc.png', // 미팅 마커이미지의 주소입니다    
 	meetingSize = new kakao.maps.Size(40, 40); // 미팅 마커이미지의 크기입니다 
 	
 	//미팅 마커 이미지를 생성합니다
@@ -623,12 +689,15 @@ window.onload = function(){
 	const meetingMarker = new kakao.maps.Marker({image:meetingImage}); 
 	const meetingInfowindow = new kakao.maps.InfoWindow({removable:true,zindex:1});
 
+	const c = ${cJson};
+	
 	const courseBounds = new kakao.maps.LatLngBounds();  // 맵바운드 설정객체
 	
-	if(${c.c_no} != 0){
-		startMarker.setPosition(new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude}));
-		arriveMarker.setPosition(new kakao.maps.LatLng(${c.c_e_latitude}, ${c.c_e_longitude}));
-		const courseLine = JSON.parse(${c.c_line});
+	if(c.c_no != 0){
+		startMarker.setPosition(new kakao.maps.LatLng(c.c_s_latitude, c.c_s_longitude));
+		arriveMarker.setPosition(new kakao.maps.LatLng(c.c_e_latitude, c.c_e_longitude));
+		const cLineObj = JSON.parse(c.c_line);
+		const courseLine = eval(cLineObj.courseLine);
 		coursePolyline.setPath(courseLine);
 		courseLine.forEach(function(c, i) {
 			courseBounds.extend(c);
@@ -647,8 +716,23 @@ window.onload = function(){
     courseBounds.extend(meetingLatLon);
     map.setBounds(courseBounds);
 	/////////////////////////////////////////////////////////////////////////////////// 맵표시 끝
+	const mf = ${mf};
+	console.log(mf);
+	let imgStr = '';
+	mf.forEach(function(mtPhoto, idx) {
+		imgStr += '<img class="mfPhoto" src=/'+mtPhoto.mf_path+'/'+mtPhoto.mf_savename+' attr='+idx+'>';
+	})
+	console.log(imgStr);
+	document.getElementById('mfPhotoDiv').innerHTML = imgStr;
 
-	
+	$('#left').click(function(){
+		
+	});
+	function moveMfPhoto(index) {
+		$('#mfPhoto').animate({
+			left:-(600*index)
+		},"slow");
+	}
 };
 	</script>
 </head>
@@ -675,40 +759,39 @@ window.onload = function(){
 			<div class="map_wrap">
 				<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
 			</div>
-			<table border="1">
-				<tr>
-					<td>미팅장소</td><td>${mt.m_locname }</td>
-					<td>미팅시간</td><td>${mt.m_time }</td>
-					<td>미팅인원</td><td>${mt.m_numpeople }</td>
-				</tr>
-			</table>
-			<!-- 
-			위도 : ${mt.m_latitude }<br>
-			경도 : ${mt.m_longitude }<br>
-			모임장소 : ${mt.m_locname }<br>
-			모임시간 : ${mt.m_time }<br>
-			모임인원 : ${mt.m_numpeople }
-			 -->
+			<div class="mtInfoAll">
+				<div class="mtInfo"><img src="meetingImg/meetingLoc.png" class="mtIcon"><br>${mt.m_locname }</div>
+				<div class="mtInfo"><img src="meetingImg/meetingTime.png" class="mtIcon"><br>${mt.m_time }</div>
+				<div class="mtInfo"><img src="meetingImg/meetingNum.png" class="mtIcon"><br>${mt.m_numpeople } 명</div>
+			</div>
 			<br>
 		
+			<div style="margin: 20px 0 20px;">
+				${mt.m_content }
+			</div>
 			<c:if test="${mf!=null }">
-				<c:forEach var="mf" items="${mf}">
-					<img src="${mf.mf_path }/${mf.mf_savename }" width="400">
-				</c:forEach> 
+				<div class="photo_canvas">
+					<div class="pointerDiv">
+						<img class="pointer" id="left" src="meetingImg/left.png">
+						<img class="pointer" id="right" src="meetingImg/right.png">
+					</div>
+					<%-- <div class="mfPhotoDiv">
+						<c:forEach var="mf" items="${mf}">
+							<img class="mfPhoto" src="${mf.mf_path }/${mf.mf_savename }">
+						</c:forEach>
+					</div> --%>
+					<div class="mfPhotoDiv" id="mfPhotoDiv"></div>
+				</div>
 			</c:if>
-			<br><br><br>
-			${mt.m_content }
-			<br><br><br><br>
+			
 			<!-- 수정,삭제 버튼 -->
-			
-			
 			<c:if test="${m.id==mt.id }">
-				<a href="deleteMeeting?m_no=${mt.m_no }"><img src="meetingImg/delete.png" class="btnImg"></a>
-				<a href="updateMeeting?m_no=${mt.m_no }&c_no=${mt.c_no}"><img src="meetingImg/edit.png" class="btnImg"></a>
+				<a href="deleteMeeting?m_no=${mt.m_no }" class="btn" id="btnDel" style="background-color: #ECCB6A">삭제</a>
+				<a href="/user/updateMeeting?m_no=${mt.m_no }&c_no=${mt.c_no}" class="btn" id="btnEdit">수정</a>
 			</c:if>
 			<br><br>
 			<img src="meetingImg/speech.png" style="size: 20px; float: left; padding-right: 10px;">
-			<h3>댓글&nbsp;<span id="repCnt"></span></h3>
+			<h3>댓글<span id="repCnt" style="padding-left: 10px;"></span></h3>
 			<hr style="margin: 10px 0 10px;">
 			<!-- 댓글출력 -->
 			<div id="reply">
@@ -720,11 +803,8 @@ window.onload = function(){
 			<div>
 			댓글등록<br>
 			<form id="comment">
-				<!--  <input type="hidden" name="rank_icon" id="rank_icon">
-				<input type="hidden" name="nickname" id="nickname">
-				<input type="hidden" name="regdate" id="regdate">-->
 				<textarea rows="10" cols="80" name="mr_content" id="mr_content" maxlength="300"></textarea>
-				<button id="btnInsertReply" type="button"><img src="/meetingImg/add.png" id="btnImg"></button>
+				<button id="btnInsertReply" type="button" class="btnRep">등록</button>
 				<div><span id="mr_contentSpan"></span></div>
 				<input type="file" name="mr_file1" id="mr_file1">
 				

@@ -123,7 +123,7 @@ window.onload = function(){
 				rcContent += '<div id="rcBox" style="background-image: url(/coursePhoto/nullcPhoto.png); background-size: cover;">';
 			}
 			else{
-				rcContent += '<div id="rcBox" style="background-image: url(/coursePhoto/'+c.c_photo[0].cp_name+'); background-size: cover;">';
+				rcContent += '<div id="rcBox" style="background-image: url(/coursePhoto/course'+c.c_no+'/'+c.c_photo[0].cp_name+'); background-size: cover;">';
 			}
 			
 			rcContent += '<div id="rcBoxName"><span>'+c.c_name+'</span></div></div></a>';			
