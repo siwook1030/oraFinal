@@ -129,6 +129,20 @@ window.onload = function(){
 	if(checkM.item.code_value != null && checkM.item.code_value == "00101"){
 		insertNotice.style.display = "inline";
 	}
+
+	function listNotice(){
+			$.ajax({
+				url:"/listNoticeJson",
+				type:"GET",
+				success:function(list){
+					getList(list);
+				}
+			});
+		}
+		
+
+	
+	
 	btn_search.addEventListener("click", function(e){
 		const cvalue = code_value.value;
 		const searchText = search.value.trim();
@@ -201,7 +215,7 @@ window.onload = function(){
 					</tr>
 				</thead>
 				<tbody id="tbody">
-				<c:forEach var="n" items="${list }">
+				<!--<c:forEach var="n" items="${list }">
 				<tr>
 					<td>${n.code_name }</td>
 					<td>
@@ -210,7 +224,7 @@ window.onload = function(){
 					<td>${n.n_regdate }</td>
 					<td>${n.n_hit }</td>
 					</tr>
-				</c:forEach>
+				</c:forEach>-->
 				</tbody>
 			</table>
 		</div>

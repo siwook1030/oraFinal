@@ -12,15 +12,15 @@ import lombok.Setter;
 @Controller
 public class DeleteNoticeController {
 
-	@Autowired
-	@Setter
-	private NoticeDao ndao;
-	
-	@GetMapping(value = "/admin/updateNotice")
-	public void form(Model model, int n_no) {
-		model.addAttribute("n", ndao.selectByN_NO(n_no));
-		model.addAttribute("category", ndao.getBoardCategory("006")); // 006코드는 공지사항
-	}
+//	@Autowired
+//	@Setter
+//	private NoticeDao ndao;
+//	
+//	@GetMapping(value = "/admin/updateNotice")
+//	public void form(Model model, int n_no) {
+//		model.addAttribute("n", ndao.selectByN_NO(n_no));
+//		model.addAttribute("category", ndao.getBoardCategory("006")); // 006코드는 공지사항
+//	}
 	
 	
 }

@@ -76,7 +76,6 @@ select {
 }
 </style>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.ckeditor.com/ckeditor5/23.1.0/classic/ckeditor.js"></script>
 <script type="text/javascript">
 window.onload = function(){
 	const nTitle = document.getElementById("title");
@@ -142,6 +141,5 @@ window.onload = function(){
 	</section>	
 	<br>
 	<jsp:include page="../footer.jsp"/>
-	<script src="${pageContext.request.contextPath}/resources/common/js/ckeditor.js"></script>
 </body>
 </html>
