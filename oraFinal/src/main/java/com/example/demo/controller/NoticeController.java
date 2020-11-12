@@ -29,6 +29,12 @@ public class NoticeController {
 	}
 	
 	@RequestMapping("/listNotice")
+	public void listNotice() {
+		
+	}
+	
+	@RequestMapping(value = "/listNoticeJson", produces = "application/json;charset=utf-8")
+	@ResponseBody
 	public void listNotice(Model model, @RequestParam(value = "pageNUM", defaultValue = "1") int pageNUM) {
 		totalCount = ndao.getTotalCount();
 		totalPage = (int)Math.ceil( (double)totalCount/pageSIZE ) ;
