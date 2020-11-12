@@ -24,7 +24,6 @@ public class UpdateNoticeController {
 	
 	@GetMapping(value = "/admin/updateNotice")
 	public void form(Model model, int n_no) {
-		System.out.println("받아씀");
 		model.addAttribute("n", ndao.selectByN_NO(n_no));
 		model.addAttribute("category", ndao.getBoardCategory("006")); // 006코드는 공지사항
 	}

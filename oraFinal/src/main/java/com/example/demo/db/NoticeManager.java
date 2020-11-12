@@ -106,6 +106,15 @@ public class NoticeManager {
 		session.close();
 		return nList;
 	}
+	
+	public static int getTotalCount() {
+		int re =  -1;
+		SqlSession session 
+		= sqlSessionFactory.openSession();
+		re = session.selectOne("notice.selectCount");
+		session.close();
+		return re;
+	}
 }
 
 

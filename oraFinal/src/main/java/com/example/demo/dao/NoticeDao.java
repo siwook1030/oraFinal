@@ -51,4 +51,8 @@ public class NoticeDao {
 	public List<NoticeVo> searchNotice(HashMap map){
 		return NoticeManager.searchNotice(map);
 	}
+	
+	public int getTotalCount() {
+		return NoticeManager.getTotalCount();
+	}
 }

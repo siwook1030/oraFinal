@@ -32,7 +32,7 @@ public class InsertNoticeController {
 	@PostMapping(value = "/admin/insertNotice", produces = "application/json; charset=utf8")
 	@ResponseBody
 	public String submit(NoticeVo n) {
-		System.out.println("노티스 : " +n);
+		System.out.println("노티스 : " + n);
 		int re = ndao.insertNotice(n);
 		ResponseDataVo responseDataVo = new ResponseDataVo();
 		responseDataVo.setCode(ResponseDataCode.ERROR);

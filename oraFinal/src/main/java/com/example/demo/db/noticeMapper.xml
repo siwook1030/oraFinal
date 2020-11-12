@@ -52,4 +52,8 @@
     </where>  
     ORDER BY N_REGDATE DESC 
   </select>
+  
+  <select id="selectCount" resultType="java.lang.Integer">
+   	SELECT COUNT (*) FROM NOTICE
+  </select>
 </mapper>
