@@ -34,6 +34,8 @@ th {
 	padding: 6px;
 	text-align: center;
 	background-color: #fff2e4;
+	color: #0f0f0f;
+	height: 25px;
 }
 
 td {

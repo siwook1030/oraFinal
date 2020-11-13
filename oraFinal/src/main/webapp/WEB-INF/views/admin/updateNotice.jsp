@@ -46,7 +46,7 @@ select {
 	padding: 8px;
 }
 
-#btnCancel,#btnInsert {
+#btnCancel,#btnUpdate {
 	width:50px;
 	height: 30px;
     border: none;
@@ -64,7 +64,7 @@ select {
     float: right;
 }
 
-#btnInsert{
+#btnUpdate{
 	background-color: #88bea6;
 }
 
