@@ -35,10 +35,10 @@ public class NoticeManager {
 		
 	}
 
-	public static List<NoticeVo> listNotice(){
+	public static List<NoticeVo> listNotice(HashMap map){
 		List<NoticeVo> list = null;
 		SqlSession session = sqlSessionFactory.openSession();
-		list = session.selectList("notice.listNotice");
+		list = session.selectList("notice.listNotice",map);
 		session.close();
 		return list;
 	}
@@ -107,14 +107,15 @@ public class NoticeManager {
 		return nList;
 	}
 	
-	public static int getTotalCount() {
-		int re =  -1;
-		SqlSession session 
-		= sqlSessionFactory.openSession();
-		re = session.selectOne("notice.selectCount");
-		session.close();
-		return re;
-	}
+	// 게시글 수
+		public static int totNRecord(HashMap map) {
+			int re =  -1;
+			SqlSession session 
+			= sqlSessionFactory.openSession();
+			re = session.selectOne("notice.totNRecord", map);
+			session.close();
+			return re;
+		}
 }
 
 

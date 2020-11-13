@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.example.demo.db.MeetingManager;
 import com.example.demo.db.NoticeManager;
 import com.example.demo.vo.CodeVo;
 import com.example.demo.vo.NoticeVo;
@@ -16,8 +17,8 @@ public class NoticeDao {
 		return NoticeManager.getNextNoticeNo();
 	}
 
-	public List<NoticeVo> listNotice(){
-		return NoticeManager.listNotice();
+	public List<NoticeVo> listNotice(HashMap map){
+		return NoticeManager.listNotice(map);
 	}
 	
 	public List<CodeVo> getBoardCategory(String code_type){
@@ -52,7 +53,7 @@ public class NoticeDao {
 		return NoticeManager.searchNotice(map);
 	}
 	
-	public int getTotalCount() {
-		return NoticeManager.getTotalCount();
+	public int totNRecord(HashMap map) {
+		return NoticeManager.totNRecord(map);
 	}
 }
