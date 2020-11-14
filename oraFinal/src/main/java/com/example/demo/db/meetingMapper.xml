@@ -12,7 +12,7 @@
 		FROM (SELECT M_NO, C_NAME, M_TIME, M_TITLE, RANK_ICON, NICKNAME, M_REGDATE, M_HIT 
 		FROM meeting MT, MEMBER MB, COURSE C, RANK R 
 		WHERE MT.ID=MB.ID AND C.C_NO=MT.C_NO AND R.RANK_NAME = MB.RANK_NAME 
-		ORDER BY M_NO DESC)) 
+		ORDER BY M_NO DESC)) WHERE N BETWEEN #{start} and #{end}
 	</select>
 	<select id="selectMByNo" resultType="meetingVo"> <!-- 게시글 상세 -->
 	 	SELECT MT.M_NO, MT.C_NO, MT.ID, NICKNAME, C_NAME, RANK_ICON, M_TITLE, M_CONTENT, TO_CHAR(M_REGDATE, 'YYYY. MM. DD HH24:MI') AS M_REGDATE, M_HIT, M_LATITUDE, M_LONGITUDE, M_LOCNAME, M_TIME, M_NUMPEOPLE FROM MEETING MT, MEMBER MB, COURSE C, RANK R WHERE MT.ID=MB.ID AND C.C_NO=MT.C_NO AND R.RANK_NAME=MB.RANK_NAME AND M_NO=#{m_no}
@@ -55,7 +55,7 @@
 		SELECT * FROM MEETING_FILE WHERE M_NO=#{m_no}
 	</select>
 	<insert id="insertMf" parameterType="meeting_fileVo"> <!-- 첨부파일 등록 -->
-		INSERT INTO MEETING_FILE VALUES(#{mf_no}, #{m_no}, #{mf_name}, #{mf_savename}, #{mf_path}, #{mf_size})
+		INSERT INTO MEETING_FILE VALUES(MF_SEQ.NEXTVAL, #{m_no}, #{mf_name}, #{mf_savename}, #{mf_path}, #{mf_size})
 	</insert>
 	<update id="updateMf" parameterType="meeting_fileVo"> <!-- 첨부파일 수정 -->
 		UPDATE MEETING_FILE SET MF_NAME=#{mf_name}, MF_SAVENAME=#{mf_savename}, MF_SIZE=#{mf_size} WHERE M_NO=#{m_no}

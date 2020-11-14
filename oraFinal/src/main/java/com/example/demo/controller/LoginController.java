@@ -56,11 +56,13 @@ public class LoginController {
 	public String checkLogin(HttpSession session) {
 		HashMap map = new HashMap();
 		ResponseDataVo responseDataVo = new ResponseDataVo();
+
 		responseDataVo.setCode(ResponseDataCode.ERROR);
 		map.put("id", "");
 		map.put("code_value", "");
 		map.put("nickName", "");
 		map.put("saveCourse", "");
+
 		if(session.getAttribute("m") != null) {
 			MemberVo m = (MemberVo)session.getAttribute("m");
 			responseDataVo.setCode(ResponseDataCode.SUCCESS);
@@ -68,6 +70,7 @@ public class LoginController {
 			map.put("code_value", m.getCode_value());
 			map.put("nickName", m.getNickName());
 			map.put("saveCourse", cdao.getAllSaveCourse(m.getId()));
+
 		}
 		responseDataVo.setItem(map);
 		//System.out.println("리스폰스대이타브이오 : " + responseDataVo);
