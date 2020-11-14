@@ -28,6 +28,18 @@
 	.thumb { width:100px; height:100px; padding:5px; float:left; }
 	.thumb > img { width:100%; height: 100%; }
 	.thumb > .close { position:absolute; background-color:red; cursor:pointer; }
+.map_wrap, .map_wrap * {margin:0; padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
+.map_wrap {position:relative;width:100%;height:500px;}	
+.placeinfo_wrap {position:absolute;bottom:28px;left:-150px;width:300px;}
+.placeinfo {position:relative;width:100%;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;padding-bottom: 10px;background: #fff;}
+.placeinfo:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
+.placeinfo_wrap .after {content:'';position:relative;margin-left:-12px;left:50%;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+.placeinfo a, .placeinfo a:hover, .placeinfo a:active{color:#fff;text-decoration: none;}
+.placeinfo a, .placeinfo span {display: block;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+.placeinfo span {margin:5px 5px 0 5px;cursor: default;font-size:13px;}
+.placeinfo .title {font-weight: bold; font-size:14px;border-radius: 6px 6px 0 0;margin: -1px -1px 0 -1px;padding:10px; color: #fff;background: #d95050;background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
+.placeinfo .tel {color:#0f7833;}
+.placeinfo .jibun {color:#999;font-size:11px;margin-top:0;}
 
    #undo.disabled, #redo.disabled {background-color:#ddd;color:#9e9e9e;}
 </style>
@@ -38,8 +50,8 @@
 <script>
 window.onload = function(){
 	const oldCourseName = document.getElementById("oldCourseName");
-	const featNickName = document.getElementById("featNickName");
 	
+	const nickName = document.getElementById("nickName");
 	const courseNum = document.getElementById("courseNum");
 	const courseId = document.getElementById("courseId");
 	const courseCodeValue = document.getElementById("courseCodeValue");
@@ -283,6 +295,32 @@ window.onload = function(){
 	const zoomControl = new kakao.maps.ZoomControl();
 	map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 	map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+////////////////////////////////////////////////////코스마커표시기능	
+	const placeOverlay = new kakao.maps.CustomOverlay({zIndex:1}), 
+    contentNode = document.createElement('div'); // 커스텀 오버레이의 컨텐츠 엘리먼트 입니다 
+
+	// 커스텀 오버레이의 컨텐츠 노드에 css class를 추가합니다 
+	contentNode.className = 'placeinfo_wrap';
+
+	// 커스텀 오버레이의 컨텐츠 노드에 mousedown, touchstart 이벤트가 발생했을때
+	// 지도 객체에 이벤트가 전달되지 않도록 이벤트 핸들러로 kakao.maps.event.preventMap 메소드를 등록합니다 
+	addEventHandle(contentNode, 'mousedown', kakao.maps.event.preventMap);
+	addEventHandle(contentNode, 'touchstart', kakao.maps.event.preventMap);
+
+	// 엘리먼트에 이벤트 핸들러를 등록하는 함수입니다
+	function addEventHandle(target, type, callback) {
+	    if (target.addEventListener) {
+	        target.addEventListener(type, callback);
+	    } else {
+	        target.attachEvent('on' + type, callback);
+	    }
+	}
+	
+	// 커스텀 오버레이 컨텐츠를 설정합니다
+	placeOverlay.setContent(contentNode); 
+	
+	//--------------
 
 	const options = { // Drawing Manager를 생성할 때 사용할 옵션입니다
 	    map: map, // Drawing Manager로 그리기 요소를 그릴 map 객체입니다
@@ -967,7 +1005,6 @@ window.onload = function(){
 	
 	const uploadFiles = [];
 	const drop = document.getElementById("drop");
-	const thumbnails = document.getElementById("thumbnails");
 	
 	drop.addEventListener("dragenter", function(e) {
 		this.className = "drag-over";
@@ -1017,9 +1054,9 @@ window.onload = function(){
 			return function(e) {
 				const div = '<div class="thumb"> \
 				<div class="close" data-idx="' + idx + '">X</div> \
-				<img src="' + e.target.result + '" title="' + escape(f.name) + '"/> \
+				<img src="' + e.target.result + '" title=""/> \
 				</div>';
-				thumbnails.append(div);
+				$("#thumbnails").append(div);
 			};
 		})(file, idx);
 			reader.readAsDataURL(file);
@@ -1042,7 +1079,155 @@ window.onload = function(){
 
 		return cPhotoCnt;
 	}
+	//-------------------------무인자전거
+	//--------------
+	kakao.maps.event.addListener(map, 'idle', removePlaceOveray);
+
+	const redC = '/detailCourseImg/redC.png'; // 따릉이 0개
+	const yellowC = '/detailCourseImg/yellowC.png'; // 따릉이 1~4개  
+	const greenC = '/detailCourseImg/greenC.png'; // 따릉이 5개 이상  
+	const ggC = '/detailCourseImg/greenC.png'; // 경기도 공공자전거 마커이미지
 	
+	const cycleSize = new kakao.maps.Size(8, 8); 
+	
+	// 따릉 마커 이미지를 생성합니다
+	const redImage = new kakao.maps.MarkerImage(redC, cycleSize);
+	const yellowImage = new kakao.maps.MarkerImage(yellowC, cycleSize);
+	const greenImage = new kakao.maps.MarkerImage(greenC, cycleSize);
+	const ggImage = new kakao.maps.MarkerImage(ggC, cycleSize);
+		
+	let cycleMakerArr = [];
+	publicCycle.addEventListener("change", function(e) {
+		const check = e.target.value;
+		const cName = (e.target.options[e.target.selectedIndex]).text;
+		const ggUrl = (e.target.options[e.target.selectedIndex]).getAttribute("ggUrl");
+		cycleMakerArr.forEach(function(el, i) {
+			el.setMap(null);
+		})
+		placeOverlay.setMap(null);
+		cycleMakerArr = [];
+		if(check == '0'){  // 아무것도 안함
+			return;
+		}
+		else if(check == '1'){ // 서울
+			setSeoulCycle();
+		}
+		else{ // 경기도
+			setGgCycle(check,cName,ggUrl);
+		}
+	});
+	
+	function setSeoulCycle(){
+		for(let i=1; i<=2001; i+=1000){
+			$.ajax({
+				url:"http://openapi.seoul.go.kr:8088/6a625562487369773231685a644f53/json/bikeList/"+i+"/"+(i+999),
+				success:function(data){
+					const cycList = data.rentBikeStatus.row;
+					cycList.forEach(function(el, i) {
+						setCycleMarker(el);
+					})
+				},
+				error: function() {
+					alert("서버에러");
+				}		
+			})
+		}
+	}
+	
+	function setCycleMarker(el){
+		const parkingCnt = el.parkingBikeTotCnt;
+		let cImg = greenImage;
+		if(parkingCnt == 0){
+			cImg = redImage;
+		}
+		else if(parkingCnt >=1 && parkingCnt <=4){
+			cImg = yellowImage;
+		}
+		
+		const cyclePosition = new kakao.maps.LatLng(el.stationLatitude, el.stationLongitude);  
+		// 따릉이 마커를 생성합니다 
+		const cycleMarker = new kakao.maps.Marker({  
+		    map: map,
+		    position: cyclePosition,
+		    image: cImg
+		});	
+		cycleMakerArr.push(cycleMarker);
+            kakao.maps.event.addListener(cycleMarker, 'click', function() {
+                displaySeoulC(el);
+            });
+	}
+	
+	function displaySeoulC (place) {
+	    let content = '<div class="placeinfo">' +
+	                    '   <a class="title" href="https://www.bikeseoul.com/main.do" target="_blank" title="서울시(따릉이)">서울시(따릉이)</a>';   
+	
+	    
+	        content += '    <span>' + place.stationName + '</span>';
+	        
+	   
+	    content += '    <span class="tel">' + "현재 대여가능수 "+place.parkingBikeTotCnt + '</span>' + 
+	               ' <span class="jibun" >' + "전체 거치대수 "+place.rackTotCnt +  '</span>';
+	                '</div>' + 
+	                '<div class="after"></div>';
+	
+	    contentNode.innerHTML = content;
+	    placeOverlay.setPosition(new kakao.maps.LatLng(place.stationLatitude, place.stationLongitude));
+	    placeOverlay.setMap(map);  
+	}
+
+	function setGgCycle(code,cName,ggUrl){
+		$.ajax({
+			url:"https://openapi.gg.go.kr/BICYCL?key=e2d851f8493c448c964a25461359f1f5&pIndex=1&pSize=1000&SIGUN_NM="+code,
+			type:"get",
+			success:function(data){
+				console.log(data);
+				const cycList = data.querySelectorAll('row');
+				console.log(cycList[0]);
+				for(let i=0; i<cycList.length; i++){
+					setGgCycleMarker(cycList[i],cName,ggUrl);
+				}
+			},
+			error:function(){
+				alert("에러발생");
+			}
+		})
+	}
+	
+	function setGgCycleMarker(g,cName,ggUrl){
+			const cyclePosition = new kakao.maps.LatLng($(g).find('REFINE_WGS84_LAT').html(), $(g).find('REFINE_WGS84_LOGT').html());  
+			// 경기도 마커를 생성합니다 
+			const cycleMarker = new kakao.maps.Marker({  
+			    map: map,
+			    position: cyclePosition,
+			    image: ggImage
+			});	
+			cycleMakerArr.push(cycleMarker);
+	            kakao.maps.event.addListener(cycleMarker, 'click', function() {
+	            	displayGgC(g,cName,ggUrl);
+	            });
+	}
+
+	function displayGgC (place,cName,ggUrl) {
+	    let content = '<div class="placeinfo">' +
+	                    '   <a class="title" href="'+ggUrl+'" target="_blank" title="'+cName+'">'+cName+'</a>';   
+	
+	    
+	        content += '    <span>' + $(place).find('BICYCL_LEND_PLC_NM_INST_NM').html() + '</span>';
+	        
+	   
+	    content += '    <span class="tel">' + "전체 거치대수 "+$(place).find('STANDS_CNT').html() +  '</span>' + 
+	              // ' <span class="jibun" >' + "전체 거치대수 "+place.STANDS_CNT +  '</span>';
+	                '</div>' + 
+	                '<div class="after"></div>';
+	
+	    contentNode.innerHTML = content;
+	    placeOverlay.setPosition(new kakao.maps.LatLng($(place).find('REFINE_WGS84_LAT').html(), $(place).find('REFINE_WGS84_LOGT').html()));
+	    placeOverlay.setMap(map);  
+	}
+	
+	function removePlaceOveray(){
+		placeOverlay.setMap(null);
+	}
 	
 ////////////////////////////////////////////////////////
 	function preCheck(){ // 미리보기,등록 할때 값들 제어를 할 함수
@@ -1070,7 +1255,7 @@ window.onload = function(){
 
 		function cnameDupCheck(){  // 코스명 중복검사 함수
 			let check = "1";
-			if(oldCourseName.value == cname+featNickName.value){  // 수정전 코스명과 수정 후 코스명이 같을경우 대비
+			if(oldCourseName.value == cname){  // 수정전 코스명과 수정 후 코스명이 같을경우 대비
 				return "0";
 			}
 			
@@ -1144,7 +1329,7 @@ window.onload = function(){
 		sPTStation.value = sPTStation.value.trim();
 		ePTStation.value = ePTStation.value.trim();
 			
-		const c_name = courseName.value.trim()+featNickName.value;
+		const c_name = courseName.value.trim();
 
 		const sLocName = "#"+sLoc.value.trim().split(" ", 1);  // 주소 맨처음 단어(도시이름)만 때온다 ex) '서울 양천구 목동' 일 경우  '서울'을 갖고옴
 		const eLocName = "#"+eLoc.value.trim().split(" ", 1);
@@ -1251,12 +1436,24 @@ window.onload = function(){
 	});
 
 	//--------------- 수정내용 세팅장소  변수명 uc는 update course 줄임말 
-	const cJson = ${cJson};
-	const ptJson = ${ptJson};
-	console.log(cJson.c_photo);
-	console.log(typeof(cJson.c_photo));
-	function setUpdateCourse(){   // 업데이트코스 데이타 설정 함수
+	//const  url = document.location.href;
+	//const courseNumber = url.substring(url.indexOf("=")+1);
+	const courseNumber = ${c_no};
+	console.log(courseNumber);
+	const req = new XMLHttpRequest();
+	req.open("GET", "/admin/getUpdateCourse?c_no="+courseNumber);
+	req.send(null);
+	req.addEventListener("load", function(e) {
+		const repMap = JSON.parse(this.response);
+		const cJson = repMap.cJson;
+		const ptJson = repMap.ptJson;
+		setUpdateCourse(cJson,ptJson);
+	})
+
+	  function setUpdateCourse(cJson,ptJson){   // 업데이트코스 데이타 설정 함수
+		
 		const courseBounds = new kakao.maps.LatLngBounds();
+		nickName.value = cJson.nickName;
 		courseNum.value = cJson.c_no;
 		courseId.value = cJson.id;
 		courseCodeValue.value = cJson.code_value;
@@ -1264,14 +1461,6 @@ window.onload = function(){
 
 		//----히든으로 넘길값들 (유지해야할 값)
 		courseName.value = cJson.c_name;
-		if(cJson.code_value == "00102" ){ // 일반유저가 등록한 코스였을경우
-			const idx = cJson.c_name.indexOf(".");
-			if(idx != -1){
-				courseName.value = cJson.c_name.substring(0,idx);
-				featNickName.value = cJson.c_name.substring(idx);
-			}
-			
-		} 
 		
 		const ucLine = JSON.parse(cJson.c_line);
 
@@ -1379,9 +1568,8 @@ window.onload = function(){
 		
 		});
 		
-		
 	};	
-	setUpdateCourse();
+//	setUpdateCourse();
 	
 	
 	
@@ -1401,10 +1589,12 @@ window.onload = function(){
 <span id="cTitle">코스명 :</span><input type="text" name="c_name"  id="courseName" maxlength="10"><span id="courseNameCnt"></span>
 <br>
 (수정전 코스명)<input type="text" id="oldCourseName" readonly="readonly">
-<input type="hidden" id="featNickName" value="">
 <br>
-
+<div id="detailMap" style="text-align: center; margin: 20px 0 60px 0;">
+<div class="map_wrap">
 <div id="map" style="width:1000px;height:500px;"></div>
+</div>
+</div>
 <div id="chart_div" style="width: 100%; height: 300px;"></div>
 <p>
 	<input type="file" value="경로파일" id="bikeFile">
@@ -1417,10 +1607,23 @@ window.onload = function(){
     <button type="button" id="infoC" >가져오기</button><span id="fixC" val="y"></span> <br>
    <input type="checkbox" id="chkBicycle" /> 자전거도로 정보 보기
 </p>
+<input type="hidden" id="nickName" name="nickName">
 <input type="hidden" id="courseNum" name="c_no" > 
 <input type="hidden" id="courseId" name="id"> 
 <input type="hidden" id="courseCodeValue" name="code_value">
-
+<div style="text-align: left;">
+  			무인자전거 대여소 
+  			<select id="publicCycle">
+  				<option value="0">--무인자전거 위치--</option>
+  				<option value="1">서울(따릉이)</option>
+  				<option value="고양시" ggUrl="https://www.fifteenlife.com/mobile/index.jsp">고양시(피프틴)</option>
+  				<option value="과천시" ggUrl="https://www.gccity.go.kr/main/main.do">과천시(과천)</option>
+  				<option value="부천시" ggUrl="https://bike.bucheon.go.kr/site/homepage/menu/viewMenu?menuid=154001003003">부천시(부천)</option>
+  				<option value="수원시" ggUrl="http://www.suwon.go.kr/web/bike/index.do">수원시(반디클)</option>
+  				<option value="시흥시" ggUrl="https://bike.siheung.go.kr/siheung/">시흥시(시흥)</option>
+  				<option value="안산시" ggUrl="http://www.pedalro.kr/index.do">안산시(페달로)</option>
+  			</select>
+  		</div>
 
 출발 - 위도 : <input type="text" id="slat" name="c_s_latitude" value="0" readonly="readonly">
 경도 : <input type="text" id="slon" name="c_s_longitude" value="0" readonly="readonly">
@@ -1492,12 +1695,12 @@ window.onload = function(){
 거리 :  <input type="text" id="disPS" name="pt_distancePS" value="0" readonly="readonly">km 
 <select id="sPT" name="pt_imgPS">
 <option value="(입력안함)">--대중교통선택--</option>
-<option value="버스">버스</option>
-<option value="1호선">1호선</option>
-<option value="2호선">2호선</option>
-<option value="3호선">3호선</option>
+<option value="지하철">지하철</option>
+<option value="시내버스">시내버스</option>
+<option value="고속버스">고속버스</option>
+<option value="기차">기차</option>
 </select>
- 역이름 : <input type="text" id="sPTStation"  name="pt_stationPS" maxlength="14" placeholder="ex)신촌역,신촌오거리.."><span id="sPTStationCnt"></span>
+ 역이름 : <input type="text" id="sPTStation"  name="pt_stationPS" maxlength="14" placeholder="ex)2호선 신촌역"><span id="sPTStationCnt"></span>
 <br>
 대중교통출발 선경로 <br>
 <textarea rows="10" cols="80" id="linePS" name="pt_linePS" readonly="readonly"></textarea>
@@ -1517,12 +1720,12 @@ window.onload = function(){
 거리 :  <input type="text" id="disPE" name="pt_distancePE" value="0" readonly="readonly">km
 <select id="ePT" name="pt_imgPE">
 <option value="(입력안함)">--대중교통선택--</option>
-<option value="버스">버스</option>
-<option value="1호선">1호선</option>
-<option value="2호선">2호선</option>
-<option value="3호선">3호선</option>
+<option value="지하철">지하철</option>
+<option value="시내버스">시내버스</option>
+<option value="고속버스">고속버스</option>
+<option value="기차">기차</option>
 </select>
-  역이름 : <input type="text" id="ePTStation" name="pt_stationPE" maxlength="14" placeholder="ex)신촌역,신촌오거리.."><span id="ePTStationCnt"></span>
+  역이름 : <input type="text" id="ePTStation" name="pt_stationPE" maxlength="14" placeholder="ex)2호선 신촌역"><span id="ePTStationCnt"></span>
 <br>
 대중교통도착 선경로 <br>
 <textarea rows="10" cols="80" id="linePE" name="pt_linePE" readonly="readonly"></textarea>

@@ -2,6 +2,7 @@ package com.example.demo.dao;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -63,6 +64,10 @@ public class CourseDao {
 		return CourseManager.searchCourseList(map);
 	}
 	
+	public List<Integer> getAllSaveCourse(String id){
+		return CourseManager.getAllSaveCourse(id);
+	}
+	
 	public List<CourseVo> getSaveCourse(HttpSession httpSession){
 		return CourseManager.getSaveCourse(httpSession);
 	}
@@ -71,5 +76,9 @@ public class CourseDao {
 	}
 	public int deleteSaveCourse(HashMap map) {
 		return CourseManager.deleteSaveCourse(map);
+	}
+	
+	public int addSaveCourse(Map map) {
+		return CourseManager.addSaveCourse(map);
 	}
 }

@@ -115,6 +115,7 @@ public class MeetingController {
 		model.addAttribute("totalPageNum", gson.toJson(totalPageNum));
 		model.addAttribute("pageSizeR", gson.toJson(pageSizeR));
 		model.addAttribute("cJson", gson.toJson(cdao.getCourseByCno(c_no, path)));
+
 		model.addAttribute("mt", mt);			
 		model.addAttribute("mf", gson.toJson(mdao.detailMFile(m_no)));
 	}
