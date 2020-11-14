@@ -661,47 +661,54 @@ window.onload = function(){
 	const redC = '/detailCourseImg/redC.png'; // 따릉이 0개
 	const yellowC = '/detailCourseImg/yellowC.png'; // 따릉이 1~4개  
 	const greenC = '/detailCourseImg/greenC.png'; // 따릉이 5개 이상  
-
+	const ggC = '/detailCourseImg/greenC.png'; // 경기도 공공자전거 마커이미지
+	
 	const cycleSize = new kakao.maps.Size(8, 8); 
 	
 	// 따릉 마커 이미지를 생성합니다
 	const redImage = new kakao.maps.MarkerImage(redC, cycleSize);
 	const yellowImage = new kakao.maps.MarkerImage(yellowC, cycleSize);
 	const greenImage = new kakao.maps.MarkerImage(greenC, cycleSize);
+	const ggImage = new kakao.maps.MarkerImage(ggC, cycleSize);
 		
 		
 	let cycleMakerArr = [];
-	document.getElementById("seoulCycle").addEventListener("change", function(e) {
-		const check = e.target.checked;
-		let cnt = 0;
-		if(check){
-			for(let i=1; i<=2001; i+=1000){
-				$.ajax({
-					url:"http://openapi.seoul.go.kr:8088/6a625562487369773231685a644f53/json/bikeList/"+i+"/"+(i+999),
-					success:function(data){
-						const cycList = data.rentBikeStatus.row;
-						$(cycList).each(function(i, el) {
-							cnt++;
-							console.log(cnt);
-							setCycleMarker(el);
-				            
-						})
-					},
-					error: function() {
-						alert("서버에러");
-					}		
-				})
-			}
+	publicCycle.addEventListener("change", function(e) {
+		const check = e.target.value;
+		const cName = (e.target.options[e.target.selectedIndex]).text;
+		console.log(cName);
+		cycleMakerArr.forEach(function(el, i) {
+			el.setMap(null);
+		})
+		placeOverlay.setMap(null);
+		cycleMakerArr = [];
+		if(check == '0'){  // 아무것도 안함
+
 		}
-		else{
-			cycleMakerArr.forEach(function(el, i) {
-				el.setMap(null);
-			})
-			placeOverlay.setMap(null);
-			cycleMakerArr = [];
+		else if(check == '1'){ // 서울
+			setSeoulCycle();
+		}
+		else{ // 경기도
+			setGgCycle(check,cName);
 		}
 	});
-
+	
+	function setSeoulCycle(){
+		for(let i=1; i<=2001; i+=1000){
+			$.ajax({
+				url:"http://openapi.seoul.go.kr:8088/6a625562487369773231685a644f53/json/bikeList/"+i+"/"+(i+999),
+				success:function(data){
+					const cycList = data.rentBikeStatus.row;
+					cycList.forEach(function(el, i) {
+						setCycleMarker(el);
+					})
+				},
+				error: function() {
+					alert("서버에러");
+				}		
+			})
+		}
+	}
 	
 	function setCycleMarker(el){
 		const parkingCnt = el.parkingBikeTotCnt;
@@ -722,19 +729,20 @@ window.onload = function(){
 		});	
 		cycleMakerArr.push(cycleMarker);
             kakao.maps.event.addListener(cycleMarker, 'click', function() {
-                displayC(el);
+                displaySeoulC(el);
             });
 	}
 	
-	function displayC (place) {
+	function displaySeoulC (place) {
 	    let content = '<div class="placeinfo">' +
-	                    '   <a class="title" href="https://www.bikeseoul.com/main.do" target="_blank" title="' + place.stationName + '">' + place.stationName + '</a>';   
+	                    '   <a class="title" href="https://www.bikeseoul.com/main.do" target="_blank" title="서울시(따릉이)">서울시(따릉이)</a>';   
 	
 	    
-	        content += '    <span title="' + place.stationName + '">' + "전체 거치대수 "+place.rackTotCnt + '</span>';
-	             
+	        content += '    <span>' + place.stationName + '</span>';
+	        
 	   
 	    content += '    <span class="tel">' + "현재 대여가능수 "+place.parkingBikeTotCnt + '</span>' + 
+	               ' <span class="jibun" >' + "전체 거치대수 "+place.rackTotCnt +  '</span>';
 	                '</div>' + 
 	                '<div class="after"></div>';
 	
@@ -743,6 +751,56 @@ window.onload = function(){
 	    placeOverlay.setMap(map);  
 	}
 
+	function setGgCycle(code,cName){
+		$.ajax({
+			url:"https://openapi.gg.go.kr/BICYCL?key=e2d851f8493c448c964a25461359f1f5&pIndex=1&pSize=1000&SIGUN_NM="+code,
+			type:"get",
+			success:function(data){
+				console.log(data);
+				const cycList = data.querySelectorAll('row');
+				console.log(cycList[0]);
+				for(let i=0; i<cycList.length; i++){
+					setGgCycleMarker(cycList[i],cName);
+				}
+			},
+			error:function(){
+				alert("에러발생");
+			}
+		})
+	}
+	
+	function setGgCycleMarker(g,cName){
+			const cyclePosition = new kakao.maps.LatLng($(g).find('REFINE_WGS84_LAT').html(), $(g).find('REFINE_WGS84_LOGT').html());  
+			// 경기도 마커를 생성합니다 
+			const cycleMarker = new kakao.maps.Marker({  
+			    map: map,
+			    position: cyclePosition,
+			    image: ggImage
+			});	
+			cycleMakerArr.push(cycleMarker);
+	            kakao.maps.event.addListener(cycleMarker, 'click', function() {
+	            	displayGgC(g,cName);
+	            });
+	}
+
+	function displayGgC (place,cName) {
+	    let content = '<div class="placeinfo">' +
+	                    '   <a class="title" target="_blank" title="'+cName+'">'+cName+'</a>';   
+	
+	    
+	        content += '    <span>' + $(place).find('BICYCL_LEND_PLC_NM_INST_NM').html() + '</span>';
+	        
+	   
+	    content += '    <span class="tel">' + "전체 거치대수 "+$(place).find('STANDS_CNT').html() +  '</span>' + 
+	              // ' <span class="jibun" >' + "전체 거치대수 "+place.STANDS_CNT +  '</span>';
+	                '</div>' + 
+	                '<div class="after"></div>';
+	
+	    contentNode.innerHTML = content;
+	    placeOverlay.setPosition(new kakao.maps.LatLng($(place).find('REFINE_WGS84_LAT').html(), $(place).find('REFINE_WGS84_LOGT').html()));
+	    placeOverlay.setMap(map);  
+	}
+	
 	function removePlaceOveray(){
 		placeOverlay.setMap(null);
 	}
@@ -772,6 +830,7 @@ window.onload = function(){
   		<font style="font-size: 130%;  color: orange;" >미리보기</font>
   		</div>
   		 <div id="mainPhoto" style="background-image: url(/coursePhoto/nullcPhoto.png); background-size: cover;">
+  		 <div style="text-align: right;">made by ${c.nickName}</div>
   		 <div id="mpTtitle"><h2>${c.c_name }</h2></div>
   		</div>
   		<div id="courseInfo">
@@ -842,8 +901,18 @@ window.onload = function(){
   			<div style="text-align: left;">
   		<input type="checkbox" id="chkBicycle" /> 자전거도로 정보 보기 <button id="cBound">경로 한눈에 보기</button>
   		</div>
-  		<div style="text-align: left;">
-  		무인자전거대여소  서울(따릉이)<input type="checkbox" id="seoulCycle"> [대여가능수 <img src="/detailCourseImg/redC.png"> 0대 <img src="/detailCourseImg/yellowC.png"> 1~4대 <img src="/detailCourseImg/greenC.png"> 5대 이상]
+  	<div style="text-align: left;">
+  			무인자전거 대여소 
+  			<select id="publicCycle">
+  				<option value="0">--무인자전거 위치--</option>
+  				<option value="1">서울(따릉이)</option>
+  				<option value="고양시" ggUrl="https://www.fifteenlife.com/mobile/index.jsp">고양시(피프틴)</option>
+  				<option value="과천시" ggUrl="https://www.gccity.go.kr/main/main.do">과천시(과천)</option>
+  				<option value="부천시" ggUrl="https://bike.bucheon.go.kr/site/homepage/menu/viewMenu?menuid=154001003003">부천시(부천)</option>
+  				<option value="수원시" ggUrl="http://www.suwon.go.kr/web/bike/index.do">수원시(반디클)</option>
+  				<option value="시흥시" ggUrl="https://bike.siheung.go.kr/siheung/">시흥시(시흥)</option>
+  				<option value="안산시" ggUrl="http://www.pedalro.kr/index.do">안산시(페달로)</option>
+  			</select>
   		</div>
   		</div>
   		

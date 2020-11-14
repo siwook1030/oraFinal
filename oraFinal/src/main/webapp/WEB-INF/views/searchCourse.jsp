@@ -14,6 +14,7 @@
 	   	width: 1000px;
 	   	margin: 0 auto;
 	   	font-family: 'NEXON Lv1 Gothic Low OTF';
+	   	text-align: center;
 	   /*	border: solid 1px red;*/
    }
 
@@ -138,7 +139,9 @@ input, button, select, textarea {
     top: 9px;
     width: 48px;
     height: 48px;
-    background-image: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/sign-info-48.png);
+   /*background-image: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/sign-info-48.png);*/
+    background-image: url('/courseMarkerImg/trackIcon.png');
+    background-size: cover;
 }
 
 .balloon {
@@ -488,8 +491,8 @@ function MarkerTracker(map, target) {
 	const startMarker = new kakao.maps.Marker({image:startMarkerImage}), // 클릭한 위치를 표시할 마커입니다
 	    startInfowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
 	
-  const nowLocSrc = '/searchCourseImg/myLoc.png', // 현위치 마커이미지의 주소입니다    
-		nowLocSize = new kakao.maps.Size(30, 30); // 현위치 마커이미지의 크기입니다
+  const nowLocSrc = '/searchCourseImg/myLoc.gif', // 현위치 마커이미지의 주소입니다    
+		nowLocSize = new kakao.maps.Size(15, 15); // 현위치 마커이미지의 크기입니다
 
 	//현위치 마커의 이미지정보를 가지고 있는 현위치 마커이미지를 생성합니다
 	const nowLocImage = new kakao.maps.MarkerImage(nowLocSrc, nowLocSize);   
@@ -678,9 +681,6 @@ function MarkerTracker(map, target) {
 
 	
 	search.addEventListener("click", function(e) {
-		search.setAttribute("disabled", true);
-		spinner.className="spinner-border spinner-border-sm";
-		searchWord.innerHTML=" 검색중..";
 		
 		const latitude = myLatitude.value.trim();
 		const longitude = myLongitude.value.trim();	
@@ -711,6 +711,11 @@ function MarkerTracker(map, target) {
 				"time":time,			
 				"view":view,			
 			},
+			beforeSend:function(){
+				search.setAttribute("disabled", true);
+				spinner.className="spinner-border spinner-border-sm";
+				searchWord.innerHTML=" 검색중..";
+			},
 			success:function(data){
 				currArray = 0;
 				searchList.innerHTML="";
@@ -727,9 +732,6 @@ function MarkerTracker(map, target) {
 		
 				map.setLevel(7);
 				map.setCenter(new kakao.maps.LatLng(latitude, longitude));
-				search.removeAttribute("disabled");
-				spinner.className="";
-				searchWord.innerHTML='<img src="/searchCourseImg/search.png" width="24px" height="24px">검색';
 				searchListBox.style.visibility="visible";
 				searchListBox.style.display="inline";
 				courseNumSpan1.innerHTML = scList.length;
@@ -745,6 +747,11 @@ function MarkerTracker(map, target) {
 			},
 			error:function(){
 				alert("에러발생");
+			},
+			complete:function(){
+				search.removeAttribute("disabled");
+				spinner.className="";
+				searchWord.innerHTML='<img src="/searchCourseImg/search.png" width="24px" height="24px">검색';
 			} 
 		})
 	}, false)
@@ -845,15 +852,37 @@ function MarkerTracker(map, target) {
 	}
 	
 	function displayC (c) {
-	    let content = '<div class="placeinfo">' +
-	                    '   <a class="title" href="/detailCourse?c_no='+c.c_no+'" target="_blank" title="' + c.c_name + '">' + c.c_name + '</a>';   
+		let courseTime;
+		const hour = parseInt(c.c_time/60);
+		const mi = c.c_time%60;
+		if(hour >= 1){
+			courseTime = hour+'시간'+mi+'분';
+		}
+		else{
+			courseTime = mi+'분';
+		}
+		const diff = c.c_difficulty;
+		let diffContent;
+		if(diff == 1){
+			diffContent = '쉬움';
+		}
+		else if(diff == 2){
+			diffContent = '보통';
+		}
+		else if(diff == 3){
+			diffContent = '어려움';
+		}
+		else if(diff == 4){
+			diffContent = '매우어려움';
+		}
+     let content = '<div class="placeinfo">' +
+     				'   <a class="title" href="/detailCourse?c_no='+c.c_no+'" target="_blank" title="' + c.c_name + '">' + c.c_name + '</a>';   
 	
-	        content += '    <span title="' + c.c_loc + '">' + ""+c.c_loc + '</span>';
+	    content += '    <span title="' + c.nickName + '">' + "made by "+c.nickName + '</span>';
 	             
-	    content += '    <span class="tel">' + "코스거리 "+c.c_distance +" 소요시간 "+c.c_time+ '</span>' + 
+	    content += '    <span class="tel">'+ c.c_loc + " "+c.c_distance +"km "+courseTime+ " "+diffContent+'</span>' + 
 	                '</div>' + 
 	                '<div class="after"></div>';
-	
 	    contentNode.innerHTML = content;
 	    placeOverlay.setPosition(new kakao.maps.LatLng(c.c_s_latitude, c.c_s_longitude));
 	    placeOverlay.setMap(map);  
@@ -879,7 +908,7 @@ function MarkerTracker(map, target) {
 			courseContent += '<img src="/courseViewImg/'+v+'.png">';
 		});
 		
-		courseContent += '</div></div>';
+		courseContent += '</div></div><div>made by '+c.nickName+'</div>';
 		
 		courseContent += '<a href="/detailCourse?c_no='+c.c_no+'" target="_blank">';
 		
@@ -938,6 +967,156 @@ function MarkerTracker(map, target) {
 		}
 	}, false)
 
+	//--------------
+	kakao.maps.event.addListener(map, 'idle', removePlaceOveray);
+
+	const redC = '/detailCourseImg/redC.png'; // 따릉이 0개
+	const yellowC = '/detailCourseImg/yellowC.png'; // 따릉이 1~4개  
+	const greenC = '/detailCourseImg/greenC.png'; // 따릉이 5개 이상  
+	const ggC = '/detailCourseImg/greenC.png'; // 경기도 공공자전거 마커이미지
+	
+	const cycleSize = new kakao.maps.Size(8, 8); 
+	
+	// 따릉 마커 이미지를 생성합니다
+	const redImage = new kakao.maps.MarkerImage(redC, cycleSize);
+	const yellowImage = new kakao.maps.MarkerImage(yellowC, cycleSize);
+	const greenImage = new kakao.maps.MarkerImage(greenC, cycleSize);
+	const ggImage = new kakao.maps.MarkerImage(ggC, cycleSize);
+		
+	let cycleMakerArr = [];
+	publicCycle.addEventListener("change", function(e) {
+		const check = e.target.value;
+		const cName = (e.target.options[e.target.selectedIndex]).text;
+		const ggUrl = (e.target.options[e.target.selectedIndex]).getAttribute("ggUrl");
+		cycleMakerArr.forEach(function(el, i) {
+			el.setMap(null);
+		})
+		placeOverlay.setMap(null);
+		cycleMakerArr = [];
+		if(check == '0'){  // 아무것도 안함
+			return;
+		}
+		else if(check == '1'){ // 서울
+			setSeoulCycle();
+		}
+		else{ // 경기도
+			setGgCycle(check,cName,ggUrl);
+		}
+	});
+	
+	function setSeoulCycle(){
+		for(let i=1; i<=2001; i+=1000){
+			$.ajax({
+				url:"http://openapi.seoul.go.kr:8088/6a625562487369773231685a644f53/json/bikeList/"+i+"/"+(i+999),
+				success:function(data){
+					const cycList = data.rentBikeStatus.row;
+					cycList.forEach(function(el, i) {
+						setCycleMarker(el);
+					})
+				},
+				error: function() {
+					alert("서버에러");
+				}		
+			})
+		}
+	}
+	
+	function setCycleMarker(el){
+		const parkingCnt = el.parkingBikeTotCnt;
+		let cImg = greenImage;
+		if(parkingCnt == 0){
+			cImg = redImage;
+		}
+		else if(parkingCnt >=1 && parkingCnt <=4){
+			cImg = yellowImage;
+		}
+		
+		const cyclePosition = new kakao.maps.LatLng(el.stationLatitude, el.stationLongitude);  
+		// 따릉이 마커를 생성합니다 
+		const cycleMarker = new kakao.maps.Marker({  
+		    map: map,
+		    position: cyclePosition,
+		    image: cImg
+		});	
+		cycleMakerArr.push(cycleMarker);
+            kakao.maps.event.addListener(cycleMarker, 'click', function() {
+                displaySeoulC(el);
+            });
+	}
+	
+	function displaySeoulC (place) {
+	    let content = '<div class="placeinfo">' +
+	                    '   <a class="title" href="https://www.bikeseoul.com/main.do" target="_blank" title="서울시(따릉이)">서울시(따릉이)</a>';   
+	
+	    
+	        content += '    <span>' + place.stationName + '</span>';
+	        
+	   
+	    content += '    <span class="tel">' + "현재 대여가능수 "+place.parkingBikeTotCnt + '</span>' + 
+	               ' <span class="jibun" >' + "전체 거치대수 "+place.rackTotCnt +  '</span>';
+	                '</div>' + 
+	                '<div class="after"></div>';
+	
+	    contentNode.innerHTML = content;
+	    placeOverlay.setPosition(new kakao.maps.LatLng(place.stationLatitude, place.stationLongitude));
+	    placeOverlay.setMap(map);  
+	}
+
+	function setGgCycle(code,cName,ggUrl){
+		$.ajax({
+			url:"https://openapi.gg.go.kr/BICYCL?key=e2d851f8493c448c964a25461359f1f5&pIndex=1&pSize=1000&SIGUN_NM="+code,
+			type:"get",
+			success:function(data){
+				console.log(data);
+				const cycList = data.querySelectorAll('row');
+				console.log(cycList[0]);
+				for(let i=0; i<cycList.length; i++){
+					setGgCycleMarker(cycList[i],cName,ggUrl);
+				}
+			},
+			error:function(){
+				alert("에러발생");
+			}
+		})
+	}
+	
+	function setGgCycleMarker(g,cName,ggUrl){
+			const cyclePosition = new kakao.maps.LatLng($(g).find('REFINE_WGS84_LAT').html(), $(g).find('REFINE_WGS84_LOGT').html());  
+			// 경기도 마커를 생성합니다 
+			const cycleMarker = new kakao.maps.Marker({  
+			    map: map,
+			    position: cyclePosition,
+			    image: ggImage
+			});	
+			cycleMakerArr.push(cycleMarker);
+	            kakao.maps.event.addListener(cycleMarker, 'click', function() {
+	            	displayGgC(g,cName,ggUrl);
+	            });
+	}
+
+	function displayGgC (place,cName,ggUrl) {
+	    let content = '<div class="placeinfo">' +
+	                    '   <a class="title" href="'+ggUrl+'" target="_blank" title="'+cName+'">'+cName+'</a>';   
+	
+	    
+	        content += '    <span>' + $(place).find('BICYCL_LEND_PLC_NM_INST_NM').html() + '</span>';
+	        
+	   
+	    content += '    <span class="tel">' + "전체 거치대수 "+$(place).find('STANDS_CNT').html() +  '</span>' + 
+	              // ' <span class="jibun" >' + "전체 거치대수 "+place.STANDS_CNT +  '</span>';
+	                '</div>' + 
+	                '<div class="after"></div>';
+	
+	    contentNode.innerHTML = content;
+	    placeOverlay.setPosition(new kakao.maps.LatLng($(place).find('REFINE_WGS84_LAT').html(), $(place).find('REFINE_WGS84_LOGT').html()));
+	    placeOverlay.setMap(map);  
+	}
+	
+	function removePlaceOveray(){
+		placeOverlay.setMap(null);
+	}
+	//-------------
+
 
 }
 </script>
@@ -959,7 +1138,7 @@ function MarkerTracker(map, target) {
   		</div>
 			<input type="hidden" name="lat" value="0" id="lat">
   			<input type="hidden" name="lon" value="0" id="lon">
-  		<div id="searchCourse">
+  		<div id="searchCourse" style="text-align: left;">
 	  	<form action="searchCourse" method="post">
   			<input type="hidden" name="latitude" id="latitude" value="37.53814589110931">
   			<input type="hidden" name="longitude" id="longitude" value="126.98135334065803">
@@ -1015,6 +1194,19 @@ function MarkerTracker(map, target) {
 					</div>			
 					<br>
   		</form>
+  		<div style="text-align: left;">
+  			무인자전거 대여소 
+  			<select id="publicCycle">
+  				<option value="0">--무인자전거 위치--</option>
+  				<option value="1">서울(따릉이)</option>
+  				<option value="고양시" ggUrl="https://www.fifteenlife.com/mobile/index.jsp">고양시(피프틴)</option>
+  				<option value="과천시" ggUrl="https://www.gccity.go.kr/main/main.do">과천시(과천)</option>
+  				<option value="부천시" ggUrl="https://bike.bucheon.go.kr/site/homepage/menu/viewMenu?menuid=154001003003">부천시(부천)</option>
+  				<option value="수원시" ggUrl="http://www.suwon.go.kr/web/bike/index.do">수원시(반디클)</option>
+  				<option value="시흥시" ggUrl="https://bike.siheung.go.kr/siheung/">시흥시(시흥)</option>
+  				<option value="안산시" ggUrl="http://www.pedalro.kr/index.do">안산시(페달로)</option>
+  			</select>
+  		</div>
   			<div class="container" style="text-align: center; margin-top: 10px;">
   			<button type="button" id="search" class="btn btn-info btn-line">
 	  			<span id="spinner"></span>
@@ -1022,17 +1214,17 @@ function MarkerTracker(map, target) {
   			</button>
   			  </div>
   		</div>
-  		<div id="searchListBox">
+  		<div id="searchListBox" >
   		<div id="searchTitle">
   		Course<span style="font: italic bold 1.5em/1em Georgia,serif; font-size:10px; color: gray;">&nbsp;&nbsp;&nbsp; for you</span>
   		</div>
-  		<div id="courseNum">
+  		<div id="courseNum" style="text-align: left;">
   		
   		</div>
-  		<div id="courseArray">
+  		<div id="courseArray" style="text-align: left;">
   			<span val="0" class="selectedArray">정확도순</span> <span val="1" class="notSelectedArray">거리순</span> <span val="2" class="notSelectedArray">코스거리</span> <span val="3" class="notSelectedArray">소요시간</span>
   		</div>
-  		<div id="searchList">
+  		<div id="searchList" style="text-align: left;">
   		
   		</div>
   		</div>

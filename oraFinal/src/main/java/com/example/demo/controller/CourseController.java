@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -181,6 +182,22 @@ public class CourseController {
 		map.put("c_no", c_no);
 		int re = cdao.deleteSaveCourse(map);
 		return re;
+	}
+	
+	//찜코스 추가
+	@PostMapping(value = "/user/addSaveCourse",  produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String addSaveCourse(@RequestParam Map<String, Object> map) {
+		int re = cdao.addSaveCourse(map);
+		return Integer.toString(re);
+	}
+	
+	//찜코스 삭제 ajax 오버로딩
+	@PostMapping(value = "/user/deleteSaveCourse",  produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String deleteSaveCourse(@RequestParam HashMap<String, Object> map) {
+		int re = cdao.deleteSaveCourse(map);
+		return Integer.toString(re);
 	}
 
 //	@RequestMapping("/detailFood")  포기... crud가 너무 힘들다

@@ -293,6 +293,7 @@ window.onload = function(){
 			const cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
 			if(cfm){
 				window.location = "/login";
+				return;
 			}
 			return;
 		}
@@ -302,6 +303,7 @@ window.onload = function(){
 			const cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
 			if(cfm){
 				window.location = "/login";
+				return;
 			}
 			return;
 		}
@@ -350,6 +352,7 @@ window.onload = function(){
 			const cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
 			if(cfm){
 				window.location = "/login";
+				return;
 			}
 			return;
 		}
@@ -401,6 +404,7 @@ window.onload = function(){
 			const cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
 			if(cfm){
 				window.location = "/login";
+				return;
 			}
 			return;
 		}
@@ -457,6 +461,7 @@ window.onload = function(){
 			const cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
 			if(cfm){
 				window.location = "/login";
+				return;
 			}
 			return;
 		}
@@ -504,6 +509,7 @@ window.onload = function(){
 			const cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
 			if(cfm){
 				window.location = "/login";
+				return;
 			}
 			return;
 		}
@@ -546,6 +552,7 @@ window.onload = function(){
 			const cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
 			if(cfm){
 				window.location = "/login";
+				return;
 			}
 			return;
 		}
@@ -623,12 +630,14 @@ window.onload = function(){
 	const meetingMarker = new kakao.maps.Marker({image:meetingImage}); 
 	const meetingInfowindow = new kakao.maps.InfoWindow({removable:true,zindex:1});
 
-	const courseBounds = new kakao.maps.LatLngBounds();  // 맵바운드 설정객체
+	const c = ${cJson};
 	
-	if(${c.c_no} != 0){
-		startMarker.setPosition(new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude}));
-		arriveMarker.setPosition(new kakao.maps.LatLng(${c.c_e_latitude}, ${c.c_e_longitude}));
-		const courseLine = JSON.parse(${c.c_line});
+	const courseBounds = new kakao.maps.LatLngBounds();  // 맵바운드 설정객체
+	if(c.c_no != 0){
+		startMarker.setPosition(new kakao.maps.LatLng(c.c_s_latitude, c.c_s_longitude));
+		arriveMarker.setPosition(new kakao.maps.LatLng(c.c_e_latitude, c.c_e_longitude));
+		const cLineObj = JSON.parse(c.c_line);
+		const courseLine = eval(cLineObj.courseLine);
 		coursePolyline.setPath(courseLine);
 		courseLine.forEach(function(c, i) {
 			courseBounds.extend(c);

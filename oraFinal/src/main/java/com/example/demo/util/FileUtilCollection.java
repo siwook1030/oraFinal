@@ -16,7 +16,7 @@ public class FileUtilCollection {
 	
 	public static String filePrefixName() {     // 파일저장시 중복된 이름을 피하기 위해 접두어 생성 메소드
 		String fileName = "";
-		SimpleDateFormat today = new SimpleDateFormat("yyyymmdd"); // 현재시간 생성 ex) 20201107
+		SimpleDateFormat today = new SimpleDateFormat("yyyyMMdd"); // 현재시간 생성 ex) 20201107
 		UUID uuid = UUID.randomUUID(); //  랜덤으로 문자열을 생성
 		fileName = today.format(new Date())+"_"+uuid.toString();
 		

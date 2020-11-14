@@ -111,4 +111,8 @@
 	WHERE MT.ID=MB.ID AND C.C_NO=MT.C_NO AND R.RANK_NAME = MB.RANK_NAME and MB.ID=#{id}
 	ORDER BY M_NO DESC)) WHERE N BETWEEN #{start} and #{end}
 	</select>
+	
+	<update id="updateMasDelCourse"> <!--코스삭제로 인해 해당코스로 등록되어있던 게시물은 0번(선택안함)으로 변경 -->
+		UPDATE MEETING SET C_NO = 0 WHERE C_NO = #{c_no}
+	</update>
 </mapper>	

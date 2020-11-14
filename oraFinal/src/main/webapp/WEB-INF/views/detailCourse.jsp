@@ -20,9 +20,25 @@
    	display: none;
    	visibility: hidden;
    }
+   #ySaveCoruse{
+  	display: none; 
+  }
    #detailTitle{
    		margin : 30px 0 30px 0;
    }
+   .ySaveCourse{
+   		background-image: url("/detailCourseImg/yfavor.png");
+   		background-size: cover;
+   		width: 100px;
+   		height: 100px;
+   }
+   .nSaveCourse{
+   		background-image: url("/detailCourseImg/nfavor.png");
+   		background-size: cover;
+   		width: 100px;
+   		height: 100px;
+   }
+   
    #mainPhoto{
     	height : 400px;
     	border: solid 1px white;
@@ -155,12 +171,17 @@ window.onload = function(){
 	const adminMenu = document.getElementById("adminMenu");
 	const updateCourse = document.getElementById("updateCourse");
 	const deleteCourse = document.getElementById("deleteCourse");
+	
+	const nSaveCoruse = document.getElementById("nSaveCoruse");
+	const ySaveCoruse = document.getElementById("ySaveCoruse");
 
 	//------------------------- 관리자확인 시작
 	const checkM = checkLogin(); // 로그인정보
 	const mId = checkM.item.id;
+	console.log(mId);
 	const mCode_value = checkM.item.code_value;
 	const mNickName = checkM.item.nickName;
+	const mSaveCourse = checkM.item.saveCourse;
 
 	if(mCode_value === "00101"){
 		adminMenu.style.display = "inline";
@@ -170,6 +191,7 @@ window.onload = function(){
 	updateCourse.addEventListener("click", function(e) {
 		const c_no = e.target.value;
 		window.open("/admin/updateCourse?c_no="+c_no,"코스수정(관리자)");
+		//window.open("views/admin/updateCourse.jsp?c_no="+c_no,"코스수정(관리자)");
 	});
 
 	deleteCourse.addEventListener("click", function(e) {
@@ -184,28 +206,25 @@ window.onload = function(){
 		req.responseType = "json";
 		req.send(null);
 		req.addEventListener("load", function(e) {
-			const response = req.response;
-			alert(response.message);
+			const rep = this.response;
+			alert(rep.message);
 			window.location = "/mainPage"
 		})
 		req.addEventListener("error", function(e){
 			alert("에러발생");
-		})
+		}) 
 	});	
 	
 	//------------------------- 관리자확인 끝
 	
-	// 마커를 클릭했을 때 해당 장소의 상세정보를 보여줄 커스텀오버레이입니다
-	const placeOverlay = new kakao.maps.CustomOverlay({zIndex:1}), 
-	    contentNode = document.createElement('div'); // 커스텀 오버레이의 컨텐츠 엘리먼트 입니다 
 	let markers = [], // 마커를 담을 배열입니다
 	    currCategory = ''; // 현재 선택된 카테고리를 가지고 있을 변수입니다
-
-	    const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-	    mapOption = {
-		center: new kakao.maps.LatLng(37.55265499282206,126.9376211752318),
-		level: 7 // 지도의 확대 레벨
-	    };  
+	    
+    const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = {
+        center: new kakao.maps.LatLng(37.53814589110931, 126.98135334065803), // 지도의 중심좌표
+        level: 7 // 지도의 확대 레벨
+    };  
 
 	// 지도를 생성합니다    
 	const map = new kakao.maps.Map(mapContainer, mapOption); 
@@ -213,11 +232,11 @@ window.onload = function(){
 	const zoomControl = new kakao.maps.ZoomControl();
 	map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 	map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-	// 장소 검색 객체를 생성합니다
-	const ps = new kakao.maps.services.Places(map); 
 
-	// 지도에 idle 이벤트를 등록합니다
-	kakao.maps.event.addListener(map, 'idle', searchPlaces);
+
+//////////////////////////////////////////////////// 코스마커표시기능	
+	const placeOverlay = new kakao.maps.CustomOverlay({zIndex:1}), 
+    contentNode = document.createElement('div'); // 커스텀 오버레이의 컨텐츠 엘리먼트 입니다 
 
 	// 커스텀 오버레이의 컨텐츠 노드에 css class를 추가합니다 
 	contentNode.className = 'placeinfo_wrap';
@@ -227,9 +246,18 @@ window.onload = function(){
 	addEventHandle(contentNode, 'mousedown', kakao.maps.event.preventMap);
 	addEventHandle(contentNode, 'touchstart', kakao.maps.event.preventMap);
 
+	// 엘리먼트에 이벤트 핸들러를 등록하는 함수입니다
+	function addEventHandle(target, type, callback) {
+	    if (target.addEventListener) {
+	        target.addEventListener(type, callback);
+	    } else {
+	        target.attachEvent('on' + type, callback);
+	    }
+	}
+	
 	// 커스텀 오버레이 컨텐츠를 설정합니다
-	placeOverlay.setContent(contentNode);  
-
+	placeOverlay.setContent(contentNode); 
+	
 	// 각 카테고리에 클릭 이벤트를 등록합니다
 	addCategoryClickEvent();
 
@@ -403,7 +431,7 @@ window.onload = function(){
 
 	const cStartLatLng = new kakao.maps.LatLng(cJson.c_s_latitude, cJson.c_s_longitude);
 	const cArriveLatLng = new kakao.maps.LatLng(cJson.c_e_latitude, cJson.c_e_longitude);
-	console.log(cJson);
+	//console.log(cJson);
 	const cLineObj = JSON.parse(cJson.c_line);
 	const courseLine = eval(cLineObj.courseLine);
 	const altitudeData = eval(cLineObj.altitudeData);
@@ -448,7 +476,85 @@ window.onload = function(){
         const chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
         chart.draw(data, options);
       }
-	   
+
+
+	// ------------------- 찜코스구현
+		const c_no = cJson.c_no;
+		
+		if(mSaveCourse != "" && mSaveCourse.length != 0){  // 전달받은 찜코스배열이 비어있지않을때 현재코스번호랑 비교한다
+			mSaveCourse.forEach(function(num, i) {
+				if(num == c_no){
+					nSaveCoruse.style.display = "none";
+					ySaveCoruse.style.display = "inline";
+				}
+			})
+		}	
+		
+		nSaveCoruse.addEventListener("click", function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			if(mId == ""){
+				const cfm = confirm("로그인이 필요합니다 로그인페이지로 이동하시겠습니까?");
+				if(cfm){
+					window.location = "/login";
+					return;
+				}
+				else{
+					return;
+				}
+			}
+			$.ajax({
+				url:"/user/addSaveCourse",
+				type:"POST",
+				data:{
+					"c_no":c_no,
+					"id":mId
+				},
+				success:function(re){
+					if(re == "1"){
+						alert("찜코스로 등록되었습니다");
+						location.reload();
+					}
+					else{
+						alert("찜코스 등록에 실패하였습니다");
+					}
+				},
+				error:function(){
+					alert("에러발생");
+				}
+			})
+		})
+		
+		ySaveCoruse.addEventListener("click", function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				const cfm = confirm("찜코스를 삭제하시겠습니까?");
+				if(!cfm){
+					return;
+				}
+
+			$.ajax({
+				url:"/user/deleteSaveCourse",
+				type:"POST",
+				data:{
+					"c_no":c_no,
+					"id":mId
+				},
+				success:function(re){
+					if(re == "1"){
+						alert("찜코스가 삭제되었습니다.");
+						location.reload();
+					}
+					else{
+						alert("찜코스 삭제에 실패하였습니다.");
+					}
+				},
+				error:function(){
+					alert("에러발생");
+				}
+			})
+		})
+		//--------------------------
 	     
 	////////////////////////////////////////
 	const startSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png', // 출발 마커이미지의 주소입니다    
@@ -698,56 +804,62 @@ window.onload = function(){
 			map.removeOverlayMapTypeId(mapTypes.bicycle);
 		}
 	});
-	
 
-//////////////////////////////////////////////////////////////////////////////////////////// 따릉이마커 
+
+	
+	//--------------------- 무인자전거
 	kakao.maps.event.addListener(map, 'idle', removePlaceOveray);
 
 	const redC = '/detailCourseImg/redC.png'; // 따릉이 0개
 	const yellowC = '/detailCourseImg/yellowC.png'; // 따릉이 1~4개  
 	const greenC = '/detailCourseImg/greenC.png'; // 따릉이 5개 이상  
-
+	const ggC = '/detailCourseImg/greenC.png'; // 경기도 공공자전거 마커이미지
+	
 	const cycleSize = new kakao.maps.Size(8, 8); 
 	
 	// 따릉 마커 이미지를 생성합니다
 	const redImage = new kakao.maps.MarkerImage(redC, cycleSize);
 	const yellowImage = new kakao.maps.MarkerImage(yellowC, cycleSize);
 	const greenImage = new kakao.maps.MarkerImage(greenC, cycleSize);
-		
+	const ggImage = new kakao.maps.MarkerImage(ggC, cycleSize);
 		
 	let cycleMakerArr = [];
-	document.getElementById("seoulCycle").addEventListener("change", function(e) {
-		const check = e.target.checked;
-		let cnt = 0;
-		if(check){
-			for(let i=1; i<=2001; i+=1000){
-				$.ajax({
-					url:"http://openapi.seoul.go.kr:8088/6a625562487369773231685a644f53/json/bikeList/"+i+"/"+(i+999),
-					success:function(data){
-						const cycList = data.rentBikeStatus.row;
-						$(cycList).each(function(i, el) {
-							cnt++;
-							console.log(cnt);
-							setCycleMarker(el);
-				            
-						})
-					},
-					error: function() {
-						alert("서버에러");
-					}		
-				})
-			}
+	publicCycle.addEventListener("change", function(e) {
+		const check = e.target.value;
+		const cName = (e.target.options[e.target.selectedIndex]).text;
+		const ggUrl = (e.target.options[e.target.selectedIndex]).getAttribute("ggUrl");
+		cycleMakerArr.forEach(function(el, i) {
+			el.setMap(null);
+		})
+		placeOverlay.setMap(null);
+		cycleMakerArr = [];
+		if(check == '0'){  // 아무것도 안함
+			return;
 		}
-		else{
-			cycleMakerArr.forEach(function(el, i) {
-				el.setMap(null);
-			})
-
-			placeOverlay.setMap(null);
-			cycleMakerArr = [];
+		else if(check == '1'){ // 서울
+			setSeoulCycle();
+		}
+		else{ // 경기도
+			setGgCycle(check,cName,ggUrl);
 		}
 	});
-
+	
+	function setSeoulCycle(){
+		for(let i=1; i<=2001; i+=1000){
+			$.ajax({
+				url:"http://openapi.seoul.go.kr:8088/6a625562487369773231685a644f53/json/bikeList/"+i+"/"+(i+999),
+				success:function(data){
+					const cycList = data.rentBikeStatus.row;
+					cycList.forEach(function(el, i) {
+						setCycleMarker(el);
+					})
+				},
+				error: function() {
+					alert("서버에러");
+				}		
+			})
+		}
+	}
 	
 	function setCycleMarker(el){
 		const parkingCnt = el.parkingBikeTotCnt;
@@ -768,19 +880,20 @@ window.onload = function(){
 		});	
 		cycleMakerArr.push(cycleMarker);
             kakao.maps.event.addListener(cycleMarker, 'click', function() {
-                displayC(el);
+                displaySeoulC(el);
             });
 	}
 	
-	function displayC (place) {
+	function displaySeoulC (place) {
 	    let content = '<div class="placeinfo">' +
-	                    '   <a class="title" href="https://www.bikeseoul.com/main.do" target="_blank" title="' + place.stationName + '">' + place.stationName + '</a>';   
+	                    '   <a class="title" href="https://www.bikeseoul.com/main.do" target="_blank" title="서울시(따릉이)">서울시(따릉이)</a>';   
 	
 	    
-	        content += '    <span title="' + place.stationName + '">' + "전체 거치대수 "+place.rackTotCnt + '</span>';
-	             
+	        content += '    <span>' + place.stationName + '</span>';
+	        
 	   
 	    content += '    <span class="tel">' + "현재 대여가능수 "+place.parkingBikeTotCnt + '</span>' + 
+	               ' <span class="jibun" >' + "전체 거치대수 "+place.rackTotCnt +  '</span>';
 	                '</div>' + 
 	                '<div class="after"></div>';
 	
@@ -789,6 +902,56 @@ window.onload = function(){
 	    placeOverlay.setMap(map);  
 	}
 
+	function setGgCycle(code,cName,ggUrl){
+		$.ajax({
+			url:"https://openapi.gg.go.kr/BICYCL?key=e2d851f8493c448c964a25461359f1f5&pIndex=1&pSize=1000&SIGUN_NM="+code,
+			type:"get",
+			success:function(data){
+				console.log(data);
+				const cycList = data.querySelectorAll('row');
+				console.log(cycList[0]);
+				for(let i=0; i<cycList.length; i++){
+					setGgCycleMarker(cycList[i],cName,ggUrl);
+				}
+			},
+			error:function(){
+				alert("에러발생");
+			}
+		})
+	}
+	
+	function setGgCycleMarker(g,cName,ggUrl){
+			const cyclePosition = new kakao.maps.LatLng($(g).find('REFINE_WGS84_LAT').html(), $(g).find('REFINE_WGS84_LOGT').html());  
+			// 경기도 마커를 생성합니다 
+			const cycleMarker = new kakao.maps.Marker({  
+			    map: map,
+			    position: cyclePosition,
+			    image: ggImage
+			});	
+			cycleMakerArr.push(cycleMarker);
+	            kakao.maps.event.addListener(cycleMarker, 'click', function() {
+	            	displayGgC(g,cName,ggUrl);
+	            });
+	}
+
+	function displayGgC (place,cName,ggUrl) {
+	    let content = '<div class="placeinfo">' +
+	                    '   <a class="title" href="'+ggUrl+'" target="_blank" title="'+cName+'">'+cName+'</a>';   
+	
+	    
+	        content += '    <span>' + $(place).find('BICYCL_LEND_PLC_NM_INST_NM').html() + '</span>';
+	        
+	   
+	    content += '    <span class="tel">' + "전체 거치대수 "+$(place).find('STANDS_CNT').html() +  '</span>' + 
+	              // ' <span class="jibun" >' + "전체 거치대수 "+place.STANDS_CNT +  '</span>';
+	                '</div>' + 
+	                '<div class="after"></div>';
+	
+	    contentNode.innerHTML = content;
+	    placeOverlay.setPosition(new kakao.maps.LatLng($(place).find('REFINE_WGS84_LAT').html(), $(place).find('REFINE_WGS84_LOGT').html()));
+	    placeOverlay.setMap(map);  
+	}
+	
 	function removePlaceOveray(){
 		placeOverlay.setMap(null);
 	}
@@ -809,16 +972,13 @@ window.onload = function(){
   			<span>관리자 메뉴</span>
   			<button id="updateCourse" value="${c.c_no}">코스수정</button>  <button id="deleteCourse" value="${c.c_no}">코스삭제</button>
   		</div>
-  			<c:if test="${c.c_photo != null }">
-  		 <div id="mainPhoto" style="background-image: url(${c.c_photo.get(0).cp_path}/${c.c_photo.get(0).cp_name}); background-size: cover;">
-  		 <div id="mpTtitle"><h2>${c.c_name }</h2></div>
-  		</div>
-  		</c:if>
-  		<c:if test="${c.c_photo == null }">
-  		 <div id="mainPhoto" style="background-image: url(/coursePhoto/nullcPhoto.png); background-size: cover;">
-  		 <div id="mpTtitle"><h2>${c.c_name }</h2></div>
-  		</div>
-  		</c:if>
+ 			<div><a href="" id="nSaveCoruse" ><img src="/detailCourseImg/nfavor.png" width="50px" height="50px"><i>찜하기</i></a></div>
+ 			<div><a href="" id="ySaveCoruse" ><img src="/detailCourseImg/yfavor.png" width="50px" height="50px"><i></i></a></div>
+	  		 <div id="mainPhoto" style="background-image: url(${c.c_photo.get(0).cp_path}/${c.c_photo.get(0).cp_name}); background-size: cover;">
+	  		 <div>made by ${c.nickName}</div>
+	  		 <div id="mpTtitle"><h2>${c.c_name }</h2></div>
+	  		</div>
+
   		<div id="courseInfo">
   			<table  width="800px">
   				<tr>
@@ -883,7 +1043,17 @@ window.onload = function(){
   		<input type="checkbox" id="chkBicycle" /> 자전거도로 정보 보기  <button id="cBound">경로 한눈에 보기</button>
   		</div>
   		<div style="text-align: left;">
-  		무인자전거대여소  서울(따릉이)<input type="checkbox" id="seoulCycle"> [대여가능수 <img src="/detailCourseImg/redC.png"> 0대 <img src="/detailCourseImg/yellowC.png"> 1~4대 <img src="/detailCourseImg/greenC.png"> 5대 이상]
+  			무인자전거 대여소 
+  			<select id="publicCycle">
+  				<option value="0">--무인자전거 위치--</option>
+  				<option value="1">서울(따릉이)</option>
+  				<option value="고양시" ggUrl="https://www.fifteenlife.com/mobile/index.jsp">고양시(피프틴)</option>
+  				<option value="과천시" ggUrl="https://www.gccity.go.kr/main/main.do">과천시(과천)</option>
+  				<option value="부천시" ggUrl="https://bike.bucheon.go.kr/site/homepage/menu/viewMenu?menuid=154001003003">부천시(부천)</option>
+  				<option value="수원시" ggUrl="http://www.suwon.go.kr/web/bike/index.do">수원시(반디클)</option>
+  				<option value="시흥시" ggUrl="https://bike.siheung.go.kr/siheung/">시흥시(시흥)</option>
+  				<option value="안산시" ggUrl="http://www.pedalro.kr/index.do">안산시(페달로)</option>
+  			</select>
   		</div>
   		</div>
   		

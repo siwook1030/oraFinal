@@ -61,4 +61,8 @@
   <insert id="insertRep">
   	INSERT INTO review_rep(rr_no,r_no,id,rr_content,rr_regdate,rr_ref,rr_step) VALUES(#{rr_no},#{r_no},#{id},#{rr_content},SYSDATE,#{rr_ref},#{rr_step})
   </insert>
+  
+  <update id="updateRasDelCourse"> <!--코스삭제로 인해 해당코스로 등록되어있던 게시물은 0번(선택안함)으로 변경 -->
+		UPDATE REVIEW SET C_NO = 0 WHERE C_NO = #{c_no}
+	</update>
 </mapper>

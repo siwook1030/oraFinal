@@ -8,8 +8,10 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.dao.CourseDao;
 import com.example.demo.vo.CourseVo;
@@ -24,8 +26,15 @@ public class MainPageController {
 	@Setter
 	CourseDao cdao;
 	
-	@RequestMapping(value = "/mainPage",  produces = "application/json; charset=utf8")
-	public void mainPage(Model model) {
+	@RequestMapping("/mainPage")
+	public void mainPage() {
+		
+	}
+	
+	@GetMapping(value = "/recomandCourse",  produces = "application/json; charset=utf8")
+	@ResponseBody
+	public String recomandCourse() {
+		HashMap map = new HashMap();
 		Gson gson = new Gson();
 		List<List<CourseVo>> cListByView = new ArrayList<List<CourseVo>>();
 		List<String> vNameList = new ArrayList<String>();
@@ -33,8 +42,10 @@ public class MainPageController {
 		for(String v : vNameList) {
 			cListByView.add(cdao.getCourseByView(v));
 		}
-		model.addAttribute("cListByView", gson.toJson(cListByView));
-		model.addAttribute("vNameList", gson.toJson(vNameList));
+		map.put("cListByView", cListByView);
+		map.put("vNameList", vNameList);
+		
+		return gson.toJson(map);
 	}
 	
 	@PostMapping(value = "/headerCourseListByView", produces = "application/json; charset=utf8")
