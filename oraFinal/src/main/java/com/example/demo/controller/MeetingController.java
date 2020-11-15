@@ -261,10 +261,7 @@ public class MeetingController {
 		map.put("m_no", m_no);
 		List<Meeting_repVo> listMR = mdao.detailMRep(map);
 		if(listMR.size()>0) {
-			System.out.println("***리플삭제작동함");
 			re = mdao.deleteMRep(m_no);
-			re = mdao.deleteMRep(m_no);
-			System.out.println("***삭제 re값 : "+re);
 			if(re<=0) {
 				mav.addObject("msg", "파일삭제에 실패했습니다.");
 				mav.setViewName("error");
