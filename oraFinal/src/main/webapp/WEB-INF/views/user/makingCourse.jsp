@@ -30,6 +30,45 @@
 	.thumb > .close { position:absolute; background-color:red; cursor:pointer; }
 
    #undo.disabled, #redo.disabled {background-color:#ddd;color:#9e9e9e;}
+ 	
+ 	/* 게시판 레이아웃 시작 : 유진 */
+	
+	#contents { /* 게시판 인덱스 제외 전체 */
+		border: 1px solid #D5D5D5;
+		padding: 60px;
+		margin: 50px 0 100px;
+	}
+	#courseName { /* 코스이름 작성 */
+		border: none;
+		border-bottom: 1px solid gray;
+		margin: 10px;
+		width: 880px;
+		height: 50px;
+		margin: 20px 0 30px;
+		font-size: 30px;
+	}
+	#map, #mapPS, #mapPE { /* 지도 */
+		width: 100%;
+		height: 470px;
+	}
+	.btn {
+		color: white;
+		padding: 8px 12px;
+		margin: 40px 0px;
+		background-color: #88BEA6;
+		align-content: center;
+		font-size: 15px;
+		border: none;
+		cursor: pointer;
+	}
+	/* input {
+		padding: 4px 0;
+		margin-bottom: 3px;
+		border: none;
+		border-bottom: 1px solid gray;
+		width: 500px;
+	} */
+ 	
 </style>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
