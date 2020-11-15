@@ -153,7 +153,7 @@
 				return function(e) {
 					const div = '<div class="thumb"> \
 					<div class="close" data-idx="' + idx + '">X</div> \
-					<img src="' + e.target.result + '" title="' + escape(f.name) + '"/> \
+					<img src="' + e.target.result + '" title=""/> \
 					</div>';
 					$("#thumbnails").append(div);
 				};
@@ -491,9 +491,7 @@
 					window.location = "/detailMeeting?m_no="+m_no;
 				}
 			});
-		});
-
-		
+		});		
 	}
 </script>
 </head>

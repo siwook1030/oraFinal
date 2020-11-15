@@ -10,23 +10,19 @@
 		/* 공통 */
 		section {
 			margin: 0 auto;
-			padding: 10px;
 			width: 1000px;
 			text-align: left;
+			padding: 50px;
 		}
 		/* 개별 */
-		.btnImg {
-			height: 30px;
-			float: right;
-		}
-		#reply {
+		#reply { /* 댓글출력 */
 			padding-bottom: 3px;
 		}
-		#comment {
+		#comment { /* 댓글입력 */
 			display:inline-block;
 			position:relative;
 		}
-		.btnRep {
+		#btnInsertReply { /* 댓글등록버튼 */
 			position:absolute;
 			color: white;
 			padding: 6px 9px;
@@ -38,92 +34,97 @@
 			right: 10px;
 			cursor: pointer;
 		}
-		textarea {
+		textarea { /* 글내용입력 */
 		     display: block;
 		}
-		#contents {
+		#contents { /* 게시판 인덱스 제외 전체 */
 			border: 1px solid #D5D5D5;
 			padding: 60px;
 			margin: 50px 0 100px;
 		}
-		.repInfo {
+		.repInfo { /* 댓글등록날짜 */
 			margin-left: 25px;
 			font-size: 13px;
 		}
-		
-		.repInput-noshow{
+		/* 삭제해도 되는지 물어보기 */
+		/* .repInput-noshow{
 			display: none;
 		}
 		.repInput-show{
 			display: inline;
-		}
-		.repPageNum{
+		} */
+		.repPageNum{ /* 댓글창 페이지번호 */
 			margin: 0 5px 0 5px;
 			cursor: pointer;
 		}
-		.btnRepSpan {
+		.btnRepSpan { /* 대댓글 등록수정삭제 버튼 */
 			cursor: pointer;
 			margin-left: 3px;
 			text-decoration: underline;
 		}
-		.btn {
+		.btn { /* 게시글 수정삭제 버튼 */
 			color: white;
 			padding: 8px 12px;
-			margin-left: 2px;
+			margin: 20px 2px;
 			background-color: #88BEA6;
 			float: right;
 			font-size: 15px;
 			border: none;
 			cursor: pointer;
 		}
-		.mtIcon {
+		#mtInfoAll img { /* 미팅 장소,날짜,인원 아이콘 */
 			width: 40px;
 			padding: 3px;
 		}
-		.mtInfoAll {
+		#mtInfoAll { /* 미팅 장소,날짜,인원 모은 div */
 			display: flex;
 		}
-		.mtInfoAll .mtInfo {
+		#mtInfoAll .mtInfo { /* 미팅 장소,날짜,인원 각각의 div */
 			width: 40%;
 			border: 1px #BDBDBD solid;
 			border-radius: 10px;
 			margin: 20px;
 			padding: 10px;
-		}
-		div .mtInfo {
 			text-align: center;
 		}
-		.photo_canvas {
+		.photo_canvas { /* 게시글 사진 전체 컨버스 */
 			position: relative;
 			background-color: skyblue;
-			width: 3000px; /*880*/
+			width: 880px; /*880*/
 			height: 300px;
 			overflow: hidden;
 		}
-		.myPhotoDiv {
+		.mfPhotoDiv { /* 게시글 사진전체 div */
 			width: 3000px;
 			position: relative;
 			background-color: orange;
 		}
-		.mfPhoto {
+		.mfPhoto { /* 게시글 개별 사진 */
 			float: left;
 			height: 300px; /*300*/
 		}
-		.pointerDiv {
+		.pointerDiv { /* 게시글 사진 버튼 div */
 			position: absolute;
 			top: 100px;
 			width: 880px;
 		}
-		#left {
+		#btnLeft { /* 사진 왼쪽 클릭버튼 */
 			width: 100px;
 			position: relative;
 			cursor: pointer;
 		}
-		#right {
+		#btnRight { /* 사진 오른쪽 클릭버튼 */ 
 			width: 100px;
 			position: relative;
 			cursor: pointer;
 			left: 680px;
+		}
+		#m_content { /* 글등록창 */
+			border: none;
+			padding: 10px 0;
+			border-top: 1px solid gray;
+			border-bottom: 1px solid gray;
+			margin-bottom: 30px;
 		}
 		.map_wrap {position:relative; width:100%; height:300px; font-size: 80%; margin: 30px 0 15px;}
 	</style>
@@ -673,7 +674,7 @@ window.onload = function(){
     const arriveImage = new kakao.maps.MarkerImage(arriveSrc, arriveSize, arriveOption);
 
     const startMarker = new kakao.maps.Marker({image:startImage}); //출발마커담을 변수
-    const arriveMarker = new kakao.maps.Marker({image:arriveImage});//도칙마커담을 변수
+    const arriveMarker = new kakao.maps.Marker({image:arriveImage});//도착마커담을 변수
     const coursePolyline = new kakao.maps.Polyline({
        strokeWeight: 5,
         strokeColor: '#FF2400',
@@ -710,13 +711,14 @@ window.onload = function(){
 	const meetingLatLon = new kakao.maps.LatLng(${mt.m_latitude}, ${mt.m_longitude});
 	meetingMarker.setPosition(meetingLatLon);
 	meetingMarker.setMap(map);
-	meetingInfowindow.setContent("<div>미팅장소</div>"); // 나중에 html꾸며서 넣기
-    meetingInfowindow.open(map, meetingMarker);
+	// detail window 표시 x
+	//meetingInfowindow.setContent("<div>미팅장소</div>"); // 나중에 html꾸며서 넣기
+    //meetingInfowindow.open(map, meetingMarker);
 
     courseBounds.extend(meetingLatLon);
     map.setBounds(courseBounds);
 	/////////////////////////////////////////////////////////////////////////////////// 맵표시 끝
-	const mf = ${mf};
+	const mf = ${mfJson};
 	console.log(mf);
 	let imgStr = '';
 	mf.forEach(function(mtPhoto, idx) {
@@ -739,11 +741,9 @@ window.onload = function(){
 <body>
 	<jsp:include page="header.jsp"/>
 	<section>
-		<br><br>
 		<p style="font-size: 20px;"><a href="/listMeeting">번개 게시판</a>&nbsp;&gt;&nbsp;<font color="#c85725">번개 상세</font></p>
-		<p style="font-size: 15px; padding-top: 2px;">만나서 같이 라이딩 해요.</p>
-		<br><br>
-	
+		<p style="font-size: 15px; padding: 2px 0 30px;">만나서 같이 라이딩 해요.</p>
+		
 		<div id="contents">
 			<p style="font-size: 30px; padding: 30px 0 20px;"><a href="detailMeeting?m_no=${mt.m_no }">${mt.m_title }</a></p><br>	
 			<img src="rank/${mt.rank_icon }" height="25" style="float: left; margin-right: 5px;">
@@ -759,27 +759,20 @@ window.onload = function(){
 			<div class="map_wrap">
 				<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
 			</div>
-			<div class="mtInfoAll">
-				<div class="mtInfo"><img src="meetingImg/meetingLoc.png" class="mtIcon"><br>${mt.m_locname }</div>
-				<div class="mtInfo"><img src="meetingImg/meetingTime.png" class="mtIcon"><br>${mt.m_time }</div>
-				<div class="mtInfo"><img src="meetingImg/meetingNum.png" class="mtIcon"><br>${mt.m_numpeople } 명</div>
+			<div id="mtInfoAll">
+				<div class="mtInfo"><img src="meetingImg/meetingLoc.png"><br>${mt.m_locname }</div>
+				<div class="mtInfo"><img src="meetingImg/meetingTime.png"><br>${mt.m_time }</div>
+				<div class="mtInfo"><img src="meetingImg/meetingNum.png"><br>${mt.m_numpeople } 명</div>
 			</div>
 			<br>
-		
-			<div style="margin: 20px 0 20px;">
-				${mt.m_content }
-			</div>
-			<c:if test="${mf!=null }">
+			<textarea rows="30" cols="123" id="m_content">${mt.m_content }</textarea>
+			
+			<c:if test="${mf.size()>0 }">
 				<div class="photo_canvas">
 					<div class="pointerDiv">
-						<img class="pointer" id="left" src="meetingImg/left.png">
-						<img class="pointer" id="right" src="meetingImg/right.png">
+						<img class="pointer" id="btnLeft" src="meetingImg/left.png">
+						<img class="pointer" id="btnRight" src="meetingImg/right.png">
 					</div>
-					<%-- <div class="mfPhotoDiv">
-						<c:forEach var="mf" items="${mf}">
-							<img class="mfPhoto" src="${mf.mf_path }/${mf.mf_savename }">
-						</c:forEach>
-					</div> --%>
 					<div class="mfPhotoDiv" id="mfPhotoDiv"></div>
 				</div>
 			</c:if>
@@ -789,22 +782,23 @@ window.onload = function(){
 				<a href="deleteMeeting?m_no=${mt.m_no }" class="btn" id="btnDel" style="background-color: #ECCB6A">삭제</a>
 				<a href="/user/updateMeeting?m_no=${mt.m_no }&c_no=${mt.c_no}" class="btn" id="btnEdit">수정</a>
 			</c:if>
+			
+			<!-- 댓글 -->
 			<br><br>
-			<img src="meetingImg/speech.png" style="size: 20px; float: left; padding-right: 10px;">
-			<h3>댓글<span id="repCnt" style="padding-left: 10px;"></span></h3>
+			<img src="meetingImg/speech.png" style="size: 20px; float:left; padding-right: 10px;">
+			<h3>댓글<span id="repCnt" style="padding-left: 10px; display: inline"></span></h3>
 			<hr style="margin: 10px 0 10px;">
+			
 			<!-- 댓글출력 -->
-			<div id="reply">
-			</div>
-			<div id="replyPgaeNum" style="text-align: center;">
-			</div>
+			<div id="reply"></div>
+			<div id="replyPgaeNum" style="text-align: center;"></div>
 			
 			<br>
 			<div>
 			댓글등록<br>
 			<form id="comment">
 				<textarea rows="10" cols="80" name="mr_content" id="mr_content" maxlength="300"></textarea>
-				<button id="btnInsertReply" type="button" class="btnRep">등록</button>
+				<button id="btnInsertReply" type="button">등록</button>
 				<div><span id="mr_contentSpan"></span></div>
 				<input type="file" name="mr_file1" id="mr_file1">
 				

@@ -7,29 +7,69 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
+	/*매인섹션 시작----------------  */
+	section {
+		margin: 0 auto;
+		width: 1000px;
+		text-align: left;
+		padding: 50px;
+	}
+	/* 삭제해도 되는지 물어보기 */
+	/* #cTitle{
+		font-size: 140%;
+	} */
+	
+	/*매인섹션 끝 ------------------*/
 
- /*매인섹션 시작----------------  */
- section {
- 	  margin: 0 auto;
- 	  width: 1000px;
- }
- #cTitle{
-	font-size: 140%;
-}
-
- /*매인섹션 끝 ------------------*/
-
-   /*float 초기화 아이디*/
-   #clear{
-   	clear: both; 
-   }
-   /*파일업로드관련 css*/
-    .drag-over { background-color: #CFF768; outline-style: dotted; outline-offset:-20px; }
+	/*float 초기화 아이디*/
+	#clear{
+		clear: both; 
+	}
+	/*파일업로드관련 css*/
+	.drag-over { background-color: #CFF768; outline-style: dotted; outline-offset:-20px; }
 	.thumb { width:100px; height:100px; padding:5px; float:left; }
 	.thumb > img { width:100%; height: 100%; }
 	.thumb > .close { position:absolute; background-color:red; cursor:pointer; }
 
-   #undo.disabled, #redo.disabled {background-color:#ddd;color:#9e9e9e;}
+	#undo.disabled, #redo.disabled {background-color:#ddd;color:#9e9e9e;}
+   
+	/* 게시판 레이아웃 시작 : 유진 */
+	
+	#contents { /* 게시판 인덱스 제외 전체 */
+		border: 1px solid #D5D5D5;
+		padding: 60px;
+		margin: 50px 0 100px;
+	}
+	#courseName { /* 코스이름 작성 */
+		border: none;
+		border-bottom: 1px solid gray;
+		margin: 10px;
+		width: 880px;
+		height: 50px;
+		margin: 20px 0 30px;
+		font-size: 30px;
+	}
+	#map, #mapPS, #mapPE { /* 지도 */
+		width: 100%;
+		height: 470px;
+	}
+	.btn {
+		color: white;
+		padding: 8px 12px;
+		margin: 40px 0px;
+		background-color: #88BEA6;
+		align-content: center;
+		font-size: 15px;
+		border: none;
+		cursor: pointer;
+	}
+	/* input {
+		padding: 4px 0;
+		margin-bottom: 3px;
+		border: none;
+		border-bottom: 1px solid gray;
+		width: 500px;
+	} */
 </style>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -298,7 +338,10 @@ const mNickName = checkM.item.nickName;
 	            }
 	         ]
 	    }
-	};    
+	};
+
+	/* 버튼에 클래스 추가 : 유진 */ 
+	document.getElementById('button')
 	    
 	const options2 = { // Drawing Manager를 생성할 때 사용할 옵션입니다
 	    map: map, // Drawing Manager로 그리기 요소를 그릴 map 객체입니다
@@ -1242,137 +1285,144 @@ const mNickName = checkM.item.nickName;
 </head>
 <body>
 <jsp:include page="../header.jsp"/>
-      <div id="clear"></div>
-<section>
-<div><h1>나만의 DIY 코스</h1></div>
-<br>
-<form id="courseForm">
-<span id="cTitle">코스명 :</span><input type="text" name="c_name"  id="courseName" maxlength="10"><span id="courseNameCnt"></span>
-<br>
-<br>
-
-<div id="map" style="width:1000px;height:500px;"></div>
-<div id="chart_div" style="width: 100%; height: 300px;"></div>
-<p>
-	<input type="file" value="경로파일" id="bikeFile">
-	<button type="button" id="bike">경로만들기</button>
-    <button type="button" id="startC">출발</button>
-    <button type="button" id="arriveC">도착</button>
-    <button type="button" id="polyC" >선</button>
-    <button type="button" id="backPolyC" class="disabled" disabled >선 되돌리기</button>
-    <button type="button" id="frontPolyC"  class="disabled" disabled>선 앞돌리기</button>
-    <button type="button" id="infoC" >가져오기</button><span id="fixC" val="y"></span> <br>
-   <input type="checkbox" id="chkBicycle" /> 자전거도로 정보 보기
-</p>
-
-출발 - 위도 : <input type="text" id="slat" name="c_s_latitude" value="0" readonly="readonly">
-경도 : <input type="text" id="slon" name="c_s_longitude" value="0" readonly="readonly">
-출발지역명 : <input type="text" id="sLoc" name="c_s_locname" readonly="readonly">
-<br>
-도착 - 위도 : <input type="text" id="elat" name="c_e_latitude" value="0" readonly="readonly">
-경도 : <input type="text" id="elon" name="c_e_longitude" value="0" readonly="readonly">
-도착지역명 : <input type="text" id="eLoc" name="c_e_locname" readonly="readonly">
-<br>
-풍경(강,산,명소,바다) 1순위 :
-<select id="firstView" name="c_view1">
-	<option value="0">--선택--</option>
-	<option value="강">강</option>
-	<option value="산">산</option>
-	<option value="명소">명소</option>
-	<option value="바다">바다</option>
-</select>
-2순위 :
-<select id="secondView" name="c_view2">
-<option value="0">--선택안함--</option>
-</select>
-3순위 :
-<select id="thirdView" name="c_view3">
-<option value="0">--선택안함--</option>
-</select>
-4순위 :
-<select id="fourthView" name="c_view4">
-<option value="0">--선택안함--</option>
-</select>
-<br>
-거리 :  <input type="text"  id="dis" name="c_distance" value="0" readonly="readonly">km<br>
-시간 : <input type="text" id="time" name="c_time" value="0" readonly="readonly">분<br>
-난이도 : <select id="diff" name="c_difficulty">
-		<option value="0">--난이도 선택--</option>
-		<option value="1">쉬움</option>
-		<option value="2">보통</option>
-		<option value="3">어려움</option>
-		<option value="4">매우 어려움</option>
-</select>
-<br>
-선경로 <br>
-<textarea rows="10" cols="80" id="line" name="c_line"readonly="readonly"></textarea>
-<br>
-[코스설명]
-<br>
-<textarea rows="10" cols="100" id="words" name="c_words" maxlength="3000" placeholder="ex)시원한 강과함께 들판을 나란히 두고 라이딩하는 ...."  ></textarea>
-<br>
-<span id="wordsCnt"></span>
-<br>
-[코스사진]<br>
-<div id="drop" style="border:1px solid black; width:800px; height:300px; padding:3px;">
-<div id="thumbnails">
-</div>
-</div>
-<input type="file" id="photoInput" multiple="multiple">
-<br><br><br>
-[출발점 대중교통]
-<div id="mapPS" style="width:1000px;height:400px;"></div><br>
-  <button type="button" id="publicTranportPS" >대중교통표시</button>
-    <button type="button" id="polyPS" >선</button>
-    <button type="button" id="backPolyPS" class="disabled" disabled>선 되돌리기</button>
-    <button type="button" id="frontPolyPS" class="disabled" disabled>선 앞돌리기</button>
-    <button type="button" id="infoPS" >가져오기</button><span id="fixPS" val="y"></span> <br>
-     <input type="checkbox" id="chkBicyclePS" /> 자전거도로 정보 보기
-    <br>
-대중교통위치 - 위도 : <input type="text" id="latPS" name="pt_latitudePS" value="0" readonly="readonly"> 경도 : <input type="text" id="lonPS" name="pt_longitudePS" value="0" readonly="readonly">
-<br>
-거리 :  <input type="text" id="disPS" name="pt_distancePS" value="0" readonly="readonly">km 
-<select id="sPT" name="pt_imgPS">
-<option value="(입력안함)">--대중교통선택--</option>
-<option value="버스">버스</option>
-<option value="1호선">1호선</option>
-<option value="2호선">2호선</option>
-<option value="3호선">3호선</option>
-</select>
- 역이름 : <input type="text" id="sPTStation"  name="pt_stationPS" maxlength="14" placeholder="ex)신촌역,신촌오거리.."><span id="sPTStationCnt"></span>
-<br>
-대중교통출발 선경로 <br>
-<textarea rows="10" cols="80" id="linePS" name="pt_linePS" readonly="readonly"></textarea>
-<br><br><br>
-[도착점 대중교통]
-<div id="mapPE" style="width:1000px;height:400px;"></div><br>
-  <button  type="button" id="publicTranportPE" >대중교통표시</button>
-    <button type="button" id="polyPE" >선</button>
-    <button type="button" id="backPolyPE" class="disabled" disabled>선 되돌리기</button>
-    <button type="button" id="frontPolyPE" class="disabled" disabled>선 앞돌리기</button>
-    <button type="button" id="infoPE" >가져오기</button><span id="fixPE" val="y"></span> <br>
-     <input type="checkbox" id="chkBicyclePE" /> 자전거도로 정보 보기
-    <br>
-
-대중교통위치 - 위도 : <input type="text" id="latPE" name="pt_latitudePE" value="0" readonly="readonly"> 경도 : <input type="text" id="lonPE" name="pt_longitudePE" value="0" readonly="readonly">
-<br>
-거리 :  <input type="text" id="disPE" name="pt_distancePE" value="0" readonly="readonly">km
-<select id="ePT" name="pt_imgPE">
-<option value="(입력안함)">--대중교통선택--</option>
-<option value="버스">버스</option>
-<option value="1호선">1호선</option>
-<option value="2호선">2호선</option>
-<option value="3호선">3호선</option>
-</select>
-  역이름 : <input type="text" id="ePTStation" name="pt_stationPE" maxlength="14" placeholder="ex)신촌역,신촌오거리.."><span id="ePTStationCnt"></span>
-<br>
-대중교통도착 선경로 <br>
-<textarea rows="10" cols="80" id="linePE" name="pt_linePE" readonly="readonly"></textarea>
-</form>
-<br><br>
-<button type="button" id="previewMakingCourse">미리보기</button> <button type="button" id="regCourse">등록</button>
-</section>
 	<div id="clear"></div>
+	<section>
+	<p style="font-size: 20px;"><a href="/user/makingCourse">오늘의 라이딩</a>&nbsp;&gt;&nbsp;<font color="#c85725">나만의 DIY 코스</font></p>
+	<p style="font-size: 15px; padding: 2px 0 30px;">나만의 코스를 만들어 공유해보세요.</p>
+	
+	<div id="contents">
+		<br>
+		<form id="courseForm">
+			<input type="text" name="c_name"  id="courseName" maxlength="10" placeholder="코스 이름을 적어주세요.">
+			<span id="courseNameCnt"></span>
+		
+		<div id="map"></div>
+		<input type="checkbox" id="chkBicycle" /> 자전거도로 정보보기
+		<div id="chart_div" style="width: 100%; height: 300px;"></div>
+		<p>
+			<input type="file" value="경로파일" id="bikeFile"><br>
+			<button type="button" class="btn" id="bike">경로만들기</button>
+		    <button type="button" class="btn" id="startC">출발</button>
+		    <button type="button" class="btn" class="btn" id="arriveC">도착</button>
+		    <button type="button" class="btn" id="polyC" >선</button>
+		    <button type="button" class="btn" id="backPolyC" class="disabled" disabled >선 되돌리기</button>
+		    <button type="button" class="btn" id="frontPolyC"  class="disabled" disabled>선 앞돌리기</button>
+		    <button type="button" class="btn" id="infoC" >가져오기</button><span id="fixC" val="y"></span> <br>
+		</p>
+		
+		출발
+		<!-- 위도 --> <input type="hidden" id="slat" name="c_s_latitude" value="0" readonly="readonly">
+		<!-- 경도 --> <input type="hidden" id="slon" name="c_s_longitude" value="0" readonly="readonly">
+		<!-- 출발지 --> <input type="text" id="sLoc" name="c_s_locname" readonly="readonly">
+		<br>
+		도착
+		<!-- 위도 --> <input type="hidden" id="elat" name="c_e_latitude" value="0" readonly="readonly">
+		<!-- 경도 --> <input type="hidden" id="elon" name="c_e_longitude" value="0" readonly="readonly">
+		<!-- 도착지 --> <input type="text" id="eLoc" name="c_e_locname" readonly="readonly">
+		<br>
+		풍경(강,산,명소,바다) 1순위 :
+		<select id="firstView" name="c_view1">
+			<option value="0">--선택--</option>
+			<option value="강">강</option>
+			<option value="산">산</option>
+			<option value="명소">명소</option>
+			<option value="바다">바다</option>
+		</select>
+		2순위 :
+		<select id="secondView" name="c_view2">
+		<option value="0">--선택안함--</option>
+		</select>
+		3순위 :
+		<select id="thirdView" name="c_view3">
+		<option value="0">--선택안함--</option>
+		</select>
+		4순위 :
+		<select id="fourthView" name="c_view4">
+		<option value="0">--선택안함--</option>
+		</select>
+		<br>
+		거리 :  <input type="text"  id="dis" name="c_distance" value="0" readonly="readonly">km<br>
+		시간 : <input type="text" id="time" name="c_time" value="0" readonly="readonly">분<br>
+		난이도 : <select id="diff" name="c_difficulty">
+				<option value="0">--난이도 선택--</option>
+				<option value="1">쉬움</option>
+				<option value="2">보통</option>
+				<option value="3">어려움</option>
+				<option value="4">매우 어려움</option>
+		</select>
+		<br>
+		선경로 <br>
+		<textarea rows="10" cols="80" id="line" name="c_line"readonly="readonly"></textarea>
+		<br>
+		[코스설명]
+		<br>
+		<textarea rows="10" cols="100" id="words" name="c_words" maxlength="3000" placeholder="ex)시원한 강과함께 들판을 나란히 두고 라이딩하는 ...."  ></textarea>
+		<br>
+		<span id="wordsCnt"></span>
+		<br>
+		[코스사진]<br>
+		<div id="drop" style="border:1px solid black; width:800px; height:300px; padding:3px;">
+		<div id="thumbnails">
+		</div>
+		</div>
+		<input type="file" id="photoInput" multiple="multiple">
+		<br><br><br>
+		[출발점 대중교통]
+		<div id="mapPS"></div>
+		<input type="checkbox" id="chkBicyclePS"/> 자전거도로 정보 보기 <br>
+		<button type="button" class="btn" id="publicTranportPS" >대중교통표시</button>
+		<button type="button" class="btn" id="polyPS" >선</button>
+		<button type="button" class="btn" id="backPolyPS" class="disabled" disabled>선 되돌리기</button>
+		<button type="button" class="btn" id="frontPolyPS" class="disabled" disabled>선 앞돌리기</button>
+		<button type="button" class="btn" id="infoPS" >가져오기</button><span id="fixPS" val="y"></span> <br>
+		<br>
+		대중교통위치
+		<!-- 위도 --> <input type="text" id="latPS" name="pt_latitudePS" value="0" readonly="readonly">
+		<!-- 경도 --> <input type="text" id="lonPS" name="pt_longitudePS" value="0" readonly="readonly">
+		거리 :  <input type="text" id="disPS" name="pt_distancePS" value="0" readonly="readonly">km 
+		<select id="sPT" name="pt_imgPS">
+		<option value="(입력안함)">--대중교통선택--</option>
+		<option value="버스">버스</option>
+		<option value="1호선">1호선</option>
+		<option value="2호선">2호선</option>
+		<option value="3호선">3호선</option>
+		</select>
+		 역이름 : <input type="text" id="sPTStation"  name="pt_stationPS" maxlength="14" placeholder="ex)신촌역,신촌오거리.."><span id="sPTStationCnt"></span>
+		<br>
+		대중교통출발 선경로 <br>
+		<textarea rows="10" cols="80" id="linePS" name="pt_linePS" readonly="readonly"></textarea>
+		<br><br><br>
+		[도착점 대중교통]
+		<div id="mapPE"></div>
+		<input type="checkbox" id="chkBicyclePE"/> 자전거도로 정보 보기<br>
+		<button  type="button" class="btn" id="publicTranportPE" >대중교통표시</button>
+	    <button type="button" class="btn" id="polyPE" >선</button>
+	    <button type="button" class="btn" id="backPolyPE" class="disabled" disabled>선 되돌리기</button>
+		<button type="button" class="btn" id="frontPolyPE" class="disabled" disabled>선 앞돌리기</button>
+		<button type="button" class="btn" id="infoPE" >가져오기</button><span id="fixPE" val="y"></span> <br>
+		<br>
+		
+		대중교통위치 
+		<!-- 위도 --> <input type="hidden" id="latPE" name="pt_latitudePE" value="0" readonly="readonly">
+		<!-- 경도 --> <input type="hidden" id="lonPE" name="pt_longitudePE" value="0" readonly="readonly">
+		거리 :  <input type="text" id="disPE" name="pt_distancePE" value="0" readonly="readonly">km
+		<select id="ePT" name="pt_imgPE">
+		<option value="(입력안함)">--대중교통선택--</option>
+		<option value="버스">버스</option>
+		<option value="1호선">1호선</option>
+		<option value="2호선">2호선</option>
+		<option value="3호선">3호선</option>
+		</select>
+		  역이름 : <input type="text" id="ePTStation" name="pt_stationPE" maxlength="14" placeholder="ex)신촌역,신촌오거리.."><span id="ePTStationCnt"></span>
+		<br>
+		대중교통도착 선경로 <br>
+		<textarea rows="10" cols="80" id="linePE" name="pt_linePE" readonly="readonly"></textarea>
+		</form>
+		<br><br>
+		<button type="button" id="previewMakingCourse">미리보기</button> <button type="button" id="regCourse">등록</button>
+		</section>
+	<div id="clear"></div>
+</div>
 <jsp:include page="../footer.jsp"/>
 </body>
 </html>
