@@ -1,12 +1,15 @@
 package com.example.demo.controller;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.sound.midi.Soundbank;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +26,7 @@ import com.example.demo.ResponseDataCode;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.dao.MeetingDao;
 import com.example.demo.dao.MemberDao;
+import com.example.demo.util.FileUtilCollection;
 import com.example.demo.vo.MeetingVo;
 import com.example.demo.vo.MemberVo;
 
@@ -46,9 +50,9 @@ public class MeetingController {
 	private CourseDao cdao;
 	
 	public static int totRecord = 0; // 총 게시글 수
-	public static int recordSize = 6; // 한 번에 보이는 게시글 수
+	public static int recordSize = 10; // 한 번에 보이는 게시글 수
 	public static int totPage = 0; // 총 페이지 수
-	public static int pageSize = 2; // 한 번에 보이는 페이지 수
+	public static int pageSize = 5; // 한 번에 보이는 페이지 수
 	
 	public static int recordSizeR = 10; // 한 번에 보이는 댓글게시글 수
 	public static int pageSizeR = 5; // 한 번에 보이는 댓글페이지 수
@@ -95,6 +99,8 @@ public class MeetingController {
 		String path = request.getRealPath("/courseLine")+"/";
 		mdao.updateHit(m_no);
 		MeetingVo mt = mdao.detailMeeting(m_no);
+		List<Meeting_fileVo> mf = mdao.detailMFile(m_no);
+		
 		int c_no = mt.getC_no();
 		
 		int totalRecordR = mdao.cntRep(m_no);
@@ -117,7 +123,8 @@ public class MeetingController {
 		model.addAttribute("cJson", gson.toJson(cdao.getCourseByCno(c_no, path)));
 
 		model.addAttribute("mt", mt);			
-		model.addAttribute("mf", gson.toJson(mdao.detailMFile(m_no)));
+		model.addAttribute("mf", mf);			
+		model.addAttribute("mfJson", gson.toJson(mf));
 	}
 	
 	
@@ -149,6 +156,7 @@ public class MeetingController {
 		MeetingVo mt = mdao.detailMeeting(m_no);
 		List<Meeting_fileVo> mf = mdao.detailMFile(m_no);
 		model.addAttribute("mt", mt);
+		model.addAttribute("mf", mf);
 		model.addAttribute("mtJson", gson.toJson(mt));
 		model.addAttribute("mfJson", gson.toJson(mdao.detailMFile(m_no)));
 		model.addAttribute("cs", cdao.getCourseByCno(c_no, path));
@@ -161,7 +169,7 @@ public class MeetingController {
 	@PostMapping(value = "/user/updateMeeting", produces = "application/json;charset=utf-8")
 	@ResponseBody
 	public String updateMSubmit(@RequestParam HashMap map, HttpServletRequest request, List<MultipartFile> uploadMtFiles) {
-		//System.out.println("*** map(updtCntr Sbmt) : "+map);
+		System.out.println("*** map(updtCntr Sbmt) : "+map);
 		
 		int m_no = Integer.parseInt((String)map.get("m_no"));
 		int c_no = Integer.parseInt((String)map.get("c_no"));
@@ -183,33 +191,45 @@ public class MeetingController {
 		//System.out.println(mtvo.toString());
 		int re = mdao.updateMeeting(mtvo);
 		
- 
 		
+		System.out.println("***uploadMtFiles1 : "+uploadMtFiles);
+		// Meeting_fileVo를 먼저 삭제
+		mdao.deleteMFile(m_no);
+		System.out.println("***uploadMtFiles2 : "+uploadMtFiles);
 		
-		
-//		int re = mdao.updateMeeting(mt);
-//		if(re>0 ) {
-//			//System.out.println("*** mf(updtCntr Sbmt) : "+mf);
-//			
-//			// 서버에 저장된 이전 파일 이름
-//			String oldFname = mf.getMf_savename();
-//			//System.out.println("*** oldFname : "+oldFname);
-//			
-//			// 저장경로
-//			String path = request.getRealPath("meetingFile");
-//			
-//			// 새로 업로드 되는 파일 이름
-//			String mf_name = null;
-//			//MultipartFile uploadFile = mf.getUploadFile();
-//			//System.out.println("*** uploadFile : "+uploadFile);
-//			//mf_name = uploadFile.getOriginalFilename();
-//			//System.out.println("*** mf_name : "+mf_name);
 			
-//			
-//		} else {
-//
-//		}
-		
+		// 사진등록
+		List<Meeting_fileVo> mfvo = new ArrayList<Meeting_fileVo>();
+		String path = request.getRealPath("/meetingFile");
+		int re_mf = 0;
+		if(uploadMtFiles.size()>0) {
+			for(MultipartFile mf: uploadMtFiles) {
+				int mf_no = 0;
+				int mt_no = m_no;
+				String mf_name = mf.getOriginalFilename();
+				String mf_savename = FileUtilCollection.filePrefixName()+mf_name+".png";
+				String mf_path = "meetingFile";
+				long mf_size = mf.getSize();	
+				mfvo.add(new Meeting_fileVo(mf_no, m_no, mf_name, mf_savename, mf_path, mf_size));
+			}
+			re_mf = mdao.insertMFile(mfvo);
+		}
+			
+			if(re>0) {
+				if(uploadMtFiles.size()>0) {
+					for(int i=0; i<uploadMtFiles.size(); i++) {
+						try {
+							byte []data = uploadMtFiles.get(i).getBytes();
+							FileOutputStream fos = new FileOutputStream(path+"/"+mfvo.get(i).getMf_savename());
+							fos.write(data);
+							fos.close();
+						} catch (Exception e) {
+							// TODO: handle exception
+							System.out.println("insertCntr size exp : "+e.getMessage());
+						}	
+					}
+				}
+			} 
 		
 		return Integer.toString(m_no);
 	}
@@ -220,7 +240,7 @@ public class MeetingController {
 		System.out.println("*** m_no(deleteM cntr) : "+m_no);
 		
 		String path = request.getRealPath("meetingFile");
-		System.out.println("*** path (DltMtng Cntr) : "+path);		
+		System.out.println("*** path (DltMtng Cntr) : "+path);
 		File file = null;
 		int re = 0;
 		
@@ -241,11 +261,15 @@ public class MeetingController {
 		map.put("m_no", m_no);
 		List<Meeting_repVo> listMR = mdao.detailMRep(map);
 		if(listMR.size()>0) {
+			System.out.println("***리플삭제작동함");
 			re = mdao.deleteMRep(m_no);
+			re = mdao.deleteMRep(m_no);
+			System.out.println("***삭제 re값 : "+re);
 			if(re<=0) {
 				mav.addObject("msg", "파일삭제에 실패했습니다.");
 				mav.setViewName("error");
 			} else {
+				
 				for(Meeting_repVo list:listMR) {
 					String oldFname = list.getMr_file1();
 					file = new File(path+"/"+oldFname);
@@ -281,6 +305,7 @@ public class MeetingController {
 	
 		return mav;
 	}
+	
 	public String getMemberId(HttpSession httpSession) {
 		MemberVo m = (MemberVo)httpSession.getAttribute("m");
 		return m.getId();

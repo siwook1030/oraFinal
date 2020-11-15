@@ -54,9 +54,6 @@
 		padding: 10px; 
 		text-align: center;
 	}
-	textarea {
-		border: none;
-	}
 	#m_title {
 		border-bottom: 1px solid gray;
 		margin: 10px;
@@ -66,6 +63,7 @@
 		font-size: 30px;
 	}
 	#m_content {
+		border: none;
 		padding: 10px 0;
 		border-top: 1px solid gray;
 		border-bottom: 1px solid gray;
@@ -74,7 +72,7 @@
 
    /*카카오 맵css*/
    .map_wrap {position:relative;width:100%;height:450px;font-size: 80%;}
-   .title {font-weight:bold;display:block;}
+   .map_title {font-weight:bold;display:block;}
    .hAddr {position:absolute;left:10px;top:10px;border-radius: 2px;background:#fff;background:rgba(255,255,255,0.8);z-index:1;padding:5px;}
    #centerAddr {display:block;margin-top:2px;font-weight: normal;}
    .bAddr {padding:5px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
@@ -153,7 +151,7 @@
 				return function(e) {
 					const div = '<div class="thumb"> \
 					<div class="close" data-idx="' + idx + '">X</div> \
-					<img src="' + e.target.result + '" title="' + escape(f.name) + '"/> \
+					<img src="' + e.target.result + '" title=""/> \
 					</div>';
 					$("#thumbnails").append(div);
 				};
@@ -302,7 +300,7 @@
 		          const detailAddr = '<div>주소 : ' + result[0].address.address_name + '</div>';
 		            
 		            let content = '<div class="bAddr">' +
-		                            '<span class="title">미팅장소</span>' + 
+		                            '<span class="map_title">미팅장소</span>' + 
 		                            detailAddr + 
 		                        '</div>';
 		         const latlng = mouseEvent.latLng;
@@ -455,7 +453,7 @@
 	<jsp:include page="../header.jsp"/>
 	<section>
 		<p style="font-size: 20px"><a href="listMeeting">번개 게시판</a>&nbsp;&gt;&nbsp;<a href="insertMeeting"><font color="#c85725">게시글 등록</font></a></p>
-		<p style="font-size: 15px">만나서 같이 라이딩 해요.</p>
+		<p style="font-size: 15px; padding: 2px 0 30px;">만나서 같이 라이딩 해요.</p>
 
 		<div id="contents">
 			<!-- 글등록 -->
@@ -499,7 +497,7 @@
 				<div class="map_wrap">
 					<div id="map" style="width:100%; height:100%; position:relative; overflow:hidden;"></div>
 					<div class="hAddr">
-						<span class="title">지도중심기준 주소</span>
+						<span class="map_title">지도중심기준 주소</span>
 						<span id="centerAddr"></span>
 					</div>
 				</div>
