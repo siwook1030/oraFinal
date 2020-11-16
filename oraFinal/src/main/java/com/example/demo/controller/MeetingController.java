@@ -22,11 +22,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.example.demo.ResponseDataCode;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.dao.MeetingDao;
 import com.example.demo.dao.MemberDao;
 import com.example.demo.util.FileUtilCollection;
+import com.example.demo.util.ResponseDataCode;
 import com.example.demo.vo.MeetingVo;
 import com.example.demo.vo.MemberVo;
 
