@@ -927,22 +927,17 @@ window.onload = function(){
 	bike.addEventListener("click", function(e) {
 		let reader = new FileReader();
 		const file = bikeFile.files[0];
+		if(file == undefined){
+			alert("gpx파일을 선택해야합니다");
+			return;
+		}
 		const suffixtFileName = (file.name).substring(file.name.lastIndexOf(".")+1);
-		console.log(suffixtFileName);
-		if(file == undefined || suffixtFileName != "gpx"){
+		if(suffixtFileName != "gpx"){
 			alert("gpx파일을 선택해야합니다");
 			return;
 		}
 		reader.onload = function () {
 
-//			const parser = new DOMParser();
-//			const xmlTrk = parser.parseFromString(reader.result, "text/xml");
-//			console.log(xmlTrk);
-//			const trkpaaa = xmlTrk.getElementsByTagName("trkpt");
-//			console.log(trkpaaa[0]);
-//			for(let i=0; i<trkpaaa.length; i++){
-//				console.log(trkpaaa[i]);
-//			}
 			const courseBounds = new kakao.maps.LatLngBounds();
 			altitudeData = [['거리','고도'],['데이터없음',0]];   // 고도 초기화
 			const eleArr = $(reader.result).find("trkseg ele");
@@ -992,14 +987,14 @@ window.onload = function(){
         const data = google.visualization.arrayToDataTable(altitudeData);
 
         const options = {
-          	  title: '자전거코스 고도',
-          	  animation:{duration:3000,easing:'out',startup:true},
-                hAxis: {title: '거리(km)' ,titleTextStyle: {color: '#333'},gridlines: {color: 'transparent'}},
-                vAxis: {title:'고도(m)',titleTextStyle: {color: '#333'},minValue: 0},
-                curveType: 'function',
-                width:'100%',
-                height:300,
-              };
+            	  title: '자전거코스 고도',
+            	  animation:{duration:3000,easing:'out',startup:true},
+                  hAxis: {title: '거리(km)' ,titleTextStyle: {color: '#333'},gridlines: {color: 'transparent'}},
+                  vAxis: {title:'고도(m)',titleTextStyle: {color: '#333'},minValue: 0},
+                  curveType: 'function',
+                  width:'100%',
+                  height:300,
+                };
 
         const chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
         chart.draw(data, options);
@@ -1083,6 +1078,7 @@ window.onload = function(){
 
 		return cPhotoCnt;
 	}
+
 	//----------------------------------------------------------------------------------------------- 무인자전거
 	kakao.maps.event.addListener(map, 'idle', removePlaceOveray);
 
@@ -1561,6 +1557,8 @@ window.onload = function(){
 	});
 
 	//--------------- 수정내용 세팅장소  변수명 uc는 update course 줄임말 
+	//const  url = document.location.href;
+	//const courseNumber = url.substring(url.indexOf("=")+1);
 	const courseNumber = ${c_no};
 	console.log(courseNumber);
 	const req = new XMLHttpRequest();
@@ -1692,6 +1690,9 @@ window.onload = function(){
 		});
 		
 	};	
+//	setUpdateCourse();
+	
+	
 	
 	
 	//--------------- 수정내용 세팅장소 끝
@@ -1731,7 +1732,7 @@ window.onload = function(){
 <input type="hidden" id="courseNum" name="c_no" > 
 <input type="hidden" id="courseId" name="id"> 
 <input type="hidden" id="courseCodeValue" name="code_value">
-<div style="text-align: left;">
+	<div style="text-align: left;">
   			무인자전거 대여소 
   			<select id="publicCycle">
   				<option value="0">--무인자전거 위치--</option>
