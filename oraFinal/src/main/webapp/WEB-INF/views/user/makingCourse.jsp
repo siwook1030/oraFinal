@@ -939,9 +939,12 @@ const mNickName = checkM.item.nickName;
 	bike.addEventListener("click", function(e) {
 		let reader = new FileReader();
 		const file = bikeFile.files[0];
+		if(file == undefined){
+			alert("gpx파일을 선택해야합니다");
+			return;
+		}
 		const suffixtFileName = (file.name).substring(file.name.lastIndexOf(".")+1);
-		console.log(suffixtFileName);
-		if(file == undefined || suffixtFileName != "gpx"){
+		if(suffixtFileName != "gpx"){
 			alert("gpx파일을 선택해야합니다");
 			return;
 		}

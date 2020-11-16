@@ -15,15 +15,15 @@ public class PointCut {
 	public void searchCoursePointCut() {}  // 서치코스에서 검색을 위해 어떤 항목들을 선택했는지 알기 위해 포인트컷 지정
 	
 	// 랭크점수 추가위해 게시판글, 댓글 매니저 포인트컷
-	@Pointcut("execution(* com.example.demo.db.ReviewManager.insert(..))")
+	@Pointcut("execution(* com.example.demo.dao.ReviewDao.insert(..))")
 	public void insertReview() {}
 	
-	@Pointcut("execution(* com.example.demo.db.ReviewManager.insertRep(..))")
+	@Pointcut("execution(* com.example.demo.dao.ReviewDao.insertRep(..))")
 	public void insertReviewReply() {}
 	
-	@Pointcut("execution(* com.example.demo.db.ReviewManager.insertMeeting(..))")
+	@Pointcut("execution(* com.example.demo.dao.MeetingDao.insertMeeting(..))")
 	public void insertMeeting() {}
 	
-	@Pointcut("execution(* com.example.demo.db.ReviewManager.insertMRep(..))")
+	@Pointcut("execution(* com.example.demo.dao.MeetingDao.insertMRep(..))")
 	public void insertMeetingReply() {}
 }

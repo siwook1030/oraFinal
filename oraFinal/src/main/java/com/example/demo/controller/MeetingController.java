@@ -207,7 +207,7 @@ public class MeetingController {
 				int mf_no = 0;
 				int mt_no = m_no;
 				String mf_name = mf.getOriginalFilename();
-				String mf_savename = FileUtilCollection.filePrefixName()+mf_name+".png";
+				String mf_savename = FileUtilCollection.filePrefixName()+".png";
 				String mf_path = "meetingFile";
 				long mf_size = mf.getSize();	
 				mfvo.add(new Meeting_fileVo(mf_no, m_no, mf_name, mf_savename, mf_path, mf_size));
@@ -357,7 +357,6 @@ public class MeetingController {
 	public String deleteMeetingRep(int m_no, int mr_no) {
 		int re = 0;
 		re = mdao.deleteMr(mr_no);
-		
 		ResponseDataVo responseDataVo = new ResponseDataVo();
 		responseDataVo.setCode(ResponseDataCode.ERROR);
 		if(re>0) {

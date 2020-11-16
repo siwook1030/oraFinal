@@ -297,7 +297,7 @@ public class ReviewController {
 				}
 			}
 			mav.setViewName("redirect:/listReview");
-			mdao.insertPoint(new PointVo(mvo.getId(), PointGet.writeReviewPonit, PointCause.writeReviewCause));  // 후기를 쓰고 성공했을 때 랭크포인트 추가
+			
 		}else {
 			mav.addObject("msg", "글등록에 실패하였습니다.");
 			mav.setViewName("errorPage");
