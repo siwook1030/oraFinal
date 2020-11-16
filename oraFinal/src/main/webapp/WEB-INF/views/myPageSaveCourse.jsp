@@ -7,6 +7,7 @@
    <meta charset="UTF-8">
    <title>마이페이지-찜코스</title>
    <style>
+   되나
    ul { //메뉴 스타일
         box-pack:center;
         justify-content: center; // 창에따라 사이즈 달라짐
@@ -40,38 +41,6 @@
          background-color: #CD853F; //갈색 마우스위로
          color: white;
       }
-        <!-- 찜 코스 컨테이너--!>
-          #container{
-             columns-width:900px;
-             columns-gap: 15px;
-             background-color: #ffffff;
-             color: inherit;
-           }
-         #tab{
-            float:center;
-            border:1px solid black;
-            width:900px;
-            height:50px;
-         }
-         #container figure{
-              display: inline-block;
-              border:1px solid rgba(0,0,0,0.2);
-              margin-top:20px;
-              margin-left:20px;
-              margin-bottom: 15px;
-              padding:10px;
-              box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
-            }
-            #container figure img{
-              width:300px;
-              height: 200px;
-              text-align: center;
-            }
-            #container figure figcaption{
-              border-top:1px solid rgba(0,0,0,0.2);
-              padding:5px;
-              margin-top:11px;
-            }
 
         <!-- 사진 프레임-->
            .all{
@@ -97,12 +66,7 @@
            border: 1px solid #ddd;
            border-radius: 4px;
            padding: 5px;
-           width: 40%;
-           max-height:100px;
-           max-width: 200px;
-         }
-
-
+          }
 
           .zenbu{
           border: 1px solid gold;
@@ -119,7 +83,6 @@
              background: yellow;
              width:50px;
              height:30px;
-
              border:none;
           }
 
@@ -129,47 +92,41 @@
            border-radius: 7px;
          }
 
-
-
-
-
    </style>
 
 </head>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
    window.onload = function(){
-      
-      
-      
+                
       $.ajax({
          url: "/myPageSaveCourse",
          method:"POST",
          success: function(courseVo){
             $(courseVo).each(function(i, savecoursVo) {
                
-               let div = $("<div></div>").prop("class", "zenbu");      //전체
-				
-               let button = $("<button></button>").attr({"class":"deleteSaveCourse bookmark","value": savecoursVo.c_no}).text("삭제");
-               
-               let div2 = $("<div></div>").prop("class", "name");
+               let div = $("<div></div>").prop("class", "zenbu"); //클래스 이름이 zenbu인 div 생성
+				 
+               let div2 = $("<div></div>").prop("class", "name"); // 클래스 이름이 name 인 div2 생성
                let div2_p =$("<p></p>");
                let div2_h5 = $("<h5></h5>");
-               let div2_span = $("<span></span>").html(savecoursVo.c_name); //코스명
-               $(div2_h5).append(div2_span);
-               $(div2).append(div2_p,div2_h5);
+               let div2_span = $("<span></span>").html(savecoursVo.c_name); //div2(name) 안에있는 span안에 c_name 불러오기
+				               $(div2_h5).append(div2_span);
+				               $(div2).append(div2_p,div2_h5);
                
-               let div3 =$("<div></div>").prop("class", "time"); 
-               let div3_div1=$("<div></div>").text("Level "+savecoursVo.c_difficulty);//난이도
-               let div3_div2=$("<div></div>");
-               let div3_div2_strong=$("<strong></strong>").text(savecoursVo.c_distance+"km"); //걸
-               $(div3_div2).append(div3_div2_strong);
-               $(div3).append(div3_div1,div3_div2);
-               let img=$("<img/>");
-               
+               let div3 =$("<div></div>").prop("class", "level"); //div3(level)인 div생성 
+               let div3_div1=$("<div></div>").text("Level "+savecoursVo.c_difficulty+"・"+savecoursVo.c_time+"분");//난이도.시간
+               let div3_div2=$("<div></div>").text();
+               let div3_div2_strong=$("<strong></strong>").text(savecoursVo.c_distance+"km"); //거리
+					               	$(div3_div2).append(div3_div2_strong);
+					               	$(div3).append(div3_div1,div3_div2);
+
+               let img=$("<img/>"); //사진
+               let button = $("<button></button>").attr({"class":"deleteSaveCourse bookmark","value": savecoursVo.c_no}).text("삭제"); //삭제버튼
+
                $(savecoursVo.c_photo).each(function(i, c_photo) {
                   img.attr({"class": "syasin" ,src :c_photo.cp_path+"/"+c_photo.cp_name});
-                  
+
                });//두번째포문
                
                   $(div).append(img,button,div2,div3);
@@ -211,19 +168,18 @@
      <h1>찜코스목록</h1>
        
           <div class="zenbu">
-           class= zenbu
+           class= div1 zenbu 
 
            <img class="syasin" src="https://www.durunubi.kr/editImgUp.do?filePath=/data/koreamobility/file/2020/09/8fbc53acde254d3caf9e8fd48254fb1c.jpg" >
                <button class="bookmark"  type="button" onclick="alert('선택한 코스를 지우시겠습니까?');" > 클릭</button>
                      <div class="name">
-                          <p class=""> class=name  </p>
+                          <p class="name"> div2 class=name  </p>
                           <h5><span>제주 자전거길 (우도일주)</span></h5>
                       </div>
 
-                                            <div class="time">
-                          <div class="level">class= level 12kmㆍ90분</div>
-                          <div class="a6"><strong> class=a6 쉬움</strong></div>
-                      </div>
+                                            <div class="time"> div3 class=time 90분 </div>
+                          <div class="level">div 4 class= level 12km</div>
+                     
 
           </div>
 
