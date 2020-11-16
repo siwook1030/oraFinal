@@ -22,6 +22,7 @@ import com.example.demo.service.MemberService;
 import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.RankVo;
 import com.google.gson.Gson;
+	
 
 @Controller
 public class MemberController {

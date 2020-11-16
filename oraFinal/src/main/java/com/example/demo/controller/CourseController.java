@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.demo.ResponseDataCode;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.db.CourseManager;
 
 import com.example.demo.vo.CoursePhotoVo;
 
 import com.example.demo.util.FileUtilCollection;
+import com.example.demo.util.ResponseDataCode;
 import com.example.demo.vo.CourseVo;
 import com.example.demo.vo.FoodVo;
 import com.example.demo.vo.MemberVo;
@@ -41,13 +41,13 @@ public class CourseController {
 	private CourseDao cdao;
 	
 	@GetMapping("/searchCourse")
-	public void searchCourse() {
+	public void searchCourseForm() {
 		
 	}
 	
 	@PostMapping(value ="/searchCourse", produces = "application/json; charset=utf8")
 	@ResponseBody
-	public String searchCourse(HttpSession session,double latitude, double longitude, int distance, int time,@RequestParam(value="view[]",required = false) List<String> view) {
+	public String searchCourse(double latitude, double longitude, int distance, int time,@RequestParam(value="view[]",required = false) List<String> view) {
 		HashMap map = new HashMap();
 		System.out.println("위도 : "+latitude);
 		System.out.println("경도 : "+longitude);
@@ -107,6 +107,7 @@ public class CourseController {
 	//	model.addAttribute("fList", fList);
 	//	model.addAttribute("fJson", gson.toJson(fList));
 	}
+	
 	@RequestMapping(value = "/admin/deleteCourse", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String deleteCourse(HttpServletRequest request, int c_no) {

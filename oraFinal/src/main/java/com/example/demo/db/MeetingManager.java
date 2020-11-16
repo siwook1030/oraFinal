@@ -47,10 +47,10 @@ public class MeetingManager {
 	}
 	
 	// 게시글 리스트
-	public static List<MeetingVo> listMeeting(HashMap map) {
+	public static List<MeetingVo> listMeeting() {
 		List<MeetingVo> list = null;
 		SqlSession session = sqlSessionFactory.openSession();
-		list = session.selectList("meeting.selectMAll",map);
+		list = session.selectList("meeting.selectMAll");
 		session.close();
 		return list;
 	}
@@ -151,12 +151,10 @@ public class MeetingManager {
 	}
 	
 	// 첨부파일 등록
-	public static int insertMFile(List<Meeting_fileVo> mf) {
+	public static int insertMFile(Meeting_fileVo mf) {
 		int re = -1;
 		SqlSession session = sqlSessionFactory.openSession(true);
-		for(Meeting_fileVo mfvo : mf) {
-			re = session.insert("meeting.insertMf", mfvo);
-		}
+		re = session.insert("meeting.insertMf", mf);
 		session.close();
 		return re;
 	}

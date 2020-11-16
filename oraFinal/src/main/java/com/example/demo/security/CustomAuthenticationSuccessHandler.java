@@ -17,9 +17,9 @@ import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.ResponseDataCode;
-import com.example.demo.ResponseDataStatus;
 import com.example.demo.dao.MemberDao;
+import com.example.demo.util.ResponseDataCode;
+import com.example.demo.util.ResponseDataStatus;
 import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.ResponseDataVo;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -54,13 +54,16 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         Authentication aut = SecurityContextHolder.getContext().getAuthentication();
     	User user = (User)aut.getPrincipal();
         MemberVo m = mdao.selectMember(user.getUsername());
-        System.out.println(m);
         request.getSession().setAttribute("m", m);
+        
+        // 로그인 성공시 특정메세지를 보여준다
         String[] loginMsgArr = {"님 오늘도 달려볼까요?", "님 '코스검색'을 통해 빠르게 원하는 코스를 찾아보세요!", "님 '번개게시판'을 통해 여러사람과 즐겨보세요!"
         		,"님 '코스만들기'를 통해 나만의 코스를 만들어보세요!", "님 '후기게시판'을 통해 다른 라이더님과 코스후기를 공유해보세요!"};
         Random random = new Random();
         int r = random.nextInt(loginMsgArr.length);
         String loginMsg = m.getNickName()+loginMsgArr[r];
+        
+        
         
     	ObjectMapper mapper = new ObjectMapper();	//JSON 변경용
     	

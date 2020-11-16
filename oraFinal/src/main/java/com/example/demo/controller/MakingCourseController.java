@@ -25,9 +25,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.ResponseDataCode;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.util.FileUtilCollection;
+import com.example.demo.util.ResponseDataCode;
 import com.example.demo.vo.CoursePhotoVo;
 import com.example.demo.vo.CourseVo;
 import com.example.demo.vo.MemberVo;
@@ -54,13 +54,6 @@ public class MakingCourseController {
 		
 	}
 	
-	@GetMapping(value = "/user/subway", produces = "application/json; charset=utf-8")  // 지하철역정보 불러오는 곳
-	@ResponseBody
-	public String subway(HttpServletRequest request) {
-		String path = request.getRealPath("/publictransport")+"/";
-		System.out.println(FileUtilCollection.readText("subway.txt", path));
-		return new Gson().toJson(FileUtilCollection.readText("subway.txt", path));
-	}
 	
 	@PostMapping(value = "/user/cnameDupCheck", produces = "application/json; charset=utf-8")
 	@ResponseBody
