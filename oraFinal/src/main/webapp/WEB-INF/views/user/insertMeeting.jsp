@@ -69,6 +69,32 @@
 		border-bottom: 1px solid gray;
 		margin-bottom: 30px;
 	}
+	.filebox label {
+		position: relative;
+		bottom: 35px;
+		left: 780px;
+		margin: 3px 0;
+		padding: 5px 15px;
+		color: white;
+		font-size: 15px; /* inherit : 부모의 속성을 따르고 싶을때 inherit */
+		/* line-height: normal; */ /* 텍스트 라인의 높이 */
+		vertical-align: middel;
+		background-color: #88BEA6;
+		cursor: pointer;
+		text-align: center;	
+	}
+	.filebox input[type="file"] {
+		/* 파일 필드 숨기기 */
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		/* clip:rect(0,0,0,0); */
+		border: 0;
+	}
+
 
    /*카카오 맵css*/
    .map_wrap {position:relative;width:100%;height:450px;font-size: 80%;}
@@ -507,7 +533,14 @@
 				<div id="drop" style="border: 1px solid gray; width: 870px; height: 300px; padding: 3px;">
 					<div id="thumbnails"></div>
 				</div>
-				<input type="file" name="uploadFile" id="photoInput" multiple="multiple"><br>
+				
+				<div class="filebox">
+					<label for="photoInput">파일등록</label>
+					<input type="file" name="uploadFile" id="photoInput" multiple="multiple">
+				</div>
+				<!-- <input type="file" name="uploadFile" id="photoInput" multiple="multiple"> -->
+				
+				
 				<div id="btnDiv">
 					<button type="button" class="btn" id="btnAdd" style="background-color: #eccb6a">등록</button>
 					<button type="reset" class="btn" id="btnCancel" style="background-color: #d0a183">취소</button>
