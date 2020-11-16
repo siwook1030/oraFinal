@@ -157,7 +157,7 @@ public class InsertMeetingController {
 		responseDataVo.setCode(ResponseDataCode.ERROR);
 		if(re>0) {
 			responseDataVo.setCode(ResponseDataCode.SUCCESS);
-			memberDao.insertPoint(new PointVo(id, PointGet.writeMeetingReplyPonit, PointCause.writeMeetingReplyCause));
+			
 		}
 		return new Gson().toJson(responseDataVo);
 	}

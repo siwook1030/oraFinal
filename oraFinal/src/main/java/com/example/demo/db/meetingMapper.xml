@@ -96,7 +96,7 @@
 		UPDATE MEETING_REP SET MR_CONTENT=#{mr_content}, MR_FILE1=#{mr_file1} WHERE MR_NO = #{mr_no}
 	</update>
 	<delete id="deleteMr" parameterType="meeting_repVo"> <!-- 댓글 삭제 -->
-		DELETE MEETING_REP WHERE M_NO=#{m_no}
+		DELETE MEETING_REP WHERE MR_NO=#{mr_no}
 	</delete>
 	
 	<!--실시간 게시글 페이징 -->

@@ -66,6 +66,10 @@ p {
     float: right;
 }
 
+#btnUD{
+	display: none;
+}
+
 #btnDelete{
 	background-color: #eccb6a;
 }
