@@ -55,7 +55,7 @@ public class FileUtilCollection {
 			
 			bufferedReader.close();
 		}catch (Exception e) {
-			System.out.println("파일유틸컬렉션 리드텍스트 예외 " +e.getMessage());
+			//System.out.println("파일유틸컬렉션 리드텍스트 예외 " +e.getMessage());
 		}
 		
 		return text;

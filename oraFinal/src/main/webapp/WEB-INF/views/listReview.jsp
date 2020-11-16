@@ -32,14 +32,50 @@ a {
 	background-color: #88BFAB;
 	border-radius: 20px;
 }
+#searchANDinsertContainer {
+	display: flex;
+	flex-direction: row;
+}
+#btnInsert {
+	flex-grow: 1;
+	flex-basis: 50%;
+}
+#searchInputWrap {
+	float: right;
+}
+#searchTypeWrap {
+	margin-top: 1px;
+}
+.total_reply {
+	color: blue;
+	font-size: 10px;
+}
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
+let searchType = "";
+let searchValue = "";
+let searchMethod = 0;
+let courseList;
+const URLSearch = new URLSearchParams(location.search);
+if(URLSearch.has("searchType")) {
+	searchType = URLSearch.get("searchType");
+}
+if(URLSearch.has("searchValue")) {
+	searchValue = URLSearch.get("searchValue");
+}
+if(URLSearch.has("searchMethod")) {
+	searchMethod = URLSearch.get("searchMethod");
+}
+
 const RECORDS_PER_PAGE = 10;	// 페이지당 레코드 수
 const PAGE_LINKS = 5;			// 페이지 하단에 표시되는 페이지링크 수
 let page = 1;	// 현재 페이지 저장 변수(기본은 1페이지)
+
 $(document).ready(function(){
 	getJson();
+	getCourseList();
+	createInput("id");
 	// 마우스 over,leave 이벤트
 	$(document).on("mouseover", ".row", function(){
 		$(this).css("background-color","#88bea6");
@@ -47,25 +83,78 @@ $(document).ready(function(){
 	$(document).on("mouseleave", ".row", function(){
 		$(this).css("background-color","white");
 	});
+
+	$("#searchType").change(function(){
+		createInput($(this).val());
+	});
+	$(document).on("click", "#btnSearch", function(){
+		searchType = $("#searchType").val();
+		searchValue = $("#searchValue").val();
+		if(searchType === "r_title" || searchType === "r_content") {
+			searchMethod = $("#searchMethod").val();
+		}
+		getJson();
+	});
 });
+function createInput(searchType){
+	$("#searchInputWrap").empty();
+	if(searchType === "c_no") {
+		let $select = $("<select></select>").attr("id", "searchValue");
+		for(let i = 0; i < courseList.length; i++) {
+			let $option = $("<option></option>").val(courseList[i].c_no).text(courseList[i].c_name);
+			$select.append($option);
+		}
+		$("#searchInputWrap").append($select);
+	}else {
+		let $input = $("<input>").attr({type: "text", id: "searchValue", size: 10});
+		$("#searchInputWrap").append($input);
+	}
+
+	if(searchType === "r_title" || searchType === "r_content") {
+		let $select = $("<select></select>").attr("id", "searchMethod");
+		let $option1 = $("<option></option>").val("1").text("일치");
+		let $option2 = $("<option></option>").val("2").text("포함");
+		$select.append($option1, $option2);
+		$("#searchInputWrap").append($select);
+	}
+	
+	let $button = $("<button></button>").attr("id", "btnSearch").text("검색");
+	$("#searchInputWrap").append($button);
+}
+
+function getCourseList(){
+	$.ajax({
+		url: "/getCourseList",
+		success: function(data){
+			courseList = data;
+		}
+	});
+}
+
 function getJson(){
 	$.ajax({
 		url: "/listReviewJson",
 		dataType: "json",
 		data: {
 			page: page,	// 현재 페이지 정보 전달
-			RECORDS_PER_PAGE: RECORDS_PER_PAGE	// 페이지당 레코드 수 전달
+			RECORDS_PER_PAGE: RECORDS_PER_PAGE,	// 페이지당 레코드 수 전달
+			searchType: searchType,
+			searchValue: searchValue,
+			searchMethod: searchMethod
 		},
 		success: function(data){
 			var total_pages = data.total_pages;
 			//console.log("total_pages : " + total_pages);
+			//console.log("data.list : " + data.list);
 			$("tbody").empty();		// 기존 레코드 삭제
 			$(data.list).each(function(idx,item){
 				var tr = $("<tr></tr>").addClass("row");	// 마우스 over,leave 이벤트	적용을 위한 클래스
 				var td1 = $("<td></td>").html(item.r_no);
 				var td2 = $("<td></td>").html(item.c_name);
 				var a = $("<a></a>").attr("href","detailReview?r_no="+item.r_no).text(item.r_title);
-				var td3 = $("<td></td>").html(a);
+				// >>> 여기 댓글 수 추가
+				var $span = $("<span></span>").text(" ["+item.total_reply+"]").addClass("total_reply");
+				var td3 = $("<td></td>").append(a, $span);
 				var img = $("<img>").attr({
 					src: "rank/"+item.rank_icon,
 					height: "20px"
@@ -152,11 +241,22 @@ function getJson(){
 		</table>
 		<div id="pageLink"></div>
 		<br>
-		<c:if test="${m != null }">
-			<a href="/insertReview"><img src="buttons/insert.png" height="30px" align="right"></a>
-		</c:if>
+		<div id="searchANDinsertContainer">
+			<div id="searchTypeWrap">
+				<select id="searchType">
+					<option value="id">ID</option>
+					<option value="c_no">코스</option>
+					<option value="r_title">글제목</option>
+					<option value="r_content">글내용</option>
+				</select>
+			</div>
+			<div id="searchInputWrap"></div>
+			<div id="btnInsert">
+				<a href="/user/insertReview"><img src="buttons/insert.png" height="30px" align="right"></a>
+			</div>
+		</div>
 		<br><br>
-		<div class="pageStr">${pageStr }</div>
+		
 	</section>
 <jsp:include page="footer.jsp"/>
 </body>
