@@ -1,0 +1,258 @@
+[
+ {
+   "STATION_ID": "E3208500000012",
+   "station": "웅천청소년공원",
+   "loc": "웅천동",
+   "longitude": 127.673798,
+   "latitude": 34.747158,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E3208500000013",
+   "station": "여서문화거리",
+   "loc": "문수동",
+   "longitude": 127.704139,
+   "latitude": 34.752938,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E3208500000014",
+   "station": "구봉중입구",
+   "loc": "국동4길",
+   "longitude": 127.717427,
+   "latitude": 34.731041,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E320890000001F",
+   "station": "가곡마을입구 (구)여천역",
+   "loc": "선원동",
+   "longitude": 127.6613,
+   "latitude": 34.7685,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E3208900000020",
+   "station": "여천동 주민센터 앞",
+   "loc": "선원동",
+   "longitude": 127.6524,
+   "latitude": 34.777,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E3208600000015",
+   "station": "돌산공원",
+   "loc": "돌산읍",
+   "longitude": 127.743617,
+   "latitude": 34.728214,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E3208600000016",
+   "station": "여수역2",
+   "loc": "덕충동",
+   "longitude": 127.748879,
+   "latitude": 34.752746,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E3208600000017",
+   "station": "버스종합터미널",
+   "loc": "오림동",
+   "longitude": 127.717451,
+   "latitude": 34.757554,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E3208600000018",
+   "station": "여수수산시장",
+   "loc": "남산동",
+   "longitude": 127.731505,
+   "latitude": 34.737147,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E3208500000011",
+   "station": "성산공원",
+   "loc": "화장동",
+   "longitude": 127.645961,
+   "latitude": 34.776099,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E320880000001A",
+   "station": "여수수협앞",
+   "loc": "봉산동",
+   "longitude": 127.724427,
+   "latitude": 34.729844,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E320880000001B",
+   "station": "여수해양경찰서앞",
+   "loc": "여서동",
+   "longitude": 127.707884,
+   "latitude": 34.755577,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E320890000001E",
+   "station": "미평공원",
+   "loc": "미평동",
+   "longitude": 127.70358,
+   "latitude": 34.768252,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E320890000001D",
+   "station": "내동마을입구",
+   "loc": "오림동",
+   "longitude": 127.718871,
+   "latitude": 34.760552,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E320890000001C",
+   "station": "만흥공원",
+   "loc": "만흥동",
+   "longitude": 127.743796,
+   "latitude": 34.772974,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E3208700000019",
+   "station": "이순신광장",
+   "loc": "중앙동",
+   "longitude": 127.735601,
+   "latitude": 34.739279,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E3208200000001",
+   "station": "신동아 파밀리에 삼거리",
+   "loc": "학동",
+   "longitude": 127.656659,
+   "latitude": 34.766356,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E3208200000002",
+   "station": "삼일중학교",
+   "loc": "소라면",
+   "longitude": 127.639878,
+   "latitude": 34.763353,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E3208200000003",
+   "station": "부영1단지 사거리",
+   "loc": "학동",
+   "longitude": 127.656316,
+   "latitude": 34.760645,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E3208200000004",
+   "station": "여수시청",
+   "loc": "학동",
+   "longitude": 127.66301,
+   "latitude": 34.760627,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E3208200000005",
+   "station": "전남대정문",
+   "loc": "미평동",
+   "longitude": 127.701234,
+   "latitude": 34.773474,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E3208200000006",
+   "station": "거북선공원(흥국체육관)",
+   "loc": "학동",
+   "longitude": 127.667441,
+   "latitude": 34.75979,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E3208200000007",
+   "station": "망마경기장",
+   "loc": "학동",
+   "longitude": 127.678825,
+   "latitude": 34.758388,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E3208200000008",
+   "station": "선소입구공원",
+   "loc": "학동",
+   "longitude": 127.664115,
+   "latitude": 34.756396,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E3208200000009",
+   "station": "장성삼거리입구 공원",
+   "loc": "학동",
+   "longitude": 127.657485,
+   "latitude": 34.755894,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E320820000000A",
+   "station": "소호회센터",
+   "loc": "소호동",
+   "longitude": 127.653671,
+   "latitude": 34.745659,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E320820000000B",
+   "station": "소호요트경기장",
+   "loc": "소호동",
+   "longitude": 127.650581,
+   "latitude": 34.738972,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E320820000000C",
+   "station": "진남체육공원",
+   "loc": "오림동",
+   "longitude": 127.725903,
+   "latitude": 34.761099,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E320820000000D",
+   "station": "해양공원 공연장",
+   "loc": "종화동",
+   "longitude": 127.744732,
+   "latitude": 34.73858,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E320820000000E",
+   "station": "여수엑스포 홍보관",
+   "loc": "수정동",
+   "longitude": 127.750531,
+   "latitude": 34.743085,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E320820000000F",
+   "station": "여수역1",
+   "loc": "덕충동",
+   "longitude": 127.748943,
+   "latitude": 34.753196,
+   "LOCKER": ""
+ },
+ {
+   "STATION_ID": "E3208200000010",
+   "station": "오동도",
+   "loc": "수정동",
+   "longitude": 127.766104,
+   "latitude": 34.746303,
+   "LOCKER": ""
+ }
+]

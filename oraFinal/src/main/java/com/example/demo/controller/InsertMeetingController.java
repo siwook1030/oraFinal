@@ -20,14 +20,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.ResponseDataCode;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.dao.MeetingDao;
+import com.example.demo.dao.MemberDao;
 import com.example.demo.util.FileUtilCollection;
+import com.example.demo.util.PointCause;
+import com.example.demo.util.PointGet;
+import com.example.demo.util.ResponseDataCode;
 import com.example.demo.vo.MeetingVo;
 import com.example.demo.vo.Meeting_fileVo;
 
 import com.example.demo.vo.MemberVo;
+import com.example.demo.vo.PointVo;
 import com.example.demo.vo.Meeting_repVo;
 import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.ResponseDataVo;
@@ -45,6 +49,10 @@ public class InsertMeetingController {
 	@Autowired
 	@Setter
 	MeetingDao mdao;
+	
+	@Autowired
+	@Setter
+	MemberDao memberDao;
 	
 	@GetMapping("/user/insertMeeting")
 	public void insertMeetingForm(HttpSession session, Model model) {
@@ -149,6 +157,7 @@ public class InsertMeetingController {
 		responseDataVo.setCode(ResponseDataCode.ERROR);
 		if(re>0) {
 			responseDataVo.setCode(ResponseDataCode.SUCCESS);
+			
 		}
 		return new Gson().toJson(responseDataVo);
 	}

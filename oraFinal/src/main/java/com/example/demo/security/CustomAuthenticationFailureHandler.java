@@ -9,8 +9,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.ResponseDataCode;
-import com.example.demo.ResponseDataStatus;
+import com.example.demo.util.ResponseDataCode;
+import com.example.demo.util.ResponseDataStatus;
 import com.example.demo.vo.ResponseDataVo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

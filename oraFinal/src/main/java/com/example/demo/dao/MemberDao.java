@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.db.MemberManager;
 import com.example.demo.vo.MemberVo;
+import com.example.demo.vo.PointVo;
 import com.example.demo.vo.RankVo;
 
 @Repository
@@ -32,5 +33,8 @@ public class MemberDao {
 	}
 	public int updateMeber(MemberVo m ) {
 		return MemberManager.updateMember(m);
+	}
+	public void insertPoint(PointVo p ) {
+		MemberManager.insertPoint(p);
 	}
 }

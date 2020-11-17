@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.demo.ResponseDataCode;
 import com.example.demo.dao.NoticeDao;
+import com.example.demo.util.ResponseDataCode;
 import com.example.demo.vo.NoticeVo;
 import com.example.demo.vo.ResponseDataVo;
 import com.google.gson.Gson;

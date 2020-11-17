@@ -5,8 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.demo.ResponseDataCode;
 import com.example.demo.dao.MeetingDao;
+import com.example.demo.util.ResponseDataCode;
 import com.example.demo.vo.Meeting_repVo;
 import com.example.demo.vo.ResponseDataVo;
 import com.google.gson.Gson;

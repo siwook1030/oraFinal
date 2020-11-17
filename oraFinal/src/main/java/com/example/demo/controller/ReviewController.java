@@ -23,8 +23,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.dao.MemberDao;
 import com.example.demo.dao.ReviewDao;
+import com.example.demo.util.PointCause;
+import com.example.demo.util.PointGet;
 import com.example.demo.vo.CourseVo;
 import com.example.demo.vo.MemberVo;
+import com.example.demo.vo.PointVo;
 import com.example.demo.vo.RankVo;
 import com.example.demo.vo.ReviewVo;
 import com.example.demo.vo.Review_fileVo;
@@ -294,6 +297,7 @@ public class ReviewController {
 				}
 			}
 			mav.setViewName("redirect:/listReview");
+			
 		}else {
 			mav.addObject("msg", "글등록에 실패하였습니다.");
 			mav.setViewName("errorPage");
