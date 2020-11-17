@@ -740,7 +740,7 @@ window.onload = function(){
 	console.log(mf);
 	let imgStr = '';
 	mf.forEach(function(mtPhoto, idx) {
-		imgStr += '<img class="mfPhoto" src=/'+mtPhoto.mf_path+'/'+mtPhoto.mf_savename+' attr='+idx+'>';
+		imgStr += '<img class="mfPhoto" src="/'+mtPhoto.mf_path+'/'+mtPhoto.mf_savename+'" attr='+idx+'>';
 	})
 	console.log(imgStr);
 	document.getElementById('mfPhotoDiv').innerHTML = imgStr;
