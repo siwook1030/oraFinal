@@ -1,6 +1,7 @@
 package com.example.demo.vo;
 
 import java.sql.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,4 +28,6 @@ public class MeetingVo {
 	private String nickName;
 	private String c_name;
 	private String rank_icon;
+	private List<Meeting_fileVo> mf;
+	private int m_repCnt;
 }

@@ -661,6 +661,127 @@ window.onload = function(){
 	}
 	
 	getMrListByPageNum(nowPageNum); // 댓글이닛로드
+
+///////////////-------------------------------------- 미팅피플 구현
+	const mPeopleNum = document.getElementById("mPeopleNum");  // 참가인원숫자를 표시할 스판노드
+	const allPeopleNum = mPeopleNum.getAttribute("allPeopleNum");  // 모집인원수를 가져오기위한것
+	let nowMpeopleNum = 0;   // 참가인원을 담기위한 변수
+	let mPeopleId = []; // 참가인원 id를 담기위한 변수  한번 참가신청하면 두번이상 신청 못하게 하기위함임
+	
+	const attendRiding = document.getElementById("attendRiding"); // 참가버튼
+	const mPeople = document.getElementById("mPeople");  // 참가인원을 만들어서 추가할 ul노드
+	
+	attendRiding.addEventListener("click", function(e) {
+		if(checkM.code != "200"){
+			const cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
+			if(cfm){
+				window.location = "/login";
+				return;
+			}
+			return;
+		}
+		const mId = checkM.item.id;
+		const attendCfm = confirm("라이딩에 참가하시겠습니까?");
+		if(!attendCfm){
+			return;
+		}
+
+		for(let i=0; i<mPeopleId.length; i++){
+			if(mPeopleId[i] == mId){
+				alert("이미 참가하셨습니다.");
+				return;
+			}
+		}
+
+		if(nowMpeopleNum >= allPeopleNum){
+			alert("참가인원이 꽉찼어요.. 댓글에 요청해보세요!");
+			return;
+		}
+		
+		$.ajax({
+			url: "/user/attendMpeople",
+			type: "POST",
+			data: {"m_no":m_no,"id":mId},
+			success: function(re){
+				if(re == "1"){
+					alert("참가완료! 즐거운 라이딩되세요!");
+					setMpeople();
+				}
+				else{
+					alert("참가실패.. 다시한번 시도해보세요");
+				}
+
+			},
+			error:function(){
+				alert("에러발생");
+			}
+		})
+	});
+
+	function deleteMpeople(id){
+		const cfm = confirm("정말 탈주하시겠습니까?");
+		if(!cfm){
+			return;
+		}
+		
+		$.ajax({
+			url:"/user/deleteMpeople",
+			type: "POST",
+			data: {"m_no":m_no,"id":id},
+			success: function(re){
+				if(re == "1"){
+					alert("탈주완료.. 다음에 같이가요!");
+					setMpeople();
+				}
+				else{
+					alert("탈주실패! 다시한번 시도해보세요");
+				}
+			},
+			error: function(){
+				alert("에러발생");
+			}
+		})
+	}
+
+	function setMpeople(){
+		const mId = checkM.item.id;
+		$.ajax({
+			url: "/mPeopleList",
+			type: "GET",
+			data:{"m_no":m_no} ,
+			success: function(list){
+				mPeople.innerHTML = "";
+				nowMpeopleNum = list.length; // 현재 참가인원을 담음
+				mPeopleId = [];  // 아이디담을 변수 초기화
+				
+				list.forEach(function(p, i) {
+					mPeopleId.push(p.id);
+					const li = document.createElement("li");
+					const content = '<img src="/rank/'+p.rank_icon+'">'+p.nickName+"("+p.mp_regdate+")";
+					li.innerHTML = content;
+					if(mId == p.id){
+						const delBtn = document.createElement("button");
+						delBtn.innerHTML = "탈주";
+						li.append(delBtn);
+						delBtn.addEventListener("click", function(e) {
+							deleteMpeople(p.id);
+						});
+					}
+					mPeople.append(li);
+				})
+
+				mPeopleNum.innerHTML = nowMpeopleNum+"/"+allPeopleNum;
+				
+			},
+			error: function(){
+				alert("에러발생");
+			}
+		})
+	}
+
+	setMpeople(); // 최초 한번실행
+//----------------------------------------------미팅피플 끝
+
 /////////////////////////////////////////////////////////////////////////////////// 맵표시
 	const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = {
@@ -772,8 +893,10 @@ window.onload = function(){
 			<div id="mtInfoAll">
 				<div class="mtInfo"><img src="meetingImg/meetingLoc.png"><br>${mt.m_locname }</div>
 				<div class="mtInfo"><img src="meetingImg/meetingTime.png"><br>${mt.m_time }</div>
-				<div class="mtInfo"><img src="meetingImg/meetingNum.png"><br>${mt.m_numpeople } 명</div>
+				<div class="mtInfo"><img src="meetingImg/meetingNum.png"><button id="attendRiding">참가</button>
+				<br><span id="mPeopleNum" allPeopleNum="${mt.m_numpeople }" >${mt.m_numpeople }</span> 명</div>
 			</div>
+			<div><ul id="mPeople"></ul></div>
 			<br>
 			<textarea rows="30" cols="123" id="m_content">${mt.m_content }</textarea>
 			

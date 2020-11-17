@@ -52,6 +52,10 @@ public class MeetingManager {
 		SqlSession session = sqlSessionFactory.openSession();
 		list = session.selectList("meeting.selectMAll",map);
 		session.close();
+		for(MeetingVo m : list) {
+			m.setMf(detailMFile(m.getM_no()));
+			m.setM_repCnt(cntRep(m.getM_no()));
+		}
 		return list;
 	}
 	
@@ -118,7 +122,16 @@ public class MeetingManager {
 		session.close();
 		return re;
 	}
-		
+	
+	//모임인원 한명삭제
+	public static int deleteOneMp(Meeting_peopleVo mp) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession(true);
+		re = session.delete("meeting.deleteOneMp", mp);
+		session.close();
+		return re;
+	}
+	
 	// 모임인원 전체삭제
 	public static int deleteMPeople(int m_no) {
 		int re = -1;
@@ -236,14 +249,23 @@ public class MeetingManager {
 		return re;
 	}
 	
-	// 댓글 삭제
-	public static int deleteMRep(int mr_no) {
+	// 댓글 전체삭제
+	public static int deleteMRep(int m_no) {
 		int re = -1;
 		SqlSession session = sqlSessionFactory.openSession(true);
-		re = session.delete("meeting.deleteMr", mr_no);
+		re = session.delete("meeting.deleteMr", m_no);
 		session.close();
 		return re;
 	}
+	
+	// 댓글 한개삭제
+		public static int deleteMrOne(int mr_no) {
+			int re = -1;
+			SqlSession session = sqlSessionFactory.openSession(true);
+			re = session.delete("meeting.deleteMrOne", mr_no);
+			session.close();
+			return re;
+		}
 	
 	//마이페이지 토탈
 	public static int myTotMRecord(String id) {

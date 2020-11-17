@@ -34,13 +34,14 @@
 	</delete>
 	
 	<select id="selectMpByNo" resultType="meeting_peopleVo"> <!-- 모임인원 상세 -->
-		SELECT * FROM MEETING_PEOPLE WHERE M_NO=#{m_no}
+		SELECT MP.ID, MP.M_NO, TO_CHAR(MP.MP_REGDATE, 'YYYY. MM. DD HH24:MI') AS MP_REGDATE, M.NICKNAME, R.RANK_ICON  FROM 
+		MEETING_PEOPLE MP, MEMBER M, RANK R WHERE M_NO=#{m_no} AND M.ID=MP.ID AND R.RANK_NAME=M.RANK_NAME ORDER BY MP_REGDATE
 	</select>
 	<insert id="insertMp" parameterType="meeting_peopleVo"> <!-- 모임인원 등록 -->
 		INSERT INTO MEETING_PEOPLE VALUES(#{id}, #{m_no}, SYSDATE)
 	</insert>
 	<delete id="deleteOneMp" parameterType="meeting_peopleVo"> <!-- 모임인원 일부삭제 -->
-		DELETE MEETING_PEOPLE WHERE ID=#{id}
+		DELETE MEETING_PEOPLE WHERE ID=#{id} AND M_NO=#{m_no}
 	</delete>
 	<delete id="deleteMp" parameterType="meeting_peopleVo"> <!-- 모임인원 전체삭제 -->
 		DELETE MEETING_PEOPLE WHERE M_NO=#{m_no}
@@ -95,7 +96,10 @@
 	<update id="updateMr">
 		UPDATE MEETING_REP SET MR_CONTENT=#{mr_content}, MR_FILE1=#{mr_file1} WHERE MR_NO = #{mr_no}
 	</update>
-	<delete id="deleteMr" parameterType="meeting_repVo"> <!-- 댓글 삭제 -->
+	<delete id="deleteMr" parameterType="meeting_repVo"> <!-- 댓글전체 삭제 -->
+		DELETE MEETING_REP WHERE M_NO=#{m_no}
+	</delete>
+	<delete id="deleteMrOne" parameterType="meeting_repVo"> <!-- 내댓글 삭제 -->
 		DELETE MEETING_REP WHERE MR_NO=#{mr_no}
 	</delete>
 	

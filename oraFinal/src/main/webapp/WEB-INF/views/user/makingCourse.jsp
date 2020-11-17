@@ -1557,7 +1557,7 @@ const mNickName = checkM.item.nickName;
 			alert("상단 첫 코스 가져오기를 실행해야만 미리보기를 볼 수 있습니다.");
 			return;
 		}
-
+	
 		$.ajax({
 			url:"/user/previewMakingCourse",
 			type: "POST",

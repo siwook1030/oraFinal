@@ -81,7 +81,7 @@ public class InsertMeetingController {
 		String c_name = "";
 		String rank_icon = "";
 		
-		MeetingVo mtvo = new MeetingVo(m_no, c_no, id, m_title, m_content, m_regdate, m_hit, m_latitude, m_longitude, m_locname, m_time, m_numpeople, nickName, c_name, rank_icon);
+		MeetingVo mtvo = new MeetingVo(m_no, c_no, id, m_title, m_content, m_regdate, m_hit, m_latitude, m_longitude, m_locname, m_time, m_numpeople, nickName, c_name, rank_icon,null,0);
 		//System.out.println(mtvo.toString());
 		int re = mdao.insertMeeting(mtvo);
 		
