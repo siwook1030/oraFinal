@@ -121,12 +121,34 @@ public class MeetingController {
 		model.addAttribute("totalPageNum", gson.toJson(totalPageNum));
 		model.addAttribute("pageSizeR", gson.toJson(pageSizeR));
 		model.addAttribute("cJson", gson.toJson(cdao.getCourseByCno(c_no, path)));
-
+		
 		model.addAttribute("mt", mt);			
 		model.addAttribute("mf", mf);			
 		model.addAttribute("mfJson", gson.toJson(mf));
 	}
 	
+	@GetMapping(value = "/mPeopleList", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String mPeopleList(int m_no) {
+		
+		return new Gson().toJson(mdao.detailMPeople(m_no));
+	}
+	
+	@PostMapping(value = "/user/attendMpeople", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String attendMpeople(int m_no, String id) {
+		System.out.println(m_no);
+		System.out.println(id);
+		int re = mdao.insertMPeople(new Meeting_peopleVo(id, m_no, "", "", ""));
+		return Integer.toString(re); 
+	}
+	
+	@PostMapping(value = "/user/deleteMpeople", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String deleteMpeople(int m_no, String id) {
+		int re = mdao.deleteOneMp(new Meeting_peopleVo(id, m_no, "", "", ""));
+		return Integer.toString(re);
+	}
 	
 	@GetMapping(value = "/detailMRep", produces = "application/json;charset=utf-8")
 	@ResponseBody
@@ -188,6 +210,7 @@ public class MeetingController {
 		String rank_icon = "";
 		
 		MeetingVo mtvo = new MeetingVo(m_no, c_no, id, m_title, m_content, m_regdate, m_hit, m_latitude, m_longitude, m_locname, m_time, m_numpeople, nickName, c_name, rank_icon, null, 0);
+
 		//System.out.println(mtvo.toString());
 		int re = mdao.updateMeeting(mtvo);
 		
@@ -259,21 +282,7 @@ public class MeetingController {
 		map.put("start", 1);
 		map.put("end", mdao.cntRep(m_no));
 		map.put("m_no", m_no);
-		List<Meeting_repVo> listMR = mdao.detailMRep(map);
-		if(listMR.size()>0) {
-			re = mdao.deleteMRep(m_no);
-			if(re<=0) {
-				mav.addObject("msg", "파일삭제에 실패했습니다.");
-				mav.setViewName("error");
-			} else {
-				
-				for(Meeting_repVo list:listMR) {
-					String oldFname = list.getMr_file1();
-					file = new File(path+"/"+oldFname);
-					file.delete();
-				}
-			}
-		}
+		re = mdao.deleteMRep(m_no);
 		
 
 		// 첨부파일삭제
@@ -356,7 +365,7 @@ public class MeetingController {
 	@ResponseBody
 	public String deleteMeetingRep(int m_no, int mr_no) {
 		int re = 0;
-		re = mdao.deleteMr(mr_no);
+		re = mdao.deleteMrOne(mr_no);
 		ResponseDataVo responseDataVo = new ResponseDataVo();
 		responseDataVo.setCode(ResponseDataCode.ERROR);
 		if(re>0) {
