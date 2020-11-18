@@ -43,9 +43,11 @@ td {
 	text-align: center;
 }
 
-p {
+#content {
 	padding: 15px;
 	height: 500px;
+	width: 850px;
+	border: none;
 }
 
 #btnList,#btnUpdate,#btnDelete {
@@ -120,12 +122,12 @@ window.onload = function(){
 		    </table> 
 
 			<br>
-			<p>${n.n_content }</p><br>
+			<div id="content" style="white-space:pre;"><c:out value="${n.n_content}" /></div><br>
 		<a href="listNotice"><button type="button" id="btnList">목록</button></a>
 		<div id="btnUD">
 			<button type="button" id="btnDelete">삭제</button>
 			<!-- <button type="button" id="btnUpdate" value="${n.n_no }">수정</button> -->
-		 <a href="/admin/updateNotice?n_no=${n.n_no}"><button type="button" id="btnUpdate" value="${n.n_no }">수정</button></a> 
+		 	<a href="/admin/updateNotice?n_no=${n.n_no}"><button type="button" id="btnUpdate" value="${n.n_no }">수정</button></a> 
 		</div>
 		</section>
 	<br>
