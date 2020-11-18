@@ -47,7 +47,7 @@ section {
 }
 
 #btn_search{
-	background-color: #eccb6a;
+	background-color: #ECCB6A;
 }
 
 #btn_write{
@@ -87,7 +87,7 @@ table, th, td {
 	border: solid 1px #fff2e4;
 	border-collapse: collapse;
 	font-size: 15px;
-	color: black;
+	color: #0f0f0f;
 	text-decoration: none;
 }
 
@@ -95,17 +95,27 @@ th {
 	padding: 6px;
 	text-align: center;
 	background-color: #fff2e4;
-	height: 20px;
+	height: 25px;
 }
 
 td {
 	padding: 6px;
 	text-align: center;
-	height: 20px;
+	height: 30px;
 }
 
 #insertNotice{
 	display: none;
+}
+
+#page {
+	text-align: center;
+	margin-top: 50px;
+}
+
+span {
+	margin: 3px;
+	padding: 4px 8px;
 }
 
    /*float 초기화 아이디*/
@@ -119,40 +129,61 @@ td {
 window.onload = function(){
 	const checkM = checkLogin(); // 로그인이 되어있는 상태인지 체크한다
 	console.log(checkM);
-//
-    const tbody = document.getElementById("tbody");
+	
+	const tbody = document.getElementById("tbody");
 	const btn_search = document.getElementById("btn_search");
 	const code_value = document.getElementById("code_value");
 	const search = document.getElementById("search");
+	
+	let pageNo = 1;
+	const recordSize = ${recordSize};
+	const pageSize = ${pageSize};
+	listNotice();
+//
+   
 	
 	const insertNotice = document.getElementById("insertNotice");
 	if(checkM.item.code_value != null && checkM.item.code_value == "00101"){
 		insertNotice.style.display = "inline";
 	}
-	btn_search.addEventListener("click", function(e){
+
+	function listNotice(){
 		const cvalue = code_value.value;
 		const searchText = search.value.trim();
-		$.ajax({
-			url:"/searchNotice",
-			type:"GET",
-			data:{
-				"code_value":cvalue,
-				"searchText":searchText
-			},
-			success:function(list){
-				setList(list);
-			},
-			error:function(){
-				alert("에러발생");
-			}
-		});
-
+			$.ajax({
+				url:"/listNoticeJson",
+				type:"GET",
+				data : {
+					"pageNo": pageNo,
+					"code_value":cvalue,
+					"searchText":searchText
+				},
+				success:function(map){
+					$('tbody').empty();
+					setList(map.list);
+					setPage(map.totRecord);
+					console.log(map.totRecord);
+				}
+			});
+		}
+		
+	
+	btn_search.addEventListener("click", function(e){
+		pageNo=1;
+		listNotice();
 	});
+	search.addEventListener("keyup", function(e) {
+		if(e.keyCode == '13'){
+			pageNo=1;
+			listNotice();
+		}
+	})
 
 	function setList(list){
 		tbody.innerHTML="";
 		list.forEach(function(n, i){
 		const tr = document.createElement("tr");
+		tr.className="row";
 		let nc = '<td>'+n.code_name+'</td>';
 			  nc+=    '<td><a href="detailNotice?n_no='+n.n_no+' ">'+n.n_title+'</a></td>';
 			  nc+= '<td>'+n.n_regdate+'</td>';
@@ -162,7 +193,72 @@ window.onload = function(){
 		});
 		
 	};
-	
+
+	function setPage(totRecord){
+		$('#page').empty();
+		$('#page').css('cursor','pointer');
+		//$('#page').css('cursor','pointer');
+		// 총 페이지 수
+		let totPage = Math.ceil(totRecord/recordSize);
+		console.log('*** totPage : '+totPage);
+
+		// 페이지 버튼 숫자
+		let startPage = parseInt((pageNo-1)/pageSize)*pageSize+1;
+		let endPage = startPage+pageSize-1;
+		if(endPage>totPage) {
+			endPage = totPage;
+		}
+		console.log('*** startPage : '+startPage);
+		console.log('*** endPage : '+endPage);
+
+
+		if(startPage>1) {
+			const prev = $('<span></span>').attr('idx',(startPage-1)).html('<');
+			$('#page').append(prev);
+			$(prev).click(function(){
+				const idx = $(this).attr('idx');
+				pageNo = idx;
+				listNotice();
+			});
+		}
+		
+		for(let i=startPage; i<=endPage; i++){
+			const a = $('<span></span>').attr('idx',i).html(i);
+			if(i==pageNo){
+				$(a).css({
+					color: 'white',
+					backgroundColor: '#bae4f0',
+					borderRadius: '15px'
+				});
+			}
+			$('#page').append(a);
+			$(a).click(function() {
+				const idx = $(this).attr('idx');
+				if(pageNo==idx){
+					return;
+				} 
+				console.log(idx);
+				pageNo = idx;
+				listNotice();
+			});			
+		}
+			if(totPage>endPage){
+			const next = $('<span></span>').attr('idx',(endPage+1)).html('>');
+			$('#page').append(next);
+			$(next).click(function(){
+				const idx = $(this).attr('idx');
+				pageNo = idx;
+				listNotice();
+			});
+		}			
+	}
+
+	$(document).on("mouseover", ".row", function(){
+		$(this).css("background-color","#f0f0f0");
+	});
+	$(document).on("mouseleave", ".row", function(){
+		$(this).css("background-color","white");
+	});
 }
 	
 
@@ -201,7 +297,7 @@ window.onload = function(){
 					</tr>
 				</thead>
 				<tbody id="tbody">
-				<c:forEach var="n" items="${list }">
+				<!--<c:forEach var="n" items="${list }">
 				<tr>
 					<td>${n.code_name }</td>
 					<td>
@@ -210,7 +306,7 @@ window.onload = function(){
 					<td>${n.n_regdate }</td>
 					<td>${n.n_hit }</td>
 					</tr>
-				</c:forEach>
+				</c:forEach>-->
 				</tbody>
 			</table>
 		</div>
@@ -218,6 +314,7 @@ window.onload = function(){
 		<div id="insertNotice">
 			<a href="/admin/insertNotice"><button id="btn_write">글쓰기</button></a><br>
 		</div>
+		<div id="page"></div>
 		
 	</section>
 	<br>

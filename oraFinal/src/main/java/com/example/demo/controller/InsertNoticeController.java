@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.demo.ResponseDataCode;
 import com.example.demo.dao.NoticeDao;
+import com.example.demo.util.ResponseDataCode;
 import com.example.demo.vo.NoticeVo;
 import com.example.demo.vo.ResponseDataVo;
 import com.google.gson.Gson;
@@ -32,7 +32,7 @@ public class InsertNoticeController {
 	@PostMapping(value = "/admin/insertNotice", produces = "application/json; charset=utf8")
 	@ResponseBody
 	public String submit(NoticeVo n) {
-		System.out.println("노티스 : " +n);
+		System.out.println("노티스 : " + n);
 		int re = ndao.insertNotice(n);
 		ResponseDataVo responseDataVo = new ResponseDataVo();
 		responseDataVo.setCode(ResponseDataCode.ERROR);

@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.demo.ResponseDataCode;
 import com.example.demo.dao.NoticeDao;
+import com.example.demo.util.ResponseDataCode;
 import com.example.demo.vo.NoticeVo;
 import com.example.demo.vo.ResponseDataVo;
 import com.google.gson.Gson;
@@ -24,7 +24,6 @@ public class UpdateNoticeController {
 	
 	@GetMapping(value = "/admin/updateNotice")
 	public void form(Model model, int n_no) {
-		System.out.println("받아씀");
 		model.addAttribute("n", ndao.selectByN_NO(n_no));
 		model.addAttribute("category", ndao.getBoardCategory("006")); // 006코드는 공지사항
 	}

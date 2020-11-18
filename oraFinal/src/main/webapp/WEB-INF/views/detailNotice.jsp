@@ -34,6 +34,8 @@ th {
 	padding: 6px;
 	text-align: center;
 	background-color: #fff2e4;
+	color: #0f0f0f;
+	height: 25px;
 }
 
 td {
@@ -62,6 +64,10 @@ p {
     margin: 0 5px 0 0;
     cursor: pointer;
     float: right;
+}
+
+#btnUD{
+	display: none;
 }
 
 #btnDelete{

@@ -1,0 +1,578 @@
+[
+ {
+   "STATION_ID": 1,
+   "station": "첫마을 1단지",
+   "loc": "한솔동",
+   "LOCKER": 13,
+   "latitude": 36.482114,
+   "longitude": 127.259628
+ },
+ {
+   "STATION_ID": 2,
+   "station": "첫마을 3단지",
+   "loc": "한솔동",
+   "LOCKER": 15,
+   "latitude": 36.47985,
+   "longitude": 127.260513
+ },
+ {
+   "STATION_ID": 3,
+   "station": "첫마을  4단지",
+   "loc": "한솔동",
+   "LOCKER": 15,
+   "latitude": 36.480436,
+   "longitude": 127.253314
+ },
+ {
+   "STATION_ID": 4,
+   "station": "LH세종특별본부",
+   "loc": "어진동",
+   "LOCKER": 15,
+   "latitude": 36.495484,
+   "longitude": 127.266063
+ },
+ {
+   "STATION_ID": 5,
+   "station": "한솔동 주민센터",
+   "loc": "한솔동",
+   "LOCKER": 14,
+   "latitude": 36.4789789,
+   "longitude": 127.2555235
+ },
+ {
+   "STATION_ID": 6,
+   "station": "한솔중학교",
+   "loc": "한솔동",
+   "LOCKER": 12,
+   "latitude": 36.474876,
+   "longitude": 127.255207
+ },
+ {
+   "STATION_ID": 7,
+   "station": "첫마을 5단지",
+   "loc": "한솔동",
+   "LOCKER": 15,
+   "latitude": 36.477852,
+   "longitude": 127.249886
+ },
+ {
+   "STATION_ID": 8,
+   "station": "첫마을 6단지",
+   "loc": "한솔동",
+   "LOCKER": 15,
+   "latitude": 36.475618,
+   "longitude": 127.252225
+ },
+ {
+   "STATION_ID": 9,
+   "station": "첫마을 7단지",
+   "loc": "한솔동",
+   "LOCKER": 15,
+   "latitude": 36.474186,
+   "longitude": 127.255057
+ },
+ {
+   "STATION_ID": 10,
+   "station": "세종보 홍보관",
+   "loc": "세종리",
+   "LOCKER": 15,
+   "latitude": 36.476774,
+   "longitude": 127.25951
+ },
+ {
+   "STATION_ID": 11,
+   "station": "첫마을 (BRT정류장)",
+   "loc": "나성동",
+   "LOCKER": 15,
+   "latitude": 36.481001,
+   "longitude": 127.261527
+ },
+ {
+   "STATION_ID": 12,
+   "station": "도담동 주민센터",
+   "loc": "도담동",
+   "LOCKER": 13,
+   "latitude": 36.515895,
+   "longitude": 127.262853
+ },
+ {
+   "STATION_ID": 13,
+   "station": "도시통합정보센터",
+   "loc": "다정동",
+   "LOCKER": 10,
+   "latitude": 36.493845,
+   "longitude": 127.256103
+ },
+ {
+   "STATION_ID": 14,
+   "station": "종합민원실 (BRT정류장)",
+   "loc": "어진동",
+   "LOCKER": 15,
+   "latitude": 36.504611,
+   "longitude": 127.261738
+ },
+ {
+   "STATION_ID": 15,
+   "station": "고용노동부 (BRT정류장)",
+   "loc": "어진동",
+   "LOCKER": 15,
+   "latitude": 36.501559,
+   "longitude": 127.260176
+ },
+ {
+   "STATION_ID": 16,
+   "station": "성남중학교",
+   "loc": "어진동",
+   "LOCKER": 15,
+   "latitude": 36.497462,
+   "longitude": 127.255843
+ },
+ {
+   "STATION_ID": 17,
+   "station": "문화체육관광부",
+   "loc": "어진동",
+   "LOCKER": 10,
+   "latitude": 36.498175,
+   "longitude": 127.26442
+ },
+ {
+   "STATION_ID": 18,
+   "station": "국무조정실 (대통령 기록관)",
+   "loc": "어진동",
+   "LOCKER": 10,
+   "latitude": 36.502481,
+   "longitude": 127.272106
+ },
+ {
+   "STATION_ID": 19,
+   "station": "호수공원 (정부세종컨벤션센터)",
+   "loc": "어진동",
+   "LOCKER": 15,
+   "latitude": 36.499384,
+   "longitude": 127.269759
+ },
+ {
+   "STATION_ID": 20,
+   "station": "호수공원 (제1주차장)",
+   "loc": "세종리",
+   "LOCKER": 15,
+   "latitude": 36.492559,
+   "longitude": 127.269245
+ },
+ {
+   "STATION_ID": 21,
+   "station": "한솔유치원",
+   "loc": "한솔동",
+   "LOCKER": 15,
+   "latitude": 36.477965,
+   "longitude": 127.25215
+ },
+ {
+   "STATION_ID": 22,
+   "station": "범지기마을 10단지",
+   "loc": "아름동",
+   "LOCKER": 12,
+   "latitude": 36.516017,
+   "longitude": 127.25105
+ },
+ {
+   "STATION_ID": 23,
+   "station": "아름동 주민센터",
+   "loc": "아름동",
+   "LOCKER": 12,
+   "latitude": 36.511962,
+   "longitude": 127.247877
+ },
+ {
+   "STATION_ID": 24,
+   "station": "가재마을 9단지",
+   "loc": "종촌동",
+   "LOCKER": 12,
+   "latitude": 36.501754,
+   "longitude": 127.250707
+ },
+ {
+   "STATION_ID": 25,
+   "station": "가재마을 11단지",
+   "loc": "종촌동",
+   "LOCKER": 12,
+   "latitude": 36.504826,
+   "longitude": 127.250465
+ },
+ {
+   "STATION_ID": 26,
+   "station": "도램마을 (BRT 정류장)",
+   "loc": "도담동",
+   "LOCKER": 12,
+   "latitude": 36.514855,
+   "longitude": 127.258498
+ },
+ {
+   "STATION_ID": 27,
+   "station": "한뜰마을 2단지 (세종1번가)",
+   "loc": "어진동",
+   "LOCKER": 12,
+   "latitude": 36.504509,
+   "longitude": 127.270131
+ },
+ {
+   "STATION_ID": 28,
+   "station": "국책연구단지",
+   "loc": "반곡동",
+   "LOCKER": 12,
+   "latitude": 36.496194,
+   "longitude": 127.303916
+ },
+ {
+   "STATION_ID": 29,
+   "station": "공정거래위원회(해양수산부)",
+   "loc": "어진동",
+   "LOCKER": 20,
+   "latitude": 36.504866,
+   "longitude": 127.267261
+ },
+ {
+   "STATION_ID": 30,
+   "station": "세종시청",
+   "loc": "보람동",
+   "LOCKER": 30,
+   "latitude": 36.478848,
+   "longitude": 127.288719
+ },
+ {
+   "STATION_ID": 31,
+   "station": "국세청",
+   "loc": "나성동",
+   "LOCKER": 12,
+   "latitude": 36.484645,
+   "longitude": 127.259567
+ },
+ {
+   "STATION_ID": 32,
+   "station": "한국개발연구원 (KDI)",
+   "loc": "반곡동",
+   "LOCKER": 12,
+   "latitude": 36.482502,
+   "longitude": 127.310611
+ },
+ {
+   "STATION_ID": 33,
+   "station": "시외버스터미널",
+   "loc": "대평동",
+   "LOCKER": 20,
+   "latitude": 36.469003,
+   "longitude": 127.274106
+ },
+ {
+   "STATION_ID": 34,
+   "station": "가락마을 21단지",
+   "loc": "고운동",
+   "LOCKER": 15,
+   "latitude": 36.517472,
+   "longitude": 127.240872
+ },
+ {
+   "STATION_ID": 35,
+   "station": "가락마을 13단지",
+   "loc": "고운동",
+   "LOCKER": 15,
+   "latitude": 36.514074,
+   "longitude": 127.229691
+ },
+ {
+   "STATION_ID": 36,
+   "station": "가락마을 8단지",
+   "loc": "고운동",
+   "LOCKER": 15,
+   "latitude": 36.50699,
+   "longitude": 127.239403
+ },
+ {
+   "STATION_ID": 37,
+   "station": "가락마을 6단지",
+   "loc": "고운동",
+   "LOCKER": 15,
+   "latitude": 36.504237,
+   "longitude": 127.237826
+ },
+ {
+   "STATION_ID": 38,
+   "station": "범지기마을 3단지",
+   "loc": "아름동",
+   "LOCKER": 15,
+   "latitude": 36.516182,
+   "longitude": 127.245477
+ },
+ {
+   "STATION_ID": 39,
+   "station": "범지기마을 4단지",
+   "loc": "아름동",
+   "LOCKER": 15,
+   "latitude": 36.509161,
+   "longitude": 127.24998
+ },
+ {
+   "STATION_ID": 40,
+   "station": "가재마을 4단지",
+   "loc": "중촌동",
+   "LOCKER": 15,
+   "latitude": 36.505489,
+   "longitude": 127.245045
+ },
+ {
+   "STATION_ID": 41,
+   "station": "종촌종합복지센터",
+   "loc": "중촌동",
+   "LOCKER": 15,
+   "latitude": 36.502145,
+   "longitude": 127.246821
+ },
+ {
+   "STATION_ID": 42,
+   "station": "도램마을 14단지",
+   "loc": "도담동",
+   "LOCKER": 15,
+   "latitude": 36.511224,
+   "longitude": 127.26509
+ },
+ {
+   "STATION_ID": 43,
+   "station": "도램마을 1단지",
+   "loc": "도담동",
+   "LOCKER": 15,
+   "latitude": 36.508096,
+   "longitude": 127.25776
+ },
+ {
+   "STATION_ID": 44,
+   "station": "가락마을 15단지",
+   "loc": "고운동",
+   "LOCKER": 15,
+   "latitude": 36.517332,
+   "longitude": 127.237483
+ },
+ {
+   "STATION_ID": 45,
+   "station": "가락마을 11단지",
+   "loc": "고운동",
+   "LOCKER": 15,
+   "latitude": 36.510545,
+   "longitude": 127.229927
+ },
+ {
+   "STATION_ID": 46,
+   "station": "가락마을 4단지",
+   "loc": "고운동",
+   "LOCKER": 15,
+   "latitude": 36.506684,
+   "longitude": 127.237095
+ },
+ {
+   "STATION_ID": 47,
+   "station": "범지기마을 11단지",
+   "loc": "아름동",
+   "LOCKER": 15,
+   "latitude": 36.511452,
+   "longitude": 127.252059
+ },
+ {
+   "STATION_ID": 48,
+   "station": "범지기마을 1단지",
+   "loc": "아름동",
+   "LOCKER": 15,
+   "latitude": 36.508934,
+   "longitude": 127.242006
+ },
+ {
+   "STATION_ID": 49,
+   "station": "가재마을 7단지",
+   "loc": "종촌동",
+   "LOCKER": 12,
+   "latitude": 36.506402,
+   "longitude": 127.249654
+ },
+ {
+   "STATION_ID": 50,
+   "station": "도램마을 10단지",
+   "loc": "도담동",
+   "LOCKER": 15,
+   "latitude": 36.512775,
+   "longitude": 127.261354
+ },
+ {
+   "STATION_ID": 51,
+   "station": "도램마을 2단지",
+   "loc": "도담동",
+   "LOCKER": 15,
+   "latitude": 36.511969,
+   "longitude": 127.255813
+ },
+ {
+   "STATION_ID": 52,
+   "station": "인사혁신처",
+   "loc": "어진동",
+   "LOCKER": 18,
+   "latitude": 36.507983,
+   "longitude": 127.261488
+ },
+ {
+   "STATION_ID": 53,
+   "station": "행복도시 세종홍보관",
+   "loc": "세종리",
+   "LOCKER": 15,
+   "latitude": 36.48985,
+   "longitude": 127.270374
+ },
+ {
+   "STATION_ID": 54,
+   "station": "고운동 주민센터",
+   "loc": "고운동",
+   "LOCKER": 12,
+   "latitude": 36.520034,
+   "longitude": 127.236768
+ },
+ {
+   "STATION_ID": 55,
+   "station": "고운동(만남로 15)",
+   "loc": "고운동",
+   "LOCKER": 12,
+   "latitude": 36.501321,
+   "longitude": 127.23607
+ },
+ {
+   "STATION_ID": 56,
+   "station": "종촌동 주민센터",
+   "loc": "중촌동",
+   "LOCKER": 15,
+   "latitude": 36.504978,
+   "longitude": 127.24696
+ },
+ {
+   "STATION_ID": 57,
+   "station": "도램마을 16단지",
+   "loc": "도담동",
+   "LOCKER": 15,
+   "latitude": 36.51422,
+   "longitude": 127.266275
+ },
+ {
+   "STATION_ID": 58,
+   "station": "한국조세재정연구원",
+   "loc": "반곡동",
+   "LOCKER": 18,
+   "latitude": 36.492629,
+   "longitude": 127.300585
+ },
+ {
+   "STATION_ID": 59,
+   "station": "새샘마을 9단지 ",
+   "loc": "소담동",
+   "LOCKER": 15,
+   "latitude": 36.489062,
+   "longitude": 127.299128
+ },
+ {
+   "STATION_ID": 60,
+   "station": "새샘마을 3단지(BRT 정류장)",
+   "loc": "소담동",
+   "LOCKER": 20,
+   "latitude": 36.4827,
+   "longitude": 127.2975
+ },
+ {
+   "STATION_ID": 61,
+   "station": "새샘마을 5단지",
+   "loc": "소담동",
+   "LOCKER": 12,
+   "latitude": 36.481707,
+   "longitude": 127.3057
+ },
+ {
+   "STATION_ID": 62,
+   "station": "호려울마을 9단지",
+   "loc": "보람동",
+   "LOCKER": 12,
+   "latitude": 36.479538,
+   "longitude": 127.295668
+ },
+ {
+   "STATION_ID": 63,
+   "station": "호려울마을 4단지",
+   "loc": "보람동",
+   "LOCKER": 12,
+   "latitude": 36.476322,
+   "longitude": 127.288507
+ },
+ {
+   "STATION_ID": 64,
+   "station": "자이아파트",
+   "loc": "죽림리",
+   "LOCKER": 12,
+   "latitude": 36.591192,
+   "longitude": 127.291513
+ },
+ {
+   "STATION_ID": 65,
+   "station": "신흥주공아파트",
+   "loc": "신흥리",
+   "LOCKER": 15,
+   "latitude": 36.5945,
+   "longitude": 127.288621
+ },
+ {
+   "STATION_ID": 66,
+   "station": "세종시청(조치원청사)",
+   "loc": "신흥리",
+   "LOCKER": 12,
+   "latitude": 36.5926,
+   "longitude": 127.2935
+ },
+ {
+   "STATION_ID": 67,
+   "station": "전통시장(주차타워)",
+   "loc": "정리",
+   "LOCKER": 10,
+   "latitude": 36.60026,
+   "longitude": 127.297745
+ },
+ {
+   "STATION_ID": 68,
+   "station": "홈플러스 조치원점",
+   "loc": "원리",
+   "LOCKER": 15,
+   "latitude": 36.5868,
+   "longitude": 127.2974
+ },
+ {
+   "STATION_ID": 69,
+   "station": "조치원역(서측)",
+   "loc": "침산리",
+   "LOCKER": 28,
+   "latitude": 36.602542,
+   "longitude": 127.29476
+ },
+ {
+   "STATION_ID": 70,
+   "station": "공영버스터미널(조치원)",
+   "loc": "상리",
+   "LOCKER": 10,
+   "latitude": 36.602002,
+   "longitude": 127.302521
+ },
+ {
+   "STATION_ID": 71,
+   "station": "고려대학교(세종캠퍼스)",
+   "loc": "서창리",
+   "LOCKER": 20,
+   "latitude": 36.6099,
+   "longitude": 127.29325
+ },
+ {
+   "STATION_ID": 72,
+   "station": "홍익대학교(세종캠퍼스)",
+   "loc": "신안리",
+   "LOCKER": 20,
+   "latitude": 36.620912,
+   "longitude": 127.290678
+ }
+]

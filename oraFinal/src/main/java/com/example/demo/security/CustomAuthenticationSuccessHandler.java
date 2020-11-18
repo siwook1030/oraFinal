@@ -17,9 +17,9 @@ import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.ResponseDataCode;
-import com.example.demo.ResponseDataStatus;
 import com.example.demo.dao.MemberDao;
+import com.example.demo.util.ResponseDataCode;
+import com.example.demo.util.ResponseDataStatus;
 import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.ResponseDataVo;
 import com.fasterxml.jackson.databind.ObjectMapper;

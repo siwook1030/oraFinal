@@ -18,6 +18,6 @@ public class Meeting_fileVo {
 	private String mf_savename;
 	private String mf_path;
 	private long mf_size;
-	private MultipartFile uploadFile;
+//	private MultipartFile uploadFile;
 	
 }

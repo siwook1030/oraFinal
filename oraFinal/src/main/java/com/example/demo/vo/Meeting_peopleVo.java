@@ -11,4 +11,6 @@ public class Meeting_peopleVo {
 	private String id;
 	private int m_no;
 	private String mp_regdate;
+	private String nickName;
+	private String rank_icon;
 }

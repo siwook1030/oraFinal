@@ -4,7 +4,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -23,9 +25,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.ResponseDataCode;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.util.FileUtilCollection;
+import com.example.demo.util.ResponseDataCode;
 import com.example.demo.vo.CoursePhotoVo;
 import com.example.demo.vo.CourseVo;
 import com.example.demo.vo.MemberVo;
@@ -52,6 +54,14 @@ public class MakingCourseController {
 		
 	}
 	
+	@GetMapping(value = "/user/subway", produces = "application/json; charset=utf-8")  // 지하철역정보 불러오는 곳
+	@ResponseBody
+	public String subway(HttpServletRequest request) {
+		String path = request.getRealPath("/publictransport")+"/";
+		System.out.println(FileUtilCollection.readText("subway.txt", path));
+		return new Gson().toJson(FileUtilCollection.readText("subway.txt", path));
+	}
+	
 	@PostMapping(value = "/user/cnameDupCheck", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String cnameDupCheck(String c_name) {
@@ -72,6 +82,7 @@ public class MakingCourseController {
 		 int c_no = 0;
 		 String code_value = (String)map.get("code_value");
 		 String id = (String)map.get("id");
+		 String nickName = (String)map.get("nickName");
 		 String c_name = (String)map.get("c_name");
 		 String c_s_locname =(String)map.get("c_s_locname");
 		 double c_s_latitude = Double.parseDouble((String)map.get("c_s_latitude"));
@@ -90,7 +101,7 @@ public class MakingCourseController {
 		 double userDis = 0; //코스와 유저의현재위치와의  거리
 		 List<CoursePhotoVo> c_photo = null;
 		
-		 CourseVo c = new CourseVo(c_no, code_value, id, c_name, c_s_locname, c_s_latitude, c_s_longitude, c_e_locname, c_e_latitude, c_e_longitude, c_loc, c_distance, c_time, c_difficulty, c_view, c_views, c_words, c_line, c_temp, userDis, c_photo);
+		 CourseVo c = new CourseVo(c_no, code_value, id, nickName, c_name, c_s_locname, c_s_latitude, c_s_longitude, c_e_locname, c_e_latitude, c_e_longitude, c_loc, c_distance, c_time, c_difficulty, c_view, c_views, c_words, c_line, c_temp, userDis, c_photo);
 		 
 		 int pt_noPS = 0;
 		 String code_valuePS = "00201";
@@ -171,6 +182,7 @@ public class MakingCourseController {
 		 int c_no = cdao.nextCno();
 		 String code_value = (String)map.get("code_value");
 		 String id = (String)map.get("id");
+		 String nickName = (String)map.get("nickName");
 		 String c_name = (String)map.get("c_name");
 		 String c_s_locname =(String)map.get("c_s_locname");
 		 double c_s_latitude = Double.parseDouble((String)map.get("c_s_latitude"));
@@ -200,8 +212,8 @@ public class MakingCourseController {
 			 String cp_name =  "cp"+c_no+"_"+cpCnt+"_"+FileUtilCollection.filePrefixName()+".png";
 			 c_photo.add(new CoursePhotoVo(0, c_no,cp_name, coursePhotoPath+cPhotoPathSub, 0, 0));
 		 }
-		
-		 CourseVo c = new CourseVo(c_no, code_value, id, c_name, c_s_locname, c_s_latitude, c_s_longitude, c_e_locname, c_e_latitude, c_e_longitude, c_loc, c_distance, c_time, c_difficulty, c_view, c_views, c_words, c_line, c_temp, userDis, c_photo);
+		 
+		 CourseVo c = new CourseVo(c_no, code_value, id, nickName, c_name, c_s_locname, c_s_latitude, c_s_longitude, c_e_locname, c_e_latitude, c_e_longitude, c_loc, c_distance, c_time, c_difficulty, c_view, c_views, c_words, c_line, c_temp, userDis, c_photo);
 	
 		 
 		 int pt_noPS = 0;
@@ -215,7 +227,6 @@ public class MakingCourseController {
 		 String pt_linePS = (String)map.get("pt_linePS");
 		
 		 PublicTransportVo sPT = new PublicTransportVo(pt_noPS, code_valuePS, c_noPS, pt_latitudePS, pt_longitudePS, pt_imgPS, pt_stationPS, pt_distancePS, pt_linePS);
-		 
 		 
 		 int pt_noPE = 0;
 		 String code_valuePE = "00202";
