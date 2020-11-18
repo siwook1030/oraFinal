@@ -3,7 +3,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Ecoverde - Free Bootstrap 4 Template by Colorlib</title>
+    <title>회원 정보 수정</title>
+     <jsp:include page="my_header.jsp"/>
+    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
@@ -305,27 +307,6 @@
   </head>
   <body>
     
-	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-	    <div class="container">
-	      <a class="navbar-brand" href="index.html">Ecoverde</a>
-	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-	        <span class="oi oi-menu"></span> Menu
-	      </button>
-
-	      <div class="collapse navbar-collapse" id="ftco-nav">
-	        <ul class="navbar-nav ml-auto">
-	          <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
-	          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-	          <li class="nav-item"><a href="agent.html" class="nav-link">Agent</a></li>
-	          <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
-	          <li class="nav-item"><a href="properties.html" class="nav-link">Properties</a></li>
-	          <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
-	          <li class="nav-item active"><a href="contact.html" class="nav-link">Contact</a></li>
-	        </ul>
-	      </div>
-	    </div>
-	  </nav>
-    <!-- END nav -->
   
     
     <section class="hero-wrap hero-wrap-2" style="background-image: url('images/bg_1.jpg');" data-stellar-background-ratio="0.5">
@@ -333,22 +314,32 @@
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate pb-0 text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="fa fa-chevron-right"></i></a></span> <span>Contact <i class="fa fa-chevron-right"></i></span></p>
-            <h1 class="mb-3 bread">회원정보수정</h1>
+          
+          	<span><h1 class="mb-3 bread">마이페이지</h1></span>
+          
+          	<p class="breadcrumbs">
+
+          		<span class="mr-2">
+          			<a href="index.html">Home <i class="fa fa-chevron-right"></i></a>
+          		</span>
+          		 <a href="/myPage">정보 수정 <i class="fa fa-chevron-right"></i></a>
+				<span>
+          		<a href="/myPageSaveCourse">찜 목록 <i class="fa fa-chevron-right"></i></a>
+          		<a href="/myPageMyCourse">내 작성 코스<i class="fa fa-chevron-right"></i></a>
+         	    <a href="/myPageListReview">내 작성 후기<i class="fa fa-chevron-right"></i></a>
+            	<a href="myPageListMeeting">내 작성 번개<i class="fa fa-chevron-right"></i></a>
+            	<a href="/myPageMyRank">랭킹</a>
+          		
+          		
+          		
+          		</span>
+          		</p>
+     </ul>
+            
           </div>
         </div>
       </div>
     </section>
-
- <ul id="mytab">
-         <h1>마이페이지</h1>
-            <li id="my"><a class="current" href="/myPage">정보 수정</a></li>
-            <li id="my"><a href="/myPageSaveCourse">찜 목록</a></li>
-            <li id="my"><a href="/myPageMyCourse">작성 코스(준비중)</a></li>
-            <li id="my"><a href="/myPageListReview">작성 후기</a></li>
-            <li id="my"><a href="myPageListMeeting">작성 번개</a></li>
-            <li id="my"><a href="/myPageMyRank">랭킹</a></li>
-     </ul>
     <section class="ftco-section contact-section">
       <div class="container">
         <div class="row block-9 justify-content-center mb-5">

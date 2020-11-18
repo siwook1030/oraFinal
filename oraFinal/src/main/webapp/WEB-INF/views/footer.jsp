@@ -17,18 +17,15 @@ footer {
 	height: 150px;
 	margin: 0 auto;
 	text-align: center;    
-
 }
 #footer_icon{
    margin: 30px auto;
 }
 #address {
-
 	margin: 10px 0 0 0;
 	font-size: 11px;
 	list-style-type: none;
 }
-
 </style>
 </head>
 <body>
