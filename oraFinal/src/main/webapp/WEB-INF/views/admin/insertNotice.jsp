@@ -15,20 +15,13 @@ h2 {
 	margin: 40px auto;
 	color: #c8572d;
 	text-align: center;
-	font-family: 'NEXON Lv1 Gothic Low OTF';
 	text-decoration: none;
-}
-
-a{
-	text-decoration: none;
-	color: black;
 }
 
 section {
 	width: 900px;
 	height: 700px;
 	margin: 20px auto;
-	font-family: 'NEXON Lv1 Gothic Low OTF';
 	font-size: 14pt;
 	margin-top: 50px;
 	margin-bottom: 100px;
@@ -37,34 +30,30 @@ section {
 #title{
 	width: 700px;
 	height: 30px;
-	font-family: 'NEXON Lv1 Gothic Low OTF';
 	font-size: 15px;
 	padding-left: 5px;
 	margin-left: 5px;
 }
 
 select {
-	width:70px;
+	width:100px;
 	height: 30px;
-	font-family: 'NEXON Lv1 Gothic Low OTF';
 	font-size: 13pt;
 }
 
 #content{
-	font-family: 'NEXON Lv1 Gothic Low OTF';
 	font-size: 13pt;
 	padding: 8px;
 }
 
-button,#btn_insert {
+#btnCancel,#btnInsert {
 	width:50px;
 	height: 30px;
-    background-color: #eccb6a;
     border: none;
     border-radius:5px;
+    background-color: #eccb6a;
     color:#ffffff;
     padding: 5px 0;
-    font-family: 'NEXON Lv1 Gothic Low OTF';
     font: bold;
     text-align: center;
     text-decoration: none;
@@ -75,9 +64,11 @@ button,#btn_insert {
     float: right;
 }
 
-#btn_insert{
+#btnInsert{
 	background-color: #88bea6;
 }
+
+
 
    /*float 초기화 아이디*/
 #clear{
@@ -94,11 +85,11 @@ window.onload = function(){
 	
 	btnInsert.addEventListener("click", function(e) {
 		if(nTitle.value.trim() === ""){
-			alert("야 빈칸으로하지마!");
+			alert("제목을 입력해야 될 거 아니야~!");
 			return;
 		}
 		if(nContent.value.trim() === ""){
-			alert("야 빈칸으로하지마!");
+			alert("내용도 입력안하고 등록할거야~~?!");
 			return;
 		}
 		
@@ -144,8 +135,8 @@ window.onload = function(){
 			<textarea rows="20" cols="95" name="n_content" id="content" placeholder="내용을 입력하세요"></textarea>
 			<br>
 			<br>
+			<button type="reset" id="btnCancel">취소</button>
 		</form>
-		<button>취소</button>
 		<button type="button" id="btnInsert">등록</button>	
 	</section>	
 	<br>

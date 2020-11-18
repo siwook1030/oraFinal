@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.ServletContext;
@@ -112,9 +113,13 @@ public class CourseManager {
 		int re = -1;
 		SqlSession session = sqlSessionFactory.openSession();
 		
-		int rePT = session.update("course.deletePT",c_no); 
+		session.delete("course.deleteSaveCourse", c_no);  // 코스삭제시 찜코스 삭제, 해당코스번호를 갖고있는 게시판코스번호를 0번(선택안함)으로 수정
+		session.update("meeting.updateMasDelCourse", c_no);
+		session.update("review.updateRasDelCourse", c_no);
+		
+		int rePT = session.delete("course.deletePT",c_no); 
 		int reDelPhoto = session.delete("course.deleteCoursePhoto", c_no);
-		int rec = session.update("course.deleteCourse", c_no);
+		int rec = session.delete("course.deleteCourse", c_no);
 		
 		if( rePT > 0 && reDelPhoto > 0 && rec > 0) {
 			session.commit();
@@ -213,22 +218,9 @@ public class CourseManager {
 	}
 	
 	public static int cnameDupCheck(String c_name) {
-		int re = 0;
+		int re = 1;
 		SqlSession session = sqlSessionFactory.openSession();
-		List<String> cNameList = session.selectList("course.cnameDupCheck", c_name);
-		
-		for(String cn : cNameList) {
-			String cname = cn;
-			int idx = cn.indexOf(".");
-			if(idx != -1) {
-				cname = cn.substring(0, idx);
-			}
-			
-			if(cname.equals(c_name)) {
-				re = 1;
-			}
-		}
-		session.close();
+		re = session.selectOne("course.cnameDupCheck", c_name);
 		
 		return re;
 		
@@ -301,6 +293,14 @@ public class CourseManager {
 		
 		return c_line;
 	}
+	//나의 찜코스 코스번호만 전체 가져오기
+	public static List<Integer> getAllSaveCourse(String id){
+		SqlSession session = sqlSessionFactory.openSession();
+		List<Integer> scNumList = session.selectList("course.selectAllMyCourse", id);
+		session.close();
+		return scNumList;
+	}
+	
 	//나의 찜코스 가져오기
 	public static List<CourseVo> getSaveCourse(HttpSession httpSession) {
 		MemberVo m = (MemberVo)httpSession.getAttribute("m");
@@ -342,7 +342,14 @@ public class CourseManager {
 		return re;
 	}
 	
-	
+	public static int addSaveCourse(Map map) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.insert("course.addSaveCourse", map);
+		session.commit();
+		session.close();
+		return re;
+	}
 	
 	
 }

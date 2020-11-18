@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import com.example.demo.vo.MemberVo;
+import com.example.demo.vo.PointVo;
 import com.example.demo.vo.RankVo;
 
 public class MemberManager {
@@ -85,6 +86,13 @@ public class MemberManager {
 		session.commit();
 		session.close();
 		return re;
+	}
+	
+	public static void insertPoint(PointVo p) {
+		SqlSession session = sqlSessionFactory.openSession(true);
+		session.insert("member.insertPoint", p);
+		session.update("member.updateRank", p);
+		session.close();
 	}
 }
 

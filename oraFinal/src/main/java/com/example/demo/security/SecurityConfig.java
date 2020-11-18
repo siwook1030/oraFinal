@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 //		// TODO Auto-generated method stub
 //		super.configure(http);
-		http.csrf().disable();  //post메소드시 인증필요없이하기
+		http.csrf().disable();  //post메소드시 인증필요없이하기 원래는 요청할때마다 헤더에 추가해야하지만 ...
 		
 		http.authorizeRequests()
 		.mvcMatchers("/").permitAll()
@@ -50,6 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.usernameParameter("memberId")
 		.passwordParameter("memberPassword")
 		.permitAll();
+		
+		//http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
 		
 		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 		.logoutSuccessUrl("/mainPage").invalidateHttpSession(true).deleteCookies("JSESSIONID");

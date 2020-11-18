@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: finalOra
+Bundle-SymbolicName: finalOra
+Bundle-Version: 1.0.0.qualifier
+Export-Package: com.example.demo,
+ com.example.demo.controller,
+ com.example.demo.dao,
+ com.example.demo.db,
+ com.example.demo.scheduler,
+ com.example.demo.security,
+ com.example.demo.service,
+ com.example.demo.test,
+ com.example.demo.util,
+ com.example.demo.vo,
+ kr.co.youiwe.webservice

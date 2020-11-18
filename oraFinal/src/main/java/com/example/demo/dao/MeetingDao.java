@@ -15,8 +15,8 @@ import com.example.demo.vo.Meeting_repVo;
 public class MeetingDao {
 	
 	// meeting
-	public List<MeetingVo> listMeeting(){
-		return MeetingManager.listMeeting();
+	public List<MeetingVo> listMeeting(HashMap map){
+		return MeetingManager.listMeeting(map);
 	}
 	
 	public MeetingVo detailMeeting(int m_no) {
@@ -56,7 +56,7 @@ public class MeetingDao {
 		return MeetingManager.detailMFile(m_no);
 	}
     
-	public int insertMFile(Meeting_fileVo mf) {
+	public int insertMFile(List<Meeting_fileVo> mf) {
 		return MeetingManager.insertMFile(mf);
 	}
 
@@ -77,9 +77,6 @@ public class MeetingDao {
 		return MeetingManager.nextMFileNum();
   }
 
-	public int deleteMr(int mr_no) {
-		return MeetingManager.deleteMRep(mr_no);
-	}
 	
 	// meeting_rep
 	public List<Meeting_repVo> detailMRep(HashMap map) {
@@ -89,9 +86,14 @@ public class MeetingDao {
 	public int insertMRep(Meeting_repVo mr) {
 		return MeetingManager.insertMRep(mr);
 	}
-	
+	// 댓글 전체삭제
 	public int deleteMRep(int m_no) {
 		return MeetingManager.deleteMRep(m_no);
+	}
+	
+	// 댓글 한개삭제
+	public int deleteMrOne(int mr_no) {
+		return MeetingManager.deleteMrOne(mr_no);
 	}
 	
 	public int NextMrNum() {
@@ -115,6 +117,10 @@ public class MeetingDao {
 	
 	public int insertMPeople(Meeting_peopleVo mp) {
 		return MeetingManager.insertMPeople(mp);
+	}
+	
+	public int deleteOneMp(Meeting_peopleVo mp) {
+		return MeetingManager.deleteOneMp(mp);
 	}
 	
 	public int deleteMPeople(int m_no) {

@@ -34,12 +34,16 @@
       li a.current {
          color: black;
          background-color: #FF6347; //주황색 클릭
+
       }
       li a:hover:not(.current) {
          background-color: #CD853F; //갈색 마우스위로
          color: white;
       }
+
+
         <!-- 찜 코스 컨테이너--!>
+
           #container{
              columns-width:900px;
              columns-gap: 15px;
@@ -71,17 +75,20 @@
               padding:5px;
               margin-top:11px;
             }
+
+
+
    </style>
 
 </head>
 
 <body>
-	<jsp:include page="header.jsp"/>
+
    <ul>
      <h1>마이페이지</h1>
             <li><a  href="/myPage">정보 수정</a></li>
-            <li><a  href="/myPageSaveCourse">찜 목록</a></li>
-            <li><a class="current" href="/myPageMyCourse">작성 코스(준비중)</a></li>
+            <li><a class="current" href="/myPageSaveCourse">찜 목록</a></li>
+            <li><a href="/myPageMyCourse">작성 코스(준비중)</a></li>
             <li><a href="/myPageListReview">작성 후기</a></li>
             <li><a href="myPageListMeeting">작성 번개</a></li>
  	        <li><a href="/myPageMyRank">랭킹</a></li>
@@ -179,5 +186,6 @@
 
 </ul>
 </body>
+
 
 </html>

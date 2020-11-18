@@ -47,13 +47,17 @@ public class MeetingManager {
 	}
 	
 	// 게시글 리스트
-	public static List<MeetingVo> listMeeting() {
-		List<MeetingVo> list = null;
-		SqlSession session = sqlSessionFactory.openSession();
-		list = session.selectList("meeting.selectMAll");
-		session.close();
-		return list;
-	}
+	   public static List<MeetingVo> listMeeting(HashMap map) {
+	      List<MeetingVo> list = null;
+	      SqlSession session = sqlSessionFactory.openSession();
+	      list = session.selectList("meeting.selectMAll",map);
+	      session.close();
+	      for(MeetingVo m : list) {
+	    	  m.setMf(detailMFile(m.getM_no()));
+	    	  m.setM_repCnt(cntRep(m.getM_no()));
+	      }
+	      return list;
+	   }
 	
 	// 게시글 상세
 	public static MeetingVo detailMeeting(int m_no) {
@@ -118,7 +122,16 @@ public class MeetingManager {
 		session.close();
 		return re;
 	}
-		
+	
+	//모임인원 한명삭제
+	public static int deleteOneMp(Meeting_peopleVo mp) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession(true);
+		re = session.delete("meeting.deleteOneMp", mp);
+		session.close();
+		return re;
+	}
+	
 	// 모임인원 전체삭제
 	public static int deleteMPeople(int m_no) {
 		int re = -1;
@@ -151,10 +164,12 @@ public class MeetingManager {
 	}
 	
 	// 첨부파일 등록
-	public static int insertMFile(Meeting_fileVo mf) {
+	public static int insertMFile(List<Meeting_fileVo> mf) {
 		int re = -1;
 		SqlSession session = sqlSessionFactory.openSession(true);
-		re = session.insert("meeting.insertMf", mf);
+		for(Meeting_fileVo mfvo : mf) {
+			re = session.insert("meeting.insertMf", mfvo);
+		}
 		session.close();
 		return re;
 	}
@@ -234,14 +249,23 @@ public class MeetingManager {
 		return re;
 	}
 	
-	// 댓글 삭제
-	public static int deleteMRep(int mr_no) {
+	// 댓글 전체삭제
+	public static int deleteMRep(int m_no) {
 		int re = -1;
 		SqlSession session = sqlSessionFactory.openSession(true);
-		re = session.delete("meeting.deleteMr", mr_no);
+		re = session.delete("meeting.deleteMr", m_no);
 		session.close();
 		return re;
 	}
+	
+	// 댓글 한개삭제
+		public static int deleteMrOne(int mr_no) {
+			int re = -1;
+			SqlSession session = sqlSessionFactory.openSession(true);
+			re = session.delete("meeting.deleteMrOne", mr_no);
+			session.close();
+			return re;
+		}
 	
 	//마이페이지 토탈
 	public static int myTotMRecord(String id) {

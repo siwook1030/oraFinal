@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,13 +19,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.demo.ResponseDataCode;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.db.CourseManager;
 
 import com.example.demo.vo.CoursePhotoVo;
 
 import com.example.demo.util.FileUtilCollection;
+import com.example.demo.util.ResponseDataCode;
 import com.example.demo.vo.CourseVo;
 import com.example.demo.vo.FoodVo;
 import com.example.demo.vo.MemberVo;
@@ -40,13 +41,13 @@ public class CourseController {
 	private CourseDao cdao;
 	
 	@GetMapping("/searchCourse")
-	public void searchCourse() {
+	public void searchCourseForm() {
 		
 	}
 	
 	@PostMapping(value ="/searchCourse", produces = "application/json; charset=utf8")
 	@ResponseBody
-	public String searchCourse(HttpSession session,double latitude, double longitude, int distance, int time,@RequestParam(value="view[]",required = false) List<String> view) {
+	public String searchCourse(double latitude, double longitude, int distance, int time,@RequestParam(value="view[]",required = false) List<String> view) {
 		HashMap map = new HashMap();
 		System.out.println("위도 : "+latitude);
 		System.out.println("경도 : "+longitude);
@@ -133,69 +134,87 @@ public class CourseController {
 		 return gson.toJson(responseDataVo);
 	}
 	
+	
 
-	@RequestMapping("/detailFood")
-	public void detailFood(HttpServletRequest request,Model model,int c_no ,int food_no) {
-		String path = request.getRealPath("/courseLine")+"/";
-		model.addAttribute("c", cdao.getCourseByCno(c_no, path));
-		model.addAttribute("f", cdao.getFoodByFoodNo(food_no));
+   @RequestMapping("/detailFood")
+   public void detailFood(HttpServletRequest request,Model model,int c_no ,int food_no) {
+      String path = request.getRealPath("/courseLine")+"/";
+      model.addAttribute("c", cdao.getCourseByCno(c_no, path));
+      model.addAttribute("f", cdao.getFoodByFoodNo(food_no));
+   }
+   
+   @GetMapping(value = "/myPageSaveCourse")
+      public void saveCourse() {
+      }
+   
+   //나의 찜코스 ~
+   @PostMapping(value = "/myPageSaveCourse", produces = "application/json; charset=utf-8")
+   @ResponseBody
+   public String saveCourse(HttpSession httpSession) {
+      System.out.println("세이브 컨트롤러 작동!!!!");
+      Gson gson = new Gson();
+      List<CourseVo> courseList = cdao.getSaveCourse(httpSession);
+      List<CoursePhotoVo> photovo =null;
+      for (CourseVo c : courseList) {
+         photovo =(c.getC_photo());
+      }
+      //model.addAttribute("courseList",courseList);
+      //model.addAttribute("photovo",photovo);
+      System.out.println(courseList);
+      System.out.println("코스리스트");
+      System.out.println(photovo);
+      
+      return gson.toJson(courseList);
+   }
+   //내가 만든코스~
+   @GetMapping(value = "/myPageMyCourse")
+   public void myCourse(Model model,HttpSession httpSession) {
+      System.out.println("마이코스 컨트롤러 작동!!!!");
+      List<CourseVo> courseList = cdao.getMyCourseById(httpSession);
+      List<CoursePhotoVo> photovo =null;
+      for (CourseVo c : courseList) {
+         photovo =(c.getC_photo());
+      }
+      model.addAttribute("courseList",courseList);
+      model.addAttribute("photovo",photovo);
+      System.out.println(courseList);
+      System.out.println("코스리스트");
+      System.out.println(photovo);
+   }
+   //찜코스 삭제~
+   @PostMapping(value = "/deleteSaveCourse", produces = "application/json; charset=utf-8")
+   @ResponseBody
+   public String deleteSaveCourse(HttpSession httpSession,int cno) {
+      System.out.println("코스삭제 컨트롤러작동" + cno);
+      MemberVo m = (MemberVo)httpSession.getAttribute("m");
+      HashMap map = new HashMap();
+      map.put("id", m.getId());
+      map.put("c_no", cno);
+      String re = ""+cdao.deleteSaveCourse(map);
+      return re;
+   }
+	
+	//찜코스 추가
+	@PostMapping(value = "/user/addSaveCourse",  produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String addSaveCourse(@RequestParam Map<String, Object> map) {
+		int re = cdao.addSaveCourse(map);
+		return Integer.toString(re);
 	}
 	
-	@GetMapping(value = "/myPageSaveCourse")
-		public void saveCourse() {
-		}
-	
-	//나의 찜코스 ~
-	@PostMapping(value = "/myPageSaveCourse", produces = "application/json; charset=utf-8")
+
+	//찜코스 삭제 ajax 오버로딩
+	@PostMapping(value = "/user/deleteSaveCourse",  produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String saveCourse(HttpSession httpSession) {
-		System.out.println("세이브 컨트롤러 작동!!!!");
-		Gson gson = new Gson();
-		List<CourseVo> courseList = cdao.getSaveCourse(httpSession);
-		List<CoursePhotoVo> photovo =null;
-		for (CourseVo c : courseList) {
-			photovo =(c.getC_photo());
-		}
-		//model.addAttribute("courseList",courseList);
-		//model.addAttribute("photovo",photovo);
-		System.out.println(courseList);
-		System.out.println("코스리스트");
-		System.out.println(photovo);
-		
-		return gson.toJson(courseList);
-	}
-	//내가 만든코스~
-	@GetMapping(value = "/myPageMyCourse")
-	public void myCourse(Model model,HttpSession httpSession) {
-		System.out.println("마이코스 컨트롤러 작동!!!!");
-		List<CourseVo> courseList = cdao.getMyCourseById(httpSession);
-		List<CoursePhotoVo> photovo =null;
-		for (CourseVo c : courseList) {
-			photovo =(c.getC_photo());
-		}
-		model.addAttribute("courseList",courseList);
-		model.addAttribute("photovo",photovo);
-		System.out.println(courseList);
-		System.out.println("코스리스트");
-		System.out.println(photovo);
-	}
-	//찜코스 삭제~
-	@PostMapping(value = "/deleteSaveCourse", produces = "application/json; charset=utf-8")
-	@ResponseBody
-	public String deleteSaveCourse(HttpSession httpSession,int cno) {
-		System.out.println("코스삭제 컨트롤러작동" + cno);
-		MemberVo m = (MemberVo)httpSession.getAttribute("m");
-		HashMap map = new HashMap();
-		map.put("id", m.getId());
-		map.put("c_no", cno);
-		String re = ""+cdao.deleteSaveCourse(map);
-		return re;
+	public String deleteSaveCourse(@RequestParam HashMap<String, Object> map) {
+		int re = cdao.deleteSaveCourse(map);
+		return Integer.toString(re);
 	}
 
-//	@RequestMapping("/detailFood")  포기... crud가 너무 힘들다
-//	public void detailFood(HttpServletRequest request,Model model,int c_no ,int food_no) {
-//		String path = request.getRealPath("/courseLine")+"/";
-//		model.addAttribute("c", cdao.getCourseByCno(c_no, path));
-//		model.addAttribute("f", cdao.getFoodByFoodNo(food_no));
-//	}
+//   @RequestMapping("/detailFood")  포기... crud가 너무 힘들다
+//   public void detailFood(HttpServletRequest request,Model model,int c_no ,int food_no) {
+//      String path = request.getRealPath("/courseLine")+"/";
+//      model.addAttribute("c", cdao.getCourseByCno(c_no, path));
+//      model.addAttribute("f", cdao.getFoodByFoodNo(food_no));
+//   }
 }

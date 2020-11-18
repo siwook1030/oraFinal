@@ -6,70 +6,148 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 	<style>
 		/* 공통 */
 		section {
 			margin: 0 auto;
-			padding: 10px;
 			width: 1000px;
 			text-align: left;
+			padding: 50px;
 		}
 		/* 개별 */
-		.btnImg {
-			height: 30px;
-			float: right;
-		}
-		#reply {
+		#reply { /* 댓글출력 */
 			padding-bottom: 3px;
 		}
-		#comment {
+		#comment { /* 댓글입력 */
 			display:inline-block;
 			position:relative;
 		}
-		#btnImg {
+		#btnInsertReply { /* 댓글등록버튼 */
 			position:absolute;
-			bottom:30px;
-			right:10px;
-			border-style: none;
-			background-color: transparent;
-			width: 50px;
+			color: white;
+			padding: 6px 9px;
+			background-color: #c8572d;
+			float: right;
+			font-size: 13px;
+			border: none;
+			bottom: 30px;
+			right: 10px;
+			cursor: pointer;
 		}
-		textarea {
-		     display:block;
+		textarea { /* 글내용입력 */
+		     display: block;
 		}
-		#contents {
+		#contents { /* 게시판 인덱스 제외 전체 */
 			border: 1px solid #D5D5D5;
 			padding: 60px;
 			margin: 50px 0 100px;
 		}
-		.repInfo {
+		.repInfo { /* 댓글등록날짜 */
 			margin-left: 25px;
 			font-size: 13px;
 		}
-		
-		.repInput-noshow{
+		/* 삭제해도 되는지 물어보기 */
+		/* .repInput-noshow{
 			display: none;
 		}
 		.repInput-show{
 			display: inline;
-		}
-		 .repPageNum{
+		} */
+		.repPageNum{ /* 댓글창 페이지번호 */
 			margin: 0 5px 0 5px;
 			cursor: pointer;
 		}
-		.btnRepSpan {
+		.btnRepSpan { /* 대댓글 등록수정삭제 버튼 */
 			cursor: pointer;
 			margin-left: 3px;
 			text-decoration: underline;
 		}
-		
-		.map_wrap {position:relative;width:100%;height:300px;font-size: 80%;}
+		.btn { /* 게시글 수정삭제 버튼 */
+			color: white;
+			padding: 8px 12px;
+			margin: 20px 2px;
+			background-color: #88BEA6;
+			display: inline-block;
+			font-size: 15px;
+			border: none;
+			cursor: pointer;
+		}
+		.btnDiv {
+			text-align: center;
+		}
+		#mtInfoAll { /* 미팅 장소,날짜,인원 모은 div */
+			display: flex;
+		}
+		#mtInfoAll img { /* 미팅 장소,날짜,인원 아이콘 */
+			width: 40px;
+			padding: 3px;
+		}
+		#mtInfoAll .mtInfo { /* 미팅 장소,날짜,인원 각각의 div */
+			width: 40%;
+			border: 1px #BDBDBD solid;
+			border-radius: 10px;
+			margin: 20px;
+			padding: 10px;
+			text-align: center;
+		}
+		.mfPhoto { /* 게시글 개별 사진 */
+			height: 300px;
+		}
+		.pointerDiv { /* 게시글 사진 버튼 div */
+			position: absolute;
+			top: 100px;
+			width: 880px;
+		}
+		#btnLeft { /* 사진 왼쪽 클릭버튼 */
+			width: 100px;
+			position: relative;
+			cursor: pointer;
+			z-index: 1;
+		}
+		#btnRight { /* 사진 오른쪽 클릭버튼 */ 
+			width: 100px;
+			position: relative;
+			cursor: pointer;
+			left: 680px;
+			z-index: 1;
+		}
+		#m_content { /* 글등록창 */
+			border: none;
+			padding: 10px 0;
+			border-top: 1px solid gray;
+			border-bottom: 1px solid gray;
+			margin-bottom: 30px;
+		}
+		#repImg, #repStr, #repCnt { /* 댓글이미지, 댓글수 */
+			vertical-align: middle;
+		}
+		#repImg {
+			margin-bottom: 2px;
+		}
+		.map_wrap {position:relative; width:100%; height:300px; font-size: 80%; margin: 30px 0 15px;}
 	</style>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script type="text/javascript" src="slick/slick.min.js"></script>
 	<script src="/js/loginCheck.js"></script>
 	<script type="text/javascript">
 window.onload = function(){
+	$('#btnDel').click(function(){
+		alert('게시글이 삭제되었습니다.');
+	});
+
+	$(document).ready(function(){
+		$('.mfPhotoDiv').slick({
+			dots: true,
+			infinite: true,
+			speed: 300,
+			slidesToShow: 1,
+			centerMode: true,
+			variableWidth: true
+		});
+	});
 
 ///////////////////////////////////////////////////
 	const checkM = checkLogin(); // 로그인이 되어있는 상태인지 체크한다
@@ -293,6 +371,7 @@ window.onload = function(){
 			const cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
 			if(cfm){
 				window.location = "/login";
+				return;
 			}
 			return;
 		}
@@ -302,6 +381,7 @@ window.onload = function(){
 			const cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
 			if(cfm){
 				window.location = "/login";
+				return;
 			}
 			return;
 		}
@@ -350,6 +430,7 @@ window.onload = function(){
 			const cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
 			if(cfm){
 				window.location = "/login";
+				return;
 			}
 			return;
 		}
@@ -401,6 +482,7 @@ window.onload = function(){
 			const cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
 			if(cfm){
 				window.location = "/login";
+				return;
 			}
 			return;
 		}
@@ -457,6 +539,7 @@ window.onload = function(){
 			const cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
 			if(cfm){
 				window.location = "/login";
+				return;
 			}
 			return;
 		}
@@ -504,6 +587,7 @@ window.onload = function(){
 			const cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
 			if(cfm){
 				window.location = "/login";
+				return;
 			}
 			return;
 		}
@@ -546,6 +630,7 @@ window.onload = function(){
 			const cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
 			if(cfm){
 				window.location = "/login";
+				return;
 			}
 			return;
 		}
@@ -576,6 +661,127 @@ window.onload = function(){
 	}
 	
 	getMrListByPageNum(nowPageNum); // 댓글이닛로드
+
+///////////////-------------------------------------- 미팅피플 구현
+	const mPeopleNum = document.getElementById("mPeopleNum");  // 참가인원숫자를 표시할 스판노드
+	const allPeopleNum = mPeopleNum.getAttribute("allPeopleNum");  // 모집인원수를 가져오기위한것
+	let nowMpeopleNum = 0;   // 참가인원을 담기위한 변수
+	let mPeopleId = []; // 참가인원 id를 담기위한 변수  한번 참가신청하면 두번이상 신청 못하게 하기위함임
+	
+	const attendRiding = document.getElementById("attendRiding"); // 참가버튼
+	const mPeople = document.getElementById("mPeople");  // 참가인원을 만들어서 추가할 ul노드
+	
+	attendRiding.addEventListener("click", function(e) {
+		if(checkM.code != "200"){
+			const cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
+			if(cfm){
+				window.location = "/login";
+				return;
+			}
+			return;
+		}
+		const mId = checkM.item.id;
+		const attendCfm = confirm("라이딩에 참가하시겠습니까?");
+		if(!attendCfm){
+			return;
+		}
+
+		for(let i=0; i<mPeopleId.length; i++){
+			if(mPeopleId[i] == mId){
+				alert("이미 참가하셨습니다.");
+				return;
+			}
+		}
+
+		if(nowMpeopleNum >= allPeopleNum){
+			alert("참가인원이 꽉찼어요.. 댓글에 요청해보세요!");
+			return;
+		}
+		
+		$.ajax({
+			url: "/user/attendMpeople",
+			type: "POST",
+			data: {"m_no":m_no,"id":mId},
+			success: function(re){
+				if(re == "1"){
+					alert("참가완료! 즐거운 라이딩되세요!");
+					setMpeople();
+				}
+				else{
+					alert("참가실패.. 다시한번 시도해보세요");
+				}
+
+			},
+			error:function(){
+				alert("에러발생");
+			}
+		})
+	});
+
+	function deleteMpeople(id){
+		const cfm = confirm("정말 탈주하시겠습니까?");
+		if(!cfm){
+			return;
+		}
+		
+		$.ajax({
+			url:"/user/deleteMpeople",
+			type: "POST",
+			data: {"m_no":m_no,"id":id},
+			success: function(re){
+				if(re == "1"){
+					alert("탈주완료.. 다음에 같이가요!");
+					setMpeople();
+				}
+				else{
+					alert("탈주실패! 다시한번 시도해보세요");
+				}
+			},
+			error: function(){
+				alert("에러발생");
+			}
+		})
+	}
+
+	function setMpeople(){
+		const mId = checkM.item.id;
+		$.ajax({
+			url: "/mPeopleList",
+			type: "GET",
+			data:{"m_no":m_no} ,
+			success: function(list){
+				mPeople.innerHTML = "";
+				nowMpeopleNum = list.length; // 현재 참가인원을 담음
+				mPeopleId = [];  // 아이디담을 변수 초기화
+				
+				list.forEach(function(p, i) {
+					mPeopleId.push(p.id);
+					const li = document.createElement("li");
+					const content = '<img src="/rank/'+p.rank_icon+'">'+p.nickName+"("+p.mp_regdate+")";
+					li.innerHTML = content;
+					if(mId == p.id){
+						const delBtn = document.createElement("button");
+						delBtn.innerHTML = "탈주";
+						li.append(delBtn);
+						delBtn.addEventListener("click", function(e) {
+							deleteMpeople(p.id);
+						});
+					}
+					mPeople.append(li);
+				})
+
+				mPeopleNum.innerHTML = nowMpeopleNum+"/"+allPeopleNum;
+				
+			},
+			error: function(){
+				alert("에러발생");
+			}
+		})
+	}
+
+	setMpeople(); // 최초 한번실행
+//----------------------------------------------미팅피플 끝
+
 /////////////////////////////////////////////////////////////////////////////////// 맵표시
 	const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = {
@@ -607,7 +813,7 @@ window.onload = function(){
     const arriveImage = new kakao.maps.MarkerImage(arriveSrc, arriveSize, arriveOption);
 
     const startMarker = new kakao.maps.Marker({image:startImage}); //출발마커담을 변수
-    const arriveMarker = new kakao.maps.Marker({image:arriveImage});//도칙마커담을 변수
+    const arriveMarker = new kakao.maps.Marker({image:arriveImage});//도착마커담을 변수
     const coursePolyline = new kakao.maps.Polyline({
        strokeWeight: 5,
         strokeColor: '#FF2400',
@@ -615,7 +821,7 @@ window.onload = function(){
         strokeStyle: 'solid'
        });//경로라인담을 변수
 /////////////////출발도착마커이미지 생성 끝
-	const meetingSrc = '/insertMeetingImg/meetingSpot.png', // 미팅 마커이미지의 주소입니다    
+	const meetingSrc = '/searchCourseImg/mtLoc.png', // 미팅 마커이미지의 주소입니다    
 	meetingSize = new kakao.maps.Size(40, 40); // 미팅 마커이미지의 크기입니다 
 	
 	//미팅 마커 이미지를 생성합니다
@@ -623,12 +829,15 @@ window.onload = function(){
 	const meetingMarker = new kakao.maps.Marker({image:meetingImage}); 
 	const meetingInfowindow = new kakao.maps.InfoWindow({removable:true,zindex:1});
 
-	const courseBounds = new kakao.maps.LatLngBounds();  // 맵바운드 설정객체
+	const c = ${cJson};
 	
-	if(${c.c_no} != 0){
-		startMarker.setPosition(new kakao.maps.LatLng(${c.c_s_latitude}, ${c.c_s_longitude}));
-		arriveMarker.setPosition(new kakao.maps.LatLng(${c.c_e_latitude}, ${c.c_e_longitude}));
-		const courseLine = JSON.parse(${c.c_line});
+	const courseBounds = new kakao.maps.LatLngBounds();  // 맵바운드 설정객체
+
+	if(c.c_no != 0){
+		startMarker.setPosition(new kakao.maps.LatLng(c.c_s_latitude, c.c_s_longitude));
+		arriveMarker.setPosition(new kakao.maps.LatLng(c.c_e_latitude, c.c_e_longitude));
+		const cLineObj = JSON.parse(c.c_line);
+		const courseLine = eval(cLineObj.courseLine);
 		coursePolyline.setPath(courseLine);
 		courseLine.forEach(function(c, i) {
 			courseBounds.extend(c);
@@ -641,25 +850,31 @@ window.onload = function(){
 	const meetingLatLon = new kakao.maps.LatLng(${mt.m_latitude}, ${mt.m_longitude});
 	meetingMarker.setPosition(meetingLatLon);
 	meetingMarker.setMap(map);
-	meetingInfowindow.setContent("<div>미팅장소</div>"); // 나중에 html꾸며서 넣기
-    meetingInfowindow.open(map, meetingMarker);
+	// detail window 표시 x
+	//meetingInfowindow.setContent("<div>미팅장소</div>"); // 나중에 html꾸며서 넣기
+    //meetingInfowindow.open(map, meetingMarker);
 
     courseBounds.extend(meetingLatLon);
     map.setBounds(courseBounds);
 	/////////////////////////////////////////////////////////////////////////////////// 맵표시 끝
+	const mf = ${mfJson};
+	console.log(mf);
+	let imgStr = '';
+	mf.forEach(function(mtPhoto, idx) {
+		imgStr += '<img class="mfPhoto" src="/'+mtPhoto.mf_path+'/'+mtPhoto.mf_savename+'" attr='+idx+'>';
+	})
+	console.log(imgStr);
+	document.getElementById('mfPhotoDiv').innerHTML = imgStr;
 
-	
 };
 	</script>
 </head>
 <body>
 	<jsp:include page="header.jsp"/>
 	<section>
-		<br><br>
 		<p style="font-size: 20px;"><a href="/listMeeting">번개 게시판</a>&nbsp;&gt;&nbsp;<font color="#c85725">번개 상세</font></p>
-		<p style="font-size: 15px; padding-top: 2px;">만나서 같이 라이딩 해요.</p>
-		<br><br>
-	
+		<p style="font-size: 15px; padding: 2px 0 30px;">만나서 같이 라이딩 해요.</p>
+		
 		<div id="contents">
 			<p style="font-size: 30px; padding: 30px 0 20px;"><a href="detailMeeting?m_no=${mt.m_no }">${mt.m_title }</a></p><br>	
 			<img src="rank/${mt.rank_icon }" height="25" style="float: left; margin-right: 5px;">
@@ -675,56 +890,49 @@ window.onload = function(){
 			<div class="map_wrap">
 				<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
 			</div>
-			<table border="1">
-				<tr>
-					<td>미팅장소</td><td>${mt.m_locname }</td>
-					<td>미팅시간</td><td>${mt.m_time }</td>
-					<td>미팅인원</td><td>${mt.m_numpeople }</td>
-				</tr>
-			</table>
-			<!-- 
-			위도 : ${mt.m_latitude }<br>
-			경도 : ${mt.m_longitude }<br>
-			모임장소 : ${mt.m_locname }<br>
-			모임시간 : ${mt.m_time }<br>
-			모임인원 : ${mt.m_numpeople }
-			 -->
+			<div id="mtInfoAll">
+				<div class="mtInfo"><img src="meetingImg/meetingLoc.png"><br>${mt.m_locname }</div>
+				<div class="mtInfo"><img src="meetingImg/meetingTime.png"><br>${mt.m_time }</div>
+				<div class="mtInfo"><img src="meetingImg/meetingNum.png"><button id="attendRiding">참가</button>
+				<br><span id="mPeopleNum" allPeopleNum="${mt.m_numpeople }" >${mt.m_numpeople }</span> 명</div>
+			</div>
+			<div><ul id="mPeople"></ul></div>
 			<br>
-		
-			<c:if test="${mf!=null }">
-				<c:forEach var="mf" items="${mf}">
-					<img src="${mf.mf_path }/${mf.mf_savename }" width="400">
-				</c:forEach> 
+			<textarea rows="30" cols="123" id="m_content">${mt.m_content }</textarea>
+			
+			<c:if test="${mf.size()>0 }">
+				<div class="photo_canvas">
+					<!-- <div class="pointerDiv">
+						<img class="pointer" id="btnLeft" src="meetingImg/left.png">
+						<img class="pointer" id="btnRight" src="meetingImg/right.png">
+					</div> -->
+					<div class="mfPhotoDiv" id="mfPhotoDiv"></div>
+				</div>
 			</c:if>
-			<br><br><br>
-			${mt.m_content }
-			<br><br><br><br>
+			
 			<!-- 수정,삭제 버튼 -->
-			
-			
 			<c:if test="${m.id==mt.id }">
-				<a href="deleteMeeting?m_no=${mt.m_no }"><img src="meetingImg/delete.png" class="btnImg"></a>
-				<a href="updateMeeting?m_no=${mt.m_no }&c_no=${mt.c_no}"><img src="meetingImg/edit.png" class="btnImg"></a>
+			<div id="btnDiv">
+				<a href="/user/updateMeeting?m_no=${mt.m_no }&c_no=${mt.c_no}" class="btn" id="btnEdit">수정</a>
+				<a href="deleteMeeting?m_no=${mt.m_no }" class="btn" id="btnDel" style="background-color: #ECCB6A">삭제</a>
+			</div>
 			</c:if>
-			<br><br>
-			<img src="meetingImg/speech.png" style="size: 20px; float: left; padding-right: 10px;">
-			<h3>댓글&nbsp;<span id="repCnt"></span></h3>
+			
+			<!-- 댓글 -->
+			<img id="repImg" src="meetingImg/speech.png" style="display: inline; size: 20px; padding-right: 5px;">
+			<h3 id="repStr" style="display: inline;">댓글<span id="repCnt" style="display: inline; padding-left: 10px;"></span></h3>
 			<hr style="margin: 10px 0 10px;">
+			
 			<!-- 댓글출력 -->
-			<div id="reply">
-			</div>
-			<div id="replyPgaeNum" style="text-align: center;">
-			</div>
+			<div id="reply"></div>
+			<div id="replyPgaeNum" style="text-align: center;"></div>
 			
 			<br>
 			<div>
 			댓글등록<br>
 			<form id="comment">
-				<!--  <input type="hidden" name="rank_icon" id="rank_icon">
-				<input type="hidden" name="nickname" id="nickname">
-				<input type="hidden" name="regdate" id="regdate">-->
 				<textarea rows="10" cols="80" name="mr_content" id="mr_content" maxlength="300"></textarea>
-				<button id="btnInsertReply" type="button"><img src="/meetingImg/add.png" id="btnImg"></button>
+				<button id="btnInsertReply" type="button">등록</button>
 				<div><span id="mr_contentSpan"></span></div>
 				<input type="file" name="mr_file1" id="mr_file1">
 				

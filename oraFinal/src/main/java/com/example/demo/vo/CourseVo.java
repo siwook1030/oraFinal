@@ -16,6 +16,7 @@ public class CourseVo {
 	private int c_no;
 	private String code_value;
 	private String id;
+	private String nickName;
 	private String c_name; 
 	private String c_s_locname;
 	private double c_s_latitude;
@@ -33,7 +34,7 @@ public class CourseVo {
 	private String c_line;
 	private String c_temp;
 	private double userDis; //코스와 유저의현재위치와의  거리
-	private List<CoursePhotoVo> c_photo;
+	private   List<CoursePhotoVo> c_photo;
 	//private List<PublicTransportVo> pt; 교통편은 경로표시를 위해 따로 뺏음
 	
 	

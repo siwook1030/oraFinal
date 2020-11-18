@@ -1,6 +1,7 @@
 package com.example.demo.db;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.io.Resources;
@@ -34,10 +35,10 @@ public class NoticeManager {
 		
 	}
 
-	public static List<NoticeVo> listNotice(){
+	public static List<NoticeVo> listNotice(HashMap map){
 		List<NoticeVo> list = null;
 		SqlSession session = sqlSessionFactory.openSession();
-		list = session.selectList("notice.listNotice");
+		list = session.selectList("notice.listNotice",map);
 		session.close();
 		return list;
 	}
@@ -73,6 +74,48 @@ public class NoticeManager {
 		session.close();
 		return re;
 	}
+	
+	public static int updateNotice(NoticeVo n) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession(true);
+		re = session.insert("notice.updateNotice", n);
+		session.close();
+		return re;
+	}
+	
+	public static int deleteNotice(int n_no) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession(true);
+		re = session.insert("notice.deleteNotice", n_no);
+		session.close();
+		return re;
+	}
+	
+	public static NoticeVo selectByN_NO(int n_no) {
+		NoticeVo n = null;
+		SqlSession session = sqlSessionFactory.openSession();
+		n = session.selectOne("notice.selectByN_NO", n_no);
+		session.close();
+		return n;
+	}
+	
+	public static List<NoticeVo> searchNotice(HashMap map){
+		List<NoticeVo> nList = null;
+ 		SqlSession session = sqlSessionFactory.openSession();
+ 		nList = session.selectList("notice.search", map);
+		session.close();
+		return nList;
+	}
+	
+	// 게시글 수
+		public static int totNRecord(HashMap map) {
+			int re =  -1;
+			SqlSession session 
+			= sqlSessionFactory.openSession();
+			re = session.selectOne("notice.totNRecord", map);
+			session.close();
+			return re;
+		}
 }
 
 

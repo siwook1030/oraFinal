@@ -6,7 +6,19 @@
   <select id="selectList" resultType="reviewVo">
   	<!-- ROW_NUMBER()함수를 써서 'ORDER BY r_no DESC' 후에 ROWNUM이 동작하도록 한다.
   	현재시간-레코드등록시간 결과값의 정수는 일단위임. 초단위 결과를 반환하기 위해 곱연산함. 결과값이 소수점까지 나오기때문에 INT로 형변환해서 소수점 이하 제거. -->
-	SELECT r2.*, CAST(24*60*60*(SYSDATE-r2.r_regdate) AS INT) date_diff FROM (SELECT ROW_NUMBER() OVER (ORDER BY r_no DESC) row_num, r.* FROM review r ORDER BY r_no DESC) r2 WHERE row_num BETWEEN #{begin_record} AND #{end_record}
+	SELECT r2.*, CAST(24*60*60*(SYSDATE-r2.r_regdate) AS INT) date_diff FROM (SELECT ROW_NUMBER() OVER (ORDER BY r_no DESC) row_num, r.* FROM review r 
+	<if test='searchType.equals("id") || searchType.equals("c_no")'>
+		WHERE ${searchType}=#{searchValue}
+	</if>
+	<if test='searchType.equals("r_title") || searchType.equals("r_content")'>
+		<if test="searchMethod == 1">
+			WHERE ${searchType}=#{searchValue}
+		</if>
+		<if test="searchMethod == 2">
+			WHERE ${searchType} like '%'||#{searchValue}||'%'
+		</if>
+	</if>
+	ORDER BY r_no DESC) r2 WHERE row_num BETWEEN #{begin_record} AND #{end_record}
   </select>
   
   <!-- 내 게시물 목록-->
@@ -50,7 +62,18 @@
   	DELETE FROM review_rep WHERE r_no=#{r_no}
   </delete>
   <select id="count" resultType="java.lang.Integer">
-  	SELECT COUNT(*) FROM review
+  	SELECT COUNT(*) FROM review 
+  	<if test='searchType.equals("id") || searchType.equals("c_no")'>
+		WHERE ${searchType}=#{searchValue}
+	</if>
+	<if test='searchType.equals("r_title") || searchType.equals("r_content")'>
+		<if test="searchMethod == 1">
+			WHERE ${searchType}=#{searchValue}
+		</if>
+		<if test="searchMethod == 2">
+			WHERE ${searchType} like '%'||#{searchValue}||'%'
+		</if>
+	</if>
   </select>
   <select id="nextRr_no" resultType="java.lang.Integer">
   	SELECT NVL(MAX(rr_no),0)+1 FROM review_rep
@@ -61,4 +84,8 @@
   <insert id="insertRep">
   	INSERT INTO review_rep(rr_no,r_no,id,rr_content,rr_regdate,rr_ref,rr_step) VALUES(#{rr_no},#{r_no},#{id},#{rr_content},SYSDATE,#{rr_ref},#{rr_step})
   </insert>
+  
+  <update id="updateRasDelCourse"> <!--코스삭제로 인해 해당코스로 등록되어있던 게시물은 0번(선택안함)으로 변경 -->
+		UPDATE REVIEW SET C_NO = 0 WHERE C_NO = #{c_no}
+	</update>
 </mapper>

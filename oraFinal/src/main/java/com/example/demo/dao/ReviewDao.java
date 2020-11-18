@@ -14,8 +14,8 @@ import com.example.demo.vo.Review_repVo;
 
 @Repository
 public class ReviewDao {
-	public List<ReviewVo> selectList(HashMap<String, Integer> record_map){
-		return ReviewManager.selectList(record_map);
+	public List<ReviewVo> selectList(HashMap mybatis_map){
+		return ReviewManager.selectList(mybatis_map);
 	}
 	public List<ReviewVo> myPageSelectList(HttpSession httpSession){
 		return ReviewManager.MyPageSelectList(httpSession);
@@ -56,8 +56,8 @@ public class ReviewDao {
 	public int deleteRep(int r_no) {
 		return ReviewManager.deleteRep(r_no);
 	}
-	public int count() {
-		return ReviewManager.count();
+	public int count(HashMap mybatis_map) {
+		return ReviewManager.count(mybatis_map);
 	}
 	public int nextRr_no() {
 		return ReviewManager.nextRr_no();

@@ -27,10 +27,10 @@ public class ReviewManager {
 			e.printStackTrace();
 		}
 	}
-	public static List<ReviewVo> selectList(HashMap<String, Integer> record_map){
+	public static List<ReviewVo> selectList(HashMap mybatis_map){
 		List<ReviewVo> list = null;
 		SqlSession session = sqlSessionFactory.openSession();
-		list = session.selectList("review.selectList", record_map);
+		list = session.selectList("review.selectList", mybatis_map);
 		session.close();
 		return list;
 	}
@@ -128,10 +128,10 @@ public class ReviewManager {
 		session.close();
 		return re;
 	}
-	public static int count() {
+	public static int count(HashMap mybatis_map) {
 		int cnt = 0;
 		SqlSession session = sqlSessionFactory.openSession();
-		cnt = session.selectOne("review.count");
+		cnt = session.selectOne("review.count", mybatis_map);
 		session.close();
 		return cnt;
 	}

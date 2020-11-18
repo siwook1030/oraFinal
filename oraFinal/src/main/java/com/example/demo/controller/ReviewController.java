@@ -23,8 +23,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.dao.MemberDao;
 import com.example.demo.dao.ReviewDao;
+import com.example.demo.util.PointCause;
+import com.example.demo.util.PointGet;
 import com.example.demo.vo.CourseVo;
 import com.example.demo.vo.MemberVo;
+import com.example.demo.vo.PointVo;
 import com.example.demo.vo.RankVo;
 import com.example.demo.vo.ReviewVo;
 import com.example.demo.vo.Review_fileVo;
@@ -42,16 +45,6 @@ public class ReviewController {
 	private CourseDao cdao;
 	@Autowired
 	private MemberDao mdao;
-	
-	public void setRdao(ReviewDao rdao) {
-		this.rdao = rdao;
-	}
-	public void setCdao(CourseDao cdao) {
-		this.cdao = cdao;
-	}
-	public void setMdao(MemberDao mdao) {
-		this.mdao = mdao;
-	}
 	
 	int c_no;
 	String c_name;
@@ -96,9 +89,26 @@ public class ReviewController {
 	}
 	@RequestMapping("/listReviewJson")
 	@ResponseBody
-	public String listReviewJson(int page, int RECORDS_PER_PAGE) {
+	public String listReviewJson(int page, int RECORDS_PER_PAGE, String searchType, String searchValue, int searchMethod) {
+		System.out.println("searchType:"+searchType);
+		System.out.println("searchValue:"+searchValue);
+		System.out.println("searchMethod:"+searchMethod);
 		// System.out.println("리뷰page입니다 : " + page);
-		int total_records = rdao.count();		// 총 레코드 수
+		
+		HashMap mybatis_map = new HashMap();
+		// id로 검색 ==> searchType=id&searchValue=hoja2242
+		// 코스번호로 검색 ==> searchType=c_no&searchValue=7
+		// 제목으로 검색 ==> searchType=r_title&searchValue=오라오라!&searchMethod=1 (1:일치, 2:포함)
+		// 내용으로 검색 ==> searchType=r_content&searchValue=라이딩합시다&searchMethod=2 (1:일치, 2:포함)
+		mybatis_map.put("searchType", searchType);
+		if(searchType.equals("c_no")) {
+			mybatis_map.put("searchValue", Integer.parseInt(searchValue));
+		}else {
+			mybatis_map.put("searchValue", searchValue);
+		}
+		mybatis_map.put("searchMethod", searchMethod);
+
+		int total_records = rdao.count(mybatis_map);		// 총 레코드 수
 		// 총 페이지 수 계산
 		int total_pages = total_records / RECORDS_PER_PAGE;	
 		if(total_records % RECORDS_PER_PAGE > 0) {
@@ -111,11 +121,12 @@ public class ReviewController {
 			end_record = total_records;
 		}
 		// map에 시작 레코드, 종료 레코드 담아서 해당하는 범위의 레코드만 쿼리
-		HashMap<String, Integer> record_map = new HashMap<String, Integer>();
-		record_map.put("begin_record", begin_record);
-		record_map.put("end_record", end_record);
-		List<ReviewVo> list = rdao.selectList(record_map);
+		mybatis_map.put("begin_record", begin_record);
+		mybatis_map.put("end_record", end_record);
+		
+		List<ReviewVo> list = rdao.selectList(mybatis_map);
 		for(ReviewVo rvo : list) {
+			rvo.setTotal_reply(rdao.countRep(rvo.getR_no()));	// 게시글의 댓글 수
 			rvo.setDate_diff_str(getDate_diff_str(rvo.getDate_diff(),rvo.getR_regdate()));	// 게시글 등록시간차이
 			rvo.setC_name(getC_name(rvo.getC_no()));			// 게시판 코스명 설정
 			rvo.setNickName(getNickName(rvo.getId()));			// 게시판 닉네임 설정
@@ -129,6 +140,13 @@ public class ReviewController {
 		Gson gson = new Gson();
 		return gson.toJson(map);
 	}
+	@RequestMapping(value = "/getCourseList", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String getCourseList() {
+		Gson gson = new Gson();
+		return gson.toJson(cdao.listCourse());
+	}
+	
 	//내가쓴 게시물목록
 	@RequestMapping("/myPageListReview")
 	public void myPageListReview(Model model,HttpSession httpSession) {
@@ -145,6 +163,8 @@ public class ReviewController {
 		rdao.incHit(r_no);		// 히트수 증가
 		ReviewVo rvo = rdao.selectOne(r_no);
 		//rvo.setR_no(r_no);
+		rvo.setR_content(rvo.getR_content().replaceAll("\n", "<br>"));	// div태그에 줄바꿈처리를 위함
+		
 		rvo.setDate_diff_str(getDate_diff_str(rvo.getDate_diff(),rvo.getR_regdate()));	// 게시글 등록시간차이
 		rvo.setC_name(getC_name(rvo.getC_no()));			// 게시글 코스명 설정
 		rvo.setNickName(getNickName(rvo.getId()));			// 게시글 닉네임 설정
@@ -180,9 +200,11 @@ public class ReviewController {
 	@RequestMapping(value = "/detailReviewReply", produces = "application/json;charset=utf-8")
 	@ResponseBody
 	public String detailReviewReply(int r_no) {
-		int total_reply = rdao.countRep(r_no);
-		List<Review_repVo> rrlist = rdao.selectListRep(r_no);		// 댓글 가져오기
+		int total_reply = rdao.countRep(r_no);		// 게시글의 댓글 수
+		List<Review_repVo> rrlist = rdao.selectListRep(r_no);		// 댓글 가져오기	
 		for(Review_repVo rrvo : rrlist) {
+			//System.out.println("댓글내용 : " + rrvo.getRr_content());
+			rrvo.setRr_content(rrvo.getRr_content().replaceAll("\n", "<br>"));	// div태그에 줄바꿈처리를 위함
 			rrvo.setDate_diff_str(getDate_diff_str(rrvo.getDate_diff(),rrvo.getRr_regdate()));	// 댓글 등록시간차이
 			rrvo.setNickName(getNickName(rrvo.getId()));			// 댓글 닉네임 설정
 			rrvo.setRank_icon(getRankIcon(mvo.getRank_name()));		// 댓글 랭크아이콘 설정
@@ -196,16 +218,19 @@ public class ReviewController {
 	@RequestMapping("/insertReviewReply")
 	@ResponseBody
 	public int insertReviewReply(int r_no, int rr_ref, String rr_content, HttpSession session) {
+		//System.out.println("r_no:"+r_no);
+		//System.out.println("rr_ref:"+rr_ref);
+		//System.out.println("rr_content:"+rr_content);
 		int re = 0;
 		Review_repVo rrvo = new Review_repVo();
 		mvo = (MemberVo)session.getAttribute("m");
 		String id = mvo.getId();
 		int rr_no = rdao.nextRr_no();
 		int rr_step;
-		if(rr_ref == 0) {
+		if(rr_ref == 0) {	// rr_ref가 0 이면 본문 댓글
 			rr_ref = rr_no;
 			rr_step = 0;
-		}else {
+		}else {				//  rr_ref가 0아니면 대댓글
 			rr_step = rdao.nextRr_step(rr_ref);
 		}
 		rrvo.setRr_no(rr_no);
@@ -218,26 +243,13 @@ public class ReviewController {
 		return re;
 	}
 	
-	
-	/*@RequestMapping(value = "/getRvo", produces = "application/json;charset=utf-8")
-	@ResponseBody
-	public String detailReviewRvo(int r_no) {
-		rdao.incHit(r_no);		// 히트수 증가
-		ReviewVo rvo = rdao.selectOne(r_no);
-		rvo.setR_no(r_no);
-		rvo.setC_name(getC_name(rvo.getC_no()));			// 게시글 코스명 설정
-		rvo.setNickName(getNickName(rvo.getId()));			// 게시글 닉네임 설정
-		rvo.setRank_icon(getRankIcon(mvo.getRank_name()));	// 게시글 랭크아이콘 설정
-		rvo.setTotal_reply(rdao.countRep(r_no));			// 게시글 답글 수 설정
-		Gson gson = new Gson();
-		return gson.toJson(rvo);
-	}*/
-	@RequestMapping(value = "/insertReview", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/user/insertReview", method = RequestMethod.GET)
 	public void insertReviewForm(Model model) {
 		List<CourseVo> list = cdao.listCourse();
 		model.addAttribute("list", list);
 	}
-	@RequestMapping(value = "/insertReview", method = RequestMethod.POST)
+	@RequestMapping(value = "/user/insertReview", method = RequestMethod.POST)
 	public ModelAndView insertReviewSubmit(HttpServletRequest request, ReviewVo vo, MultipartFile mf) {
 		ModelAndView mav = new ModelAndView();
 		
@@ -285,6 +297,7 @@ public class ReviewController {
 				}
 			}
 			mav.setViewName("redirect:/listReview");
+			
 		}else {
 			mav.addObject("msg", "글등록에 실패하였습니다.");
 			mav.setViewName("errorPage");
@@ -310,4 +323,39 @@ public class ReviewController {
 		mav.setViewName("redirect:/listReview");
 		return mav;
 	}
+	
+	/*@RequestMapping(value="/test", method = RequestMethod.GET)
+	public void testForm(Model model) {
+		List<CourseVo> list = cdao.listCourse();
+		model.addAttribute("list", list);
+	}
+	@RequestMapping(value="/test", method = RequestMethod.POST)
+	public void testSubmit(String content) {
+		
+		//System.out.println("입력내용" + content.toString());
+		System.out.println("입력내용 : " + content);
+		
+	}
+	@RequestMapping(value = "/testImage", method=RequestMethod.POST, produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public String testImage(MultipartFile upload, HttpServletRequest request) {
+		String ofname = "";
+		if(!upload.getOriginalFilename().equals("")) {
+			// review_file테이블 insert코드
+			ofname = upload.getOriginalFilename();
+			String path = request.getServletContext().getRealPath("/");
+			System.out.println("path:"+path);
+			try {
+				byte[] data = upload.getBytes();
+				FileOutputStream fos = new FileOutputStream(path+"/test/"+ofname);
+				fos.write(data);
+				fos.close();
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		String url = "{\"url\": \"/test/"+ofname+"\"}";
+		return url;
+	}*/
 }
