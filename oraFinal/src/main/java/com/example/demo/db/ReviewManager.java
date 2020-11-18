@@ -34,6 +34,8 @@ public class ReviewManager {
 		session.close();
 		return list;
 	}
+	
+	//마이페이지 내후기
 	public static List<ReviewVo> MyPageSelectList(HttpSession httpSession){
 		List<ReviewVo> list = null;
 		SqlSession session = sqlSessionFactory.openSession();

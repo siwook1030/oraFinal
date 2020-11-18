@@ -45,7 +45,7 @@ $(document).ready(function(){
 		<br>
 		<table width="100%">
 			<tr>
-				<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+				<th>&nbsp;&nbsp;&nbsp;번호&nbsp;&nbsp;&nbsp;</th>
 				 <th>코스</th>
 				 <th>제목</th>
 				 <th>작성자</th>

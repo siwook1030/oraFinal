@@ -141,21 +141,28 @@ public class CourseController {
 		model.addAttribute("f", cdao.getFoodByFoodNo(food_no));
 	}
 	
+	@GetMapping(value = "/myPageSaveCourse")
+		public void saveCourse() {
+		}
 	
 	//나의 찜코스 ~
-	@GetMapping(value = "/myPageSaveCourse")
-	public void saveCourse(Model model,HttpSession httpSession) {
+	@PostMapping(value = "/myPageSaveCourse", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String saveCourse(HttpSession httpSession) {
 		System.out.println("세이브 컨트롤러 작동!!!!");
+		Gson gson = new Gson();
 		List<CourseVo> courseList = cdao.getSaveCourse(httpSession);
 		List<CoursePhotoVo> photovo =null;
 		for (CourseVo c : courseList) {
 			photovo =(c.getC_photo());
 		}
-		model.addAttribute("courseList",courseList);
-		model.addAttribute("photovo",photovo);
+		//model.addAttribute("courseList",courseList);
+		//model.addAttribute("photovo",photovo);
 		System.out.println(courseList);
 		System.out.println("코스리스트");
 		System.out.println(photovo);
+		
+		return gson.toJson(courseList);
 	}
 	//내가 만든코스~
 	@GetMapping(value = "/myPageMyCourse")
@@ -173,13 +180,15 @@ public class CourseController {
 		System.out.println(photovo);
 	}
 	//찜코스 삭제~
-	@GetMapping(value = "/deleteSaveCourse")
-	public int deleteSaveCourse(HttpSession httpSession,int c_no) {
+	@PostMapping(value = "/deleteSaveCourse", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String deleteSaveCourse(HttpSession httpSession,int cno) {
+		System.out.println("코스삭제 컨트롤러작동" + cno);
 		MemberVo m = (MemberVo)httpSession.getAttribute("m");
 		HashMap map = new HashMap();
 		map.put("id", m.getId());
-		map.put("c_no", c_no);
-		int re = cdao.deleteSaveCourse(map);
+		map.put("c_no", cno);
+		String re = ""+cdao.deleteSaveCourse(map);
 		return re;
 	}
 

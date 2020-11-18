@@ -31,15 +31,18 @@ public class MemberController {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder; 
-	
+	//마이페이지 이동
 	@GetMapping(value = "/myPage", produces = "application/json;charset=utf-8")
 	public void selectAll(HttpSession session) {
 
 	}
 	 //비밀번호 확인
-	 @PostMapping(value = "/passwordConfirm", produces = "application/json;charset=utf-8")
+	 @PostMapping(value = "/passwordConfirm")
 	 @ResponseBody
-	 public String passwordConfirm(MemberVo m,String password) {
+	 public String passwordConfirm(HttpSession httpSession,String password) {
+		 System.out.println("비밀번호 확인 컨트롤러 확인 ~~~~~~~~~~~~~~~~~~~~~~");
+		 MemberVo m = (MemberVo)httpSession.getAttribute("m");
+		 System.out.println(m.getPassword());
 		 String c = "";
 		 boolean r = passwordEncoder.matches(password,m.getPassword());
 		 if (r) {
@@ -47,8 +50,10 @@ public class MemberController {
 		 }else {
 			c= "비밀번호를 다시확인해주세요";
 		}
-		 return c;
+		 System.out.println("c:" + c);
+		return c;
 	 }
+	 
 	 //비밀번호확인후 정보변경
 	 @PostMapping(value = "/update", produces = "application/json;charset=utf-8")
 	 @ResponseBody
@@ -62,9 +67,13 @@ public class MemberController {
 		 if (m.getNickName() != ""&& "" != m.getNickName()) {
 			 orgin.setNickName(m.getNickName());	
 		}
-		 if (m.getPassword() != ""&& "" != m.getPassword()) {
-			 orgin.setPassword(passwordEncoder.encode(m.getPassword()));	
-		 }
+		
+		  if (m.getPassword() != ""&& "" != m.getPassword()) {
+			  String password = m.getPassword();
+			  orgin.setPassword(passwordEncoder.encode(password)); 
+		  
+		  }
+		 
 		 System.out.println(orgin);
 		 int re = dao.updateMeber(orgin); 
 		 

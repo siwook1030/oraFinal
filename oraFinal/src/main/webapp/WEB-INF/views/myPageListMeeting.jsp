@@ -125,7 +125,7 @@
 		<br>
 		<table width="100%">
 			<tr>
-				<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+				<th>&nbsp;&nbsp;&nbsp;번호&nbsp;&nbsp;&nbsp;</th>
 				 <th>코스</th>
 				 <th>모임날짜</th>
 				 <th>제목</th>
