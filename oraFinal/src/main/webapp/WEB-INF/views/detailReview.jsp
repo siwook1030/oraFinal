@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<!-- ckeditor스타일 적용을 위한 css -->
+<link rel="stylesheet" type="text/css" href="/ckeditor5/content-styles.css">
 <style type="text/css">
 section {
 	margin: 0 auto;
@@ -32,6 +34,12 @@ section {
 	flex-grow: 1;
 	flex-basis: 90%;
 	text-align: right;
+}
+/* ck-content안의 이미지에 좌/우 정렬 줄경우 ck-content의 height이 0이되는 현상해결 */
+.ck-content::after {
+	content: "";
+	display: block;
+	clear: both;
 }
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -71,6 +79,13 @@ $(document).ready(function(){
 			alert("댓글내용을 입력하세요!");	// 댓글내용없는데 등록버튼 누를 경우
 		}else {
 			insertReviewReply(rr_ref, rr_content);	// insert ajax호출
+		}
+	});
+
+	$("#btnDelete").click(function(event){
+		let answer = confirm("정말 삭제하시겠습니까?");
+		if(!answer) {
+			event.preventDefault();
 		}
 	});
 });
@@ -150,7 +165,9 @@ function insertReviewReply(rr_ref, rr_content){		// 댓글 내용을 입력 ajax
 </script>
 </head>
 <body>
+
 <jsp:include page="header.jsp"/>
+
 <section>
 		<br><br>
 		<p style="font-size: 20px">후기 게시판&nbsp;&gt;&nbsp;<font color="#c85725">후기 상세</font></p>
@@ -170,23 +187,18 @@ function insertReviewReply(rr_ref, rr_content){		// 댓글 내용을 입력 ajax
 		<!-- 코스명 -->
 		<div style="padding: 3px;">코스 : ${rvo.c_name }</div>
 		<hr>
-		
 		<br>
-		<!-- 등록사진 -->
-		<c:forEach var="rfvo" items="${rflist }">
-			<img src="${rfvo.rf_path }/${rfvo.rf_savename}" width="400" height="400">
-		</c:forEach>
-		
 		<br><br><br>
 		<!-- 게시글내용 -->
+		<div class="ck-content">
 		${rvo.r_content }
+		</div>
 		<br><br><br><br>
-		
 		<div id="replyTextArea"></div>
 		<!-- 수정,삭제 버튼 -->
 		<c:if test="${rvo.id == m.id }">
-			<a href="deleteReview?r_no=${rvo.r_no }"><img src="buttons/delete.png" class="button"></a>
-			<a href="updateReview?r_no=${rvo.r_no }"><img src="buttons/edit.png" class="button"></a>
+			<a href="deleteReview?r_no=${rvo.r_no }" id="btnDelete"><img src="buttons/delete.png" class="button"></a>
+			<a href="/user/updateReview?r_no=${rvo.r_no }"><img src="buttons/edit.png" class="button"></a>
 		</c:if>
 		<br><br>
 	
@@ -203,5 +215,6 @@ function insertReviewReply(rr_ref, rr_content){		// 댓글 내용을 입력 ajax
 </section>
 
 <jsp:include page="footer.jsp"/>
+
 </body>
 </html>

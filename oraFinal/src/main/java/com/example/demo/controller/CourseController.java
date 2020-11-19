@@ -200,6 +200,7 @@ public class CourseController {
       String re = ""+cdao.deleteSaveCourse(map);
       return re;
    }
+
    
    //찜코스 추가
    @PostMapping(value = "/user/addSaveCourse",  produces = "application/json; charset=utf-8")

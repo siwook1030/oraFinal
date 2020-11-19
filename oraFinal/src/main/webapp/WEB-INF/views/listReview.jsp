@@ -24,6 +24,7 @@ td, th {
 }
 a {
 	text-decoration: none;
+	color: black;
 }
 #pageLink {
 	text-align: center;
@@ -53,10 +54,13 @@ a {
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
-let searchType = "";
-let searchValue = "";
-let searchMethod = 0;
-let courseList;
+let searchType = "";	// id,코스번호,제목,내용
+let searchValue = "";	// 검색을 위한 사용자입력값
+let searchMethod = 0;	// 제목,내용 검색방법을 일치or포함중에 선택
+let courseList;			// List<CourseVo> 를 담은 변수. select-option 태그 만들기 위한 용도
+
+// 마이페이지에서 내가 쓴 게시글 조회했을때 처리하기위한 코드.
+// GET방식 쿼리라서 querystring을 가져오기 위한 설정
 const URLSearch = new URLSearchParams(location.search);
 if(URLSearch.has("searchType")) {
 	searchType = URLSearch.get("searchType");
@@ -73,9 +77,9 @@ const PAGE_LINKS = 5;			// 페이지 하단에 표시되는 페이지링크 수
 let page = 1;	// 현재 페이지 저장 변수(기본은 1페이지)
 
 $(document).ready(function(){
-	getJson();
-	getCourseList();
-	createInput("id");
+	getJson();			// 댓글과 페이지링크 만드는 함수
+	getCourseList();	// List<CourseVo> 받아오기. 코스명으로 게시글 검색용도
+	createInput("id");	// 처음엔 기본으로 id기반 검색으로 설정됨
 	// 마우스 over,leave 이벤트
 	$(document).on("mouseover", ".row", function(){
 		$(this).css("background-color","#88bea6");
@@ -84,10 +88,10 @@ $(document).ready(function(){
 		$(this).css("background-color","white");
 	});
 
-	$("#searchType").change(function(){
+	$("#searchType").change(function(){		// searchType이 바뀔때마다 동적으로 검색기능 생성
 		createInput($(this).val());
 	});
-	$(document).on("click", "#btnSearch", function(){
+	$(document).on("click", "#btnSearch", function(){	// 검색버튼 눌렀을때 게시물 목록을 거기에 맞춰서 다시 가져온다.
 		searchType = $("#searchType").val();
 		searchValue = $("#searchValue").val();
 		if(searchType === "r_title" || searchType === "r_content") {
@@ -96,7 +100,7 @@ $(document).ready(function(){
 		getJson();
 	});
 });
-function createInput(searchType){
+function createInput(searchType){	// 검색기능 동적으로 생성
 	$("#searchInputWrap").empty();
 	if(searchType === "c_no") {
 		let $select = $("<select></select>").attr("id", "searchValue");
@@ -122,7 +126,7 @@ function createInput(searchType){
 	$("#searchInputWrap").append($button);
 }
 
-function getCourseList(){
+function getCourseList(){	// List<CourseVo> 받아오기. 코스명으로 게시글 검색용도
 	$.ajax({
 		url: "/getCourseList",
 		success: function(data){
@@ -135,6 +139,7 @@ function getJson(){
 	$.ajax({
 		url: "/listReviewJson",
 		dataType: "json",
+		method: "post",
 		data: {
 			page: page,	// 현재 페이지 정보 전달
 			RECORDS_PER_PAGE: RECORDS_PER_PAGE,	// 페이지당 레코드 수 전달

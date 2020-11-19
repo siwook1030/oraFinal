@@ -8,7 +8,7 @@
 
    <meta charset="UTF-8">
    <title>내 작성 코스</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
 
@@ -47,7 +47,7 @@ window.onload = function(){
                if(i >= index){                
                 return;               
                };
-   	           
+                 
            const courseBox = document.createElement("div");
            courseBox.className="col-md-4";
 
@@ -122,20 +122,20 @@ window.onload = function(){
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate pb-0 text-center">
-          	<span><h1 class="mb-3 bread">마이페이지</h1></span>
-          	<p class="breadcrumbs">
-          		<span>
-          			<a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a>
-          			<a href="/myPage">정보 수정 <i class="fa fa-chevron-right"></i></a>
-				</span>
-          		<a href="/myPageSaveCourse">찜 목록 <i class="fa fa-chevron-right"></i></a>
-          		<span>
-          		<a href="/myPageMyCourse">내 작성 코스<i class="fa fa-chevron-right"></i></a>
-         	    <a href="/myPageListReview">내 작성 후기<i class="fa fa-chevron-right"></i></a>
-            	<a href="myPageListMeeting">내 작성 번개<i class="fa fa-chevron-right"></i></a>
-            	<a href="/myPageMyRank">랭킹</a>
-          		</span>
-          		</p>
+             <span><h1 class="mb-3 bread">마이페이지</h1></span>
+             <p class="breadcrumbs">
+                <span>
+                   <a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a>
+                   <a href="/myPage">정보 수정 <i class="fa fa-chevron-right"></i></a>
+            </span>
+                <a href="/myPageSaveCourse">찜 목록 <i class="fa fa-chevron-right"></i></a>
+                <span>
+                <a href="/myPageMyCourse">내 작성 코스<i class="fa fa-chevron-right"></i></a>
+                <a href="/myPageListReview">내 작성 후기<i class="fa fa-chevron-right"></i></a>
+               <a href="myPageListMeeting">내 작성 번개<i class="fa fa-chevron-right"></i></a>
+               <a href="/myPageMyRank">랭킹</a>
+                </span>
+                </p>
           </div>
         </div>
       </div>
@@ -146,7 +146,7 @@ window.onload = function(){
     <div class="container">   
            <h1>내가 찜한 코스 목록</h1>
            
-	   <div class="row" id="saveCourseList"></div>
+      <div class="row" id="saveCourseList"></div>
         <div class="row mt-5">
           <div class="col text-center">
             <div class="block-27">

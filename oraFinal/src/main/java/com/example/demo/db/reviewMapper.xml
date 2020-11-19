@@ -84,6 +84,27 @@
   <insert id="insertRep">
   	INSERT INTO review_rep(rr_no,r_no,id,rr_content,rr_regdate,rr_ref,rr_step) VALUES(#{rr_no},#{r_no},#{id},#{rr_content},SYSDATE,#{rr_ref},#{rr_step})
   </insert>
+  <update id="update">
+  	UPDATE review SET c_no=#{c_no},r_title=#{r_title},r_content=#{r_content} WHERE r_no=#{r_no}
+  </update>
+  <delete id="deleteFileOne">
+  	DELETE FROM review_file WHERE rf_no=#{rf_no}
+  </delete>
+  
+  <!-- autosave용도 임시게시판 시작 -->
+  <select id="selectTemp" resultType="review_tempVo">
+  	SELECT * FROM review_temp WHERE id=#{id}
+  </select>
+  <insert id="insertTemp">
+  	INSERT INTO review_temp(id,r_title,c_no,r_content) VALUES(#{id},#{r_title},#{c_no},#{r_content})
+  </insert>
+  <update id="updateTemp">
+  	UPDATE review_temp SET r_title=#{r_title}, c_no=#{c_no}, r_content=#{r_content} WHERE id=#{id}
+  </update>
+  <delete id="deleteTemp">
+  	DELETE FROM review_temp WHERE id=#{id}
+  </delete>
+  <!-- autosave용도 임시게시판 끝 -->
   
   <update id="updateRasDelCourse"> <!--코스삭제로 인해 해당코스로 등록되어있던 게시물은 0번(선택안함)으로 변경 -->
 		UPDATE REVIEW SET C_NO = 0 WHERE C_NO = #{c_no}

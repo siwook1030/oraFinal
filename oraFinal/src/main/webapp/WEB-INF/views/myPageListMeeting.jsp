@@ -57,7 +57,6 @@
 </head>
 <body>
 
-
 <jsp:include page="my_footer.jsp"/>
     
   </body>
