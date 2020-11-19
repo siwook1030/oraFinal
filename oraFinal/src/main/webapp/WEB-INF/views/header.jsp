@@ -91,8 +91,6 @@ window.onload = function(){
 			<li class="menu"><a href="/listReview">라이딩 후기</a></li>
 			<li>|</li>
 			<li class="menu"><a href="/listMeeting">번개 라이딩</a></li>
-			<li>|</li>
-			<li class="menu">라이딩 정보</li>
 		</ul>
 	</header>
 
