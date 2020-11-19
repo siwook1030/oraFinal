@@ -83,7 +83,6 @@
   	background-size: cover;
   }
    /*메인섹션 끝css--------------------------*/
-
    /*float 초기화 아이디*/
    #clear{
    	clear: both; 
@@ -108,28 +107,21 @@
 <script src="/js/shuffleArray.js"></script>
 <script type="text/javascript">
 window.onload = function(){
-
 	const rcViewWord = document.getElementById("rcViewWord");
 	const rcList = document.getElementById("rcList");
-
 	let cListByView; //뷰를 구분으로 코스리스트를 담은 리스트 헤더에 사용할거임
-
-
 	const map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
         center : new kakao.maps.LatLng(36.2683, 127.6358), // 지도의 중심좌표 
         level : 14 // 지도의 확대 레벨 
     });
 	const placeOverlay = new kakao.maps.CustomOverlay({zIndex:1}), 
     contentNode = document.createElement('div'); // 커스텀 오버레이의 컨텐츠 엘리먼트 입니다 
-
 	// 커스텀 오버레이의 컨텐츠 노드에 css class를 추가합니다 
 	contentNode.className = 'placeinfo_wrap';
-
 	// 커스텀 오버레이의 컨텐츠 노드에 mousedown, touchstart 이벤트가 발생했을때
 	// 지도 객체에 이벤트가 전달되지 않도록 이벤트 핸들러로 kakao.maps.event.preventMap 메소드를 등록합니다 
 	addEventHandle(contentNode, 'mousedown', kakao.maps.event.preventMap);
 	addEventHandle(contentNode, 'touchstart', kakao.maps.event.preventMap);
-
 	// 엘리먼트에 이벤트 핸들러를 등록하는 함수입니다
 	function addEventHandle(target, type, callback) {
 	    if (target.addEventListener) {
@@ -141,7 +133,6 @@ window.onload = function(){
 	
 	// 커스텀 오버레이 컨텐츠를 설정합니다
 	placeOverlay.setContent(contentNode); 
-
 	kakao.maps.event.addListener(map, 'idle', function() {
 		placeOverlay.setMap(null);
 	});
@@ -152,7 +143,6 @@ window.onload = function(){
         averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
         minLevel: 10 // 클러스터 할 최소 지도 레벨 
     });
-
     function displayC (c) {   
     	let courseTime;
 		const hour = parseInt(c.c_time/60);
@@ -189,7 +179,6 @@ window.onload = function(){
 	    placeOverlay.setPosition(new kakao.maps.LatLng(c.c_s_latitude, c.c_s_longitude));
 	    placeOverlay.setMap(map);  
 	}
-
 	const imageSize = new kakao.maps.Size(30, 30);
     const riverImg = '/courseMarkerImg/river.png';   
     const mountImg = '/courseMarkerImg/mount.png';   
@@ -200,7 +189,6 @@ window.onload = function(){
 	const mountMarkerImg = new kakao.maps.MarkerImage(mountImg, imageSize);
 	const attractMarkerImg = new kakao.maps.MarkerImage(attractImg, imageSize);
 	const seaMarkerImg = new kakao.maps.MarkerImage(seaImg, imageSize);
-
 	
     const recomendNum = 3; // 추천코스리스트를 보여줄 수 0부터시작함
 	let vNameList;
@@ -220,7 +208,6 @@ window.onload = function(){
 			alert("에러발생");
 		}
 	});
-
 	function setClurseter(){
 		const markerArr = [];
 		const riverList = recomendList[0];
@@ -233,7 +220,6 @@ window.onload = function(){
 			    position: new kakao.maps.LatLng(c.c_s_latitude, c.c_s_longitude), 
 			    image: riverMarkerImg // 마커이미지 설정 
 			});
-
 			kakao.maps.event.addListener(courseMarker, 'click', function() {
 	            displayC(c);
 	        });
@@ -245,7 +231,6 @@ window.onload = function(){
 			    position: new kakao.maps.LatLng(c.c_s_latitude, c.c_s_longitude), 
 			    image: mountMarkerImg // 마커이미지 설정 
 			});
-
 			kakao.maps.event.addListener(courseMarker, 'click', function() {
 	            displayC(c);
 	        });
@@ -257,7 +242,6 @@ window.onload = function(){
 			    position: new kakao.maps.LatLng(c.c_s_latitude, c.c_s_longitude), 
 			    image: attractMarkerImg // 마커이미지 설정 
 			});
-
 			kakao.maps.event.addListener(courseMarker, 'click', function() {
 	            displayC(c);
 	        });
@@ -269,7 +253,6 @@ window.onload = function(){
 			    position: new kakao.maps.LatLng(c.c_s_latitude, c.c_s_longitude), 
 			    image: seaMarkerImg // 마커이미지 설정 
 			});
-
 			kakao.maps.event.addListener(courseMarker, 'click', function() {
 	            displayC(c);
 	        });
@@ -305,9 +288,6 @@ window.onload = function(){
 	}
 	
 	
-
-
-
 }
 </script>
 </head>

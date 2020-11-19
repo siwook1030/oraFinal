@@ -8,6 +8,9 @@
     <title>내 작성 코스</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript">
 window.onload = function(){
     let addIndex = 0;
     let lastIndex = 0;
@@ -16,12 +19,12 @@ window.onload = function(){
     
     function getCourseList(index){   
        $.ajax({
-         url: "/myPageSaveCourse",
+         url: "/myPageMyCourse",
          method:"POST",
          success: function(courseVo){
             $(courseVo).each(function(i, c) {
                lastIndex = i;
-                 addIndex = i;
+               addIndex = i;
                  
                  console.log("index"+index);
                  console.log("lastIndex"+lastIndex);
@@ -30,33 +33,33 @@ window.onload = function(){
                if(i >= index){                
                 return;               
                };
-   	           
+                 
            const courseBox = document.createElement("div");
            courseBox.className="col-md-4";
 
-     let courseContent = '<div class="property-wrap ftco-animate fadeInUp ftco-animated">\
-              <a href="/detailCourse?c_no='+c.c_no+'" class="img" target="_blank" style="background-image: url('+c.c_photo[0].cp_path+'/'+c.c_photo[0].cp_name+');">\
-                 <div class="rent-sale">\
-                    <span class="rent">'+c.c_loc+'</span>\
-                 </div>\
-                 <p class="price"><span class="orig-price">'+"Level:"+c.c_difficulty+'</span></p>\
-              </a>\
-              <div class="text">\
-                 <h3><a href="/detailCourse?c_no='+c.c_no+'" target="_blank">'+c.c_name+'</a></h3>\
-                 <span class="location"></span>\
-                 <span style="cursor: hand; cursor:pointer;" title="삭제" class="deleteSaveCourse d-flex align-items-center justify-content-center btn-custom" value="'+c.c_no+'">\
-                    <span class="fa fa-link" value="'+c.c_no+'"></span>\
-                 </span>\
-                 <ul class="property_list">\
-                 </ul>\
-                 <div class="list-team d-flex align-items-center mt-2 pt-2 border-top">\
-                    <div class="d-flex align-items-center"></div>\
-                     <span class="text-right">'+c.c_distance+'km </span>\
-                 </div>\
-              </div>\
-           </div>'; 
 
 
+
+           let courseContent = '<div class="property-wrap ftco-animate fadeInUp ftco-animated">\
+               <a href="/detailCourse?c_no='+c.c_no+'" class="img" target="_blank" style="background-image: url('+c.c_photo[0].cp_path+'/'+c.c_photo[0].cp_name+');">\
+                  <div class="rent-sale">\
+                     <span class="rent">'+c.c_loc+'</span>\
+                  </div>\
+                  <p class="price"><span class="orig-price">'+"Level:"+c.c_difficulty+'</span></p>\
+               </a>\
+               <div class="text">\
+                  <h3><a href="/detailCourse?c_no='+c.c_no+'" target="_blank">'+c.c_name+'</a></h3>\
+                  <span class="location"></span>\
+                  <ul class="property_list">\
+                  </ul>\
+                  <div class="list-team d-flex align-items-center mt-2 pt-2 border-top">\
+                     <div class="d-flex align-items-center"></div>\
+                      <span class="text-right">'+c.c_distance+'km </span>\
+                  </div>\
+               </div>\
+            </div>'; 
+
+           
            courseBox.innerHTML = courseContent;
            saveCourseList.append(courseBox);
             });//첫번째포문   
@@ -69,17 +72,7 @@ window.onload = function(){
 
        
        $(document).on("click",".deleteSaveCourse", function() {
-          //var data=$(this).val();
-          var data=$(this).attr("value");
-             console.log(data);
-             $.ajax({
-                url:"/deleteSaveCourse",
-                method:"POST",
-                data:{"cno":data},
-                success: function(re){
-                   alert("찜코스가 삭제되었습니다"+re);
-                   window.location.reload();
-             }});            
+          alert("관리자의 승인이필요한 서비스입니다");          
        });//삭제클릭이벤트
     
        $("#add").click(function() {
@@ -95,6 +88,10 @@ window.onload = function(){
        });   
  };
 </script>
+
+
+
+
 </head>
 
 <body>
