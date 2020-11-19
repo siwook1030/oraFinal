@@ -9,7 +9,6 @@
 <style type="text/css">
 * {
 	font-family: 'NEXON Lv1 Gothic Low OTF';
-	line-height: 150%;
 }
 
 header * {
