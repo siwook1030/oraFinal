@@ -71,6 +71,13 @@ public class MemberManager {
 		session.close();
 		return m;
 	}
+	public static MemberVo selectMemberId(String phone) {
+		MemberVo m = null;
+		SqlSession session = sqlSessionFactory.openSession();
+		m = session.selectOne("member.selectMemberId", phone);
+		session.close();
+		return m;
+	}
 	
 	public static RankVo selectRank(String rank_name){
 		RankVo vo = null;
@@ -83,6 +90,14 @@ public class MemberManager {
 		int re = 0;
 		SqlSession session = sqlSessionFactory.openSession();
 		re = session.update("member.updateMember", m);
+		session.commit();
+		session.close();
+		return re;
+	}
+	public static int updatePwd(MemberVo m) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.update("member.updatePwd", m);
 		session.commit();
 		session.close();
 		return re;

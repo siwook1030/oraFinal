@@ -22,6 +22,7 @@
 		<typeAlias type="com.example.demo.vo.RankVo" alias="rankVo"/>
 		<typeAlias type="com.example.demo.vo.Review_fileVo" alias="review_fileVo"/>
 		<typeAlias type="com.example.demo.vo.Review_repVo" alias="review_repVo"/>
+		<typeAlias type="com.example.demo.vo.Review_tempVo" alias="review_tempVo"/>
 		
 		<typeAlias type="com.example.demo.vo.NoticeVo" alias="noticeVo" />
 		<typeAlias type="com.example.demo.vo.CodeVo" alias="codeVo" />

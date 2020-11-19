@@ -57,6 +57,7 @@ public class InsertMeetingController {
 	@GetMapping("/user/insertMeeting")
 	public void insertMeetingForm(HttpSession session, Model model) {
 		model.addAttribute("cList", cdao.listCourse());
+		model.addAttribute("m_no",mdao.NextMNum());
 	}
 
 	@PostMapping(value = "/user/insertMeeting", produces = "application/json;charset=utf-8")
@@ -65,7 +66,7 @@ public class InsertMeetingController {
 		System.out.println("***map : "+map);
 		System.out.println("***uploadMtFiles : "+uploadMtFiles);
 		
-		int m_no = mdao.NextMNum();
+		int m_no = Integer.parseInt((String)map.get("m_no"));
 		int c_no = Integer.parseInt((String)map.get("c_no"));
 		String id = (String)map.get("id");
 		String m_title = (String)map.get("m_title");

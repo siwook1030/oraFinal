@@ -27,12 +27,18 @@ public class MemberDao {
 	public MemberVo selectMember(String id) {
 		return MemberManager.selectMember(id);
 	}
+	public MemberVo selectMemberId(String phone) {
+		return MemberManager.selectMemberId(phone);
+	}
 	
 	public RankVo selectRank(String rank_name) {
 		return MemberManager.selectRank(rank_name);
 	}
 	public int updateMeber(MemberVo m ) {
 		return MemberManager.updateMember(m);
+	}
+	public int updatePwd(MemberVo m ) {
+		return MemberManager.updatePwd(m);
 	}
 	public void insertPoint(PointVo p ) {
 		MemberManager.insertPoint(p);
