@@ -9,7 +9,6 @@
 <style type="text/css">
 * {
 	font-family: 'NEXON Lv1 Gothic Low OTF';
-	line-height: 150%;
 }
 
 header * {
@@ -26,10 +25,6 @@ header {
 #logo {
 	float: left; 
 
-}
-li{
-	list-style-type: none;  
->>>>>>> branch '김길모' of https://github.com/siwook1030/oraFinal.git
 }
 #top {
 	margin: 50px 0 0 0;
@@ -88,8 +83,6 @@ window.onload = function(){
 			<li class="menu"><a href="/listReview">라이딩 후기</a></li>
 			<li>|</li>
 			<li class="menu"><a href="/listMeeting">번개 라이딩</a></li>
-			<li>|</li>
-			<li class="menu">라이딩 정보</li>
 		</ul>
 	</header>
 </body>
