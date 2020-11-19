@@ -27,10 +27,6 @@ header {
 	float: left; 
 
 }
-li{
-	list-style-type: none;  
->>>>>>> branch '김길모' of https://github.com/siwook1030/oraFinal.git
-}
 #top {
 	margin: 50px 0 0 0;
 	font-size: 17px;
