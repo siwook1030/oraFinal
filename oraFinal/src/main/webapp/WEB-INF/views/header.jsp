@@ -9,6 +9,7 @@
 <style type="text/css">
 * {
 	font-family: 'NEXON Lv1 Gothic Low OTF';
+	line-height: 150%;
 }
 
 header * {
@@ -22,33 +23,33 @@ header {
 	height: 100px;
 	margin: 20px auto;
 }
-
 #logo {
 	float: left; 
-}
 
+}
+li{
+	list-style-type: none;  
+>>>>>>> branch '김길모' of https://github.com/siwook1030/oraFinal.git
+}
 #top {
 	margin: 50px 0 0 0;
 	font-size: 17px;
 	float: right;
 }
-
 #top li {
    display: inline;
    list-style-type: none;
 }
-
 .menu{
 	margin: 0 20px 0 20px;
 }
-
 #login {
 	font-size: 14px;
 	text-align: right;
 	margin: 0 20px 0 0;
 }
-
 header a{
+
 	text-decoration: none;
 	color: black;
 }
@@ -66,14 +67,11 @@ window.onload = function(){
 </script>
 </head>
 <body>
-
-
 	<header>
 		<div id="logo">
 			<a href="/mainPage"><img src='/headerImg/logo.png' height="100"></a>
 		</div>
 		
-		<div id="login">
 			<c:choose>
 				<c:when test="${m == null }">
 					<a href="/login">로그인</a>&nbsp;&nbsp;&nbsp;<a href="/signUp">회원가입</a>
@@ -82,7 +80,6 @@ window.onload = function(){
 					${m.nickName } 라이더님 &nbsp;&nbsp;<a href="/logout">로그아웃</a>&nbsp;&nbsp;<a href="/myPage?id=${m.id}">마이페이지</a>
 				</c:when>
 			</c:choose>
-		</div>
 		<ul id="top">
 			<li class="menu"><a href="/listNotice">오늘의 라이딩</a></li>
 			<li>|</li>
@@ -95,6 +92,5 @@ window.onload = function(){
 			<li class="menu">라이딩 정보</li>
 		</ul>
 	</header>
-
 </body>
 </html>

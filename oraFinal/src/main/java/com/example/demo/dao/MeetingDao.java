@@ -47,8 +47,8 @@ public class MeetingDao {
 		return MeetingManager.updateHit(m_no);
 	}
 	
-	public int totMRecord() {
-		return MeetingManager.totMRecord();
+	public int totMRecord(String id) {
+		return MeetingManager.totMRecord(id);
 	}
 	
 	// meeting_file

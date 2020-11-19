@@ -1,67 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-  <jsp:include page="my_header.jsp"/>
-  
-    <title>내 작성 후기</title>
-        
-  </head>
-  <body>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
     
-    <section class="hero-wrap hero-wrap-2" style="background-image: url('images/bg_1.jpg');" data-stellar-background-ratio="0.5">
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
-          <div class="col-md-9 ftco-animate pb-0 text-center">
-          
-             <span><h1 class="mb-3 bread">마이페이지</h1></span>
-          
-             <p class="breadcrumbs">
-
-                <span>
-                   <a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a>
-                 <a href="/myPage">정보 수정 <i class="fa fa-chevron-right"></i></a>
-                <a href="/myPageSaveCourse">찜 목록 <i class="fa fa-chevron-right"></i></a>
-                <a href="/myPageMyCourse">내 작성 코스<i class="fa fa-chevron-right"></i></a>
-                </span>
-                <a href="/myPageListReview">내 작성 후기<i class="fa fa-chevron-right"></i></a>
-            <span>
-               <a href="myPageListMeeting">내 작성 번개<i class="fa fa-chevron-right"></i></a>
-               <a href="/myPageMyRank">랭킹</a>
-                </span>
-                </p>
-     </ul>
-            
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    
- <section class="ftco-section ftco-no-pb ftco-no-pt">
-    <div class="container">   
-           <h1>내가 만든 코스 목록</h1>
-           
-      <div class="row" id="saveCourseList"></div>
-        <div class="row mt-5">
-          <div class="col text-center">
-            <div class="block-27">
-              <ul>
-                <li class="active" id="add"><span>+</span></li>
-                <div id="lastPage"></div>
-                
-              </ul>
-            </div>
-          </div>
-        </div>
-    </div>
-    </section>
-      
-      
-    </section>   
-
     <footer class="ftco-footer ftco-section">
       <div class="container">
         <div class="row mb-5">
@@ -110,14 +56,14 @@
           </div>
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
-               <h2 class="ftco-heading-2">Have a Questions?</h2>
-               <div class="block-23 mb-3">
-                 <ul>
-                   <li><span class="icon fa fa-map"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
-                   <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929 210</span></a></li>
-                   <li><a href="#"><span class="icon fa fa-envelope pr-4"></span><span class="text">info@yourdomain.com</span></a></li>
-                 </ul>
-               </div>
+            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon fa fa-map"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+	                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929 210</span></a></li>
+	                <li><a href="#"><span class="icon fa fa-envelope pr-4"></span><span class="text">info@yourdomain.com</span></a></li>
+	              </ul>
+	            </div>
             </div>
           </div>
         </div>
@@ -125,7 +71,25 @@
     </footer>
     
   
-   <jsp:include page="my_footer.jsp"/>
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+  <script src="resources/js/jquery.min.js"></script>
+  <script src="resources/js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="resources/js/popper.min.js"></script>
+  <script src="resources/js/bootstrap.min.js"></script>
+  <script src="resources/js/jquery.easing.1.3.js"></script>
+  <script src="resources/js/jquery.waypoints.min.js"></script>
+  <script src="resources/js/jquery.stellar.min.js"></script>
+  <script src="resources/js/owl.carousel.min.js"></script>
+  <script src="resources/js/jquery.magnific-popup.min.js"></script>
+  <script src="resources/js/jquery.animateNumber.min.js"></script>
+  <script src="resources/js/scrollax.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+  <script src="resources/js/google-map.js"></script>
+  <script src="resources/js/main.js"></script>
     
-  </body>
+</body>
 </html>

@@ -68,19 +68,21 @@
 	<script type="text/javascript">
 	window.onload = function(){
 		let pageNo = 1;
+		let id = `${id}`;
 		const recordSize = ${recordSize};
 		const pageSize = ${pageSize};
 		listMeeting();
-
+		
 		// 나우페이지를 주면 리스트를 띄울 함수 하나
 		// 페이징바를 만들 함수하나
-	      
+	    
 		function listMeeting(){
 			$.ajax({
 				url: "/listMeetingJson",
 	            type: "GET",
 	            data : {
-	               "pageNo": pageNo
+	               "pageNo": pageNo,
+	               "id": id
 	            },
 	            success: function(map){
 	               //$('#rowDFlex').empty();
