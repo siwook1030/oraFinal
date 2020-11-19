@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 	<style>
 		/* 공통 */
 		section {
@@ -67,17 +69,20 @@
 			padding: 8px 12px;
 			margin: 20px 2px;
 			background-color: #88BEA6;
-			float: right;
+			display: inline-block;
 			font-size: 15px;
 			border: none;
 			cursor: pointer;
 		}
-		#mtInfoAll img { /* 미팅 장소,날짜,인원 아이콘 */
-			width: 40px;
-			padding: 3px;
+		.btnDiv {
+			text-align: center;
 		}
 		#mtInfoAll { /* 미팅 장소,날짜,인원 모은 div */
 			display: flex;
+		}
+		#mtInfoAll img { /* 미팅 장소,날짜,인원 아이콘 */
+			width: 40px;
+			padding: 3px;
 		}
 		#mtInfoAll .mtInfo { /* 미팅 장소,날짜,인원 각각의 div */
 			width: 40%;
@@ -87,21 +92,8 @@
 			padding: 10px;
 			text-align: center;
 		}
-		.photo_canvas { /* 게시글 사진 전체 컨버스 */
-			position: relative;
-			background-color: skyblue;
-			width: 880px; /*880*/
-			height: 300px;
-			overflow: hidden;
-		}
-		.mfPhotoDiv { /* 게시글 사진전체 div */
-			width: 3000px;
-			position: relative;
-			background-color: orange;
-		}
 		.mfPhoto { /* 게시글 개별 사진 */
-			float: left;
-			height: 300px; /*300*/
+			height: 300px;
 		}
 		.pointerDiv { /* 게시글 사진 버튼 div */
 			position: absolute;
@@ -112,12 +104,14 @@
 			width: 100px;
 			position: relative;
 			cursor: pointer;
+			z-index: 1;
 		}
 		#btnRight { /* 사진 오른쪽 클릭버튼 */ 
 			width: 100px;
 			position: relative;
 			cursor: pointer;
 			left: 680px;
+			z-index: 1;
 		}
 		#m_content { /* 글등록창 */
 			border: none;
@@ -126,17 +120,34 @@
 			border-bottom: 1px solid gray;
 			margin-bottom: 30px;
 		}
+		#repImg, #repStr, #repCnt { /* 댓글이미지, 댓글수 */
+			vertical-align: middle;
+		}
+		#repImg {
+			margin-bottom: 2px;
+		}
 		.map_wrap {position:relative; width:100%; height:300px; font-size: 80%; margin: 30px 0 15px;}
 	</style>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script type="text/javascript" src="slick/slick.min.js"></script>
 	<script src="/js/loginCheck.js"></script>
 	<script type="text/javascript">
 window.onload = function(){
 	$('#btnDel').click(function(){
 		alert('게시글이 삭제되었습니다.');
 	});
-	
+
+	$(document).ready(function(){
+		$('.mfPhotoDiv').slick({
+			dots: true,
+			infinite: true,
+			speed: 300,
+			slidesToShow: 1,
+			centerMode: true,
+			variableWidth: true
+		});
+	});
 
 ///////////////////////////////////////////////////
 	const checkM = checkLogin(); // 로그인이 되어있는 상태인지 체크한다
@@ -650,6 +661,127 @@ window.onload = function(){
 	}
 	
 	getMrListByPageNum(nowPageNum); // 댓글이닛로드
+
+///////////////-------------------------------------- 미팅피플 구현
+	const mPeopleNum = document.getElementById("mPeopleNum");  // 참가인원숫자를 표시할 스판노드
+	const allPeopleNum = mPeopleNum.getAttribute("allPeopleNum");  // 모집인원수를 가져오기위한것
+	let nowMpeopleNum = 0;   // 참가인원을 담기위한 변수
+	let mPeopleId = []; // 참가인원 id를 담기위한 변수  한번 참가신청하면 두번이상 신청 못하게 하기위함임
+	
+	const attendRiding = document.getElementById("attendRiding"); // 참가버튼
+	const mPeople = document.getElementById("mPeople");  // 참가인원을 만들어서 추가할 ul노드
+	
+	attendRiding.addEventListener("click", function(e) {
+		if(checkM.code != "200"){
+			const cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
+			if(cfm){
+				window.location = "/login";
+				return;
+			}
+			return;
+		}
+		const mId = checkM.item.id;
+		const attendCfm = confirm("라이딩에 참가하시겠습니까?");
+		if(!attendCfm){
+			return;
+		}
+
+		for(let i=0; i<mPeopleId.length; i++){
+			if(mPeopleId[i] == mId){
+				alert("이미 참가하셨습니다.");
+				return;
+			}
+		}
+
+		if(nowMpeopleNum >= allPeopleNum){
+			alert("참가인원이 꽉찼어요.. 댓글에 요청해보세요!");
+			return;
+		}
+		
+		$.ajax({
+			url: "/user/attendMpeople",
+			type: "POST",
+			data: {"m_no":m_no,"id":mId},
+			success: function(re){
+				if(re == "1"){
+					alert("참가완료! 즐거운 라이딩되세요!");
+					setMpeople();
+				}
+				else{
+					alert("참가실패.. 다시한번 시도해보세요");
+				}
+
+			},
+			error:function(){
+				alert("에러발생");
+			}
+		})
+	});
+
+	function deleteMpeople(id){
+		const cfm = confirm("정말 탈주하시겠습니까?");
+		if(!cfm){
+			return;
+		}
+		
+		$.ajax({
+			url:"/user/deleteMpeople",
+			type: "POST",
+			data: {"m_no":m_no,"id":id},
+			success: function(re){
+				if(re == "1"){
+					alert("탈주완료.. 다음에 같이가요!");
+					setMpeople();
+				}
+				else{
+					alert("탈주실패! 다시한번 시도해보세요");
+				}
+			},
+			error: function(){
+				alert("에러발생");
+			}
+		})
+	}
+
+	function setMpeople(){
+		const mId = checkM.item.id;
+		$.ajax({
+			url: "/mPeopleList",
+			type: "GET",
+			data:{"m_no":m_no} ,
+			success: function(list){
+				mPeople.innerHTML = "";
+				nowMpeopleNum = list.length; // 현재 참가인원을 담음
+				mPeopleId = [];  // 아이디담을 변수 초기화
+				
+				list.forEach(function(p, i) {
+					mPeopleId.push(p.id);
+					const li = document.createElement("li");
+					const content = '<img src="/rank/'+p.rank_icon+'">'+p.nickName+"("+p.mp_regdate+")";
+					li.innerHTML = content;
+					if(mId == p.id){
+						const delBtn = document.createElement("button");
+						delBtn.innerHTML = "탈주";
+						li.append(delBtn);
+						delBtn.addEventListener("click", function(e) {
+							deleteMpeople(p.id);
+						});
+					}
+					mPeople.append(li);
+				})
+
+				mPeopleNum.innerHTML = nowMpeopleNum+"/"+allPeopleNum;
+				
+			},
+			error: function(){
+				alert("에러발생");
+			}
+		})
+	}
+
+	setMpeople(); // 최초 한번실행
+//----------------------------------------------미팅피플 끝
+
 /////////////////////////////////////////////////////////////////////////////////// 맵표시
 	const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = {
@@ -729,19 +861,11 @@ window.onload = function(){
 	console.log(mf);
 	let imgStr = '';
 	mf.forEach(function(mtPhoto, idx) {
-		imgStr += '<img class="mfPhoto" src=/'+mtPhoto.mf_path+'/'+mtPhoto.mf_savename+' attr='+idx+'>';
+		imgStr += '<img class="mfPhoto" src="/'+mtPhoto.mf_path+'/'+mtPhoto.mf_savename+'" attr='+idx+'>';
 	})
 	console.log(imgStr);
 	document.getElementById('mfPhotoDiv').innerHTML = imgStr;
 
-	$('#left').click(function(){
-		
-	});
-	function moveMfPhoto(index) {
-		$('#mfPhoto').animate({
-			left:-(600*index)
-		},"slow");
-	}
 };
 	</script>
 </head>
@@ -769,31 +893,34 @@ window.onload = function(){
 			<div id="mtInfoAll">
 				<div class="mtInfo"><img src="meetingImg/meetingLoc.png"><br>${mt.m_locname }</div>
 				<div class="mtInfo"><img src="meetingImg/meetingTime.png"><br>${mt.m_time }</div>
-				<div class="mtInfo"><img src="meetingImg/meetingNum.png"><br>${mt.m_numpeople } 명</div>
+				<div class="mtInfo"><img src="meetingImg/meetingNum.png"><button id="attendRiding">참가</button>
+				<br><span id="mPeopleNum" allPeopleNum="${mt.m_numpeople }" >${mt.m_numpeople }</span> 명</div>
 			</div>
+			<div><ul id="mPeople"></ul></div>
 			<br>
 			<textarea rows="30" cols="123" id="m_content">${mt.m_content }</textarea>
 			
 			<c:if test="${mf.size()>0 }">
 				<div class="photo_canvas">
-					<div class="pointerDiv">
+					<!-- <div class="pointerDiv">
 						<img class="pointer" id="btnLeft" src="meetingImg/left.png">
 						<img class="pointer" id="btnRight" src="meetingImg/right.png">
-					</div>
+					</div> -->
 					<div class="mfPhotoDiv" id="mfPhotoDiv"></div>
 				</div>
 			</c:if>
 			
 			<!-- 수정,삭제 버튼 -->
 			<c:if test="${m.id==mt.id }">
-				<a href="deleteMeeting?m_no=${mt.m_no }" class="btn" id="btnDel" style="background-color: #ECCB6A">삭제</a>
+			<div id="btnDiv">
 				<a href="/user/updateMeeting?m_no=${mt.m_no }&c_no=${mt.c_no}" class="btn" id="btnEdit">수정</a>
+				<a href="deleteMeeting?m_no=${mt.m_no }" class="btn" id="btnDel" style="background-color: #ECCB6A">삭제</a>
+			</div>
 			</c:if>
 			
 			<!-- 댓글 -->
-			<br><br>
-			<img src="meetingImg/speech.png" style="size: 20px; float:left; padding-right: 10px;">
-			<h3>댓글<span id="repCnt" style="padding-left: 10px; display: inline"></span></h3>
+			<img id="repImg" src="meetingImg/speech.png" style="display: inline; size: 20px; padding-right: 5px;">
+			<h3 id="repStr" style="display: inline;">댓글<span id="repCnt" style="display: inline; padding-left: 10px;"></span></h3>
 			<hr style="margin: 10px 0 10px;">
 			
 			<!-- 댓글출력 -->

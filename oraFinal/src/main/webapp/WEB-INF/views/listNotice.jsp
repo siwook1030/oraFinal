@@ -260,7 +260,7 @@ window.onload = function(){
 		$(this).css("background-color","white");
 	});
 }
-	
+
 
 	
 </script>
@@ -283,7 +283,6 @@ window.onload = function(){
 				<button id="btn_search">검색</button>
 
 			</div>
-
 		</div>
 		
 		<div id="tb">

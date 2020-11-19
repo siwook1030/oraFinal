@@ -20,14 +20,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.ResponseDataCode;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.dao.MeetingDao;
+import com.example.demo.dao.MemberDao;
 import com.example.demo.util.FileUtilCollection;
+import com.example.demo.util.PointCause;
+import com.example.demo.util.PointGet;
+import com.example.demo.util.ResponseDataCode;
 import com.example.demo.vo.MeetingVo;
 import com.example.demo.vo.Meeting_fileVo;
 
 import com.example.demo.vo.MemberVo;
+import com.example.demo.vo.PointVo;
 import com.example.demo.vo.Meeting_repVo;
 import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.ResponseDataVo;
@@ -45,6 +49,10 @@ public class InsertMeetingController {
 	@Autowired
 	@Setter
 	MeetingDao mdao;
+	
+	@Autowired
+	@Setter
+	MemberDao memberDao;
 	
 	@GetMapping("/user/insertMeeting")
 	public void insertMeetingForm(HttpSession session, Model model) {
@@ -73,7 +81,8 @@ public class InsertMeetingController {
 		String c_name = "";
 		String rank_icon = "";
 		
-		MeetingVo mtvo = new MeetingVo(m_no, c_no, id, m_title, m_content, m_regdate, m_hit, m_latitude, m_longitude, m_locname, m_time, m_numpeople, nickName, c_name, rank_icon);
+		MeetingVo mtvo = new MeetingVo(m_no, c_no, id, m_title, m_content, m_regdate, m_hit, m_latitude, m_longitude, m_locname, m_time, m_numpeople, nickName, c_name, rank_icon, null, 0);
+
 		//System.out.println(mtvo.toString());
 		int re = mdao.insertMeeting(mtvo);
 		
@@ -149,6 +158,7 @@ public class InsertMeetingController {
 		responseDataVo.setCode(ResponseDataCode.ERROR);
 		if(re>0) {
 			responseDataVo.setCode(ResponseDataCode.SUCCESS);
+			
 		}
 		return new Gson().toJson(responseDataVo);
 	}

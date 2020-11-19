@@ -14,23 +14,22 @@
 header * {
 	margin: 0px;
 	padding: 0px;
+	line-height: 150%;
 }
 
 header {
-	width: 1000px;
+	width: 1100px;
 	height: 100px;
 	margin: 20px auto;
 }
 
 #logo {
-   float: left; 
+	float: left; 
 }
-
-
 
 #top {
 	margin: 50px 0 0 0;
-	font-size: 15px;
+	font-size: 17px;
 	float: right;
 }
 
@@ -40,11 +39,11 @@ header {
 }
 
 .menu{
-   margin: 0 20px 0 20px;
+	margin: 0 20px 0 20px;
 }
 
 #login {
-	font-size: 13px;
+	font-size: 14px;
 	text-align: right;
 	margin: 0 20px 0 0;
 }
@@ -54,6 +53,17 @@ header a{
 	color: black;
 }
 </style>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript">
+window.onload = function(){
+	$(document).on("mouseover", ".menu", function(){
+		$(this).css("font-style,"bold");
+	});
+	$(document).on("mouseleave", ".menu", function(){
+		$(this).css("font-style","light");
+	});
+}
+</script>
 </head>
 <body>
 

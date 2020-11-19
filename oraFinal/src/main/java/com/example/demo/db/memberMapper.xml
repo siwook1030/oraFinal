@@ -32,4 +32,15 @@
 	<update id="updateMember">
 		UPDATE MEMBER SET PASSWORD=#{password},NICKNAME=#{nickName},PHONE=#{phone} WHERE ID=#{id}
 	</update>
+	
+	<!-- 포인트 추가 -->
+	<insert id="insertPoint">
+		INSERT INTO POINT(POINT_NO, ID, POINT_GET, POINT_TIME, POINT_CAUSE) 
+		VALUES(POINT_SEQ.NEXTVAL, #{id}, #{point_get}, SYSDATE, #{point_cause})
+	</insert>
+	
+	<update id="updateRank">
+		UPDATE MEMBER SET RANK_NAME=(SELECT RANK_NAME FROM RANK WHERE (SELECT SUM(POINT_GET) FROM POINT WHERE ID=#{id}) BETWEEN MIN_POINT AND MAX_POINT) 
+		WHERE ID=#{id}
+	</update>
 </mapper>

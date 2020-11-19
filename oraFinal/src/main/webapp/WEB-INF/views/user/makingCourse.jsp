@@ -7,80 +7,64 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
+	/*매인섹션 시작----------------  */
+	section {
+		margin: 0 auto; width: 1000px; text-align: left; padding: 50px;
+	}
+	
+	/*매인섹션 끝 ------------------*/
 
- /*매인섹션 시작----------------  */
- section {
- 	  margin: 0 auto;
- 	  width: 1000px;
- }
- #cTitle{
-	font-size: 140%;
-}
-
- /*매인섹션 끝 ------------------*/
-
-   /*float 초기화 아이디*/
-   #clear{
-   	clear: both; 
-   }
-   /*파일업로드관련 css*/
+	/*float 초기화 아이디*/
+	#clear{
+		clear: both; 
+	}
+	/*파일업로드관련 css*/
     .drag-over { background-color: #CFF768; outline-style: dotted; outline-offset:-20px; }
 	.thumb { width:100px; height:100px; padding:5px; float:left; }
 	.thumb > img { width:100%; height: 100%; }
 	.thumb > .close { position:absolute; background-color:red; cursor:pointer; }
-.map_wrap, .map_wrap * {margin:0; padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
-.map_wrap {position:relative;width:100%;height:500px;}	
-.placeinfo_wrap {position:absolute;bottom:28px;left:-150px;width:300px;}
-.placeinfo {position:relative;width:100%;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;padding-bottom: 10px;background: #fff;}
-.placeinfo:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
-.placeinfo_wrap .after {content:'';position:relative;margin-left:-12px;left:50%;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
-.placeinfo a, .placeinfo a:hover, .placeinfo a:active{color:#fff;text-decoration: none;}
-.placeinfo a, .placeinfo span {display: block;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
-.placeinfo span {margin:5px 5px 0 5px;cursor: default;font-size:13px;}
-.placeinfo .title {font-weight: bold; font-size:14px;border-radius: 6px 6px 0 0;margin: -1px -1px 0 -1px;padding:10px; color: #fff;background: #d95050;background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
-.placeinfo .tel {color:#0f7833;}
-.placeinfo .jibun {color:#999;font-size:11px;margin-top:0;}
+	/* .map_wrap, .map_wrap * {margin:0; padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;} */
+	/* .map_wrap {position:relative;width:100%;height:500px;}	 */
+	.placeinfo_wrap {position:absolute;bottom:28px;left:-150px;width:300px;}
+	.placeinfo {position:relative;width:100%;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;padding-bottom: 10px;background: #fff;}
+	.placeinfo:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
+	.placeinfo_wrap .after {content:'';position:relative;margin-left:-12px;left:50%;width:22px;height:12px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png')}
+	.placeinfo a, .placeinfo a:hover, .placeinfo a:active{color:#fff;text-decoration: none;}
+	.placeinfo a, .placeinfo span {display: block;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+	.placeinfo span {margin:5px 5px 0 5px;cursor: default;font-size:13px;}
+	.placeinfo .title {font-weight: bold; font-size:14px;border-radius: 6px 6px 0 0;margin: -1px -1px 0 -1px;padding:10px; color: #fff;background: #d95050;background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
+	.placeinfo .tel {color:#0f7833;}
+	.placeinfo .jibun {color:#999;font-size:11px;margin-top:0;}
 
-   #undo.disabled, #redo.disabled {background-color:#ddd;color:#9e9e9e;}
+	#undo.disabled, #redo.disabled { background-color:#ddd; color:#9e9e9e; }
  	
- 	/* 게시판 레이아웃 시작 : 유진 */
-	
-	#contents { /* 게시판 인덱스 제외 전체 */
-		border: 1px solid #D5D5D5;
-		padding: 60px;
-		margin: 50px 0 100px;
-	}
-	#courseName { /* 코스이름 작성 */
-		border: none;
-		border-bottom: 1px solid gray;
-		margin: 10px;
-		width: 880px;
-		height: 50px;
-		margin: 20px 0 30px;
-		font-size: 30px;
-	}
-	#map, #mapPS, #mapPE { /* 지도 */
-		width: 100%;
-		height: 470px;
-	}
-	.btn {
-		color: white;
-		padding: 8px 12px;
-		margin: 40px 0px;
-		background-color: #88BEA6;
-		align-content: center;
-		font-size: 15px;
-		border: none;
-		cursor: pointer;
-	}
-	/* input {
-		padding: 4px 0;
-		margin-bottom: 3px;
-		border: none;
-		border-bottom: 1px solid gray;
-		width: 500px;
-	} */
- 	
+ 	/* 게시판 레이아웃 */
+	/* 게시판 인덱스 제외 전체 */
+	#contents { border: 1px solid #D5D5D5; padding: 60px; margin: 50px 0 100px; }
+	/* 코스이름 만들기 */
+	#courseName { border: none; border-bottom: 1px solid gray; margin: 10px; width: 880px; height: 50px; margin: 20px 0 30px; font-size: 30px; }
+	/* 지도 3 */
+	#map, #mapPS, #mapPE { width: 100%; height: 470px; font-family: 'Malgun Gothic',dotum,'돋움',sans-serif; font-size: 12px; margin: 0 0 10px; }
+	/* 등록, 미리보기 버튼 */
+	.btnAdd { color: white; padding: 8px 12px; margin: 40px 0px; align-content: center; font-size: 15px; border: none; cursor: pointer; }
+	/* 모든 버튼 중앙정렬 */
+	.btnDiv { text-align: center; }
+	.btnOption { color: white; padding: 8px 12px; margin: 40px 0px; background-color: #88BEA6; font-size: 15px; border: none; cursor: pointer; }
+	button[disabled]{ color: #666666; padding: 8px 12px; margin: 40px 0px; background-color: #cccccc; font-size: 15px; border: none; cursor: not-allowed; }
+ 	/* view 순위 지정 */
+	#rankViewAll { text-align: center; border: 1px solid gray; border-radius: 10px; padding: 20px; margin: 30px 0; }
+ 	#rankViewTitle { display: block; padding-bottom: 10px; }
+ 	.rankView { display: inline-block; width: 15%; text-align: center; padding: 20px 20px 10px;}
+ 	.rankView img { width: 35px; align: center; padding-bottom: 3px; }
+ 	/* 맵1 자전거 정보보기 */
+ 	#bicycleInfo { padding: 10px; z-index: 1; left: 10px; width: 160px; background-color:rgba(255,255,255,0.8); text-align: center; color: black; font-size: 14px; font-weight: bold; } 
+ 	input { padding: 4px 0; margin-bottom: 3px; border: none; }
+ 	/* 첨부파일버튼 */
+ 	.filebox label { margin: 3px 0; padding: 5px 15px; border: 1px solid #8C8C8C; color: #747474; font-size: 15px; vertical-align: middel; background-color: white; cursor: pointer; text-align: center; }
+	.filebox input[type="file"] { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; border: 0; }
+	#courseNameCnt { position: relative; left: 820px; bottom: 55px; }
+	#wordsCnt { position: relative; left: 790px; bottom: 55px; font-size: 13px; }
+	#wordsDiv, #thumbnailsDiv { padding: 20px 3px; border: 1px solid gray; border-radius: 10px; text-align: center; margin-bottom: 30px; }
 </style>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -446,7 +430,7 @@ const mNickName = checkM.item.nickName;
 		// 되돌릴 수 있다면 undo 버튼을 활성화 시킵니다 
 		if (manager3.undoable()) {
 			undoBtn.disabled = false;
-			undoBtn.className = "";
+			undoBtn.className = "btnOption";
 		} else { // 아니면 undo 버튼을 비활성화 시킵니다 
 			undoBtn.disabled = true;
 			undoBtn.className = "disabled";
@@ -455,7 +439,7 @@ const mNickName = checkM.item.nickName;
 		// 취소할 수 있다면 redo 버튼을 활성화 시킵니다 
 		if (manager3.redoable()) {
 			redoBtn.disabled = false;
-			redoBtn.className = "";
+			redoBtn.className = "btnOption";
 		} else { // 아니면 redo 버튼을 비활성화 시킵니다 
 			redoBtn.disabled = true;
 			redoBtn.className = "disabled";
@@ -675,7 +659,7 @@ const mNickName = checkM.item.nickName;
 		// 되돌릴 수 있다면 undo 버튼을 활성화 시킵니다 
 		if (managerPS.undoable()) {
 			undoBtn.disabled = false;
-			undoBtn.className = "";
+			undoBtn.className = "btnOption";
 		} else { // 아니면 undo 버튼을 비활성화 시킵니다 
 			undoBtn.disabled = true;
 			undoBtn.className = "disabled";
@@ -684,7 +668,7 @@ const mNickName = checkM.item.nickName;
 		// 취소할 수 있다면 redo 버튼을 활성화 시킵니다 
 		if (managerPS.redoable()) {
 			redoBtn.disabled = false;
-			redoBtn.className = "";
+			redoBtn.className = "btnOption";
 		} else { // 아니면 redo 버튼을 비활성화 시킵니다 
 			redoBtn.disabled = true;
 			redoBtn.className = "disabled";
@@ -825,7 +809,7 @@ const mNickName = checkM.item.nickName;
 			// 되돌릴 수 있다면 undo 버튼을 활성화 시킵니다 
 			if (managerPE.undoable()) {
 				undoBtn.disabled = false;
-				undoBtn.className = "";
+				undoBtn.className = "btnOption";
 			} else { // 아니면 undo 버튼을 비활성화 시킵니다 
 				undoBtn.disabled = true;
 				undoBtn.className = "disabled";
@@ -834,7 +818,7 @@ const mNickName = checkM.item.nickName;
 			// 취소할 수 있다면 redo 버튼을 활성화 시킵니다 
 			if (managerPE.redoable()) {
 				redoBtn.disabled = false;
-				redoBtn.className = "";
+				redoBtn.className = "btnOption";
 			} else { // 아니면 redo 버튼을 비활성화 시킵니다 
 				redoBtn.disabled = true;
 				redoBtn.className = "disabled";
@@ -955,9 +939,12 @@ const mNickName = checkM.item.nickName;
 	bike.addEventListener("click", function(e) {
 		let reader = new FileReader();
 		const file = bikeFile.files[0];
+		if(file == undefined){
+			alert("gpx파일을 선택해야합니다");
+			return;
+		}
 		const suffixtFileName = (file.name).substring(file.name.lastIndexOf(".")+1);
-		console.log(suffixtFileName);
-		if(file == undefined || suffixtFileName != "gpx"){
+		if(suffixtFileName != "gpx"){
 			alert("gpx파일을 선택해야합니다");
 			return;
 		}
@@ -1020,10 +1007,14 @@ const mNickName = checkM.item.nickName;
         const data = google.visualization.arrayToDataTable(altitudeData);
 
         const options = {
-          title: '자전거코스 고도(m)',
-          hAxis: {title: '거리(km)',  titleTextStyle: {color: '#333'}},
-          vAxis: {minValue: 0}
-        };
+            	  title: '자전거코스 고도',
+            	  animation:{duration:3000,easing:'out',startup:true},
+                  hAxis: {title: '거리(km)' ,titleTextStyle: {color: '#333'},gridlines: {color: 'transparent'}},
+                  vAxis: {title:'고도(m)',titleTextStyle: {color: '#333'},minValue: 0},
+                  curveType: 'function',
+                  width:'100%',
+                  height:300,
+                };
 
         const chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
         chart.draw(data, options);
@@ -1141,13 +1132,14 @@ const mNickName = checkM.item.nickName;
 	}); 
 	*/
 	//--------------
-	//--------------
+	//----------------------------------------------------------------------------------------------- 무인자전거
 	kakao.maps.event.addListener(map, 'idle', removePlaceOveray);
 
 	const redC = '/detailCourseImg/redC.png'; // 따릉이 0개
 	const yellowC = '/detailCourseImg/yellowC.png'; // 따릉이 1~4개  
 	const greenC = '/detailCourseImg/greenC.png'; // 따릉이 5개 이상  
-	const ggC = '/detailCourseImg/greenC.png'; // 경기도 공공자전거 마커이미지
+	const publicC = '/detailCourseImg/greenC.png'; // 서울을 제외한 나머지 공공자전거 마커이미지
+
 	
 	const cycleSize = new kakao.maps.Size(8, 8); 
 	
@@ -1155,15 +1147,16 @@ const mNickName = checkM.item.nickName;
 	const redImage = new kakao.maps.MarkerImage(redC, cycleSize);
 	const yellowImage = new kakao.maps.MarkerImage(yellowC, cycleSize);
 	const greenImage = new kakao.maps.MarkerImage(greenC, cycleSize);
-	const ggImage = new kakao.maps.MarkerImage(ggC, cycleSize);
+	const publicCImage = new kakao.maps.MarkerImage(publicC, cycleSize);
+
 		
 	let cycleMakerArr = [];
 	publicCycle.addEventListener("change", function(e) {
 		const check = e.target.value;
 		const cName = (e.target.options[e.target.selectedIndex]).text;
-		const ggUrl = (e.target.options[e.target.selectedIndex]).getAttribute("ggUrl");
-		cycleMakerArr.forEach(function(el, i) {
-			el.setMap(null);
+		const cycleUrl = (e.target.options[e.target.selectedIndex]).getAttribute("cycleUrl");
+		cycleMakerArr.forEach(function(cm, i) {
+			cm.setMap(null);
 		})
 		placeOverlay.setMap(null);
 		cycleMakerArr = [];
@@ -1171,21 +1164,27 @@ const mNickName = checkM.item.nickName;
 			return;
 		}
 		else if(check == '1'){ // 서울
-			setSeoulCycle();
+			setSeoulCycle(cName,cycleUrl);
+		}
+		else if(check == '2'){
+			setDajeonCycle(cName,cycleUrl);
+		}
+		else if(check == '3'){
+			setSejongYeosuCycle(cName,cycleUrl);
 		}
 		else{ // 경기도
-			setGgCycle(check,cName,ggUrl);
+			setGgCycle(check,cName,cycleUrl);
 		}
 	});
 	
-	function setSeoulCycle(){
+	function setSeoulCycle(cName,cycleUrl){
 		for(let i=1; i<=2001; i+=1000){
 			$.ajax({
 				url:"http://openapi.seoul.go.kr:8088/6a625562487369773231685a644f53/json/bikeList/"+i+"/"+(i+999),
 				success:function(data){
 					const cycList = data.rentBikeStatus.row;
-					cycList.forEach(function(el, i) {
-						setCycleMarker(el);
+					cycList.forEach(function(cyc, i) {
+						setCycleMarker(cyc,cName,cycleUrl);
 					})
 				},
 				error: function() {
@@ -1195,8 +1194,8 @@ const mNickName = checkM.item.nickName;
 		}
 	}
 	
-	function setCycleMarker(el){
-		const parkingCnt = el.parkingBikeTotCnt;
+	function setCycleMarker(cyc,cName,cycleUrl){
+		const parkingCnt = cyc.parkingBikeTotCnt;
 		let cImg = greenImage;
 		if(parkingCnt == 0){
 			cImg = redImage;
@@ -1205,7 +1204,7 @@ const mNickName = checkM.item.nickName;
 			cImg = yellowImage;
 		}
 		
-		const cyclePosition = new kakao.maps.LatLng(el.stationLatitude, el.stationLongitude);  
+		const cyclePosition = new kakao.maps.LatLng(cyc.stationLatitude, cyc.stationLongitude);  
 		// 따릉이 마커를 생성합니다 
 		const cycleMarker = new kakao.maps.Marker({  
 		    map: map,
@@ -1214,29 +1213,29 @@ const mNickName = checkM.item.nickName;
 		});	
 		cycleMakerArr.push(cycleMarker);
             kakao.maps.event.addListener(cycleMarker, 'click', function() {
-                displaySeoulC(el);
+                displaySeoulC(cyc,cName,cycleUrl);
             });
 	}
 	
-	function displaySeoulC (place) {
+	function displaySeoulC (cyc,cName,cycleUrl) {
 	    let content = '<div class="placeinfo">' +
-	                    '   <a class="title" href="https://www.bikeseoul.com/main.do" target="_blank" title="서울시(따릉이)">서울시(따릉이)</a>';   
+	                    '   <a class="title" href="'+cycleUrl+'" target="_blank" title="'+cName+'">'+cName+'</a>';   
 	
 	    
-	        content += '    <span>' + place.stationName + '</span>';
+	        content += '    <span>' + cyc.stationName + '</span>';
 	        
 	   
-	    content += '    <span class="tel">' + "현재 대여가능수 "+place.parkingBikeTotCnt + '</span>' + 
-	               ' <span class="jibun" >' + "전체 거치대수 "+place.rackTotCnt +  '</span>';
+	    content += '    <span class="tel">' + "현재 대여가능수 "+cyc.parkingBikeTotCnt + '</span>' + 
+	               ' <span class="jibun" >' + "전체 거치대수 "+cyc.rackTotCnt +  '</span>';
 	                '</div>' + 
 	                '<div class="after"></div>';
 	
 	    contentNode.innerHTML = content;
-	    placeOverlay.setPosition(new kakao.maps.LatLng(place.stationLatitude, place.stationLongitude));
+	    placeOverlay.setPosition(new kakao.maps.LatLng(cyc.stationLatitude, cyc.stationLongitude));
 	    placeOverlay.setMap(map);  
 	}
 
-	function setGgCycle(code,cName,ggUrl){
+	function setGgCycle(code,cName,cycleUrl){
 		$.ajax({
 			url:"https://openapi.gg.go.kr/BICYCL?key=e2d851f8493c448c964a25461359f1f5&pIndex=1&pSize=1000&SIGUN_NM="+code,
 			type:"get",
@@ -1245,7 +1244,7 @@ const mNickName = checkM.item.nickName;
 				const cycList = data.querySelectorAll('row');
 				console.log(cycList[0]);
 				for(let i=0; i<cycList.length; i++){
-					setGgCycleMarker(cycList[i],cName,ggUrl);
+					setGgCycleMarker(cycList[i],cName,cycleUrl);
 				}
 			},
 			error:function(){
@@ -1254,37 +1253,151 @@ const mNickName = checkM.item.nickName;
 		})
 	}
 	
-	function setGgCycleMarker(g,cName,ggUrl){
-			const cyclePosition = new kakao.maps.LatLng($(g).find('REFINE_WGS84_LAT').html(), $(g).find('REFINE_WGS84_LOGT').html());  
+	function setGgCycleMarker(cyc,cName,cycleUrl){
+			const cyclePosition = new kakao.maps.LatLng(cyc.querySelector('REFINE_WGS84_LAT').innerHTML, cyc.querySelector('REFINE_WGS84_LOGT').innerHTML);  
 			// 경기도 마커를 생성합니다 
 			const cycleMarker = new kakao.maps.Marker({  
 			    map: map,
 			    position: cyclePosition,
-			    image: ggImage
+			    image: publicCImage
 			});	
 			cycleMakerArr.push(cycleMarker);
 	            kakao.maps.event.addListener(cycleMarker, 'click', function() {
-	            	displayGgC(g,cName,ggUrl);
+	            	displayGgC(cyc,cName,cycleUrl);
 	            });
 	}
 
-	function displayGgC (place,cName,ggUrl) {
+	function displayGgC (cyc,cName,cycleUrl) {
 	    let content = '<div class="placeinfo">' +
-	                    '   <a class="title" href="'+ggUrl+'" target="_blank" title="'+cName+'">'+cName+'</a>';   
+	                    '   <a class="title" href="'+cycleUrl+'" target="_blank" title="'+cName+'">'+cName+'</a>';   
 	
 	    
-	        content += '    <span>' + $(place).find('BICYCL_LEND_PLC_NM_INST_NM').html() + '</span>';
+	        content += '    <span>' + cyc.querySelector('BICYCL_LEND_PLC_NM_INST_NM').innerHTML + '</span>';
 	        
 	   
-	    content += '    <span class="tel">' + "전체 거치대수 "+$(place).find('STANDS_CNT').html() +  '</span>' + 
+	    content += '    <span class="tel">' + "전체 거치대수 "+cyc.querySelector('STANDS_CNT').innerHTML +  '</span>' + 
 	              // ' <span class="jibun" >' + "전체 거치대수 "+place.STANDS_CNT +  '</span>';
 	                '</div>' + 
 	                '<div class="after"></div>';
 	
 	    contentNode.innerHTML = content;
-	    placeOverlay.setPosition(new kakao.maps.LatLng($(place).find('REFINE_WGS84_LAT').html(), $(place).find('REFINE_WGS84_LOGT').html()));
+	    placeOverlay.setPosition(new kakao.maps.LatLng(cyc.querySelector('REFINE_WGS84_LAT').innerHTML, cyc.querySelector('REFINE_WGS84_LOGT').innerHTML));
 	    placeOverlay.setMap(map);  
 	}
+
+	const cycleGeocoder = new kakao.maps.services.Geocoder(); // 대전은 위도경도데이터가 없어 주소로 위경도를 얻어와야함
+	
+	function setDajeonCycle(cName,cycleUrl){
+		$.ajax({
+			url:"/publicCycle/dajeonCycle.json",
+			type:"get",
+			dataType:"JSON",
+			success:function(data){
+				const cycList = data;
+				cycList.forEach(function(cyc, i) {
+					setDajeonCycleMarker(cyc,cName,cycleUrl);
+				});		
+			},
+			error:function(){
+				alert("에러발생");
+			}
+		})
+	}
+
+		function setDajeonCycleMarker(cyc,cName,cycleUrl){
+			cycleGeocoder.addressSearch(cyc.addr, function(result, status) {
+			     if (status === kakao.maps.services.Status.OK) {
+			        const latLng = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+					const cyclePosition = latLng;
+					// 대전 마커를 생성합니다 
+					const cycleMarker = new kakao.maps.Marker({  
+					    map: map,
+					    position: cyclePosition,
+					    image: publicCImage
+					});	
+					cycleMakerArr.push(cycleMarker);
+			            kakao.maps.event.addListener(cycleMarker, 'click', function() {
+			            	displayDajeonC(cyc,cName,cycleUrl,latLng);
+			            });
+
+			    } 
+			});    
+	
+	}
+
+	function displayDajeonC (cyc,cName,cycleUrl,latLng) {
+	    let content = '<div class="placeinfo">' +
+	                    '   <a class="title" href="'+cycleUrl+'" target="_blank" title="'+cName+'">'+cName+'</a>';   
+	
+	    
+	        content += '    <span>' + cyc.station + '</span>';
+	        
+	   
+	    content += '    <span class="jibun">('+cyc.loc+')</span>' + 
+	                '</div>' + 
+	                '<div class="after"></div>';
+	
+	    contentNode.innerHTML = content;
+	    placeOverlay.setPosition(latLng);
+	    placeOverlay.setMap(map);  
+	}
+		
+	function setSejongYeosuCycle(cName,cycleUrl){
+		let dataUrl = "";
+		if(cName == '세종(어울링)'){
+			dataUrl = "/publicCycle/sejongCycle.json";
+		}
+		else if(cName == '여수(여수랑)'){
+			dataUrl = "/publicCycle/yeosuCycle.json"
+		}
+		$.ajax({
+			url:dataUrl,
+			type:"get",
+			dataType:"JSON",
+			success:function(data){
+				const cycList = data;
+				cycList.forEach(function(cyc, i) {
+					setSejongYeosuCycleMarker(cyc,cName,cycleUrl);
+				});		
+			},
+			error:function(){
+				alert("에러발생");
+			}
+		})
+	}
+
+	function setSejongYeosuCycleMarker(cyc,cName,cycleUrl){
+		const cyclePosition = new kakao.maps.LatLng(cyc.latitude, cyc.longitude);  
+		// 경기도 마커를 생성합니다 
+		const cycleMarker = new kakao.maps.Marker({  
+		    map: map,
+		    position: cyclePosition,
+		    image: publicCImage
+		});	
+		cycleMakerArr.push(cycleMarker);
+            kakao.maps.event.addListener(cycleMarker, 'click', function() {
+            	displaySejongYeosuC(cyc,cName,cycleUrl);
+            });
+	}
+
+	function displaySejongYeosuC (cyc,cName,cycleUrl) {
+	    let content = '<div class="placeinfo">' +
+	                    '   <a class="title" href="'+cycleUrl+'" target="_blank" title="'+cName+'">'+cName+'</a>';   
+	
+	    
+	        content += '    <span>' + cyc.station + '</span>';
+	        
+	   
+	    content += '    <span class="jibun">' + cyc.loc+  '</span>' + 
+	                '</div>' + 
+	                '<div class="after"></div>';
+	
+	    contentNode.innerHTML = content;
+	    placeOverlay.setPosition(new kakao.maps.LatLng(cyc.latitude, cyc.longitude));
+	    placeOverlay.setMap(map);  
+	}
+// ----------------------------------------------------------------------------------------무인자전거 위치 끝
 	
 	function removePlaceOveray(){
 		placeOverlay.setMap(null);
@@ -1444,7 +1557,7 @@ const mNickName = checkM.item.nickName;
 			alert("상단 첫 코스 가져오기를 실행해야만 미리보기를 볼 수 있습니다.");
 			return;
 		}
-
+	
 		$.ajax({
 			url:"/user/previewMakingCourse",
 			type: "POST",
@@ -1498,152 +1611,214 @@ const mNickName = checkM.item.nickName;
 </head>
 <body>
 <jsp:include page="../header.jsp"/>
-      <div id="clear"></div>
+<div id="clear"></div>
 <section>
-<div><h1>나만의 DIY 코스</h1></div>
-<br>
-<form id="courseForm">
-<span id="cTitle">코스명 :</span><input type="text" name="c_name"  id="courseName" maxlength="10"><span id="courseNameCnt"></span>
-<br>
-<br>
-<div id="detailMap" style="text-align: center; margin: 20px 0 60px 0;">
-<div class="map_wrap">
-<div id="map" style="width:1000px;height:500px;"></div>
-</div>
-</div>
-<div id="chart_div" style="width: 100%; height: 300px;"></div>
-<p>
-	<input type="file" value="경로파일" id="bikeFile">
-	<button type="button" id="bike">경로만들기</button>
-    <button type="button" id="startC">출발</button>
-    <button type="button" id="arriveC">도착</button>
-    <button type="button" id="polyC" >선</button>
-    <button type="button" id="backPolyC" class="disabled" disabled >선 되돌리기</button>
-    <button type="button" id="frontPolyC"  class="disabled" disabled>선 앞돌리기</button>
-    <button type="button" id="infoC" >가져오기</button><span id="fixC" val="y"></span> <br>
-   <input type="checkbox" id="chkBicycle" /> 자전거도로 정보 보기
-</p>
-<div style="text-align: left;">
-  			무인자전거 대여소 
-  			<select id="publicCycle">
-  				<option value="0">--무인자전거 위치--</option>
-  				<option value="1">서울(따릉이)</option>
-  				<option value="고양시" ggUrl="https://www.fifteenlife.com/mobile/index.jsp">고양시(피프틴)</option>
-  				<option value="과천시" ggUrl="https://www.gccity.go.kr/main/main.do">과천시(과천)</option>
-  				<option value="부천시" ggUrl="https://bike.bucheon.go.kr/site/homepage/menu/viewMenu?menuid=154001003003">부천시(부천)</option>
-  				<option value="수원시" ggUrl="http://www.suwon.go.kr/web/bike/index.do">수원시(반디클)</option>
-  				<option value="시흥시" ggUrl="https://bike.siheung.go.kr/siheung/">시흥시(시흥)</option>
-  				<option value="안산시" ggUrl="http://www.pedalro.kr/index.do">안산시(페달로)</option>
-  			</select>
-  		</div>
-출발 - 위도 : <input type="text" id="slat" name="c_s_latitude" value="0" readonly="readonly">
-경도 : <input type="text" id="slon" name="c_s_longitude" value="0" readonly="readonly">
-출발지역명 : <input type="text" id="sLoc" name="c_s_locname" readonly="readonly">
-<br>
-도착 - 위도 : <input type="text" id="elat" name="c_e_latitude" value="0" readonly="readonly">
-경도 : <input type="text" id="elon" name="c_e_longitude" value="0" readonly="readonly">
-도착지역명 : <input type="text" id="eLoc" name="c_e_locname" readonly="readonly">
-<br>
-풍경(강,산,명소,바다) 1순위 :
-<select id="firstView" name="c_view1">
-	<option value="0">--선택--</option>
-	<option value="강">강</option>
-	<option value="산">산</option>
-	<option value="명소">명소</option>
-	<option value="바다">바다</option>
-</select>
-2순위 :
-<select id="secondView" name="c_view2">
-<option value="0">--선택안함--</option>
-</select>
-3순위 :
-<select id="thirdView" name="c_view3">
-<option value="0">--선택안함--</option>
-</select>
-4순위 :
-<select id="fourthView" name="c_view4">
-<option value="0">--선택안함--</option>
-</select>
-<br>
-거리 :  <input type="text"  id="dis" name="c_distance" value="0" readonly="readonly">km<br>
-시간 : <input type="text" id="time" name="c_time" value="0" readonly="readonly">분<br>
-난이도 : <select id="diff" name="c_difficulty">
-		<option value="0">--난이도 선택--</option>
-		<option value="1">쉬움</option>
-		<option value="2">보통</option>
-		<option value="3">어려움</option>
-		<option value="4">매우 어려움</option>
-</select>
-<br>
-선경로 <br>
-<textarea rows="10" cols="80" id="line" name="c_line"readonly="readonly"></textarea>
-<br>
-[코스설명]
-<br>
-<textarea rows="10" cols="100" id="words" name="c_words" maxlength="3000" placeholder="ex)시원한 강과함께 들판을 나란히 두고 라이딩하는 ...."  ></textarea>
-<br>
-<span id="wordsCnt"></span>
-<br>
-[코스사진]<br>
-<div id="drop" style="border:1px solid black; width:800px; height:300px; padding:3px;">
-<div id="thumbnails">
-</div>
-</div>
-<input type="file" id="photoInput" multiple="multiple">
-<br><br><br>
-[출발점 대중교통]
-<div id="mapPS" style="width:1000px;height:400px;"></div><br>
-  <button type="button" id="publicTranportPS" >대중교통표시</button>
-    <button type="button" id="polyPS" >선</button>
-    <button type="button" id="backPolyPS" class="disabled" disabled>선 되돌리기</button>
-    <button type="button" id="frontPolyPS" class="disabled" disabled>선 앞돌리기</button>
-    <button type="button" id="infoPS" >가져오기</button><span id="fixPS" val="y"></span> <br>
-     <input type="checkbox" id="chkBicyclePS" /> 자전거도로 정보 보기
-    <br>
-대중교통위치 - 위도 : <input type="text" id="latPS" name="pt_latitudePS" value="0" readonly="readonly"> 경도 : <input type="text" id="lonPS" name="pt_longitudePS" value="0" readonly="readonly">
-<br>
-거리 :  <input type="text" id="disPS" name="pt_distancePS" value="0" readonly="readonly">km 
-<select id="sPT" name="pt_imgPS">
-<option value="(입력안함)">--대중교통선택--</option>
-<option value="지하철">지하철</option>
-<option value="시내버스">시내버스</option>
-<option value="고속버스">고속버스</option>
-<option value="기차">기차</option>
-</select>
- 역이름 : <input type="text" id="sPTStation"  name="pt_stationPS" maxlength="14" placeholder="ex)2호선 신촌역"><span id="sPTStationCnt"></span>
-<br>
-대중교통출발 선경로 <br>
-<textarea rows="10" cols="80" id="linePS" name="pt_linePS" readonly="readonly"></textarea>
-<br><br><br>
-[도착점 대중교통]
-<div id="mapPE" style="width:1000px;height:400px;"></div><br>
-  <button  type="button" id="publicTranportPE" >대중교통표시</button>
-    <button type="button" id="polyPE" >선</button>
-    <button type="button" id="backPolyPE" class="disabled" disabled>선 되돌리기</button>
-    <button type="button" id="frontPolyPE" class="disabled" disabled>선 앞돌리기</button>
-    <button type="button" id="infoPE" >가져오기</button><span id="fixPE" val="y"></span> <br>
-     <input type="checkbox" id="chkBicyclePE" /> 자전거도로 정보 보기
-    <br>
-
-대중교통위치 - 위도 : <input type="text" id="latPE" name="pt_latitudePE" value="0" readonly="readonly"> 경도 : <input type="text" id="lonPE" name="pt_longitudePE" value="0" readonly="readonly">
-<br>
-거리 :  <input type="text" id="disPE" name="pt_distancePE" value="0" readonly="readonly">km
-<select id="ePT" name="pt_imgPE">
-<option value="(입력안함)">--대중교통선택--</option>
-<option value="지하철">지하철</option>
-<option value="시내버스">시내버스</option>
-<option value="고속버스">고속버스</option>
-<option value="기차">기차</option>
-</select>
-  역이름 : <input type="text" id="ePTStation" name="pt_stationPE" maxlength="14" placeholder="ex)2호선 신촌역"><span id="ePTStationCnt"></span>
-<br>
-대중교통도착 선경로 <br>
-<textarea rows="10" cols="80" id="linePE" name="pt_linePE" readonly="readonly"></textarea>
-</form>
-<br><br>
-<button type="button" id="previewMakingCourse">미리보기</button> <button type="button" id="regCourse">등록</button>
-</section>
+	<p style="font-size: 20px;"><a href="/user/makingCourse">오늘의 라이딩</a>&nbsp;&gt;&nbsp;<font color="#c85725">나만의 DIY 코스</font></p>
+	<p style="font-size: 15px; padding: 2px 0 30px;">나만의 코스를 만들어 공유해보세요.</p>
+	
+	<div id="contents">
+		<form id="courseForm">
+			<input type="text" name="c_name"  id="courseName" maxlength="10" placeholder="나만의 코스에 이름을 붙여주세요.">
+			<span id="courseNameCnt"></span>
+			
+			<!-- div 감싼 이유 물어보기 -->
+			<!-- <div id="detailMap">
+				<div class="map_wrap"> -->
+				<div id="map"></div>
+				<!-- </div> -->
+			<!-- </div> -->
+ 			
+ 			<div id="bicycleInfo" style="position: relative; bottom: 100px;">
+				<input type="checkbox" id="chkBicycle"/> 자전거도로 정보 보기
+				<div style="padding-top: 5px;">
+		  			<select id="publicCycle">
+		  				<option value="0">공공자전거 대여위치</option>
+		  				<option value="1" cycleUrl="https://www.bikeseoul.com/" >서울(따릉이)</option>
+		  				<option value="고양시" cycleUrl="https://www.fifteenlife.com/mobile/index.jsp">고양(피프틴)</option>
+		  				<option value="과천시" cycleUrl="https://www.gccity.go.kr/main/main.do">과천(과천)</option>
+		  				<option value="부천시" cycleUrl="https://bike.bucheon.go.kr/site/homepage/menu/viewMenu?menuid=154001003003">부천(부천)</option>
+		  				<option value="수원시" cycleUrl="http://www.suwon.go.kr/web/bike/index.do">수원(반디클)</option>
+		  				<option value="시흥시" cycleUrl="https://bike.siheung.go.kr/siheung/">시흥(시흥)</option>
+		  				<option value="안산시" cycleUrl="http://www.pedalro.kr/index.do">안산(페달로)</option>
+		  				<option value="2" cycleUrl="http://m.tashu.or.kr/m/mainAction.do?process=mainPage" >대전(타슈)</option>
+		  				<option value="3" cycleUrl="https://www.sejongbike.kr/mainPageAction.do?process=mainPage" >세종(어울링)</option>
+		  				<option value="3" cycleUrl="https://bike.yeosu.go.kr/status.do?process=userStatusView" >여수(여수랑)</option>
+		  			</select>
+	  			</div>
+	  		</div>
+	  		<!-- p지워도 되는지? -->
+			<p>
+				<div class="filebox" style="position: relative; bottom: 50px; left: 720px;">
+					<label for="bikeFile">경로파일 불러오기</label>
+					<input type="file" value="경로파일" id="bikeFile"><br>
+				</div>
+				<div class="btnDiv">
+					<button type="button" class="btnOption" id="bike">경로만들기</button>
+				    <button type="button" class="btnOption" id="startC">출발</button>
+				    <button type="button" class="btnOption" id="arriveC">도착</button>
+				    <button type="button" class="btnOption" id="polyC" >선</button>
+				    <button type="button" class="btnOption" id="backPolyC" class="disabled" disabled>선 되돌리기</button>
+				    <button type="button" class="btnOption" id="frontPolyC"  class="disabled" disabled>선 앞돌리기</button>
+				    <button type="button" class="btnOption" id="infoC" >가져오기</button><span id="fixC" val="y"></span> <br>
+				</div>
+			</p>
+			
+			<div id="chart_div" style="width: 100%; height: 300px;"></div>
+			<!-- 출발 -->
+			<img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png">
+			<!-- 위도 --> <input type="hidden" id="slat" name="c_s_latitude" value="0" readonly="readonly">
+			<!-- 경도 --> <input type="hidden" id="slon" name="c_s_longitude" value="0" readonly="readonly">
+			<!-- 출발지 --> <input type="text" id="sLoc" name="c_s_locname" readonly="readonly" size="50" placeholder="출발지 주소가 입력됩니다."><br>
+			
+			<!-- 도착 -->
+			<img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/blue_b.png">
+			<!-- 위도 --> <input type="hidden" id="elat" name="c_e_latitude" value="0" readonly="readonly">
+			<!-- 경도 --> <input type="hidden" id="elon" name="c_e_longitude" value="0" readonly="readonly">
+			<!-- 도착지 --> <input type="text" id="eLoc" name="c_e_locname" readonly="readonly" size="50" placeholder="도착지 주소가 입력됩니다."><br>
+			
+			<!-- 거리 -->거리 <input type="text"  id="dis" name="c_distance" value="0" readonly="readonly">km<br>
+			<!-- 시간 -->시간 <input type="text" id="time" name="c_time" value="0" readonly="readonly">분<br>
+			<!-- 난이도 -->
+			<select id="diff" name="c_difficulty">
+				<option value="0">--난이도 선택--</option>
+				<option value="1">쉬움</option>
+				<option value="2">보통</option>
+				<option value="3">어려움</option>
+				<option value="4">매우 어려움</option>
+			</select>
+			<br>
+			<div id="rankViewAll">
+				<div id="rankViewTitle">어울리는 풍경을 지정해주세요.</div>
+				<div class="rankView">
+					<!-- 1순위 -->
+					<img src="../courseMaking/finger_1.png"><br>
+					<select id="firstView" name="c_view1">
+						<option value="0">--1순위--</option>
+						<option value="강">강</option>
+						<option value="산">산</option>
+						<option value="명소">명소</option>
+						<option value="바다">바다</option>
+					</select>
+				</div>
+				<div class="rankView">
+					<!-- 2순위 -->
+					<img src="../courseMaking/finger_2.png"><br>
+					<select id="secondView" name="c_view2">
+					<option value="0">--2순위--</option>
+					</select>
+				</div>
+				<div class="rankView">
+					<!-- 3순위 -->
+					<img src="../courseMaking/finger_3.png"><br>
+					<select id="thirdView" name="c_view3">
+					<option value="0">--3순위--</option>
+					</select>
+				</div>
+				<div class="rankView">
+					<!-- 4순위 -->
+					<img class="fingerImg" src="../courseMaking/finger_4.png"><br>
+					<select id="fourthView" name="c_view4">
+					<option value="0">--4순위--</option>
+					</select>
+				</div>
+			</div>
+			
+			<!-- 선경로 숨겨도 되는지 물어보기 -->
+			<div style="display: none;">
+				<textarea rows="10" cols="80" id="line" name="c_line" readonly="readonly" style="border: none;"></textarea>
+			</div>
+			
+			<!-- 코스 설명 -->
+			<div id="wordsDiv">코스에 대해서 간단히 설명해주세요.
+				<textarea rows="20" cols="100" id="words" name="c_words" maxlength="3000" placeholder="ex) 시원한 강과함께 들판을 나란히 두고 라이딩하는..." style="border: none; width: 840px; padding: 10px 5px 0 5px;"></textarea>
+			</div>
+			<span id="wordsCnt"></span>
+			
+			<!-- 코스 사진 -->
+			<div id="thumbnailsDiv">사진을 등록해주세요.
+				<div id="drop" style="width: 865px; height: 300px; padding: 3px;">
+					<div id="thumbnails"></div>
+				</div>
+			</div><br>
+			<div class="filebox" style="position: relative; bottom: 90px; left: 770px;">
+				<label for="photoInput">파일등록</label>
+				<input type="file" id="photoInput" multiple="multiple">
+			</div>
+				
+			[출발점 대중교통]
+			<div id="mapPS"></div>
+			<div id="bicycleInfo" style="position: relative; bottom: 75px;">
+				<input type="checkbox" id="chkBicyclePS"/> 자전거도로 정보 보기
+			</div>
+			<div class="btnDiv">
+				<button type="button" class="btnOption" id="publicTranportPS" >대중교통표시</button>
+				<button type="button" class="btnOption" id="polyPS" >선</button>
+				<button type="button" class="btnOption" id="backPolyPS" class="disabled" disabled>선 되돌리기</button>
+				<button type="button" class="btnOption" id="frontPolyPS" class="disabled" disabled>선 앞돌리기</button>
+				<button type="button" class="btnOption" id="infoPS" >가져오기</button><span id="fixPS" val="y"></span> <br>
+			</div>
+			
+			<!-- 대중교통위치 -->
+			<!-- 위도 --> <input type="hidden" id="latPS" name="pt_latitudePS" value="0" readonly="readonly">
+			<!-- 경도 --> <input type="hidden" id="lonPS" name="pt_longitudePS" value="0" readonly="readonly">
+			거리 <input type="text" id="disPS" name="pt_distancePS" value="0" readonly="readonly">km<br>
+			<select id="sPT" name="pt_imgPS">
+				<option value="(입력안함)">--대중교통선택--</option>
+				<option value="버스">버스</option>
+				<option value="1호선">1호선</option>
+				<option value="2호선">2호선</option>
+				<option value="3호선">3호선</option>
+			</select><br>
+			역이름 <input type="text" id="sPTStation"  name="pt_stationPS" maxlength="14" placeholder="ex)신촌역,신촌오거리.."><span id="sPTStationCnt"></span>
+			<br>
+			<!-- 대중교통출발 선경로 -->
+			<div style="display: none;">
+				<textarea rows="10" cols="80" id="linePS" name="pt_linePS" readonly="readonly"></textarea>
+			</div>
+			<br><br><br>
+			
+			
+			
+			[도착점 대중교통]
+			<div id="mapPE"></div>
+			<div id="bicycleInfo" style="position: relative; bottom: 75px;">
+				<input type="checkbox" id="chkBicyclePE"/> 자전거도로 정보 보기
+			</div>
+			<div class="btnDiv">
+				<button type="button" class="btnOption" id="publicTranportPE" >대중교통표시</button>
+			    <button type="button" class="btnOption" id="polyPE" >선</button>
+			    <button type="button" class="btnOption" id="backPolyPE" class="disabled" disabled>선 되돌리기</button> <!-- disabled -->
+				<button type="button" class="btnOption" id="frontPolyPE" class="disabled" disabled>선 앞돌리기</button>
+				<button type="button" class="btnOption" id="infoPE" >가져오기</button><span id="fixPE" val="y"></span>
+			</div>
+			
+			<!-- 대중교통위치 --> 
+			<!-- 위도 --> <input type="hidden" id="latPE" name="pt_latitudePE" value="0" readonly="readonly">
+			<!-- 경도 --> <input type="hidden" id="lonPE" name="pt_longitudePE" value="0" readonly="readonly">
+			거리 <input type="text" id="disPE" name="pt_distancePE" value="0" readonly="readonly">km<br>
+			<select id="ePT" name="pt_imgPE">
+				<option value="(입력안함)">--대중교통선택--</option>
+				<option value="버스">버스</option>
+				<option value="1호선">1호선</option>
+				<option value="2호선">2호선</option>
+				<option value="3호선">3호선</option>
+			</select><br>
+			역이름 <input type="text" id="ePTStation" name="pt_stationPE" maxlength="14" placeholder="ex)신촌역,신촌오거리.."><span id="ePTStationCnt"></span>
+			<br>
+			
+			<!-- 대중교통도착 선경로 -->
+			<div style="display: none;">
+				<textarea rows="10" cols="80" id="linePE" name="pt_linePE" readonly="readonly"></textarea>
+			</div>
+		</form>
+			
+			
+			<div class="btnDiv">
+				<button type="button" class="btnAdd" id="previewMakingCourse" style="background-color: #eccb6a">미리보기</button>
+				<button type="button" class="btnAdd" id="regCourse" style="background-color: #d0a183">등록</button>
+			</div>
+		</section>
 	<div id="clear"></div>
-<jsp:include page="../footer.jsp"/>
+	<jsp:include page="../footer.jsp"/>
 </body>
 </html>
