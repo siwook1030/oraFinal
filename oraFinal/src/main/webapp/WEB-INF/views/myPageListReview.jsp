@@ -44,7 +44,8 @@
     <div class="container">   
            <h1>내가 만든 코스 목록</h1>
            
-      <div class="row" id="saveCourseList"></div>
+	   <div class="row" id="saveCourseList"></div>
+
         <div class="row mt-5">
           <div class="col text-center">
             <div class="block-27">
