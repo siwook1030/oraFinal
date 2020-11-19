@@ -6,22 +6,32 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
-<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/resources/css/animate.css">
+    <link rel="stylesheet" href="/resources/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/resources/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/resources/css/magnific-popup.css">
+    <link rel="stylesheet" href="/resources/css/flaticon.css">
+    <link rel="stylesheet" href="/resources/css/style.css">
+ 	<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+	<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+
 	<style>
 		/* 공통 */
-		section {
-			margin: 0 auto;
+/*		section {
+ 			margin: 0 auto;
 			width: 1000px;
 			text-align: left;
 			padding: 50px;
-		}
+		} */
 		/* 개별 */
 		#reply { /* 댓글출력 */
 			padding-bottom: 3px;
 		}
 		#comment { /* 댓글입력 */
-			display:inline-block;
+			display: block;
 			position:relative;
 		}
 		#btnInsertReply { /* 댓글등록버튼 */
@@ -82,11 +92,11 @@
 		}
 		#mtInfoAll img { /* 미팅 장소,날짜,인원 아이콘 */
 			width: 40px;
-			padding: 3px;
+			margin: 10px;
 		}
 		#mtInfoAll .mtInfo { /* 미팅 장소,날짜,인원 각각의 div */
 			width: 40%;
-			border: 1px #BDBDBD solid;
+			border: 1px #D5D5D5 solid;
 			border-radius: 10px;
 			margin: 20px;
 			padding: 10px;
@@ -100,33 +110,43 @@
 			top: 100px;
 			width: 880px;
 		}
-		#btnLeft { /* 사진 왼쪽 클릭버튼 */
+		/* 사진 왼쪽 클릭버튼 */
+		/* #btnLeft { 
 			width: 100px;
 			position: relative;
 			cursor: pointer;
 			z-index: 1;
-		}
-		#btnRight { /* 사진 오른쪽 클릭버튼 */ 
+		} */
+		/* 사진 오른쪽 클릭버튼 */ 
+		/* #btnRight { 
 			width: 100px;
 			position: relative;
 			cursor: pointer;
 			left: 680px;
 			z-index: 1;
-		}
-		#m_content { /* 글등록창 */
-			border: none;
-			padding: 10px 0;
-			border-top: 1px solid gray;
-			border-bottom: 1px solid gray;
-			margin-bottom: 30px;
+		} */
+		#m_content { /* 글출력창 */
+			width: 100%; height: 400px; border: none; margin: 30px 0 0; padding: 10px;
 		}
 		#repImg, #repStr, #repCnt { /* 댓글이미지, 댓글수 */
 			vertical-align: middle;
 		}
 		#repImg {
-			margin-bottom: 2px;
+			margin-bottom: 2px; 
+			width: 20px;
 		}
-		.map_wrap {position:relative; width:100%; height:300px; font-size: 80%; margin: 30px 0 15px;}
+		.map_wrap { 
+			position: relative; 
+			width: 100%; 
+			height: 450px; 
+			font-size: 80%;
+		}
+		li {
+			list-style: none;
+		}
+		.attendPerson {
+			width: 30px;
+		}
 	</style>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -757,10 +777,12 @@ window.onload = function(){
 				list.forEach(function(p, i) {
 					mPeopleId.push(p.id);
 					const li = document.createElement("li");
-					const content = '<img src="/rank/'+p.rank_icon+'">'+p.nickName+"("+p.mp_regdate+")";
+					const content = '<img class="attendPerson" src="/rank/'+p.rank_icon+'">'+' '+p.nickName;
+					/* +"("+p.mp_regdate+")" */
 					li.innerHTML = content;
 					if(mId == p.id){
 						const delBtn = document.createElement("button");
+						delBtn.className = "btn";
 						delBtn.innerHTML = "탈주";
 						li.append(delBtn);
 						delBtn.addEventListener("click", function(e) {
@@ -870,42 +892,89 @@ window.onload = function(){
 	</script>
 </head>
 <body>
-	<jsp:include page="header.jsp"/>
-	<section>
-		<p style="font-size: 20px;"><a href="/listMeeting">번개 게시판</a>&nbsp;&gt;&nbsp;<font color="#c85725">번개 상세</font></p>
-		<p style="font-size: 15px; padding: 2px 0 30px;">만나서 같이 라이딩 해요.</p>
-		
-		<div id="contents">
-			<p style="font-size: 30px; padding: 30px 0 20px;"><a href="detailMeeting?m_no=${mt.m_no }">${mt.m_title }</a></p><br>	
-			<img src="rank/${mt.rank_icon }" height="25" style="float: left; margin-right: 5px;">
-			<div style="padding-top: 5px;">
-				<p style="margin-right: 15px; float: left;">${mt.nickName }</p>
-				<p style="float: left; font-size: 13px;">${mt.m_regdate }</p>
-				<p style="float: right; font-size: 13px;">조회수 ${mt.m_hit }</p>
+	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+		<div class="container">
+			<a class="navbar-brand" href="/mainPage">오늘의 라이딩</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="oi oi-menu"></span> Menu
+			</button>
+
+			<div class="collapse navbar-collapse" id="ftco-nav">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
+					<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
+					<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
+					<li class="nav-item active"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+					<li class="nav-item"><a href="" class="nav-link">라이딩 정보</a></li>
+				</ul>
 			</div>
-			<br>
-			<hr style="margin: 10px 0 10px;">
-			<div style="padding: 3px; font-size: 20px;">코스 : ${mt.c_name }</div>
-			<hr style="margin: 10px 0 10px;">
+		</div>
+     </nav>
+    <!-- END nav -->
+    
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate pb-0 text-center">
+          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="fa fa-chevron-right"></i></a></span> <span class="mr-2"><a href="blog.html">번개 라이딩 <i class="fa fa-chevron-right"></i></a></span> <span>번개 라이딩 상세 <i class="fa fa-chevron-right"></i></span></p>
+            <h1 class="mb-3 bread">번개 라이딩 상세</h1>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 글번호, 제목 -->
+    <section class="ftco-section ftco-agent">
+    	<div class="container">
+    		<div class="row justify-content-center pb-5">
+          		<div class="col-md-12 heading-section text-center ftco-animate">
+		          	<span class="subheading">${mt.m_no }</span>
+					<a href="detailMeeting?m_no=${mt.m_no }"><h2 class="mb-4">${mt.m_title }</h2></a>
+          		</div>
+        	</div>
+    	</div>
+    </section> 
+    
+    
+    <section class="ftco-section">
+      <div class="container">
+       
+  	 <!-- 닉네임 코스네임 조회수 작성자 -->
+				<img src="rank/${mt.rank_icon }" height="25" style="float: left;">
+				
+				<div>
+					<p>${mt.nickName }</p>
+					<p>${mt.m_regdate }</p>
+					<p>조회수 ${mt.m_hit }</p>
+				</div>
+
+				<hr style="margin: 10px 0 10px;">
+				<div style="padding: 3px; font-size: 20px;">코스 : ${mt.c_name }</div>
+				<hr style="margin: 10px 0 10px;">
+			
+			
+			
 			<div class="map_wrap">
-				<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+				<div id="map" style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
 			</div>
+			
 			<div id="mtInfoAll">
 				<div class="mtInfo"><img src="meetingImg/meetingLoc.png"><br>${mt.m_locname }</div>
 				<div class="mtInfo"><img src="meetingImg/meetingTime.png"><br>${mt.m_time }</div>
-				<div class="mtInfo"><img src="meetingImg/meetingNum.png"><button id="attendRiding">참가</button>
-				<br><span id="mPeopleNum" allPeopleNum="${mt.m_numpeople }" >${mt.m_numpeople }</span> 명</div>
+				<div class="mtInfo"><img src="meetingImg/meetingNum.png"><br>
+					<button class="btn" id="attendRiding">참가</button>
+					<span id="mPeopleNum" allPeopleNum="${mt.m_numpeople }" >${mt.m_numpeople }</span> 명
+				</div>
 			</div>
+			
 			<div><ul id="mPeople"></ul></div>
 			<br>
-			<textarea rows="30" cols="123" id="m_content">${mt.m_content }</textarea>
+			
+			<textarea class="about-author d-flex p-4 bg-light" id="m_content">${mt.m_content }</textarea>
 			
 			<c:if test="${mf.size()>0 }">
 				<div class="photo_canvas">
-					<!-- <div class="pointerDiv">
-						<img class="pointer" id="btnLeft" src="meetingImg/left.png">
-						<img class="pointer" id="btnRight" src="meetingImg/right.png">
-					</div> -->
 					<div class="mfPhotoDiv" id="mfPhotoDiv"></div>
 				</div>
 			</c:if>
@@ -928,17 +997,112 @@ window.onload = function(){
 			<div id="replyPgaeNum" style="text-align: center;"></div>
 			
 			<br>
-			<div>
-			댓글등록<br>
-			<form id="comment">
-				<textarea rows="10" cols="80" name="mr_content" id="mr_content" maxlength="300"></textarea>
-				<button id="btnInsertReply" type="button">등록</button>
-				<div><span id="mr_contentSpan"></span></div>
-				<input type="file" name="mr_file1" id="mr_file1">
-				
-			</form>
-		</div>
-	</section>
-	<jsp:include page="footer.jsp"/>
+				<div>
+					댓글등록<br>
+					<form id="comment">
+						<textarea rows="10" cols="80" name="mr_content" id="mr_content" maxlength="300"></textarea>
+						<button id="btnInsertReply" type="button">등록</button>
+						<div><span id="mr_contentSpan"></span></div>
+						<div style="display: none;"><input type="file" name="mr_file1" id="mr_file1"></div>
+						
+					</form>
+				</div>
+
+
+             
+      
+      </div> <!-- container -->
+    </section>
+
+
+	
+	<!-- footer시작 -->
+    <footer class="ftco-footer ftco-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Ecoverde</h2>
+              <p>Far far away, behind the word mountains, far from the countries.</p>
+              <ul class="ftco-footer-social list-unstyled mt-5">
+                <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="fa fa-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">Community</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Search Properties</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>For Agents</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Reviews</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>FAQs</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">About Us</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Our Story</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Meet the team</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+             <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Company</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>About Us</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Press</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Contact</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon fa fa-map"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+	                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929 210</span></a></li>
+	                <li><a href="#"><span class="icon fa fa-envelope pr-4"></span><span class="text">info@yourdomain.com</span></a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+	
+            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    
+	<!-- loader -->
+	<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+	<script src="/resources/js/jquery.min.js"></script>
+	<script src="/resources/js/jquery-migrate-3.0.1.min.js"></script>
+	<script src="/resources/js/popper.min.js"></script>
+	<script src="/resources/js/bootstrap.min.js"></script>
+	<script src="/resources/js/jquery.easing.1.3.js"></script>
+	<script src="/resources/js/jquery.waypoints.min.js"></script>
+	<script src="/resources/js/jquery.stellar.min.js"></script>
+	<script src="/resources/js/owl.carousel.min.js"></script>
+	<script src="/resources/js/jquery.magnific-popup.min.js"></script>
+	<script src="/resources/js/jquery.animateNumber.min.js"></script>
+	<script src="/resources/js/scrollax.min.js"></script>
+	<script src="/resources/js/main.js"></script>
+    
 </body>
 </html>

@@ -23,8 +23,6 @@
 	.thumb { width:100px; height:100px; padding:5px; float:left; }
 	.thumb > img { width:100%; height: 100%; }
 	.thumb > .close { position:absolute; background-color:red; cursor:pointer; }
-	/* .map_wrap, .map_wrap * {margin:0; padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;} */
-	/* .map_wrap {position:relative;width:100%;height:500px;}	 */
 	.placeinfo_wrap {position:absolute;bottom:28px;left:-150px;width:300px;}
 	.placeinfo {position:relative;width:100%;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;padding-bottom: 10px;background: #fff;}
 	.placeinfo:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
@@ -1621,12 +1619,7 @@ const mNickName = checkM.item.nickName;
 			<input type="text" name="c_name"  id="courseName" maxlength="10" placeholder="나만의 코스에 이름을 붙여주세요.">
 			<span id="courseNameCnt"></span>
 			
-			<!-- div 감싼 이유 물어보기 -->
-			<!-- <div id="detailMap">
-				<div class="map_wrap"> -->
-				<div id="map"></div>
-				<!-- </div> -->
-			<!-- </div> -->
+			<div id="map"></div>
  			
  			<div id="bicycleInfo" style="position: relative; bottom: 100px;">
 				<input type="checkbox" id="chkBicycle"/> 자전거도로 정보 보기
