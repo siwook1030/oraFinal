@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -77,7 +79,7 @@ public class CourseController {
 				cnt++;
 			}
 		}
-			
+
 		map.put("latitude", latitude);
 		map.put("longitude", longitude);
 		map.put("distance", distance);

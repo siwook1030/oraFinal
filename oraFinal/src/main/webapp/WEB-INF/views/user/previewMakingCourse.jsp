@@ -40,6 +40,31 @@
 	   	font-family: 'NEXON Lv1 Gothic Low OTF';
 	   	border: solid 1px white;
    }
+   
+   #bicycleInfo { 
+	margin-left : 10px;
+	padding: 10px; 
+	z-index: 1; left: 10px; 
+	width: 180px; 
+	background-color:rgba(255,255,255,0.9); 
+	text-align: center; 
+	color: black; 
+	font-size: 14px; 
+	font-weight: bold; 	
+	} 
+	
+	#cBound{
+		margin-top:5px;
+		padding : 6px;
+		border : none;
+		opacity: 0.9;
+		background-color: white;
+		border-radius: 3px;
+	}
+	#cBound img{
+		width: 20px;
+	}
+   
    #detailTitle{
    		margin : 30px 0 30px 0;
    }
@@ -202,7 +227,10 @@ window.onload = function(){
 	    contentNode = document.createElement('div'); // 커스텀 오버레이의 컨텐츠 엘리먼트 입니다 
 	let markers = [], // 마커를 담을 배열입니다
 	    currCategory = ''; // 현재 선택된 카테고리를 가지고 있을 변수입니다
-	 
+
+    const bicycleInfo = document.getElementById("bicycleInfo");
+	const cBound = document.getElementById("cBound");
+		 
 	const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 	    mapOption = {
 		center: new kakao.maps.LatLng(37.521512492203875,126.9762782994552),
@@ -215,6 +243,8 @@ window.onload = function(){
 	const zoomControl = new kakao.maps.ZoomControl();
 	map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 	map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+	map.addControl(cBound, kakao.maps.ControlPosition.RIGHT);
+	map.addControl(bicycleInfo,kakao.maps.ControlPosition.BOTTOMLEFT);
 
 	// 장소 검색 객체를 생성합니다
 	const ps = new kakao.maps.services.Places(map); 
@@ -443,7 +473,7 @@ window.onload = function(){
         chart.draw(data, options);
       }
 	   
-	document.getElementById("cBound").addEventListener("click", function(e) {
+	cBound.addEventListener("click", function(e) {
 		setBound(map, courseBounds);
 	});
 	function setBound(m,bounds){  // 바운드설정함수
@@ -638,7 +668,7 @@ window.onload = function(){
 			selectPE.selectedIndex = 0;
 	}, false)
 	
-	
+	tpe.style.display="none";  // 교통도착점 지도 뭉개짐을 방지하기위해 다 구성완료 후 감춰준다
 ///////////////////////////////////////////////////////////////////////////////////// 자전거 지도표시
 	const mapTypes = { //자전거맵 표시변수
 		    bicycle : kakao.maps.MapTypeId.BICYCLE
@@ -929,7 +959,7 @@ window.onload = function(){
 	const uploadFilesName = ${uploadFilesName};
 	console.log(uploadFilesName);
 	if(uploadFilesName != undefined && uploadFilesName.length != 0){
-		document.getElementById("mainPhoto").style.backgroundImage = "url(/previewPhoto/"+uploadFilesName[0]+")";
+		document.getElementById("mainPhoto").style.backgroundImage = 'url(/previewPhoto/'+uploadFilesName[0]+')';
 		let cPhotoStr = "";
 		uploadFilesName.forEach(function(fname, i) {
 			cPhotoStr += '<div id="coursePhoto" style="background-image: url(/previewPhoto/'+fname+')"></div>';
@@ -940,7 +970,7 @@ window.onload = function(){
 	
 	
 	// ---------------------------------
-	tpe.style.display="none";  // 교통도착점 지도 뭉개짐을 방지하기위해 다 구성완료 후 감춰준다
+	
 }
  </script>
 </head>
@@ -949,7 +979,7 @@ window.onload = function(){
   		<div id="detailTitle">
   		<font style="font-size: 130%;  color: orange;" >미리보기</font>
   		</div>
-  		 <div id="mainPhoto" style="background-image: url(/coursePhoto/nullcPhoto.png); background-size: cover;">
+  		 <div id="mainPhoto" style="background-image: url('/coursePhoto/nullcPhoto.png'); background-size: cover;">
   		 <div style="text-align: right;">made by ${c.nickName}</div>
   		 <div id="mpTtitle"><h2>${c.c_name }</h2></div>
   		</div>
@@ -1018,25 +1048,25 @@ window.onload = function(){
     </ul>
   		</div>
   		<div id="chart_div" style="width: 100%; height: 300px;"></div>
-  			<div style="text-align: left;">
-  		<input type="checkbox" id="chkBicycle" /> 자전거도로 정보 보기 <button id="cBound">경로 한눈에 보기</button>
-  		</div>
-  	<div style="text-align: left;">
-  			무인자전거 대여소 
-  			<select id="publicCycle">
-  				<option value="0">--무인자전거 위치--</option>
-  				<option value="1" cycleUrl="https://www.bikeseoul.com/" >서울(따릉이)</option>
-  				<option value="고양시" cycleUrl="https://www.fifteenlife.com/mobile/index.jsp">고양(피프틴)</option>
-  				<option value="과천시" cycleUrl="https://www.gccity.go.kr/main/main.do">과천(과천)</option>
-  				<option value="부천시" cycleUrl="https://bike.bucheon.go.kr/site/homepage/menu/viewMenu?menuid=154001003003">부천(부천)</option>
-  				<option value="수원시" cycleUrl="http://www.suwon.go.kr/web/bike/index.do">수원(반디클)</option>
-  				<option value="시흥시" cycleUrl="https://bike.siheung.go.kr/siheung/">시흥(시흥)</option>
-  				<option value="안산시" cycleUrl="http://www.pedalro.kr/index.do">안산(페달로)</option>
-  				<option value="2" cycleUrl="http://m.tashu.or.kr/m/mainAction.do?process=mainPage" >대전(타슈)</option>
-  				<option value="3" cycleUrl="https://www.sejongbike.kr/mainPageAction.do?process=mainPage" >세종(어울링)</option>
-  				<option value="3" cycleUrl="https://bike.yeosu.go.kr/status.do?process=userStatusView" >여수(여수랑)</option>
-  			</select>
-  		</div>
+		 		<div id="bicycleInfo">
+				<input type="checkbox" id="chkBicycle"/> 자전거도로 정보 보기
+				<div style="padding-top: 5px;">
+		  			<select id="publicCycle">
+		  				<option value="0">공공자전거 대여위치</option>
+		  				<option value="1" cycleUrl="https://www.bikeseoul.com/" >서울(따릉이)</option>
+		  				<option value="고양시" cycleUrl="https://www.fifteenlife.com/mobile/index.jsp">고양(피프틴)</option>
+		  				<option value="과천시" cycleUrl="https://www.gccity.go.kr/main/main.do">과천(과천)</option>
+		  				<option value="부천시" cycleUrl="https://bike.bucheon.go.kr/site/homepage/menu/viewMenu?menuid=154001003003">부천(부천)</option>
+		  				<option value="수원시" cycleUrl="http://www.suwon.go.kr/web/bike/index.do">수원(반디클)</option>
+		  				<option value="시흥시" cycleUrl="https://bike.siheung.go.kr/siheung/">시흥(시흥)</option>
+		  				<option value="안산시" cycleUrl="http://www.pedalro.kr/index.do">안산(페달로)</option>
+		  				<option value="2" cycleUrl="http://m.tashu.or.kr/m/mainAction.do?process=mainPage" >대전(타슈)</option>
+		  				<option value="3" cycleUrl="https://www.sejongbike.kr/mainPageAction.do?process=mainPage" >세종(어울링)</option>
+		  				<option value="3" cycleUrl="https://bike.yeosu.go.kr/status.do?process=userStatusView" >여수(여수랑)</option>
+		  			</select>
+	  			</div>
+	  		</div>
+			<button id="cBound" title="경로 한눈에 보기"><img src="/detailCourseImg/cBoundBtn.png"></button>
   		</div>
   		
   		<div id="courseWords" style="padding-left: 50px; padding-right: 100px; margin-bottom: 50px;">

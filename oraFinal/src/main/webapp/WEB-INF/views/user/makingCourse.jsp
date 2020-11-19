@@ -12,6 +12,19 @@
 		margin: 0 auto; width: 1000px; text-align: left; padding: 50px;
 	}
 	
+	.bicycleInfo { 
+	margin: 0 0 0 8px;
+	padding: 10px; 
+	z-index: 1; left: 10px; 
+	width: 180px; 
+	background-color:rgba(255,255,255,0.8); 
+	text-align: center; 
+	color: black; 
+	font-size: 14px; 
+	font-weight: bold; 
+	
+	} 
+	
 	/*매인섹션 끝 ------------------*/
 
 	/*float 초기화 아이디*/
@@ -56,8 +69,6 @@
  	#rankViewTitle { display: block; padding-bottom: 10px; }
  	.rankView { display: inline-block; width: 15%; text-align: center; padding: 20px 20px 10px;}
  	.rankView img { width: 35px; align: center; padding-bottom: 3px; }
- 	/* 맵1 자전거 정보보기 */
- 	#bicycleInfo { padding: 10px; z-index: 1; left: 10px; width: 160px; background-color:rgba(255,255,255,0.8); text-align: center; color: black; font-size: 14px; font-weight: bold; } 
  	input { padding: 4px 0; margin-bottom: 3px; border: none; }
  	/* 첨부파일버튼 */
  	.filebox label { margin: 3px 0; padding: 5px 15px; border: 1px solid #8C8C8C; color: #747474; font-size: 15px; vertical-align: middel; background-color: white; cursor: pointer; text-align: center; }
@@ -302,6 +313,8 @@ const mNickName = checkM.item.nickName;
 	        center: new kakao.maps.LatLng(37.52084556725995, 126.97701335521351), // 지도의 중심좌표
 	        level: 7 // 지도의 확대 레벨
 	    };
+    
+	const bicycleInfo = document.getElementById("bicycleInfo");
 	
 	// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
 	const map = new kakao.maps.Map(mapContainer, mapOption); 
@@ -309,6 +322,7 @@ const mNickName = checkM.item.nickName;
 	const zoomControl = new kakao.maps.ZoomControl();
 	map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 	map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+	map.addControl(bicycleInfo, kakao.maps.ControlPosition.BOTTOMLEFT);
 
 ////////////////////////////////////////////////////코스마커표시기능	
 	const placeOverlay = new kakao.maps.CustomOverlay({zIndex:1}), 
@@ -619,13 +633,15 @@ const mNickName = checkM.item.nickName;
 	        center: new kakao.maps.LatLng(37.52084556725995, 126.97701335521351), // 지도의 중심좌표
 	        level: 7 // 지도의 확대 레벨
 	 };
-
+	const bicycleInfoPS = document.getElementById("bicycleInfoPS");
+	
 	// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
 	const mapPS = new kakao.maps.Map(mapContainerPS, mapOptionPS); 
 	const mapTypeControlPS = new kakao.maps.MapTypeControl();
 	const zoomControlPS = new kakao.maps.ZoomControl();
 	mapPS.addControl(mapTypeControlPS, kakao.maps.ControlPosition.TOPRIGHT);
 	mapPS.addControl(zoomControlPS, kakao.maps.ControlPosition.RIGHT);
+	mapPS.addControl(bicycleInfoPS, kakao.maps.ControlPosition.BOTTOMLEFT);
 
 	const optionsPS = { // Drawing Manager를 생성할 때 사용할 옵션입니다
 	    map: mapPS, // Drawing Manager로 그리기 요소를 그릴 map 객체입니다
@@ -768,13 +784,15 @@ const mNickName = checkM.item.nickName;
 	        center: new kakao.maps.LatLng(37.52084556725995, 126.97701335521351), // 지도의 중심좌표
 	        level: 7 // 지도의 확대 레벨
 	    };
-
+	const bicycleInfoPE = document.getElementById("bicycleInfoPE");
+	
 	// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
 	const mapPE = new kakao.maps.Map(mapContainerPE, mapOptionPE); 
 	const mapTypeControlPE = new kakao.maps.MapTypeControl();
 	const zoomControlPE = new kakao.maps.ZoomControl();
 	mapPE.addControl(mapTypeControlPE, kakao.maps.ControlPosition.TOPRIGHT);
 	mapPE.addControl(zoomControlPE, kakao.maps.ControlPosition.RIGHT);
+	mapPE.addControl(bicycleInfoPE, kakao.maps.ControlPosition.BOTTOMLEFT);
 
 
 	const optionsPE = { // Drawing Manager를 생성할 때 사용할 옵션입니다
@@ -1628,7 +1646,7 @@ const mNickName = checkM.item.nickName;
 				<!-- </div> -->
 			<!-- </div> -->
  			
- 			<div id="bicycleInfo" style="position: relative; bottom: 100px;">
+ 			<div class="bicycleInfo" id="bicycleInfo">
 				<input type="checkbox" id="chkBicycle"/> 자전거도로 정보 보기
 				<div style="padding-top: 5px;">
 		  			<select id="publicCycle">
@@ -1648,7 +1666,7 @@ const mNickName = checkM.item.nickName;
 	  		</div>
 	  		<!-- p지워도 되는지? -->
 			<p>
-				<div class="filebox" style="position: relative; bottom: 50px; left: 720px;">
+				<div class="filebox" style="position: relative; left: 720px; z-index: 2;">
 					<label for="bikeFile">경로파일 불러오기</label>
 					<input type="file" value="경로파일" id="bikeFile"><br>
 				</div>
@@ -1747,7 +1765,7 @@ const mNickName = checkM.item.nickName;
 				
 			[출발점 대중교통]
 			<div id="mapPS"></div>
-			<div id="bicycleInfo" style="position: relative; bottom: 75px;">
+			<div id="bicycleInfoPS" class="bicycleInfo">
 				<input type="checkbox" id="chkBicyclePS"/> 자전거도로 정보 보기
 			</div>
 			<div class="btnDiv">
@@ -1764,10 +1782,10 @@ const mNickName = checkM.item.nickName;
 			거리 <input type="text" id="disPS" name="pt_distancePS" value="0" readonly="readonly">km<br>
 			<select id="sPT" name="pt_imgPS">
 				<option value="(입력안함)">--대중교통선택--</option>
-				<option value="버스">버스</option>
-				<option value="1호선">1호선</option>
-				<option value="2호선">2호선</option>
-				<option value="3호선">3호선</option>
+				<option value="지하철">지하철</option>
+				<option value="시내버스">시내버스</option>
+				<option value="고속버스">고속버스</option>
+				<option value="기차">기차</option>
 			</select><br>
 			역이름 <input type="text" id="sPTStation"  name="pt_stationPS" maxlength="14" placeholder="ex)신촌역,신촌오거리.."><span id="sPTStationCnt"></span>
 			<br>
@@ -1781,7 +1799,7 @@ const mNickName = checkM.item.nickName;
 			
 			[도착점 대중교통]
 			<div id="mapPE"></div>
-			<div id="bicycleInfo" style="position: relative; bottom: 75px;">
+			<div id="bicycleInfoPE" class="bicycleInfo">
 				<input type="checkbox" id="chkBicyclePE"/> 자전거도로 정보 보기
 			</div>
 			<div class="btnDiv">
@@ -1798,10 +1816,10 @@ const mNickName = checkM.item.nickName;
 			거리 <input type="text" id="disPE" name="pt_distancePE" value="0" readonly="readonly">km<br>
 			<select id="ePT" name="pt_imgPE">
 				<option value="(입력안함)">--대중교통선택--</option>
-				<option value="버스">버스</option>
-				<option value="1호선">1호선</option>
-				<option value="2호선">2호선</option>
-				<option value="3호선">3호선</option>
+				<option value="지하철">지하철</option>
+				<option value="시내버스">시내버스</option>
+				<option value="고속버스">고속버스</option>
+				<option value="기차">기차</option>
 			</select><br>
 			역이름 <input type="text" id="ePTStation" name="pt_stationPE" maxlength="14" placeholder="ex)신촌역,신촌오거리.."><span id="ePTStationCnt"></span>
 			<br>
