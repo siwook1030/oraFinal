@@ -336,7 +336,7 @@
       <div class="container">
         <div class="row block-9 justify-content-center mb-5">
           <div class="col-md-8 mb-md-5">
-            <form action="#" class="bg-light p-5 contact-form">
+            <form action="#" id="update" class="bg-light p-5 contact-form">
               <h2 class="text-center">회원정보수정</h2>
               <div class="form-group">
                 <div id=modify>이름</div>
@@ -373,8 +373,9 @@
               <input type="password" id="password2" class="updateMember form-control form-group hidden" style="visibility: hidden ;"
                 placeholder="새 비밀번호를 다시 입력하세요" name="password2" />
 
+            </form>
               <input type="password" id="pwd" class="updateMember form-control form-group " placeholder="회원정보 수정을 위해서는 비밀번호 입력하세요" name="pwd"
-                style="border: 1px solid #ff0000;" />
+                style="border: 1px solid #ff0000; visibility: visible;" />
               <div></div>
 
               <div style="text-align: center">
@@ -382,7 +383,6 @@
                 <button id="btnUpdate2" style="visibility: hidden" class="btn form-group form-control btn-primary py-3 px-5">수정완료</button>
               </div>
 
-            </form>
           </div>
         </div>
       </div>
