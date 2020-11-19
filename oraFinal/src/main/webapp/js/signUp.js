@@ -13,7 +13,8 @@ window.onload = function(){
 	const inputNum = document.getElementById("inputNum");
 	const inf = document.getElementById("inputNumForm");
 	const signUpBtn = document.getElementById("signUp");
-
+	inf.style.display = "none";
+	inf.style.visibility="hidden";
 
 	sendPhone.onclick=sendPhoneReq;	
 	checkNum.onclick=checkNumReq;	
@@ -182,6 +183,7 @@ function sendPhoneReq(){
 						chekedPhone.value = phone.value.trim();
 						//$('#chekedPhone').attr("value",$.trim($('#phone').val()));
 						alert("인증번호가 발송되었습니다.");
+						inf.style.display="block";
 						inf.style.visibility="visible";
 						inputNum.value="";
 						inputNum.focus();
@@ -224,7 +226,7 @@ function checkNumReq(){
 						inputNum.value="";
 						//$('#chekingPhone').attr("value","Y");
 					//	$('#inputNum').val('');
-						inf.style.visibility="hidden";
+						inf.style.display="none";
 					}else{
 						alert("인증번호가 일치하지 않습니다.");
 					}
