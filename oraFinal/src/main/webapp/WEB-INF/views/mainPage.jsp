@@ -346,11 +346,11 @@ window.onload = function(){
 
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
-	          <li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
-	          <li class="nav-item"><a href="about.html" class="nav-link">오늘의 라이딩</a></li>
-	          <li class="nav-item"><a href="agent.html" class="nav-link">라이딩 코스</a></li>
-	          <li class="nav-item"><a href="services.html" class="nav-link">라이딩 후기</a></li>
-	          <li class="nav-item"><a href="properties.html" class="nav-link">번개 라이딩</a></li>
+	          <li class="nav-item active"><a href="/mainPage" class="nav-link">Home</a></li>
+	          <li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
+	          <li class="nav-item"><a href="searchCourse" class="nav-link">라이딩 코스</a></li>
+	          <li class="nav-item"><a href="listReview" class="nav-link">라이딩 후기</a></li>
+	          <li class="nav-item"><a href="listMeeting" class="nav-link">번개 라이딩</a></li>
 	         <!-- <li class="nav-item"><a href="blog.html" class="nav-link">라이딩 정보</a></li>
 	          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>-->
 	        </ul>
