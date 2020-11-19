@@ -143,6 +143,7 @@
 		.nav-item .nav-link { /* nava 로그인 */
 			font-size: 15px;
 		}
+		textarea:focus { outline: none; }
 	</style>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -983,7 +984,7 @@ window.onload = function(){
 			<div><ul id="mPeople"></ul></div>
 			<br>
 			
-			<textarea class="about-author d-flex p-4 bg-light" id="m_content">${mt.m_content }</textarea>
+			<textarea class="about-author d-flex p-4 bg-light" id="m_content" readonly="readonly">${mt.m_content }</textarea>
 			
 			<c:if test="${mf.size()>0 }">
 				<div class="photo_canvas">
