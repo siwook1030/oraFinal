@@ -24,6 +24,10 @@
 		SELECT ID, CODE_VALUE,PASSWORD,NAME,NICKNAME,GENDER,PHONE,RANK_NAME,TO_CHAR(REGDATE,'YY.MM.DD HH:MI') AS REGDATE 
 		FROM MEMBER WHERE ID=#{id}
 	</select>
+	<select id="selectMemberId" resultType="memberVo">
+		SELECT ID, CODE_VALUE,PASSWORD,NAME,NICKNAME,GENDER,PHONE,RANK_NAME,TO_CHAR(REGDATE,'YY.MM.DD HH:MI') AS REGDATE 
+		FROM MEMBER WHERE PHONE=#{phone}
+	</select>
 	
 	<select id="selectRank" resultType="rankVo">
 		SELECT * FROM rank WHERE rank_name=#{rank_name}
@@ -42,5 +46,9 @@
 	<update id="updateRank">
 		UPDATE MEMBER SET RANK_NAME=(SELECT RANK_NAME FROM RANK WHERE (SELECT SUM(POINT_GET) FROM POINT WHERE ID=#{id}) BETWEEN MIN_POINT AND MAX_POINT) 
 		WHERE ID=#{id}
+	</update>
+	
+	<update id="updatePwd">
+		UPDATE MEMBER SET PASSWORD=#{password} WHERE ID=#{id}
 	</update>
 </mapper>

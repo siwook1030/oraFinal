@@ -50,7 +50,7 @@ public class MeetingController {
 	private CourseDao cdao;
 	
 	public static int totRecord = 0; // 총 게시글 수
-	public static int recordSize = 10; // 한 번에 보이는 게시글 수
+	public static int recordSize = 8; // 한 번에 보이는 게시글 수
 	public static int totPage = 0; // 총 페이지 수
 	public static int pageSize = 3; // 한 번에 보이는 페이지 수
 	
@@ -59,19 +59,24 @@ public class MeetingController {
 	
 	HashMap map = new HashMap();
 	
-	@RequestMapping("/listMeeting")
-	public void listMeeting(Model model) {
+	@RequestMapping(value = "/listMeeting", produces = "appliction/json;charset=utf-8" )
+	public void listMeeting(Model model,String id) {
 		model.addAttribute("recordSize", recordSize);
 		model.addAttribute("pageSize", pageSize);
+		model.addAttribute("id", id);
 	}
 
 	@RequestMapping(value = "/listMeetingJson", produces = "appliction/json;charset=utf-8")
 	@ResponseBody
-	public String listMeetingJson(Model model, int pageNo) {
+	public String listMeetingJson(Model model, int pageNo, String id) {
 		Gson gson = new Gson();
+		if (id.equals("null") || id.equals("") || id.equals(null) || "".equals(id) ||  "null".equals(id)) {
+			id = "%";
+		}
 		HashMap map = new HashMap();
-		totRecord = mdao.totMRecord(); 
+		totRecord = mdao.totMRecord(id); 
 		System.out.println("=========================");
+		System.out.println(totRecord);
 		System.out.println("*** recordSize : "+recordSize);
 		System.out.println("*** pageNo : "+pageNo);
 		
@@ -88,7 +93,9 @@ public class MeetingController {
 		map.put("start", start);
 		map.put("end", end);
 		map.put("totRecord", totRecord);
+		map.put("id", id);
 		map.put("list", mdao.listMeeting(map));
+		
 		//System.out.println("*** : "+gson.toJson(map));
 		return gson.toJson(map);
 	}
