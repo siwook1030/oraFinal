@@ -925,7 +925,7 @@ window.onload = function(){
     </section>
     
     <!-- 글번호, 제목 -->
-    <section class="ftco-section ftco-agent">
+    <section class="ftco-section ftco-agent" style="padding-bottom: 30px;">
     	<div class="container">
     		<div class="row justify-content-center pb-5">
           		<div class="col-md-12 heading-section text-center ftco-animate">
@@ -933,12 +933,12 @@ window.onload = function(){
 					<a href="detailMeeting?m_no=${mt.m_no }"><h2 class="mb-4">${mt.m_title }</h2></a>
           		</div>
         	</div>
-    	</div>
-    </section> 
+<!--     	</div>
+    </section>  -->
     
-    
-    <section class="ftco-section">
-      <div class="container">
+    <!-- 전체 섹션 (글제목 제외) -->
+<!--     <section class="ftco-section" >
+      <div class="container"> -->
        
   	 <!-- 닉네임 코스네임 조회수 작성자 -->
 				<img src="rank/${mt.rank_icon }" height="25" style="float: left;">
@@ -1008,10 +1008,7 @@ window.onload = function(){
 					</form>
 				</div>
 
-
-             
-      
-      </div> <!-- container -->
+       </div> <!-- container -->
     </section>
 
 
