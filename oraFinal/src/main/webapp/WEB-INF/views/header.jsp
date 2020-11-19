@@ -57,7 +57,7 @@ a{
 <script type="text/javascript">
 window.onload = function(){
 	$(document).on("mouseover", ".menu", function(){
-		$(this).css("font-style,"bold");
+		$(this).css("font-style","bold");
 	});
 	$(document).on("mouseleave", ".menu", function(){
 		$(this).css("font-style","light");
@@ -79,7 +79,7 @@ window.onload = function(){
 					<a href="/login">로그인</a>&nbsp;&nbsp;&nbsp;<a href="/signUp">회원가입</a>
 				</c:when>
 				<c:when test="${m != null }">
-					${m.nickName } 라이더! &nbsp;&nbsp;<a href="/logout">로그아웃</a>&nbsp;&nbsp;<a href="/myPage?id=${m.id}">마이페이지</a>
+					${m.nickName } 라이더님 &nbsp;&nbsp;<a href="/logout">로그아웃</a>&nbsp;&nbsp;<a href="/myPage?id=${m.id}">마이페이지</a>
 				</c:when>
 			</c:choose>
 		</div>
