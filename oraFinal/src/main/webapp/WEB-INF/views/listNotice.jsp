@@ -150,6 +150,7 @@ window.onload = function(){
 	function listNotice(){
 		const cvalue = code_value.value;
 		const searchText = search.value.trim();
+		
 			$.ajax({
 				url:"/listNoticeJson",
 				type:"GET",

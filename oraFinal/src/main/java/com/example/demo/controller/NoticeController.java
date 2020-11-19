@@ -32,14 +32,16 @@ public class NoticeController {
 	
 	@RequestMapping("/listNotice")
 	public void listNotice(Model model) {
+		System.out.println("작동함!!");
 		model.addAttribute("category", ndao.getBoardCategory("006"));
 		model.addAttribute("recordSize", recordSize);
 		model.addAttribute("pageSize", pageSize);
 	}
 	
-	@RequestMapping(value = "/listNoticeJson", produces = "appliction/json;charset=utf-8")
+	@RequestMapping(value = "/listNoticeJson", produces = "appliction/json; charset=utf-8")
 	@ResponseBody
 	public String listMeetingJson(Model model, int pageNo,@RequestParam(defaultValue ="")String searchText,@RequestParam(defaultValue ="0")String code_value) {
+		System.out.println("Asdasd");
 		Gson gson = new Gson();
 		HashMap map = new HashMap();
 		map.put("searchText", searchText);
