@@ -102,7 +102,6 @@ window.onload = function(){
        $("#add").click(function() {
           $("body #saveCourseList").empty();
            getCourseList((addIndex+ 5));
-          alert(addIndex);
           if(lastIndex < (addIndex+5)){                    
              $("#add").remove();
              $("#lastPage").html("다음 페이지가 없습니다");

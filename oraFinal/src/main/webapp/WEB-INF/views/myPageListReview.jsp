@@ -40,62 +40,24 @@
     </section>
     
     
-    <section class="ftco-section contact-section">
-      <div class="container">
-        <div class="row block-9 justify-content-center mb-5">
-          <div class="col-md-8 mb-md-5">
-          	<h2 class="text-center">회원정보수정</h2>
-            <form action="#" class="bg-light p-5 contact-form">
-              <div class="form-group">
-			    <div id=modify>이름</div>
-	            <input type="text" class="form-control text-muted " disabled="disabled" value="${m.name} "  />
-            
-              </div>
-              <div id=modify>닉네임</div>
-              <div class="form-group">
-                <input type="text" class="form-control" disabled="disabled" value="${m.nickName}" style="background-color: #e2e2e2;">
-              </div>
-                <input class="updateMember form-control hidden" style="visibility: hidden ;" placeholder="바꿀 닉네임을 입력하세요" name="nickName"/>
-              
-
-              <div id=modify>전화번호</div>
-              <div class="form-group">
-                <input type="text" class="form-control" disabled="disabled" value="${m.phone }">
-              </div>
-                <input   type="tel" id="phone" name="phone" class="updateMember form-control hidden" maxlength="11"  placeholder="새 전화번호를 입력하세요 ex)01012345678" > 
-		 
-		         <div id="clickForm">
-		         <input type="button" id="sendPhone" class="btn btn-primary  hidden form-control " value="인증번호 받기">
-		         </div>
-		         <div id="inputNumForm">
-		            <input type="tel" id="inputNum" class="updateMember form-control hiddenPhone" name="inputNum" maxlength="6" placeholder="인증번호를 입력하세요">
-		            <input type="button" id="checkNum" class="hiddenPhone send form-control btn btn-primary" value="인증">
-		         </div>    
-		
-		                
-		            <div id=modify class="hidden">비밀번호</div>
-		            <div ></div>
-		               <input type="password" id="password1" class="updateMember form-control hidden" style="visibility: hidden ;" placeholder="새 비밀번호를 입력하세요" name="password"/>
-		          
-		               <input type="password" id="password2" class="updateMember form-control hidden" style="visibility: hidden ;" placeholder="새 비밀번호를 다시 입력하세요" name="password2"/>
-		            
-		           
-		      	   <input type="password" id="pwd" class="updateMember form-control " placeholder="회원정보 수정을 위해서는 비밀번호 입력하세요" name="pwd" style="border: 1px solid #ff0000;"/>
-		        	 <div ></div>
-
-            </form>
-             </div>
+ <section class="ftco-section ftco-no-pb ftco-no-pt">
+    <div class="container">   
+           <h1>내가 만든 코스 목록</h1>
+           
+	   <div class="row" id="saveCourseList"></div>
+        <div class="row mt-5">
+          <div class="col text-center">
+            <div class="block-27">
+              <ul>
+                <li class="active" id="add"><span>+</span></li>
+                <div id="lastPage"></div>
+                
+              </ul>
             </div>
-         
-           <div style="text-align: center">
-             <button id = btnUpdate value="수정하기" class="btn btn-primary py-3 px-5 "> 수정하기</button>
-		      <button id="btnUpdate2" style="visibility: hidden" class="btn btn-primary py-3 px-5" >수정완료</button>
-            </div>
-          
+          </div>
         </div>
-       
-       
-      </div>
+    </div>
+    </section>
       
       
     </section>	

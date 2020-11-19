@@ -324,7 +324,7 @@
                 <a href="/myPageSaveCourse">찜 목록 <i class="fa fa-chevron-right"></i></a>
                 <a href="/myPageMyCourse">내 작성 코스<i class="fa fa-chevron-right"></i></a>
                 <a href="/myPageListReview">내 작성 후기<i class="fa fa-chevron-right"></i></a>
-                <a href="myPageListMeeting">내 작성 번개<i class="fa fa-chevron-right"></i></a>
+                <a href="listMeeting?id=${m.id} ">내 작성 번개<i class="fa fa-chevron-right"></i></a>
                 <a href="/myPageMyRank">랭킹</a>
               </span>
             </p>
@@ -374,6 +374,7 @@
                 placeholder="새 비밀번호를 다시 입력하세요" name="password2" />
 
             </form>
+            
               <input type="password" id="pwd" class="updateMember form-control form-group " placeholder="회원정보 수정을 위해서는 비밀번호 입력하세요" name="pwd"
                 style="border: 1px solid #ff0000; visibility: visible;" />
               <div></div>
