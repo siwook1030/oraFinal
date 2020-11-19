@@ -15,6 +15,7 @@ import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.ReviewVo;
 import com.example.demo.vo.Review_fileVo;
 import com.example.demo.vo.Review_repVo;
+import com.example.demo.vo.Review_tempVo;
 
 public class ReviewManager {
 	static SqlSessionFactory sqlSessionFactory;
@@ -153,6 +154,53 @@ public class ReviewManager {
 		int re = 0;
 		SqlSession session = sqlSessionFactory.openSession();
 		re = session.insert("review.insertRep", rrvo);
+		session.commit();
+		session.close();
+		return re;
+	}
+	public static int update(ReviewVo rvo) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.update("review.update", rvo);
+		session.commit();
+		session.close();
+		return re;
+	}
+	public static int deleteFileOne(int rf_no) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.delete("review.deleteFileOne", rf_no);
+		session.commit();
+		session.close();
+		return re;
+	}
+	public static Review_tempVo selectTemp(String id) {
+		Review_tempVo rtvo = null;
+		SqlSession session = sqlSessionFactory.openSession();
+		rtvo = session.selectOne("review.selectTemp", id);
+		session.close();
+		return rtvo;
+	}
+	public static int insertTemp(Review_tempVo rtvo) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.insert("review.insertTemp", rtvo);
+		session.commit();
+		session.close();
+		return re;
+	}
+	public static int updateTemp(Review_tempVo rtvo) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.update("review.updateTemp", rtvo);
+		session.commit();
+		session.close();
+		return re;
+	}
+	public static int deleteTemp(String id) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.delete("review.deleteTemp", id);
 		session.commit();
 		session.close();
 		return re;

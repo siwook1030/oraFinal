@@ -4,110 +4,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <title>오늘의 라이딩</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/resources/css/animate.css">
+    <link rel="stylesheet" href="/resources/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/resources/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/resources/css/magnific-popup.css">
+    <link rel="stylesheet" href="/resources/css/flaticon.css">
+    <link rel="stylesheet" href="/resources/css/style.css">
 <style type="text/css">
-	section {
-		margin: 0 auto;
-		width: 1000px;
-		text-align: left;
-		padding: 50px;
-	}
-	#selectLoc {
-		text-align: center;
-		padding: 40px 0 20px;
-	}
-	#contents {
-			border: 1px solid #D5D5D5;
-			padding: 60px;
-			margin: 50px 0 100px;
-	}
-	input {
-		border: none;
-	}
-	.btn {
-		color: white;
-		padding: 8px 12px;
-		margin: 40px 0px;
-		background-color: #88BEA6;
-		align-content: center;
-		font-size: 15px;
-		border: none;
-		cursor: pointer;
-	}
-	#btnDiv {
-		text-align: center;
-	}
-	.mtIcon {
-		width: 40px;
-		margin: 10px;
-	}
-	.selectMtAll {
-		display: flex;
-		
-	}
-	.selectMtAll .selectMt {
-		width: 40%;
-		border: 1px #BDBDBD solid;
-		border-radius: 10px;
-		margin: 20px;
-		padding: 10px; 
-		text-align: center;
-	}
-	#m_title {
-		border-bottom: 1px solid gray;
-		margin: 10px;
-		width: 880px;
-		height: 50px;
-		margin: 20px 0;
-		font-size: 30px;
-	}
-	#m_content {
-		border: none;
-		padding: 10px 0;
-		border-top: 1px solid gray;
-		border-bottom: 1px solid gray;
-		margin-bottom: 30px;
-	}
-	.filebox label {
-		position: relative;
-		bottom: 35px;
-		left: 780px;
-		margin: 3px 0;
-		padding: 5px 15px;
-		color: white;
-		font-size: 15px; /* inherit : 부모의 속성을 따르고 싶을때 inherit */
-		/* line-height: normal; */ /* 텍스트 라인의 높이 */
-		vertical-align: middel;
-		background-color: #88BEA6;
-		cursor: pointer;
-		text-align: center;	
-	}
-	.filebox input[type="file"] {
-		/* 파일 필드 숨기기 */
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		/* clip:rect(0,0,0,0); */
-		border: 0;
-	}
+	/* input, select, textarea 태그설정 */
+	input, select { border: none; background-color: transparent; width: 55%; text-align: center; }
+	textarea:focus, input:focus { outline: none; }
+	
+	/* 등록, 취소 버튼 */
+	.btn { color: white; padding: 7px 17px; margin-left: 3px; align-content: center; font-size: 19px; border: none; cursor: pointer; }
+	#btnDiv { clear: both; text-align: center; padding-top: 40px; }
+	
+	/* 미팅장소 */
+	#selectLoc { text-align: center; padding: 40px 0 20px; }
+	/* 코스, 시간, 인원 선택박스 */
+	.selectMtAll { display: flex; }
+	.selectMtAll .selectMt { width: 40%; border: 1px #D5D5D5 solid; border-radius: 10px; margin: 20px; padding: 10px; text-align: center; }
+	.mtIcon { width: 40px; margin: 10px; }
+	
+	/* 제목 입력 */
+	#m_title { text-align: center; }
+	/* 내용 입력 */
+	#m_content { width: 100%; height: 400px; border: none; margin: 30px 0 0; padding: 10px; }
+	
+	/* 첨부파일 등록박스 */
+	.filebox { text-align: right; padding: 0 20px; position: relative; top: 30px; }
+	.filebox img { width: 50px; cursor: pointer; }
+	/* 파일 필드 숨기기 */
+	.filebox input[type="file"] { position: absolute; width: 0; height: 0; padding: 0; margin: -1px; overflow: hidden; /* clip:rect(0,0,0,0); */ border: 0; }
+	/* 사진 드래그앤드랍 박스 */
+	/* .photoInput { display: none; } */
 
-
-   /*카카오 맵css*/
-   .map_wrap {position:relative;width:100%;height:450px;font-size: 80%;}
-   .map_title {font-weight:bold;display:block;}
-   .hAddr {position:absolute;left:10px;top:10px;border-radius: 2px;background:#fff;background:rgba(255,255,255,0.8);z-index:1;padding:5px;}
-   #centerAddr {display:block;margin-top:2px;font-weight: normal;}
-   .bAddr {padding:5px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+	/* 카카오 맵 css */
+	.map_wrap { position: relative; width: 100%; height: 450px; font-size: 80%; }
+	.map_title { font-weight: bold; display: block; }
+	.hAddr { position: absolute; left: 10px; top: 10px; border-radius: 2px; background: #fff; background: rgba(255,255,255,0.8); z-index: 1; padding: 5px;}
+	#centerAddr { display: block; margin-top: 2px; font-weight: normal; }
+	.bAddr { padding:5px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
    
-   /*파일업로드관련 css*/
-    .drag-over { background-color: #CFF768; outline-style: dotted; outline-offset:-20px; }
-	.thumb { width:100px; height:100px; padding:5px; float:left; }
-	.thumb > img { width:100%; height: 100%; }
-	.thumb > .close { position:absolute; background-color:red; cursor:pointer; }
+	/* 파일업로드관련 css */
+    .drag-over { background-color: #CFF768; outline-style: dotted; outline-offset: -20px; }
+	.thumb { width: 100px; height: 100px; padding: 5px; float: left; }
+	.thumb > img { width: 100%; height: 100%; }
+	.thumb > .close { position: absolute; /* background-color: red; */ opacity: 0; cursor: pointer; } /* 삭제바꿈 */
+	.x { width: 90px; height: 90px; float: left; }
+	#thumbnails { height: 100px; width: 100%; border-top: 1px dashed #dddddd; }
    
 </style>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
@@ -176,7 +126,7 @@
 			reader.onload = (function(f, idx) {
 				return function(e) {
 					const div = '<div class="thumb"> \
-					<div class="close" data-idx="' + idx + '">X</div> \
+					<div class="close" data-idx="' + idx + '"><img class="x" src="../icons/x.png"/></div> \
 					<img src="' + e.target.result + '" title=""/> \
 					</div>';
 					$("#thumbnails").append(div);
@@ -202,7 +152,7 @@
 			return cPhotoCnt;
 		}
 
-	//-----------------------------------------------
+		//-----------------------------------------------
 	   const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 	    mapOption = {
 	        center: new kakao.maps.LatLng(37.53814589110931, 126.98135334065803), // 지도의 중심좌표
@@ -261,7 +211,7 @@
 		
 		
 		////////////////////////////////////////////////////////////////////////////
-		const nowLocSrc = '/mainPageImg/myLoc.png', // 현위치 마커이미지의 주소입니다    
+		const nowLocSrc = '/mainPageImg/nowLoc.png', // 현위치 마커이미지의 주소입니다    
 		nowLocSize = new kakao.maps.Size(40, 40), // 현위치 마커이미지의 크기입니다
 		nowLocOption = {offset: new kakao.maps.Point(27, 69)}; // 현위치 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 		//현위치 마커의 이미지정보를 가지고 있는 현위치 마커이미지를 생성합니다
@@ -472,24 +422,91 @@
 				}
 			});
 		});
+
+		function photoOff(obj) {
+			obj.src="../meetingImg/galleryOff.png";
+		}
+		
+		function photoOn(obj) {
+			obj.src="../meetingImg/galleryOn.png";
+		}
+
+		/* 사진등록버튼 */
+		const gallery = document.getElementById('gallery');
+		gallery.addEventListener("mouseover", mouseOver);
+		gallery.addEventListener("mouseout", mouseOut);
+		function mouseOver() {
+			gallery.src="../meetingImg/galleryOn.png";
+		}
+		function mouseOut() {
+			gallery.src="../meetingImg/galleryOff.png";
+		}
 	}
 </script>
 </head>
 <body>
-	<jsp:include page="../header.jsp"/>
-	<section>
-		<p style="font-size: 20px"><a href="listMeeting">번개 게시판</a>&nbsp;&gt;&nbsp;<a href="insertMeeting"><font color="#c85725">게시글 등록</font></a></p>
-		<p style="font-size: 15px; padding: 2px 0 30px;">만나서 같이 라이딩 해요.</p>
+	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+		<div class="container">
+			<a class="navbar-brand" href="/mainPage">오늘의 라이딩</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="oi oi-menu"></span> Menu
+				</button>
+				
+<%-- 		<div id="login">
+			<c:choose>
+				<c:when test="${m == null }">
+					<a href="/login">로그인</a>&nbsp;&nbsp;&nbsp;<a href="/signUp">회원가입</a>
+				</c:when>
+				<c:when test="${m != null }">
+					${m.nickName } 라이더! &nbsp;&nbsp;<a href="/logout">로그아웃</a>&nbsp;&nbsp;<a href="/myPage?id=${m.id}">마이페이지</a>
+				</c:when>
+			</c:choose>
+		</div> --%>
 
-		<div id="contents">
+	     
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
+						<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
+						<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
+						<li class="nav-item active"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+						<li class="nav-item"><a href="" class="nav-link">라이딩 정보</a></li>
+					</ul>
+				</div>
+			</div>
+     	</nav>
+    <!-- END nav -->
+    
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate pb-0 text-center">
+          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="fa fa-chevron-right"></i></a></span> <span class="mr-2"><a href="blog.html">번개 라이딩 <i class="fa fa-chevron-right"></i></a></span> <span>번개 라이딩 등록 <i class="fa fa-chevron-right"></i></span></p>
+            <h1 class="mb-3 bread">번개 라이딩 등록</h1>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="ftco-section">
+		<div class="container">
 			<!-- 글등록 -->
 			<form id="insertMt">
-				<div>
-					<div>
-						<input type="text" placeholder="제목" name="m_title" id="m_title">
+			
+				<!-- 글번호, 제목 -->
+				<section class="ftco-section ftco-agent" style="padding-bottom: 30px;">
+					<div class="container">
+						<div class="row justify-content-center pb-5">
+							<div class="col-md-12 heading-section text-center ftco-animate">
+								<span class="subheading"><input type="text" name="m_no" id="m_no" value="${m_no }" style="width: 20px;" class="subheading"></span>
+								<h2 class="mb-4"><input type="text" placeholder="제목을 입력해주세요." name="m_title" id="m_title"></h2>
+							</div>
+						</div>
 					</div>
+				</section> 
+
 					<div class="selectMtAll">
-						<!-- 코스 지도 & 만날 위치 -->
+						<!-- 코스 -->
 						<div class="selectMt">
 							<img src="../meetingImg/ridingRoute.png" class="mtIcon"><br>
 							<select id="selectCourse" name="c_no">
@@ -503,23 +520,26 @@
 								</c:forEach>
 							</select>
 						</div>
+						<!-- 미팅날짜 -->
 						<div class="selectMt">
 							<img src="../meetingImg/meetingDate.png" class="mtIcon"><br>
 							<input type="date" name="m_time" id="m_time">
 						</div>
+						<!-- 모임인원 -->
 						<div class="selectMt">
 							<img src="../meetingImg/meetingMember.png" class="mtIcon"><br>
-							<input type="number" name="m_numpeople" id="m_numpeople" min="1" placeholder="모임인원을 입력해주세요." style="width: 12em">
+							<input type="number" name="m_numpeople" id="m_numpeople" min="1" placeholder="모임인원을 입력해주세요." >
 						</div>
 					</div>
-				</div>
 				
 				<div id="selectLoc">
-					<strong style="font-size: 20px;">지도를 클릭하여 미팅장소를 정하세요!</strong><br><br>
+					<strong style="font-size: 20px;">지도를 클릭하여 미팅장소를 정하세요!</strong><br>
 					<!-- 위도 --> <input type="hidden" name="m_latitude" id="m_latitude" value="37.53814589110931">
 					<!-- 경도 --> <input type="hidden" name="m_longitude" id="m_longitude" value="126.98135334065803">
-					<input type="text" name="m_locname" id="m_locname" value="" size="60" readonly="readonly" placeholder="미팅장소의 주소가 출력됩니다." style="text-align: center">
+					<input type="text" name="m_locname" id="m_locname" value="" size="60" readonly="readonly" placeholder="미팅장소의 주소가 출력됩니다." style="text-align: center;">
 		        </div>
+		        
+		        <!-- 지도 -->
 				<div class="map_wrap">
 					<div id="map" style="width:100%; height:100%; position:relative; overflow:hidden;"></div>
 					<div class="hAddr">
@@ -527,20 +547,25 @@
 						<span id="centerAddr"></span>
 					</div>
 				</div>
-				<br><br>
-		       
-				<textarea rows="30" cols="123" name="m_content" id="m_content" placeholder="내용을 입력해주세요."></textarea><br>		
-				<div id="drop" style="border: 1px solid gray; width: 870px; height: 300px; padding: 3px;">
-					<div id="thumbnails"></div>
+
+				<!-- 글내용 입력 -->
+		       	<div>
+					<textarea name="m_content" id="m_content" class="about-author d-flex p-4 bg-light" placeholder="내용을 입력해주세요."></textarea>
+				</div>	
+				
+				<!-- 사진 등록 -->	
+				<div class="about-author d-flex p-4 bg-light">
+					<div id="drop" style=" width: 100%; height: 100%;" >
+						<div>
+							<div id="thumbnails"></div>
+						</div>
+					</div>
+					<div class="filebox">
+						<label for="photoInput"><img src="../meetingImg/galleryOff.png" title="사진등록" id="gallery"/></label>
+						<input type="file" name="uploadFile" id="photoInput" multiple="multiple">
+					</div>
 				</div>
-				
-				<div class="filebox">
-					<label for="photoInput">파일등록</label>
-					<input type="file" name="uploadFile" id="photoInput" multiple="multiple">
-				</div>
-				<!-- <input type="file" name="uploadFile" id="photoInput" multiple="multiple"> -->
-				
-				
+
 				<div id="btnDiv">
 					<button type="button" class="btn" id="btnAdd" style="background-color: #eccb6a">등록</button>
 					<button type="reset" class="btn" id="btnCancel" style="background-color: #d0a183">취소</button>
@@ -548,6 +573,94 @@
 			</form>
 		</div>
 	</section>
-	<jsp:include page="../footer.jsp"/>
+	
+	<!-- footer시작 -->
+    <footer class="ftco-footer ftco-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Ecoverde</h2>
+              <p>Far far away, behind the word mountains, far from the countries.</p>
+              <ul class="ftco-footer-social list-unstyled mt-5">
+                <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="fa fa-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">Community</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Search Properties</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>For Agents</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Reviews</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>FAQs</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">About Us</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Our Story</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Meet the team</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+             <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Company</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>About Us</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Press</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Contact</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon fa fa-map"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+	                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929 210</span></a></li>
+	                <li><a href="#"><span class="icon fa fa-envelope pr-4"></span><span class="text">info@yourdomain.com</span></a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+	
+            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    
+	<!-- loader -->
+	<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+	<script src="/resources/js/jquery.min.js"></script>
+	<script src="/resources/js/jquery-migrate-3.0.1.min.js"></script>
+	<script src="/resources/js/popper.min.js"></script>
+	<script src="/resources/js/bootstrap.min.js"></script>
+	<script src="/resources/js/jquery.easing.1.3.js"></script>
+	<script src="/resources/js/jquery.waypoints.min.js"></script>
+	<script src="/resources/js/jquery.stellar.min.js"></script>
+	<script src="/resources/js/owl.carousel.min.js"></script>
+	<script src="/resources/js/jquery.magnific-popup.min.js"></script>
+	<script src="/resources/js/jquery.animateNumber.min.js"></script>
+	<script src="/resources/js/scrollax.min.js"></script>
+	<script src="/resources/js/main.js"></script>
+    
 </body>
 </html>

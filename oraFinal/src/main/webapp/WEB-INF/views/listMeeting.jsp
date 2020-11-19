@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Ora - meeting Board</title>
+<title>오늘의 라이딩</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -15,27 +15,18 @@
 	<link rel="stylesheet" href="resources/css/flaticon.css">
 	<link rel="stylesheet" href="resources/css/style.css">
  	<style>
-/* 		section {
-			margin: 0 auto;
-			width: 1000px;
-			text-align: left;
-		} */
-		table {
+/* 		table {
 			border-collapse: collapse;
 			text-align: center;
-		}
-/* 		td, th {
-			border-bottom: 1px #7a7a7a solid;
-			padding: 4px 0 4px;
 		} */
-		#page {
+/* 		#page {
 			text-align: center;
 			margin-top: 50px;
-		}
-		span {
+		} */
+/* 		span {
 			margin: 3px;
 			padding: 4px 8px;
-		}
+		} */
 		.btn {
 			color: white;
 			padding: 8px 12px;
@@ -44,6 +35,33 @@
 			font-size: 15px;
 			border: none;
 			cursor: pointer;
+		}
+		.col.text-center * {
+			clear: both;
+			margin-bottom: 20px;
+		}
+		.emptyStr {
+			position: relative;
+			bottom: 130px;
+			left: 70px;
+			color: black;
+			opacity: 0.2;
+		}
+		#listImg { /* 썸네일사진 중앙기준 */
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			height: auto;
+			width: auto;
+ 			-webkit-transform: translate(-50%,-50%);
+			-ms-transform: translate(-50%,-50%);
+			transform: translate(-50%,-50%);
+		}
+		.pageUl {
+			border: none;
+		}
+		.btnPrevNext {
+			border: none;
 		}
 	</style>
 
@@ -70,9 +88,9 @@
 	               //$('#rowDFlex').empty();
 	               setPage(map.totRecord);
 	               setList(map.list);
-	            }
-	         })                  
-	      }
+				}
+			})                  
+		}
 
 		function setPage(totRecord){
 			$('.pageUl').empty();
@@ -94,6 +112,9 @@
 
 			if(startPage>1) {
 				const prev = $('<span></span>').attr('idx',(startPage-1)).html('<');
+				$(prev).css({
+					border: 'none'
+				});
 				const pageLi = $('<li></li>').append(prev);
 				$('.pageUl').append(pageLi);
 	            $(prev).click(function(){
@@ -106,44 +127,48 @@
 			for(let i=startPage; i<=endPage; i++){
 				const a = $('<span></span>').attr('idx',i).html(i);
 				const pageLi = $('<li></li>').append(a);
-				//$('.pageUl').append(pageLi);
-	            if(i==pageNo){
-	               $(a).css({
-	                  color: 'white',
-	                  backgroundColor: '#ECCB6A',
-	                  borderRadius: '15px'
-	               });
-	            }
+				if(i==pageNo){
+					$(a).css({
+						color: 'white',
+						backgroundColor: '#ECCB6A',
+						border: 'none'
+					});
+	            } else {
+	            	$(a).css({
+						border: 'none'
+					});
+			    }
 	            $('.pageUl').append(pageLi);
 	            $(a).click(function() {
-	               const idx = $(this).attr('idx');
-	               if(pageNo==idx){
-	                  return;
-	               } 
-	               console.log(idx);
-	               pageNo = idx;
-	               listMeeting();
-	            });         
-	         }
-	          if(totPage>endPage){
-	            const next = $('<span></span>').attr('idx',(endPage+1)).html('>');
-	            const pageLi = $('<li></li>').append(next);
-				$('.pageUl').append(pageLi);
-	            $(next).click(function(){
-	               const idx = $(this).attr('idx');
-	               pageNo = idx;
-	               listMeeting();
-	            });
-	         }         
-	      }
+					const idx = $(this).attr('idx');
+					if(pageNo==idx){
+						return;
+					} 
+					console.log(idx);
+					pageNo = idx;
+					listMeeting();
+					});         
+				}
+				if(totPage>endPage){
+					const next = $('<span></span>').attr('idx',(endPage+1)).html('>');
+					$(next).css({
+						border: 'none'
+					});
+					const pageLi = $('<li></li>').append(next);
+					$('.pageUl').append(pageLi);
+					$(next).click(function(){
+					const idx = $(this).attr('idx');
+					pageNo = idx;
+					listMeeting();
+				});
+			}         
+		}
 
-	      ///////////////////
-
-	      function setList(arr){
-		      console.log(arr);
-	    	  $('#rowDFlex').empty();
-	         $.each(arr, function(idx, data){
-		         console.log(data.mf[0]);
+		function setList(arr){
+			console.log(arr);
+			$('#rowDFlex').empty();
+			$.each(arr, function(idx, data){
+				console.log(data.mf[0]);
 		         
 	            //console.log('*** arr length : '+arr.length);
 	            const m_no = $('<td></td>').html(data.m_no);
@@ -159,13 +184,15 @@
 	            const m_repCnt = $('<div></div>').append(meta_chat);
 
 				// 사진출력
-				let CImg;
+				let listImg;
+				let emptyStr;
 				if(data.mf.length!=0) {
-					 CImg = $('<img/>').attr('src',"/"+data.mf[0].mf_path+"/"+data.mf[0].mf_savename);
+					listImg = $('<img id="listImg"/>').attr('src',"/"+data.mf[0].mf_path+"/"+data.mf[0].mf_savename);
 				} else {
-					 CImg = $('<img/>').attr('src',"/rank/Lv3.png");
+					listImg = $('<img/>').attr('src',"/meetingImg/empty.png");
+					emptyStr = $('<div></div>').html('').addClass('emptyStr'); // 빈화면에 글씨적을 수 있음
 				}
-	            const contentImg = $('<a></a>').addClass('block-20 img').attr("href",'detailMeeting?m_no='+data.m_no).append(CImg);
+	            const contentImg = $('<a></a>').addClass('block-20 img').attr("href",'detailMeeting?m_no='+data.m_no).append(listImg, emptyStr);
 	            
 				// <a></a>에 내용 담음
 	            const c_nameA = $('<a></a>').append(c_name);
@@ -200,38 +227,35 @@
 	            blog_entryDiv.append(textDiv);
 	            col.append(blog_entryDiv);
 
-	         	$('#rowDFlex').append(col);   
-	         });
-	      }
-	      
-	   }
+				$('#rowDFlex').append(col);   
+			});
+		}    
+	} /* window 끝 */
 
-	   function checkLogin(){
-	      let check;
-	         $.ajax({
-	            url: "/checkLogin",
-	            type: "POST",
+	function checkLogin(){
+		let check;
+			$.ajax({
+				url: "/checkLogin",
+				type: "POST",
 	            async: false,
 	            success: function(response){
-	               check =  response;
+					check =  response;
 	            },
 	            error: function(){
 	               alert("에러발생");
 	            }
-	         })
-	      return check;
-	      }
-	</script>
-	    
-	</head>
-	<body>
-    
+			})
+			return check;
+		}
+	</script>	    
+</head>
+<body>
 	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 		<div class="container">
-			<a class="navbar-brand" href="/mainPage"><img src='/headerImg/logo.png' height="100"></a>
+			<a class="navbar-brand" href="/mainPage">오늘의 라이딩</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="oi oi-menu"></span> Menu
-			</button>
+					<span class="oi oi-menu"></span> Menu
+				</button>
 			
 <%-- 					<div id="login">
 						<c:choose>
@@ -244,81 +268,49 @@
 						</c:choose>
 					</div> --%>
 
-			<div class="collapse navbar-collapse" id="ftco-nav">
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
-					<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
-					<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
-					<li class="nav-item active"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
-					<li class="nav-item"><a href="" class="nav-link">라이딩 정보</a></li>
-				</ul>
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
+						<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
+						<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
+						<li class="nav-item active"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+						<li class="nav-item"><a href="" class="nav-link">라이딩 정보</a></li>
+					</ul>
+				</div>
 			</div>
-		</div>
-     </nav>
-    <!-- END nav -->
+     	</nav>
+    	<!-- END nav -->
     
     <section class="hero-wrap hero-wrap-2" style="background-image: url('resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate pb-0 text-center">
-             <p class="breadcrumbs"><span class="mr-2"><a href="mainPage">Home <i class="fa fa-chevron-right"></i></a></span> <span>번개 라이딩<i class="fa fa-chevron-right"></i></span></p>
+             <p class="breadcrumbs"><span class="mr-2"><a href="mainPage">Home <i class="fa fa-chevron-right"></i></a></span> <span>번개 라이딩 <i class="fa fa-chevron-right"></i></span></p>
             <h1 class="mb-3 bread">번개 라이딩</h1>
           </div>
         </div>
       </div>
     </section>
 
-      
-
-
-
     <section class="ftco-section">
       <div class="container">
-        <div class="row d-flex" id="rowDFlex">
-        
-	         	<!-- <div class="col-md-3 d-flex ftco-animate">
-                  <div class="blog-entry justify-content-end">
-                    <div class="text">
-                      <a href="blog-single.html" class="block-20 img" style="background-image: url('images/image_1.jpg');">
-                      </a>
-                      <div class="meta mb-3">
-                        <div><a href="#">오호선을 따라서</a></div>
-                        <div><a href="#" class="meta-chat"><span class="fa fa-comment"></span> 6</a></div><br>
-                        <div><a href="#">오늘의 라이딩</a></div>
-                      </div>
-                      <h3 class="heading"><a href="#">이렇게 떴으면 좋겠는데</a></h3>
-                    </div>
-                  </div>
-               </div> -->
-
-        </div>
+        <div class="row d-flex" id="rowDFlex"><!-- 리스트출력 --></div> 
       <br>
 
         
-       <div class="row mt-5">
-				<div class="col text-center" style="border: 1px solid black">
-					
-					<a href="/user/insertMeeting" class="btn">등록</a>
-					<!-- <div id="page"></div> -->
-                    
-                    <div class="block-27" style="border: 1px solid black">
-                      <ul class="pageUl">
-                        <<!-- li>&lt;</li>
-                        <li class="active"><span>1</span></li>
-                        <li>2</li>
-                        <li>3</li>
-                        <li>4</li>
-                        <li>5</li>
-                        <li>&gt;</li> -->
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-      </div> <!-- container -->
-    </section>
+		<div class="row mt-5">
+			<div class="col text-center">
+				<div><a href="/user/insertMeeting" class="btn">등록</a></div>                    
+				<div class="block-27">
+					<ul class="pageUl"><!-- 페이징처리 --></ul>
+				</div>
+			</div>
+		</div>
+	</div> <!-- container -->
+	</section>
     
-
+	<!-- footer -->
     <footer class="ftco-footer ftco-section">
       <div class="container">
         <div class="row mb-5">
@@ -389,8 +381,6 @@
       </div>
     </footer>
     
-  
-
   <!-- loader -->
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
   
@@ -405,11 +395,6 @@
   <script src="/resources/js/jquery.magnific-popup.min.js"></script>
   <script src="/resources/js/jquery.animateNumber.min.js"></script>
   <script src="/resources/js/scrollax.min.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-  <script src="/resources/js/google-map.js"></script>
   <script src="/resources/js/main.js"></script>
-
-  
-    
-  </body>
+</body>
 </html>

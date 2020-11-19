@@ -50,7 +50,7 @@ public class MeetingController {
 	private CourseDao cdao;
 	
 	public static int totRecord = 0; // 총 게시글 수
-	public static int recordSize = 10; // 한 번에 보이는 게시글 수
+	public static int recordSize = 8; // 한 번에 보이는 게시글 수
 	public static int totPage = 0; // 총 페이지 수
 	public static int pageSize = 3; // 한 번에 보이는 페이지 수
 	

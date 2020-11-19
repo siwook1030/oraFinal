@@ -9,15 +9,30 @@
 
 
 <link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
-<title>오늘의라이딩</title>
+<title>오늘의 라이딩 - Today's riding</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="/resources/css/animate.css">
+
+    <link rel="stylesheet" href="/resources/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/resources/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/resources/css/magnific-popup.css">
+
+    <link rel="stylesheet" href="/resources/css/flaticon.css">
+    <link rel="stylesheet" href="/resources/css/style.css">
 <style type="text/css">
   
-   /*매인섹션부분css------------ ----------------*/
+   /*매인섹션부분css------------ ----------------
    section {
    	margin: 0 auto;
 	   	width: 1000px;
 	   	font-family: 'NEXON Lv1 Gothic Low OTF';
-	   	text-align: center;
+	   	text-align: center;*/
    }
    #recommendCourse{
    		margin-top: 20px;
@@ -82,7 +97,8 @@
   	margin: 0 10px 0 10px;
   	background-size: cover;
   }
-   /*메인섹션 끝css--------------------------*/
+   메인섹션 끝css--------------------------*/
+
    /*float 초기화 아이디*/
    #clear{
    	clear: both; 
@@ -293,14 +309,240 @@ window.onload = function(){
 </head>
 <body>
 
-<jsp:include page="header.jsp"/>
+<!--<jsp:include page="header.jsp"/>
       <div id="clear"></div>
-  	<section>
+  <section>
   	<div id="mainPhoto" style="width: 100%; height: 500px; background-image: url('/mainPageImg/mainPhoto1.png');background-size: cover;"></div>
   	<div id="map" style="width:50%;height:350px;"></div>
   		<h4><span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
-  		<font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></font>과 함께 달려보세요!</h4>
-  		<div id="recommendCourse">
+  		<font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></font>과 함께 달려보세요!</h4>-->
+  	
+ 	<!-- -------------------------------------------------------------- --> 	
+  	
+	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	    <div class="container">
+	      <a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="index.html">
+        <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
+        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></a>
+	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        <span class="oi oi-menu"></span> Menu
+	      </button>
+	      
+			<div class="collapse navbar-collapse" id="ftco-nav">
+		        <ul class="navbar-nav ml-auto">
+					<c:choose>
+						<c:when test="${m == null }">
+							<li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
+							<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
+						</c:when>
+						<c:when test="${m != null }">
+							<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
+							<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
+							<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+						</c:when>
+					</c:choose>
+				</ul>
+			</div>      
+
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	          <li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
+	          <li class="nav-item"><a href="about.html" class="nav-link">오늘의 라이딩</a></li>
+	          <li class="nav-item"><a href="agent.html" class="nav-link">라이딩 코스</a></li>
+	          <li class="nav-item"><a href="services.html" class="nav-link">라이딩 후기</a></li>
+	          <li class="nav-item"><a href="properties.html" class="nav-link">번개 라이딩</a></li>
+	         <!-- <li class="nav-item"><a href="blog.html" class="nav-link">라이딩 정보</a></li>
+	          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>-->
+	        </ul>
+	      </div>
+	    </div>
+	</nav>
+    <!-- END nav -->
+
+    <section class="hero-wrap" style="background-image: url('mainPageImg/main1.jpg');" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center">
+          <div class="col-lg-7 col-md-6 ftco-animate d-flex align-items-end">
+          	<div class="text">
+	            <h1 class="mb-4">오늘도 <br>달려볼까요?</h1>
+	            <p style="font-size: 18px;">당신의 완벽한 라이딩을 위하여 근사한 곳으로 안내할게요!</p>
+	            <p><a href="#" class="btn btn-primary py-3 px-4">모든 코스 보기</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>	
+    
+    
+        
+	<section class="ftco-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-12 heading-section text-center ftco-animate mb-5">
+          	<span class="subheading">Today's Riding</span>
+            <h2 class="mb-2">이달의 추천 코스</h2>
+          </div>
+        </div>
+        <div class="row ftco-animate">
+          <div class="col-md-12">
+            <div class="carousel-properties owl-carousel">
+              <div class="item">
+                <div class="property-wrap ftco-animate">
+		        			<a href="#" class="img" style="background-image: url(mainPageImg/scenery2.jpg);">
+		        				<div class="rent-sale">
+		        					<span class="sale">Sale</span>
+		        				</div>
+		        				<p class="price"><span class="orig-price">$300,000</span></p>
+		        			</a>
+		        			<div class="text">
+		        				<ul class="property_list">
+		        					<li><span class="flaticon-bed"></span>3</li>
+		        					<li><span class="flaticon-bathtub"></span>2</li>
+		        					<li><span class="flaticon-floor-plan"></span>1,878 sqft</li>
+		        				</ul>
+		        				<h3><a href="#">The Blue Sky Home</a></h3>
+		        				<span class="location">Oakland</span>
+		        				<a href="#" class="d-flex align-items-center justify-content-center btn-custom">
+		        					<span class="fa fa-link"></span>
+		        				</a>
+		        				<div class="list-team d-flex align-items-center mt-2 pt-2 border-top">
+		        					<div class="d-flex align-items-center">
+			        					<div class="img" style="background-image: url(images/person_1.jpg);"></div>
+			        					<h3 class="ml-2">John Dorf</h3>
+			        				</div>
+			        				<span class="text-right">2 weeks ago</span>
+		        				</div>
+		        			</div>
+		        		</div>
+              </div>
+              <div class="item">
+                <div class="property-wrap ftco-animate">
+		        			<a href="#" class="img" style="background-image: url(mainPageImg/scenery3.jpg);">
+		        				<div class="rent-sale">
+		        					<span class="rent">Rent</span>
+		        				</div>
+		        				<p class="price"><span class="old-price">800,000</span><span class="orig-price">$3,050<small> / mo</small></span></p>
+		        			</a>
+		        			<div class="text">
+		        				<ul class="property_list">
+		        					<li><span class="flaticon-bed"></span>3</li>
+		        					<li><span class="flaticon-bathtub"></span>2</li>
+		        					<li><span class="flaticon-floor-plan"></span>1,878 sqft</li>
+		        				</ul>
+		        				<h3><a href="#">The Blue Sky Home</a></h3>
+		        				<span class="location">Oakland</span>
+		        				<a href="#" class="d-flex align-items-center justify-content-center btn-custom">
+		        					<span class="fa fa-link"></span>
+		        				</a>
+		        				<div class="list-team d-flex align-items-center mt-2 pt-2 border-top">
+		        					<div class="d-flex align-items-center">
+			        					<div class="img" style="background-image: url(mainPageImg/person_1.jpg);"></div>
+			        					<h3 class="ml-2">John Dorf</h3>
+			        				</div>
+			        				<span class="text-right">2 weeks ago</span>
+		        				</div>
+		        			</div>
+		        		</div>
+              </div>
+              <div class="item">
+                <div class="property-wrap ftco-animate">
+		        			<a href="#" class="img" style="background-image: url(mainPageImg/scenery1.jpeg);">
+		        				<div class="rent-sale">
+		        					<span class="rent">Rent</span>
+		        				</div>
+		        				<p class="price"><span class="orig-price">$300<small> / mo</small></span></p>
+		        			</a>
+		        			<div class="text">
+		        				<ul class="property_list">
+		        					<li><span class="flaticon-bed"></span>3</li>
+		        					<li><span class="flaticon-bathtub"></span>2</li>
+		        					<li><span class="flaticon-floor-plan"></span>1,878 sqft</li>
+		        				</ul>
+		        				<h3><a href="#">The Blue Sky Home</a></h3>
+		        				<span class="location">Oakland</span>
+		        				<a href="#" class="d-flex align-items-center justify-content-center btn-custom">
+		        					<span class="fa fa-link"></span>
+		        				</a>
+		        				<div class="list-team d-flex align-items-center mt-2 pt-2 border-top">
+		        					<div class="d-flex align-items-center">
+			        					<div class="img" style="background-image: url(mainPageImg/person_1.jpg);"></div>
+			        					<h3 class="ml-2">John Dorf</h3>
+			        				</div>
+			        				<span class="text-right">2 weeks ago</span>
+		        				</div>
+		        			</div>
+		        		</div>
+              </div>
+              <div class="item">
+                <div class="property-wrap ftco-animate">
+		        			<a href="#" class="img" style="background-image: url(mainPageImg/scenery5.jpg);">
+		        				<div class="rent-sale">
+		        					<span class="rent">Rent</span>
+		        				</div>
+		        				<p class="price"><span class="orig-price">$300<small> / mo</small></span></p>
+		        			</a>
+		        			<div class="text">
+		        				<ul class="property_list">
+		        					<li><span class="flaticon-bed"></span>3</li>
+		        					<li><span class="flaticon-bathtub"></span>2</li>
+		        					<li><span class="flaticon-floor-plan"></span>1,878 sqft</li>
+		        				</ul>
+		        				<h3><a href="#">The Blue Sky Home</a></h3>
+		        				<span class="location">Oakland</span>
+		        				<a href="#" class="d-flex align-items-center justify-content-center btn-custom">
+		        					<span class="fa fa-link"></span>
+		        				</a>
+		        				<div class="list-team d-flex align-items-center mt-2 pt-2 border-top">
+		        					<div class="d-flex align-items-center">
+			        					<div class="img" style="background-image: url(mainPageImg/person_1.jpg);"></div>
+			        					<h3 class="ml-2">John Dorf</h3>
+			        				</div>
+			        				<span class="text-right">2 weeks ago</span>
+		        				</div>
+		        			</div>
+		        		</div>
+              </div>
+              <div class="item">
+                <div class="property-wrap ftco-animate">
+		        			<a href="#" class="img" style="background-image: url(mainPageImg/scenery1.jpeg);">
+		        				<div class="rent-sale">
+		        					<span class="rent">Rent</span>
+		        				</div>
+		        				<p class="price"><span class="orig-price">$300<small> / mo</small></span></p>
+		        			</a>
+		        			<div class="text">
+		        				<ul class="property_list">
+		        					<li><span class="flaticon-bed"></span>3</li>
+		        					<li><span class="flaticon-bathtub"></span>2</li>
+		        					<li><span class="flaticon-floor-plan"></span>1,878 sqft</li>
+		        				</ul>
+		        				<h3><a href="#">The Blue Sky Home</a></h3>
+		        				<span class="location">Oakland</span>
+		        				<a href="#" class="d-flex align-items-center justify-content-center btn-custom">
+		        					<span class="fa fa-link"></span>
+		        				</a>
+		        				<div class="list-team d-flex align-items-center mt-2 pt-2 border-top">
+		        					<div class="d-flex align-items-center">
+			        					<div class="img" style="background-image: url(mainPageImg/person_1.jpg);"></div>
+			        					<h3 class="ml-2">John Dorf</h3>
+			        				</div>
+			        				<span class="text-right">2 weeks ago</span>
+		        				</div>
+		        			</div>
+		        		</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+  	
+  	
+	<!-- -------------------------------------------------------------- -->
+  	
+	<div id="recommendCourse">
   		<div id="rcTitle">
   		Today's&nbsp;Riding<span style="font: italic bold 1.5em/1em Georgia,serif; font-size:15px; color: gray;">&nbsp;&nbsp;&nbsp;view is <span id="rcViewWord">${view }</span></span>
   		</div>
@@ -308,24 +550,117 @@ window.onload = function(){
   		<div id="rcList">
   		</div>
   		</div>
-  		<div id="helpDesk">
+  		
+ 	<div id="helpDesk">
   		<div id="hdTitle">
-  		HELP DESK
+  			HELP DESK
   		</div>
   		<br>
   		<div id="hdList">
-  			<a><div id="hdBox" style="background-image: url('/mainPageImg/howToUse.png');"></div></a>
-  			<a href="listNotice"><div id="hdBox" style="background-image: url('/mainPageImg/notice.png');"></div></a>
-  			<a><div id="hdBox" style="background-image: url('/mainPageImg/event.png');"></div></a>
-  			<a href="/user/makingCourse"><div id="hdBox" style="background-image: url('/mainPageImg/cs.png');"></div></a>
-  		</div>
-  		</div>
-  	</section>
-  	<div id="clear"></div>
+	  		<a><div id="hdBox" style="background-image: url('/mainPageImg/howToUse.png');"></div></a>
+	  		<a href="listNotice"><div id="hdBox" style="background-image: url('/mainPageImg/notice.png');"></div></a>
+	  		<a><div id="hdBox" style="background-image: url('/mainPageImg/event.png');"></div></a>
+	  		<a href="/user/makingCourse"><div id="hdBox" style="background-image: url('/mainPageImg/cs.png');"></div></a>
+	  	</div>
+  	</div>
+  </section>
+  <div id="clear"></div>
+
+
+
   	
   	
-  	
-  	
-  	<jsp:include page="footer.jsp"/>
+  <!--<jsp:include page="footer.jsp"/>-->
+  
+  <footer class="ftco-footer ftco-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">오늘의 라이딩</h2>
+              <p>당신의 멋진 라이딩을 위하여</p>
+              <ul class="ftco-footer-social list-unstyled mt-5">
+                <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="fa fa-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">Community</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Search Properties</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>For Agents</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Reviews</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>FAQs</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">About Us</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Our Story</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Meet the team</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+             <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Company</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>About Us</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Press</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Contact</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon fa fa-map"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+	                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929 210</span></a></li>
+	                <li><a href="#"><span class="icon fa fa-envelope pr-4"></span><span class="text">info@yourdomain.com</span></a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+
+            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+  
+  
+  <script src="/resources/js/jquery.min.js"></script>
+  <script src="/resources/js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="/resources/js/popper.min.js"></script>
+  <script src="/resources/js/bootstrap.min.js"></script>
+  <script src="/resources/js/jquery.easing.1.3.js"></script>
+  <script src="/resources/js/jquery.waypoints.min.js"></script>
+  <script src="/resources/js/jquery.stellar.min.js"></script>
+  <script src="/resources/js/owl.carousel.min.js"></script>
+  <script src="/resources/js/jquery.magnific-popup.min.js"></script>
+  <script src="/resources/js/jquery.animateNumber.min.js"></script>
+  <script src="/resources/js/scrollax.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+  <script src="/resources/js/google-map.js"></script>
+  <script src="/resources/js/main.js"></script>
 </body>
 </html>

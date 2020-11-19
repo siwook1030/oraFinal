@@ -8,11 +8,16 @@
 <title>Insert title here</title>
 <style type="text/css">
 * {
-	margin: 0px;
-	padding: 0px;
 	font-family: 'NEXON Lv1 Gothic Low OTF';
 	line-height: 150%;
 }
+
+header * {
+	margin: 0px;
+	padding: 0px;
+	line-height: 150%;
+}
+
 header {
 	width: 1100px;
 	height: 100px;
@@ -20,9 +25,11 @@ header {
 }
 #logo {
 	float: left; 
+
 }
 li{
 	list-style-type: none;  
+>>>>>>> branch '김길모' of https://github.com/siwook1030/oraFinal.git
 }
 #top {
 	margin: 50px 0 0 0;
@@ -30,7 +37,8 @@ li{
 	float: right;
 }
 #top li {
-	display: inline;
+   display: inline;
+   list-style-type: none;
 }
 .menu{
 	margin: 0 20px 0 20px;
@@ -40,7 +48,8 @@ li{
 	text-align: right;
 	margin: 0 20px 0 0;
 }
-a{
+header a{
+
 	text-decoration: none;
 	color: black;
 }
@@ -49,7 +58,7 @@ a{
 <script type="text/javascript">
 window.onload = function(){
 	$(document).on("mouseover", ".menu", function(){
-		$(this).css("font-style,"bold");
+		$(this).css("font-style","bold");
 	});
 	$(document).on("mouseleave", ".menu", function(){
 		$(this).css("font-style","light");
@@ -68,7 +77,7 @@ window.onload = function(){
 					<a href="/login">로그인</a>&nbsp;&nbsp;&nbsp;<a href="/signUp">회원가입</a>
 				</c:when>
 				<c:when test="${m != null }">
-					${m.nickName } 라이더! &nbsp;&nbsp;<a href="/logout">로그아웃</a>&nbsp;&nbsp;<a href="/myPage?id=${m.id}">마이페이지</a>
+					${m.nickName } 라이더님 &nbsp;&nbsp;<a href="/logout">로그아웃</a>&nbsp;&nbsp;<a href="/myPage?id=${m.id}">마이페이지</a>
 				</c:when>
 			</c:choose>
 		<ul id="top">
