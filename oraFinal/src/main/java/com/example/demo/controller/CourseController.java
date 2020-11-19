@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -34,107 +36,105 @@ import com.example.demo.vo.ResponseDataVo;
 import com.google.gson.Gson;
 
 @Controller
-public class CourseController {
-   
-   
-   @Autowired
-   private CourseDao cdao;
-   
-   @GetMapping("/searchCourse")
-   public void searchCourseForm() {
-      
-   }
-   
-   @PostMapping(value ="/searchCourse", produces = "application/json; charset=utf8")
-   @ResponseBody
-   public String searchCourse(double latitude, double longitude, int distance, int time,@RequestParam(value="view[]",required = false) List<String> view) {
-      HashMap map = new HashMap();
-      System.out.println("위도 : "+latitude);
-      System.out.println("경도 : "+longitude);
-      System.out.println("거리 : "+distance);
-      System.out.println("시간 : "+time);
-      int minDis = 0;
-      if(distance > 0) { 
-          minDis = 20;
-      }
-      if(distance >50) {
-         minDis = 950;
-      }
-      
-      int minTime = 0;
-      if(time > 0) {
-          minTime = 60;
-      }
-      if(time > 180) {
-         minTime = 820;
-      }
-      
-      
-      if(view != null) {
-         int cnt=1;
-         for(String v : view) {
-            map.put("view"+cnt, v);
-            cnt++;
-         }
-      }
-         
-      map.put("latitude", latitude);
-      map.put("longitude", longitude);
-      map.put("distance", distance);
-      map.put("minDis", minDis);
-      map.put("time", time);
-      map.put("minTime", minTime);
-      List<CourseVo> sclList = cdao.searchCourseList(map);
-      
-      Gson gson = new Gson();
-      
-      return gson.toJson(sclList);
-      
-   }
-   
-   
-   @RequestMapping(value = "/detailCourse", produces = "application/json; charset=utf-8")
-   public void detailCourse(HttpServletRequest request,Model model, int c_no) {
-      String path = request.getRealPath("/courseLine")+"/";
-      Gson gson = new Gson();
-      CourseVo c = cdao.getCourseByCno(c_no, path);
-      List<PublicTransportVo> ptList = cdao.getPublicTransportByCno(c_no);
-   //   List<FoodVo> fList = cdao.getFoodByCno(c_no);
-      model.addAttribute("c", c);
-      model.addAttribute("cJson", gson.toJson(c));
-      model.addAttribute("ptList", ptList);
-      model.addAttribute("ptJson", gson.toJson(ptList));
-   //   model.addAttribute("fList", fList);
-   //   model.addAttribute("fJson", gson.toJson(fList));
-   }
-   @RequestMapping(value = "/admin/deleteCourse", produces = "application/json; charset=utf-8")
-   @ResponseBody
-   public String deleteCourse(HttpServletRequest request, int c_no) {
-      
-       ResponseDataVo responseDataVo = new ResponseDataVo();
-       responseDataVo.setCode(ResponseDataCode.ERROR);
-       responseDataVo.setMessage("삭제에 실패하였습니다.");
-       int re = -1;
-       re = cdao.deleteCourse(c_no);
-       String cLinepath = request.getRealPath(MakingCourseController.courseLinePath);
-       String cLineName = c_no + MakingCourseController.courseLineName;
-       String cPhotoFolderPath = request.getRealPath(MakingCourseController.coursePhotoPath)+MakingCourseController.coursePhotoPathSub+c_no;
-       if( re > 0) {
-          try {
-             FileUtilCollection.deleteFile(cLinepath+"/"+cLineName);
-             FileUtilCollection.deleteFolder(cPhotoFolderPath);
-          }catch (Exception e) {
-            System.out.println("딜리트코스 파일예외 " + e.getMessage());
-         }    
-          responseDataVo.setCode(ResponseDataCode.SUCCESS);
-          responseDataVo.setMessage("삭제에 성공하였습니다");
-       }
-           
-       Gson gson = new Gson();
-       return gson.toJson(responseDataVo);
-   }
-   
-   
+public class CourseController {	
+	
+	@Autowired
+	private CourseDao cdao;
+	
+	@GetMapping("/searchCourse")
+	public void searchCourseForm() {
+		
+	}
+	
+	@PostMapping(value ="/searchCourse", produces = "application/json; charset=utf8")
+	@ResponseBody
+	public String searchCourse(double latitude, double longitude, int distance, int time,@RequestParam(value="view[]",required = false) List<String> view) {
+		HashMap map = new HashMap();
+		System.out.println("위도 : "+latitude);
+		System.out.println("경도 : "+longitude);
+		System.out.println("거리 : "+distance);
+		System.out.println("시간 : "+time);
+		int minDis = 0;
+		if(distance > 0) { 
+			 minDis = 20;
+		}
+		if(distance >50) {
+			minDis = 950;
+		}
+		
+		int minTime = 0;
+		if(time > 0) {
+			 minTime = 60;
+		}
+		if(time > 180) {
+			minTime = 820;
+		}
+		
+		
+		if(view != null) {
+			int cnt=1;
+			for(String v : view) {
+				map.put("view"+cnt, v);
+				cnt++;
+			}
+		}
+
+		map.put("latitude", latitude);
+		map.put("longitude", longitude);
+		map.put("distance", distance);
+		map.put("minDis", minDis);
+		map.put("time", time);
+		map.put("minTime", minTime);
+		List<CourseVo> sclList = cdao.searchCourseList(map);
+		
+		Gson gson = new Gson();
+		
+		return gson.toJson(sclList);
+		
+	}
+	
+	
+	@RequestMapping(value = "/detailCourse", produces = "application/json; charset=utf-8")
+	public void detailCourse(HttpServletRequest request,Model model, int c_no) {
+		String path = request.getRealPath("/courseLine")+"/";
+		Gson gson = new Gson();
+		CourseVo c = cdao.getCourseByCno(c_no, path);
+		List<PublicTransportVo> ptList = cdao.getPublicTransportByCno(c_no);
+	//	List<FoodVo> fList = cdao.getFoodByCno(c_no);
+		model.addAttribute("c", c);
+		model.addAttribute("cJson", gson.toJson(c));
+		model.addAttribute("ptList", ptList);
+		model.addAttribute("ptJson", gson.toJson(ptList));
+	//	model.addAttribute("fList", fList);
+	//	model.addAttribute("fJson", gson.toJson(fList));
+	}
+	@RequestMapping(value = "/admin/deleteCourse", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String deleteCourse(HttpServletRequest request, int c_no) {
+		
+		 ResponseDataVo responseDataVo = new ResponseDataVo();
+		 responseDataVo.setCode(ResponseDataCode.ERROR);
+		 responseDataVo.setMessage("삭제에 실패하였습니다.");
+		 int re = -1;
+		 re = cdao.deleteCourse(c_no);
+		 String cLinepath = request.getRealPath(MakingCourseController.courseLinePath);
+		 String cLineName = c_no + MakingCourseController.courseLineName;
+		 String cPhotoFolderPath = request.getRealPath(MakingCourseController.coursePhotoPath)+MakingCourseController.coursePhotoPathSub+c_no;
+		 if( re > 0) {
+			 try {
+				 FileUtilCollection.deleteFile(cLinepath+"/"+cLineName);
+				 FileUtilCollection.deleteFolder(cPhotoFolderPath);
+			 }catch (Exception e) {
+				System.out.println("딜리트코스 파일예외 " + e.getMessage());
+			}	 
+			 responseDataVo.setCode(ResponseDataCode.SUCCESS);
+			 responseDataVo.setMessage("삭제에 성공하였습니다");
+		 }
+		 	 
+		 Gson gson = new Gson();
+		 return gson.toJson(responseDataVo);
+	}
+	
 
    @RequestMapping("/detailFood")
    public void detailFood(HttpServletRequest request,Model model,int c_no ,int food_no) {
