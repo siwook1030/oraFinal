@@ -1,33 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-
-<html lang="en">
-  <head>
-    <title>Ecoverde - Free Bootstrap 4 Template by Colorlib</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <link rel="stylesheet" href="resources/css/animate.css">
-    
-    <link rel="stylesheet" href="resources/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="resources/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="resources/css/magnific-popup.css">
-    
-    <link rel="stylesheet" href="resources/css/flaticon.css">
-    <link rel="stylesheet" href="resources/css/style.css">
-    
-    
+<html>
+<head>
+<title>회원 정보 수정</title>
+<jsp:include page="my_header.jsp"/>
     
      
-   <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-   <script type="text/javascript">
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript">
    $(function(){
-
+      
       const phone = document.getElementById("phone");
       const sendPhone = document.getElementById("sendPhone");
       const checkNum = document.getElementById("checkNum");

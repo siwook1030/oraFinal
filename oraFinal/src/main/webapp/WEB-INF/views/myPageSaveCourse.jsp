@@ -1,9 +1,14 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html lang="ko">
 
 <head>
+ <jsp:include page="my_header.jsp"/>
+
    <meta charset="UTF-8">
-   <title>마이페이지-찜코스</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <title>내 작성 코스</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
 
@@ -18,58 +23,6 @@
     <link rel="stylesheet" href="resources/css/flaticon.css">
     <link rel="stylesheet" href="resources/css/style.css">
 
-
-   <style>
-        <!-- 사진 프레임-->
-           .all{
-             position:relative;
-             min-height:1px;
-             padding-top: 50px;
-           }
-
-           .name{
-              background-color:#ffffff;
-           }
-           .level{
-              background-color: #F2F2F2;
-			　
-           }
-           .time{
-              background-color: #ffffff;
-           }
-
-         .img {
-           border: 1px solid #ddd;
-           border-radius: 4px;
-           padding: 5px;
-           width: 40%;
-         }
-
-
-
-          .zenbu{
-          border: 1px solid blue;
-          padding: 10px;
-          height: 250o;
-          min-height: 130px;
-          max-width: 300px;
-          overflow: auto;
-          display: inline-block;
-          background-color: #FfffF;
-          }
-
-       
-         .syasin{
-           width: 100%;
-           max-width: 760px;
-           border-radius: 7px;
-         }
-
-
-
-
-
-   </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
 window.onload = function(){
@@ -94,7 +47,7 @@ window.onload = function(){
                if(i >= index){                
                 return;               
                };
-   	           
+                 
            const courseBox = document.createElement("div");
            courseBox.className="col-md-4";
 
@@ -103,7 +56,7 @@ window.onload = function(){
                  <div class="rent-sale">\
                     <span class="rent">'+c.c_loc+'</span>\
                  </div>\
-                 <p class="price"><span class="orig-price"></span></p>\
+                 <p class="price"><span class="orig-price">'+"Level:"+c.c_difficulty+'</span></p>\
               </a>\
               <div class="text">\
                  <h3><a href="/detailCourse?c_no='+c.c_no+'" target="_blank">'+c.c_name+'</a></h3>\
@@ -112,13 +65,10 @@ window.onload = function(){
                     <span class="fa fa-link" value="'+c.c_no+'"></span>\
                  </span>\
                  <ul class="property_list">\
-                    <li><span class="flaticon-bed"></span></li>\
-                    <li><span class="flaticon-bathtub"></span></li>\
-                    <li><span class="flaticon-floor-plan"></span></li>\
                  </ul>\
                  <div class="list-team d-flex align-items-center mt-2 pt-2 border-top">\
                     <div class="d-flex align-items-center"></div>\
-                     <span class="text-right"></span>\
+                     <span class="text-right">'+c.c_distance+'km </span>\
                  </div>\
               </div>\
            </div>'; 
@@ -166,78 +116,52 @@ window.onload = function(){
 
 <body>
 
-  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-	    <div class="container">
-	      <a class="navbar-brand" href="index.html">Ecoverde</a>
-	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-	        <span class="oi oi-menu"></span> Menu
-	      </button>
-
-	      <div class="collapse navbar-collapse" id="ftco-nav">
-	        <ul class="navbar-nav ml-auto">
-	          <li class="nav-item"><a href="index.html" class="nav-link" >Home</a></li>
-	          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-	          <li class="nav-item"><a href="agent.html" class="nav-link">Agent</a></li>
-	          <li class="nav-item"><a href="services.html" class="nav-link">Services</a></li>
-	          <li class="nav-item"><a href="properties.html" class="nav-link">Properties</a></li>
-	          <li class="nav-item active"><a href="blog.html" class="nav-link">Blog</a></li>
-	          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
-	        </ul>
-	      </div>
-	    </div>
-	  </nav>
-    <!-- END nav -->
 
     
-    <section class="hero-wrap hero-wrap-2" style="background-image: url('images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+   <section class="hero-wrap hero-wrap-2" style="background-image: url('images/bg_1.jpg');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate pb-0 text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="fa fa-chevron-right"></i></a></span> <span>Blog <i class="fa fa-chevron-right"></i></span></p>
-            <h1 class="mb-3 bread">Blog</h1>
+             <span><h1 class="mb-3 bread">마이페이지</h1></span>
+             <p class="breadcrumbs">
+                <span>
+                   <a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a>
+                   <a href="/myPage">정보 수정 <i class="fa fa-chevron-right"></i></a>
+            </span>
+                <a href="/myPageSaveCourse">찜 목록 <i class="fa fa-chevron-right"></i></a>
+                <span>
+                <a href="/myPageMyCourse">내 작성 코스<i class="fa fa-chevron-right"></i></a>
+                <a href="/myPageListReview">내 작성 후기<i class="fa fa-chevron-right"></i></a>
+               <a href="myPageListMeeting">내 작성 번개<i class="fa fa-chevron-right"></i></a>
+               <a href="/myPageMyRank">랭킹</a>
+                </span>
+                </p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="ftco-section ftco-no-pb ftco-no-pt">
-    <div class="container" >   
-		     <h1>찜코스목록</h1>
-	<div class="row" id="saveCourseList"></div>
 
+ <section class="ftco-section ftco-no-pb ftco-no-pt">
+    <div class="container">   
+           <h1>내가 찜한 코스 목록</h1>
+           
+      <div class="row" id="saveCourseList"></div>
         <div class="row mt-5">
           <div class="col text-center">
             <div class="block-27">
               <ul>
                 <li class="active" id="add"><span>+</span></li>
-                <div id="lastPage"></div>
                 
               </ul>
             </div>
           </div>
         </div>
-      </div>
+    </div>
     </section> 
-  <!-- loader -->
-  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+<jsp:include page="my_footer.jsp"/>
 
-
-  <script src="resources/js/jquery.min.js"></script>
-  <script src="resources/js/jquery-migrate-3.0.1.min.js"></script>
-  <script src="resources/js/popper.min.js"></script>
-  <script src="resources/js/bootstrap.min.js"></script>
-  <script src="resources/js/jquery.easing.1.3.js"></script>
-  <script src="resources/js/jquery.waypoints.min.js"></script>
-  <script src="resources/js/jquery.stellar.min.js"></script>
-  <script src="resources/js/owl.carousel.min.js"></script>
-  <script src="resources/js/jquery.magnific-popup.min.js"></script>
-  <script src="resources/js/jquery.animateNumber.min.js"></script>
-  <script src="resources/js/scrollax.min.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-  <script src="resources/js/google-map.js"></script>
-  <script src="resources/js/main.js"></script>
-    
   </body>
 
 
