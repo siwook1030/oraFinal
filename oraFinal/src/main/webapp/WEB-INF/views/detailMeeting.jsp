@@ -19,13 +19,6 @@
 	<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 
 	<style>
-		/* 공통 */
-/*		section {
- 			margin: 0 auto;
-			width: 1000px;
-			text-align: left;
-			padding: 50px;
-		} */
 		/* 개별 */
 		#reply { /* 댓글출력 */
 			padding-bottom: 3px;
@@ -146,6 +139,9 @@
 		}
 		.attendPerson {
 			width: 30px;
+		}
+		.nav-item .nav-link { /* nava 로그인 */
+			font-size: 15px;
 		}
 	</style>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
@@ -898,6 +894,22 @@ window.onload = function(){
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="oi oi-menu"></span> Menu
 			</button>
+			
+			<div class="collapse navbar-collapse" id="ftco-nav">
+		        <ul class="navbar-nav ml-auto">
+					<c:choose>
+						<c:when test="${m == null }">
+							<li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
+							<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
+						</c:when>
+						<c:when test="${m != null }">
+							<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
+							<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
+							<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+						</c:when>
+					</c:choose>
+				</ul>
+			</div>
 
 			<div class="collapse navbar-collapse" id="ftco-nav">
 				<ul class="navbar-nav ml-auto">

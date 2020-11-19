@@ -15,18 +15,6 @@
 	<link rel="stylesheet" href="resources/css/flaticon.css">
 	<link rel="stylesheet" href="resources/css/style.css">
  	<style>
-/* 		table {
-			border-collapse: collapse;
-			text-align: center;
-		} */
-/* 		#page {
-			text-align: center;
-			margin-top: 50px;
-		} */
-/* 		span {
-			margin: 3px;
-			padding: 4px 8px;
-		} */
 		.btn {
 			color: white;
 			padding: 8px 12px;
