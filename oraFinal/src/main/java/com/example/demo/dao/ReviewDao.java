@@ -11,6 +11,7 @@ import com.example.demo.db.ReviewManager;
 import com.example.demo.vo.ReviewVo;
 import com.example.demo.vo.Review_fileVo;
 import com.example.demo.vo.Review_repVo;
+import com.example.demo.vo.Review_tempVo;
 
 @Repository
 public class ReviewDao {
@@ -67,5 +68,23 @@ public class ReviewDao {
 	}
 	public int insertRep(Review_repVo rrvo) {
 		return ReviewManager.insertRep(rrvo);
+	}
+	public int update(ReviewVo rvo) {
+		return ReviewManager.update(rvo);
+	}
+	public int deleteFileOne(int rf_no) {
+		return ReviewManager.deleteFileOne(rf_no);
+	}
+	public Review_tempVo selectTemp(String id) {
+		return ReviewManager.selectTemp(id);
+	}
+	public int insertTemp(Review_tempVo rtvo) {
+		return ReviewManager.insertTemp(rtvo);
+	}
+	public int updateTemp(Review_tempVo rtvo) {
+		return ReviewManager.updateTemp(rtvo);
+	}
+	public int deleteTemp(String id) {
+		return ReviewManager.deleteTemp(id);
 	}
 }

@@ -8,9 +8,12 @@
 <title>Insert title here</title>
 <style type="text/css">
 * {
+	font-family: 'NEXON Lv1 Gothic Low OTF';
+}
+
+header * {
 	margin: 0px;
 	padding: 0px;
-	font-family: 'NEXON Lv1 Gothic Low OTF';
 }
 
 header {
@@ -23,9 +26,7 @@ header {
    float: left; 
 }
 
-li{
-   list-style-type: none;  
-}
+
 
 #top {
 	margin: 50px 0 0 0;
@@ -35,6 +36,7 @@ li{
 
 #top li {
    display: inline;
+   list-style-type: none;
 }
 
 .menu{
@@ -47,7 +49,7 @@ li{
 	margin: 0 20px 0 0;
 }
 
-a{
+header a{
 	text-decoration: none;
 	color: black;
 }
