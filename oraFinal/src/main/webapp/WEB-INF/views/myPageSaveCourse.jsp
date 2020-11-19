@@ -150,7 +150,7 @@ window.onload = function(){
        });//삭제클릭이벤트
     
        $("#add").click(function() {
-          $("body #aa").empty();
+          $("body #saveCourseList").empty();
            getCourseList((addIndex+ 5));
           alert(addIndex);
           if(lastIndex < (addIndex+5)){                    
@@ -202,7 +202,7 @@ window.onload = function(){
     </section>
 
     <section class="ftco-section ftco-no-pb ftco-no-pt">
-    <div class="container">   
+    <div class="container" >   
 		     <h1>찜코스목록</h1>
 	<div class="row" id="saveCourseList"></div>
 
@@ -217,7 +217,7 @@ window.onload = function(){
             </div>
           </div>
         </div>
-        </div>
+      </div>
     </section> 
   <!-- loader -->
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>

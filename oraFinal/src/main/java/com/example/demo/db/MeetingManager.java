@@ -38,10 +38,10 @@ public class MeetingManager {
 	}
 	
 	// 게시글 수
-	public static int totMRecord() {
+	public static int totMRecord(String id) {
 		int n = 0;
 		SqlSession session = sqlSessionFactory.openSession();
-		n = session.selectOne("meeting.totMRecord");
+		n = session.selectOne("meeting.totMRecord",id);
 		session.close();
 		return n;
 	}

@@ -80,11 +80,35 @@ public class MemberController {
        
        return gson.toJson(re); 
     }
+ 
+    @PostMapping(value = "/updatePwd", produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public String updatePwd(String password,String id) { 
+    	Gson gson = new Gson();
+    	System.out.println("..........................패스워드"+password);
+    	System.out.println("..........................아이디"+id);
+    	MemberVo m = new MemberVo();
+    	m.setId(id);
+    	String pwd = passwordEncoder.encode(password); 
+    	m.setPassword(pwd);
+    	int re = dao.updatePwd(m); 
+    	return gson.toJson(re); 
+    }
     //나의 등급 확인
     @GetMapping("/myPageMyRank")
     public void getRank(HttpSession httpSession,Model model) {   // 랭크아이콘 가져오기
           RankVo r = dao.selectRank(((MemberVo)httpSession.getAttribute("m")).getRank_name());
          model.addAttribute("r", r);
    }
+
+    @PostMapping(value = "/selectMemberId", produces = "application/json;charset=utf-8")
+    @ResponseBody
+    public String getRank(Model model,String phone) {   // 아이디찾기
+    	System.out.println("mmmmmmmmmmmmmmmmmmmmmmmm"+phone);
+    	Gson gson = new Gson();
+    	MemberVo m = dao.selectMemberId(phone);
+    	System.out.println("mmmmmmmmmmmmmmmmmmmmmmmm"+m.getId());
+    	return gson.toJson(m);
+    }
 }
 

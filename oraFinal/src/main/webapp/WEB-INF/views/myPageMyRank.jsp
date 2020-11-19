@@ -93,7 +93,6 @@
 </ul>
 
 
->>>>>>> branch '김미진' of https://github.com/siwook1030/oraFinal.git
 <jsp:include page="footer.jsp"/>
 </body>
 </html>

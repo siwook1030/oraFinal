@@ -144,8 +144,11 @@ public class CourseController {
    }
    
    @GetMapping(value = "/myPageSaveCourse")
-      public void saveCourse() {
-      }
+   public void saveCourse() {
+   }
+   @GetMapping(value = "/myPageMyCourse")
+   public void myPageMyCourse() {
+   }
    
    //나의 찜코스 ~
    @PostMapping(value = "/myPageSaveCourse", produces = "application/json; charset=utf-8")
@@ -166,21 +169,25 @@ public class CourseController {
       
       return gson.toJson(courseList);
    }
+   
    //내가 만든코스~
-   @GetMapping(value = "/myPageMyCourse")
-   public void myCourse(Model model,HttpSession httpSession) {
-      System.out.println("마이코스 컨트롤러 작동!!!!");
-      List<CourseVo> courseList = cdao.getMyCourseById(httpSession);
-      List<CoursePhotoVo> photovo =null;
-      for (CourseVo c : courseList) {
-         photovo =(c.getC_photo());
-      }
-      model.addAttribute("courseList",courseList);
-      model.addAttribute("photovo",photovo);
-      System.out.println(courseList);
-      System.out.println("코스리스트");
-      System.out.println(photovo);
+   @PostMapping(value = "/myPageMyCourse", produces = "application/json; charset=utf-8")
+   @ResponseBody
+   public String myPageMyCourse(HttpSession httpSession) {
+	   System.out.println("세이브 컨트롤러 작동!!!!");
+	   Gson gson = new Gson();
+	   List<CourseVo> courseList = cdao.getMyCourseById(httpSession);
+	   List<CoursePhotoVo> photovo =null;
+	   for (CourseVo c : courseList) {
+	      photovo =(c.getC_photo());
+	   }
+	   System.out.println(courseList);
+	   System.out.println("코스리스트");
+	   System.out.println(photovo);
+	   
+	   return gson.toJson(courseList);
    }
+
    //찜코스 삭제~
    @PostMapping(value = "/deleteSaveCourse", produces = "application/json; charset=utf-8")
    @ResponseBody

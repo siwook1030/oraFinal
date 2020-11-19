@@ -187,20 +187,20 @@
             alert("휴대전화 변경시 인증을먼저진행해주세요");
             phone.focus();
             return;
-              }
-         }
+              }//if
+         }//if
          const pwd1 = document.getElementById("password1").value;
          const pwd2 = document.getElementById("password2").value;
          var pass = false;
          if(pwd1 == pwd2){
             if(pwd1 != "" && pwd2 !=""){
             alert("비밀번호가 일치합니다");
-           }
+           }//if
             pass = true;
-         }else{
+         }else{//if
             alert("비밀번호가 일치하지 않습니다.");
              return false;
-         }
+         }//else
          if(pass){
             if(pwd1 != "" && pwd2 !=""){
                 const pwAvail = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^*()\-_=+\\\|\[\]{};:\'",.<>\/?]).{8,12}$/;
@@ -208,15 +208,15 @@
                 if(!pwAvailCheck){
                     alert("비밀번호는 문자,숫자,특수기호 1가지이상 포함하여야합니다");
                     return;
-                }
-            }
+                }//if
+            }//if
             var data =$("#update").serialize();
             $.ajax("/update", {data:data,type: "POST",success:function(re){         
                alert("회원 정보가 수정되었습니다");         
                window.location.reload();
-            }});      
-         }
-       });
+            }});      //에이작
+         }//if
+       });//펑션끝
    });
    </script>
 
@@ -350,7 +350,7 @@
             <li id="my"><a href="/myPageSaveCourse">찜 목록</a></li>
             <li id="my"><a href="/myPageMyCourse">작성 코스(준비중)</a></li>
             <li id="my"><a href="/myPageListReview">작성 후기</a></li>
-            <li id="my"><a href="myPageListMeeting">작성 번개</a></li>
+            <li id="my"><a href="/listMeeting?id=${m.id}">작성 번개</a></li>
             <li id="my"><a href="/myPageMyRank">랭킹</a></li>
      </ul>
     <section class="ftco-section contact-section">
@@ -358,7 +358,7 @@
         <div class="row block-9 justify-content-center mb-5">
           <div class="col-md-8 mb-md-5">
           	<h2 class="text-center">회원정보수정</h2>
-            <form action="#" class="bg-light p-5 contact-form">
+            <form id="update" action="#" class="bg-light p-5 contact-form">
               <div class="form-group">
 			    <div id=modify>이름</div>
 	            <input type="text" class="form-control text-muted " disabled="disabled" value="${m.name} "  />
