@@ -115,10 +115,8 @@
 .placeinfo .jibun {color:#999;font-size:11px;margin-top:0;}
 </style>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=clusterer"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="/js/shuffleArray.js"></script>
 <script type="text/javascript">
@@ -321,7 +319,7 @@ window.onload = function(){
   	
 	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
-	      <a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="index.html">
+	      <a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
         <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
         <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
@@ -351,8 +349,10 @@ window.onload = function(){
 	          <li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
 	          <li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
 	          <li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
-	         <!-- <li class="nav-item"><a href="blog.html" class="nav-link">라이딩 정보</a></li>
-	          <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>-->
+
+	          <li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
+	          <!-- <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>-->
+
 	        </ul>
 	      </div>
 	    </div>
