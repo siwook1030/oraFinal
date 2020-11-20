@@ -166,7 +166,7 @@ public class MakingCourseController {
 		 model.addAttribute("cJson", new Gson().toJson(c));
 		 model.addAttribute("ptList", ptList);
 		 model.addAttribute("ptJson", gson.toJson(ptList));
-		 model.addAttribute("uploadFilesName", gson.toJson(uploadFilesName));
+		 model.addAttribute("uploadFilesName", uploadFilesName);
 		 session.removeAttribute("c");
 		 session.removeAttribute("ptList");
 		 session.removeAttribute("uploadFilesName");

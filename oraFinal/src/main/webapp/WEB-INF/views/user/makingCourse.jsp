@@ -5,7 +5,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>메이킹 코스</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/resources/css/animate.css">
+	<link rel="stylesheet" href="/resources/css/owl.carousel.min.css">
+	<link rel="stylesheet" href="/resources/css/owl.theme.default.min.css">
+	<link rel="stylesheet" href="/resources/css/magnific-popup.css">
+	<link rel="stylesheet" href="/resources/css/flaticon.css">
+	<link rel="stylesheet" href="/resources/css/style.css">
 <style type="text/css">
 	/*매인섹션 시작----------------  */
 	section {
@@ -25,6 +34,10 @@
 	
 	} 
 	
+	#courseForm {
+		width: 100%;
+	}
+	
 	/*매인섹션 끝 ------------------*/
 
 	/*float 초기화 아이디*/
@@ -35,7 +48,8 @@
     .drag-over { background-color: #CFF768; outline-style: dotted; outline-offset:-20px; }
 	.thumb { width:100px; height:100px; padding:5px; float:left; }
 	.thumb > img { width:100%; height: 100%; }
-	.thumb > .close { position:absolute; background-color:red; cursor:pointer; }
+	.thumb > .close { position:absolute; cursor:pointer; background: rgba(255,255,255,0.8); }
+	.x { width: 15px; height: 15px; float: left; }
 	.placeinfo_wrap {position:absolute;bottom:28px;left:-150px;width:300px;}
 	.placeinfo {position:relative;width:100%;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;padding-bottom: 10px;background: #fff;}
 	.placeinfo:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
@@ -51,7 +65,7 @@
  	
  	/* 게시판 레이아웃 */
 	/* 게시판 인덱스 제외 전체 */
-	#contents { border: 1px solid #D5D5D5; padding: 60px; margin: 50px 0 100px; }
+	#contents { border: 1px solid #D5D5D5; padding: 60px; margin: 50px 0 100px; width: 100%; }
 	/* 코스이름 만들기 */
 	#courseName { border: none; border-bottom: 1px solid gray; margin: 10px; width: 880px; height: 50px; margin: 20px 0 30px; font-size: 30px; }
 	/* 지도 3 */
@@ -69,7 +83,9 @@
  	.rankView img { width: 35px; align: center; padding-bottom: 3px; }
  	input { padding: 4px 0; margin-bottom: 3px; border: none; }
  	/* 첨부파일버튼 */
- 	.filebox label { margin: 3px 0; padding: 5px 15px; border: 1px solid #8C8C8C; color: #747474; font-size: 15px; vertical-align: middel; background-color: white; cursor: pointer; text-align: center; }
+ 	.readFilebox label {position:relative; right:30px;  margin: 3px 0; padding: 5px 15px; color: white; font-size: 15px; vertical-align: middel; background-color: #88BEA6; cursor: pointer; text-align: center; }
+	.readFilebox input[type="file"] { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; border: 0; }
+ 	.filebox label { position:relative; bottom:25px; left:20px;  color: #747474; font-size: 15px; vertical-align: middel; background-color: white; cursor: pointer; text-align: center; }
 	.filebox input[type="file"] { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; border: 0; }
 	#courseNameCnt { position: relative; left: 820px; bottom: 55px; }
 	#wordsCnt { position: relative; left: 790px; bottom: 55px; font-size: 13px; }
@@ -1086,7 +1102,7 @@ const mNickName = checkM.item.nickName;
 		reader.onload = (function(f, idx) {
 			return function(e) {
 				const div = '<div class="thumb"> \
-				<div class="close" data-idx="' + idx + '">X</div> \
+				<div class="close" data-idx="' + idx + '"><img class="x" src="../icons/x.png"/></div> \
 				<img src="' + e.target.result + '" title="' + escape(f.name) + '"/> \
 				</div>';
 				$("#thumbnails").append(div);
@@ -1096,7 +1112,7 @@ const mNickName = checkM.item.nickName;
 	}
 	
 	$("#thumbnails").on("click", ".close", function(e) {
-		const $target = $(e.target);
+		const $target = $(e.target.parentNode);
 		const idx = $target.attr('data-idx');
 		uploadFiles[idx].upload = 'disable'; //삭제된 항목은 업로드하지 않기 위해 플래그 생성
 		$target.parent().remove(); //프리뷰 삭제
@@ -1112,7 +1128,17 @@ const mNickName = checkM.item.nickName;
 
 		return cPhotoCnt;
 	}
-	
+
+	/* 사진등록버튼 */
+	const gallery = document.getElementById('gallery');
+	gallery.addEventListener("mouseover", mouseOver);
+	gallery.addEventListener("mouseout", mouseOut);
+	function mouseOver() {
+		gallery.src="../meetingImg/galleryOn.png";
+	}
+	function mouseOut() {
+		gallery.src="../meetingImg/galleryOff.png";
+	}
 	//------------ 지하철역정보 셋팅
 	/*
 	$.ajax({
@@ -1626,11 +1652,61 @@ const mNickName = checkM.item.nickName;
 </script>
 </head>
 <body>
-<jsp:include page="../header.jsp"/>
-<div id="clear"></div>
-<section>
-	<p style="font-size: 20px;"><a href="/user/makingCourse">오늘의 라이딩</a>&nbsp;&gt;&nbsp;<font color="#c85725">나만의 DIY 코스</font></p>
-	<p style="font-size: 15px; padding: 2px 0 30px;">나만의 코스를 만들어 공유해보세요.</p>
+<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+      <div class="container">
+         <a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
+        <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
+        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="oi oi-menu"></span> Menu
+            </button>
+         
+         <div class="collapse navbar-collapse" id="ftco-nav">
+              <ul class="navbar-nav ml-auto">
+               <c:choose>
+                  <c:when test="${m == null }">
+                     <li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
+                     <li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
+                  </c:when>
+                  <c:when test="${m != null }">
+                     <li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
+                     <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
+                     <li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+                  </c:when>
+               </c:choose>
+            </ul>
+         </div>      
+
+         <div class="collapse navbar-collapse" id="ftco-nav">
+           <ul class="navbar-nav ml-auto">
+             <li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
+             <li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
+             <li class="nav-item" ><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
+             <li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
+             <li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+             <li class="nav-item" active><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
+             <!-- <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>-->
+           </ul>
+         </div>
+       </div>
+   </nav>
+    <!-- END nav -->
+	<section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate pb-0 text-center">
+          	<p class="breadcrumbs"><span class="mr-2"><a href="#">오늘의 라이딩<i class="fa fa-chevron-right"></i></a></span> <span>메이킹 코스<i class="fa fa-chevron-right"></i></span></p>
+            <h1 class="mb-3 bread">메이킹 코스</h1>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="ftco-section ftco-property-details">
+      <div class="container">
+			<div class="col-md-12 heading-section text-center ftco-animate">
+     			<span class="subheading">나만의 코스를 만들어 공유해보세요.</span>
+     		</div>
 	
 	<div id="contents">
 		<form id="courseForm">
@@ -1659,7 +1735,7 @@ const mNickName = checkM.item.nickName;
 	  		</div>
 	  		<!-- p지워도 되는지? -->
 			<p>
-				<div class="filebox" style="position: relative; left: 720px; z-index: 2;">
+				<div class="readFilebox" style="position: relative; left: 720px; z-index: 2;">
 					<label for="bikeFile">경로파일 불러오기</label>
 					<input type="file" value="경로파일" id="bikeFile"><br>
 				</div>
@@ -1670,7 +1746,8 @@ const mNickName = checkM.item.nickName;
 				    <button type="button" class="btnOption" id="polyC" >선</button>
 				    <button type="button" class="btnOption" id="backPolyC" class="disabled" disabled>선 되돌리기</button>
 				    <button type="button" class="btnOption" id="frontPolyC"  class="disabled" disabled>선 앞돌리기</button>
-				    <button type="button" class="btnOption" id="infoC" >가져오기</button><span id="fixC" val="y"></span> <br>
+				    <button type="button" class="btnOption" id="infoC" >가져오기</button><br>
+				    <span id="fixC" val="y" style="color: #d0a183; font-weight: bold;"></span>
 				</div>
 			</p>
 			
@@ -1746,15 +1823,17 @@ const mNickName = checkM.item.nickName;
 			<span id="wordsCnt"></span>
 			
 			<!-- 코스 사진 -->
+
 			<div id="thumbnailsDiv">사진을 등록해주세요.
 				<div id="drop" style="width: 865px; height: 300px; padding: 3px;">
 					<div id="thumbnails"></div>
 				</div>
 			</div><br>
 			<div class="filebox" style="position: relative; bottom: 90px; left: 770px;">
-				<label for="photoInput">파일등록</label>
+				<label for="photoInput"><img src="../meetingImg/galleryOff.png" title="사진등록" id="gallery" width="50px"/></label>
 				<input type="file" id="photoInput" multiple="multiple">
 			</div>
+
 				
 			[출발점 대중교통]
 			<div id="mapPS"></div>
@@ -1766,7 +1845,8 @@ const mNickName = checkM.item.nickName;
 				<button type="button" class="btnOption" id="polyPS" >선</button>
 				<button type="button" class="btnOption" id="backPolyPS" class="disabled" disabled>선 되돌리기</button>
 				<button type="button" class="btnOption" id="frontPolyPS" class="disabled" disabled>선 앞돌리기</button>
-				<button type="button" class="btnOption" id="infoPS" >가져오기</button><span id="fixPS" val="y"></span> <br>
+				<button type="button" class="btnOption" id="infoPS" >가져오기</button><br>
+				<span id="fixPS" val="y" style="color: #d0a183;; font-weight: bold;"></span>
 			</div>
 			
 			<!-- 대중교통위치 -->
@@ -1800,7 +1880,8 @@ const mNickName = checkM.item.nickName;
 			    <button type="button" class="btnOption" id="polyPE" >선</button>
 			    <button type="button" class="btnOption" id="backPolyPE" class="disabled" disabled>선 되돌리기</button> <!-- disabled -->
 				<button type="button" class="btnOption" id="frontPolyPE" class="disabled" disabled>선 앞돌리기</button>
-				<button type="button" class="btnOption" id="infoPE" >가져오기</button><span id="fixPE" val="y"></span>
+				<button type="button" class="btnOption" id="infoPE" >가져오기</button><br>
+				<span id="fixPE" val="y" style="color: #d0a183;; font-weight: bold;"></span>
 			</div>
 			
 			<!-- 대중교통위치 --> 
@@ -1828,8 +1909,94 @@ const mNickName = checkM.item.nickName;
 				<button type="button" class="btnAdd" id="previewMakingCourse" style="background-color: #eccb6a">미리보기</button>
 				<button type="button" class="btnAdd" id="regCourse" style="background-color: #d0a183">등록</button>
 			</div>
+			</div>
 		</section>
-	<div id="clear"></div>
-	<jsp:include page="../footer.jsp"/>
+		
+		<footer class="ftco-footer ftco-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Ecoverde</h2>
+              <p>Far far away, behind the word mountains, far from the countries.</p>
+              <ul class="ftco-footer-social list-unstyled mt-5">
+                <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="fa fa-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">Community</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Search Properties</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>For Agents</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Reviews</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>FAQs</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">About Us</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Our Story</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Meet the team</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+             <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Company</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>About Us</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Press</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Contact</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon fa fa-map"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+	                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929 210</span></a></li>
+	                <li><a href="#"><span class="icon fa fa-envelope pr-4"></span><span class="text">info@yourdomain.com</span></a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+	
+            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+  <script src="/resources/js/jquery.min.js"></script>
+  <script src="/resources/js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="/resources/js/popper.min.js"></script>
+  <script src="/resources/js/bootstrap.min.js"></script>
+  <script src="/resources/js/jquery.easing.1.3.js"></script>
+  <script src="/resources/js/jquery.waypoints.min.js"></script>
+  <script src="/resources/js/jquery.stellar.min.js"></script>
+  <script src="/resources/js/owl.carousel.min.js"></script>
+  <script src="/resources/js/jquery.magnific-popup.min.js"></script>
+  <script src="/resources/js/jquery.animateNumber.min.js"></script>
+  <script src="/resources/js/scrollax.min.js"></script>
+  <script src="/resources/js/google-map.js"></script>
+  <script src="/resources/js/main.js"></script>   
 </body>
 </html>

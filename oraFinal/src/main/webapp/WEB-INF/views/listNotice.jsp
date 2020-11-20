@@ -137,6 +137,7 @@ td {
 <script src="/js/loginCheck.js"></script>
 <script type="text/javascript">
 window.onload = function(){
+	console.log("asdasd");
 	const checkM = checkLogin(); // 로그인이 되어있는 상태인지 체크한다
 	console.log(checkM);
 	
@@ -284,6 +285,7 @@ window.onload = function(){
 </head>
 <body>
 
+
    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 		<div class="container">
 			<a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
@@ -356,7 +358,6 @@ window.onload = function(){
 	<!-- <section class="ftco-section" id="list">
 		<div id="box00">
 			<div id="container00">
-
 		     	<select id="code_value" name="code_value" size="1">
 		     		<option value="0">전체</option>
 		     		<c:forEach var="c" items="${category }">
@@ -391,6 +392,7 @@ window.onload = function(){
 		
 	</section> -->
 	<br>
+
 	<footer class="ftco-footer ftco-section">
       <div class="container">
         <div class="row mb-5">

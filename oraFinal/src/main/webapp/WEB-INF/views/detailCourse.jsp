@@ -6,22 +6,30 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>코스상세</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/resources/css/animate.css">
+	<link rel="stylesheet" href="/resources/css/owl.carousel.min.css">
+	<link rel="stylesheet" href="/resources/css/owl.theme.default.min.css">
+	<link rel="stylesheet" href="/resources/css/magnific-popup.css">
+	<link rel="stylesheet" href="/resources/css/flaticon.css">
+	<link rel="stylesheet" href="/resources/css/style.css">
 <style type="text/css">
    
    /*매인섹션부분css------------ ----------------*/
-   section {
-    margin: 0 auto;
-	   	width: 1000px;
-	   	font-family: 'NEXON Lv1 Gothic Low OTF';
-	   	border: solid 1px white;
-   }
+
    #adminMenu{
    	display: none;
    	visibility: hidden;
    }
    #ySaveCoruse{
   	display: none; 
+  }
+  
+  #detailMap {
+  	text-align: center;
   }
   
   #bicycleInfo { 
@@ -43,6 +51,7 @@
 		opacity: 0.9;
 		background-color: white;
 		border-radius: 3px;
+		cursor: pointer;
 	}
 	#cBound img{
 		width: 20px;
@@ -64,58 +73,46 @@
    		height: 100px;
    }
    
-   #mainPhoto{
-    	height : 400px;
-    	border: solid 1px white;
-    	word-break:break-all;
+   #course-summury-table{
+   		width: 100%; 
+   		padding-top: 30px;		
    }
-   #mpTtitle{
-   		background-color: #c8572d; 
-   		text-align : center;
-    	padding : 20px 0 20px 0;
-    	opacity: 0.5;
-    	margin-top: 170px;
+   #course-summury-table thead{
+   	
+   	color : 00FFFF;
+   	font-weight : bold;
+    border-top : 2px #d0a183 solid;
+   	border-bottom: 1px #EBEBEB solid;
+   	background-color: #f4dfcf;
    }
-   #mainPhoto h2{
-    	color: white;
-    	font-size : 200%;
-    	font-weight: bold;
-   }
-   
-   #courseInfo{
-   		text-align : center;
-   		margin-top : 50px;
-   		width: 80%;
-   }
-   #courseInfo table{
-   		margin-left: 100px;
-   		border-collapse: collapse;
-   }
-   #coursePhotoBox{
-   	padding: 0 100px 0 100px;
-   }
+    #course-summury-table tbody{
+    	border-bottom: 1px #EBEBEB solid;
+    }
+    #course-summury-table td{
+    	padding-top: 15px;
+    	padding-bottom: 15px;
+    }
+
+
    #coursePhoto{
-		width: 30%;
-		height : 200px;
-		background-size: cover;
-		display: inline-table;
-		margin: 5px 5px 5px 5px;
+
 		
 	}
 	#transportS{
-		border: solid 1px white;
-		width: 70%;
+
+		margin-left:50px;
+		width : 80%;
 		height: 300px;
-		margin-left: 150px;
-		margin-top: 50px;
 	}
 	#transportE{
-		border: solid 1px white;
-		width: 70%;
-		height: 300px;
-		margin-left: 150px;
-		margin-top: 50px;
 
+		margin-left:50px;
+		width : 80%;
+		height: 300px;
+
+	}
+	.pt-summury{
+		margin-top: 35px;
 	}
 	#addInfo{
 		border: solid 1px white;
@@ -124,32 +121,15 @@
 		margin-left: 150px;
 		margin-top: 50px;
 	}
-	#addInfoTitle{
+	.addInfoTitle{
+		border-bottom : 1px solid #EBEBEB;
 		font-size: 120%;
-		color: gray;
 	}
-	.foodBox{
-		display: inline-table;
-		border: solid 1px white;
-		width: 30%;
-		height: 200px;
-		margin: 10px 5px 10px 5px;
-		word-break:break-all;
+	
+	.property-wrap .img {
+		height: 350px;
 	}
 
- 	.foodBoxName{
- 		background-color: black; 
- 		padding: 5px 0 5px 0;
-   		text-align : center;
-    	opacity: 0.5;
-    	margin-top: 80px;
-    	font-size: 130%;
- 	}
- 	.foodBoxName span{
- 		color: white;
- 		
- 	}
-	
    /*메인섹션 끝css--------------------------*/
 
    /*float 초기화 아이디*/
@@ -161,7 +141,7 @@
 <style>
 .map_wrap, .map_wrap * {margin:0; padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
 .map_wrap {position:relative;width:100%;height:500px;}
-#category {position:absolute;top:10px;left:10px;border-radius: 5px; border:1px solid #909090;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);background: #fff;overflow: hidden;z-index: 2;}
+#category {position:absolute;top:10px;left:10px;border-radius: 5px;border:1px solid #909090;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);background: #fff;overflow: hidden;z-index: 2;}
 #category li {float:left;list-style: none;width:50px;px;border-right:1px solid #acacac;padding:6px 0;text-align: center; cursor: pointer;}
 #category li.on {background: #eee;}
 #category li:hover {background: #ffe6e6;border-left:1px solid #acacac;margin-left: -1px;}
@@ -494,16 +474,18 @@ window.onload = function(){
 
         const options = {
     	  title: '자전거코스 고도',
-    	  animation:{duration:3000,easing:'out',startup:true},
+    	  animation:{duration:2000,easing:'out',startup:true},
           hAxis: {title: '거리(km)' ,titleTextStyle: {color: '#333'},gridlines: {color: 'transparent'}},
           vAxis: {title:'고도(m)',titleTextStyle: {color: '#333'},minValue: 0},
           curveType: 'function',
           width:'100%',
-          height:300,
+          height:300     
         };
 
         const chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
         chart.draw(data, options);
+        window.addEventListener("resize",drawAltitude,false);
+        
       }
 
 
@@ -601,10 +583,9 @@ window.onload = function(){
 	const arriveImage = new kakao.maps.MarkerImage(arriveSrc, arriveSize, arriveOption);
 
 	const ptSrc = '/publictransport/blue.png', // 대중교통표시마커  
-	ptSize = new kakao.maps.Size(40, 35), // 대중교통표시마커   크기입니다 
-	ptOption = {offset: new kakao.maps.Point(15, 43)}; // 대중교통표시마커  에서 마커의 좌표에 일치시킬 좌표를 설정합니다 (기본값은 이미지의 가운데 아래입니다)
+	ptSize = new kakao.maps.Size(35, 35);// 대중교통표시마커   크기입니다 
 	// 대중교통 마커 이미지를 생성합니다
-	const ptImage = new kakao.maps.MarkerImage(ptSrc, ptSize, ptOption);
+	const ptImage = new kakao.maps.MarkerImage(ptSrc, ptSize);
 
 	//코스 출발 마커가 표시될 위치입니다 
 	const startPosition = cStartLatLng; 
@@ -755,9 +736,23 @@ window.onload = function(){
 				});
 			}
 		})
-	setBound(PSmap, psBounds);
-	setBound(PEmap, peBounds);
+	function setBountPT(){
+		setBound(PSmap, psBounds);
+		setBound(PEmap, peBounds);
+	}
 
+	const cptTap = document.getElementById("course-pt-tab");
+
+	 cptTap.addEventListener("click", function(e) {
+		 setTimeout(function() {
+				console.log("셋바운드피티작동");
+			 	PEmap.relayout();
+			 	PSmap.relayout();
+			 	setBountPT();
+		 }, 500)
+	 
+	 });
+			
 	//출발 마커가 표시될 위치입니다 
 	const PSstartPosition = cStartLatLng; 
 	// 출발 마커를 생성합니다
@@ -775,7 +770,9 @@ window.onload = function(){
 	    position: PEarrivePosition,
 	    image: arriveImage // 도착 마커이미지를 설정합니다
 	});	
+	
 
+	/* 
 	const tps = document.getElementById("transportS");
 	const tpe = document.getElementById("transportE");
 	const selectPS = document.getElementById("selectPS");
@@ -816,7 +813,7 @@ window.onload = function(){
 			tps.style.display="none";
 		}
 			selectPE.selectedIndex = 0;
-	}, false)
+	}, false)*/
 	
 	
 	
@@ -1106,60 +1103,80 @@ window.onload = function(){
 	function removePlaceOveray(){
 		placeOverlay.setMap(null);
 	}
-	
-	tpe.style.display = "none";  //지도가 뭉개지는것을 방지하기위해 맨 마지막에 걸어준다
+
+	const cst = document.getElementById("course-summury-tab");
+	cst.addEventListener("click", function(e) {
+		setTimeout(drawAltitude, 200);
+	});
 	
 }
  </script>
 </head>
 <body>
-<jsp:include page="header.jsp"/>
-      <div id="clear"></div>
-  	<section>
-  		<div id="detailTitle">
-  			<font style="font-size: 130%; ">자전거 길 > </font> <font style="font-size: 130%;  color: orange;" > 코스상세</font>
-  		</div>
-  		<div id="adminMenu">
-  			<span>관리자 메뉴</span>
-  			<button id="updateCourse" value="${c.c_no}">코스수정</button>  <button id="deleteCourse" value="${c.c_no}">코스삭제</button>
-  		</div>
- 			<div><a href="" id="nSaveCoruse" ><img src="/detailCourseImg/nfavor.png" width="50px" height="50px"><i>찜하기</i></a></div>
- 			<div><a href="" id="ySaveCoruse" ><img src="/detailCourseImg/yfavor.png" width="50px" height="50px"><i></i></a></div>
-	  		 <div id="mainPhoto" style="background-image: url(${c.c_photo.get(0).cp_path}/${c.c_photo.get(0).cp_name}); background-size: cover;">
-	  		 <div>made by ${c.nickName}</div>
-	  		 <div id="mpTtitle"><h2>${c.c_name }</h2></div>
-	  		</div>
+<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+      <div class="container">
+         <a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
+        <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
+        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="oi oi-menu"></span> Menu
+            </button>
+         
+         <div class="collapse navbar-collapse" id="ftco-nav">
+              <ul class="navbar-nav ml-auto">
+               <c:choose>
+                  <c:when test="${m == null }">
+                     <li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
+                     <li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
+                  </c:when>
+                  <c:when test="${m != null }">
+                     <li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
+                     <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
+                     <li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+                  </c:when>
+               </c:choose>
+            </ul>
+         </div>      
 
-  		<div id="courseInfo">
-  			<table  width="800px">
-  				<tr>
-  					<td style="border-bottom: solid 1px black;">위치</td>
-  					<td style="border-bottom: solid 1px black;">거리</td>
-  					<td style="border-bottom: solid 1px black;">소요시간</td>
-  					<td style="border-bottom: solid 1px black;">난이도</td>
-  					<td style="border-bottom: solid 1px black;">풍경</td>
-  				</tr>
-  				<tr>
-  					<td>${c.c_loc}</td>
-  					<td>${c.c_distance }km</td>
-  					<td><c:if test="${c.c_time/60 >= 1 }">
-  						<fmt:formatNumber value="${c.c_time/60}" pattern="0" />시간
-  					</c:if> ${c.c_time%60}분</td>
-  					<td>
-  					<c:if test="${c.c_difficulty ==1 }"><span style="color: #88bea6;">쉬움</span><br></c:if>
-  					<c:if test="${c.c_difficulty ==2 }"><span style="color: #eccb6a;">보통</span><br></c:if>
-  					<c:if test="${c.c_difficulty ==3 }"><span style="color: #c8572d;">어려움</span><br></c:if>
-  					<c:if test="${c.c_difficulty ==4 }"><span style="color: red;">매우 어려움</span><br></c:if>
-  					</td>
-  					<td>
-  					<c:forEach var="v" items="${c.c_views }">
-  						<img src="/courseViewImg/${v}.png">&nbsp;
-  					</c:forEach>		
-  					</td>
-  				</tr>
-  			</table>
-  		</div>
-  		<div id="detailMap" style="text-align: center; margin: 20px 0 60px 0;">
+         <div class="collapse navbar-collapse" id="ftco-nav">
+           <ul class="navbar-nav ml-auto">
+             <li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
+             <li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
+             <li class="nav-item active" ><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
+             <li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
+             <li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+             <li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
+             <!-- <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>-->
+           </ul>
+         </div>
+       </div>
+   </nav>
+    <!-- END nav -->
+	<section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate pb-0 text-center">
+          	<p class="breadcrumbs"><span class="mr-2"><a href="#">오늘의 라이딩<i class="fa fa-chevron-right"></i></a></span> <span>코스 상세<i class="fa fa-chevron-right"></i></span></p>
+            <h1 class="mb-3 bread">${c.c_name}</h1>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="ftco-section ftco-property-details">
+      <div class="container">
+      	<div class="row justify-content-center">
+      		<div class="col-md-12">
+      			<div class="property-details">
+      				<div id="adminMenu">
+			  			<span>관리자 메뉴</span>
+			  			<button id="updateCourse" value="${c.c_no}">코스수정</button>  <button id="deleteCourse" value="${c.c_no}">코스삭제</button>
+  					</div>
+		 			<div><a href="" id="nSaveCoruse" title="코스 찜하기" ><img src="/detailCourseImg/nfavor.png" width="50px" height="50px"><i></i></a></div>
+		 			<div><a href="" id="ySaveCoruse" ><img src="/detailCourseImg/yfavor.png" width="50px" height="50px"><i></i></a></div>
+		 			
+      	<div id="detailMap">
   		<div class="map_wrap">
   		<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
   		 <ul id="category">
@@ -1189,7 +1206,9 @@ window.onload = function(){
         </li>              
     </ul>
   		</div>
-  		<div id="chart_div" style="width: 100%; height: 300px;"></div>
+		  	
+
+  		
   		<div id="bicycleInfo">
 				<input type="checkbox" id="chkBicycle"/> 자전거도로 정보 보기
 				<div style="padding-top: 5px;">
@@ -1210,99 +1229,353 @@ window.onload = function(){
 	  		</div>
 			<button id="cBound" title="경로 한눈에 보기"><img src="/detailCourseImg/cBoundBtn.png"></button>
   		</div>
-  		
-  		<div id="courseWords" style="padding-left: 50px; padding-right: 100px; margin-bottom: 50px;">
-			<div id="courseWordsTitle" style="margin-bottom: 20px; font-size: 110%;">
-				<span style="text-decoration: underline;">&nbsp;&nbsp;${c.c_name } 코스만의&nbsp;&nbsp;'<span style="color: #eccb6a;font-weight: bold;">갬</span><span style="color: #c8572d; font-weight: bold; ">성</span>' 포인트&nbsp;&nbsp;&nbsp;</span>
-			</div>
-		<div id="courseWordsContent" style="font-size: 90%; white-space:pre;">${c.c_words }</div>
-  		</div>
-  		<div id="coursePhotoBox">
-  		<c:if test="${c.c_photo != null }">
-  			<c:forEach var="p" items="${c.c_photo }">
-  				<div id="coursePhoto" style="background-image: url(${p.cp_path}/${p.cp_name})">
-  				<div style="text-align: right;">
-  				<c:if test="${p.cp_latitude != 0 }">
-  				<a href="https://map.kakao.com/link/roadview/${p.cp_latitude },${p.cp_longitude}" target="_blank"><img src="/detailCourseImg/photoLoc.png"></a>		
-  				</c:if>
-  				<c:if test="${p.cp_latitude == 0 }">
-  					<img src="/detailCourseImg/photoLoc.png" style="visibility: hidden;">
-  				</c:if>
-  				 </div>
-  				</div>
-  			</c:forEach>
-  		</c:if>
-  		</div>
-  		<div id="transportS">
-  			<div style="border-bottom: solid 1px gray;" id="addInfoTitle"><img src="/detailCourseImg/subway.png">교통편</div>
-  			<div style="width: 100%; border: solid 1px gray; font-size: 80%; margin-top: 10px;">
-  				<div style="float: left;  border: solid 1px gray; height: 230px; width: 30%; text-align: center;">
-  				<br>
-  				<select name="startend" id="selectPS" >
-  					<option value="1">출발점</option>
-  					<option value="2">도착점</option>
-  				</select>
-  				<br><br>
-  				<strong>${c.c_s_locname }</strong>
-  				<br><br>
-  				<c:forEach var="t" items="${ptList }">
-  					<c:if test="${t.code_value=='00201' }">
-  						<img src="publictransport/${t.pt_img }">&nbsp;${t.pt_station } ▷▷ 출발점<br>
-  						<img src="/detailCourseImg/disArrow.png"> ${t.pt_distance }km&nbsp;
-  						<img src="/detailCourseImg/run.png"><fmt:formatNumber value="${t.pt_distance/5*60+1 }" pattern=".0" />분&nbsp;&nbsp;
-  						<img src="/detailCourseImg/bicycle.png">&nbsp;<fmt:formatNumber value="${t.pt_distance/20*60+1 }" pattern=".0" />분
-  						<br><br>
-  					</c:if>
-  				</c:forEach>
-  				</div>
-  				<div id="PSmap" style=" border: solid 1px black; height: 230px;width: 1px%;">
-  				</div>
-  			</div>
-  		</div>
+      				<div class="text" style="margin-top: 20px;">
+      					<span class="subheading" style="margin-left: 10px;">made by ${c.nickName }</span>
+      					<h2>${c.c_name}</h2>
+      				</div>
+      			</div>
+      		</div>
+      	</div>
+      	<div class="row">
+      		<div class="col-md-12 pills">
+						<div class="bd-example bd-example-tabs">
+							<div class="d-flex" id="d-flex">
+							  <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+							    <li class="nav-item">
+							      <a class="nav-link active" id="course-summury-tab" data-toggle="pill" href="#course-summury" role="tab" aria-controls="course-summury" aria-expanded="true">코스요약</a>
+							    </li>
+							    <li class="nav-item">
+							      <a class="nav-link" id="course-words-tab" data-toggle="pill" href="#course-words" role="tab" aria-controls="course-words" aria-expanded="true">코스설명</a>
+							    </li>
+							    <li class="nav-item">
+							      <a class="nav-link" id="course-photo-tab" data-toggle="pill" href="#course-photo" role="tab" aria-controls="course-photo" aria-expanded="true">코스사진</a>
+							    </li>
+							     <li class="nav-item">
+							      <a class="nav-link" id="course-pt-tab" data-toggle="pill" href="#course-pt" role="tab" aria-controls="course-pt" aria-expanded="true">대중교통</a>
+							    </li>
+							     <li class="nav-item">
+							      <a class="nav-link" id="course-review-tab" data-toggle="pill" href="#course-review" role="tab" aria-controls="course-review" aria-expanded="true">코스후기</a>
+							    </li>
+							  </ul>
+							</div>
+
+						  <div class="tab-content" id="pills-tabContent">
+						    <div class="tab-pane fade show active" id="course-summury" role="tabpanel" aria-labelledby="course-summury-tab" style="text-align: center;">
+						    	<div class="row">
+						    		<div class="col-md-12 heading-section text-center ftco-animate">
+						          		<span class="subheading">코스요약</span>
+						        	  <div style="margin: 20px 0 20px 0;"></div>
+						  			<table id="course-summury-table">
+						  				<thead>
+							  				<tr>
+							  					<td >위치</td>
+							  					<td>거리</td>
+							  					<td>소요시간</td>
+							  					<td>난이도</td>
+							  					<td>풍경</td>
+							  				</tr>
+						  				</thead>
+						  				<tbody>
+							  				<tr>
+							  					<td>${c.c_loc}</td>
+							  					<td>${c.c_distance }km</td>
+							  					<td><c:if test="${c.c_time/60 >= 1 }">
+							  						<fmt:formatNumber value="${c.c_time/60}" pattern="0" />시간
+							  					</c:if> ${c.c_time%60}분</td>
+							  					<td>
+							  					<c:if test="${c.c_difficulty ==1 }"><span style="color: #88bea6;">쉬움</span><br></c:if>
+							  					<c:if test="${c.c_difficulty ==2 }"><span style="color: #eccb6a;">보통</span><br></c:if>
+							  					<c:if test="${c.c_difficulty ==3 }"><span style="color: #c8572d;">어려움</span><br></c:if>
+							  					<c:if test="${c.c_difficulty ==4 }"><span style="color: red;">매우 어려움</span><br></c:if>
+							  					</td>
+							  					<td>
+							  					<c:forEach var="v" items="${c.c_views }">
+							  						<img src="/courseViewImg/${v}.png">&nbsp;
+							  					</c:forEach>		
+							  					</td>
+							  				</tr>
+						  				</tbody>
+						  			</table>
+						    	
+						    	<div id="chart_div" style="width: 100%; height: 300px; text-align: center;"></div>
+						    	</div>
+						    </div>
+						    </div>
+
+						    <div class="tab-pane fade" id="course-words" role="tabpanel" aria-labelledby="course-words-tab">
+						  	 <div class="col-md-12 heading-section text-center ftco-animate">
+						          		<span class="subheading">코스설명</span>
+						        	  <div style="margin: 20px 0 20px 0;"></div>
+						    	<div id="courseWords" style="text-align: left;">
+									<div id="courseWordsTitle" style="margin-bottom: 20px; font-size: 110%;">
+										<span style="text-decoration: underline;">&nbsp;&nbsp;${c.c_name } 코스만의&nbsp;&nbsp;'<span style="color: #eccb6a;font-weight: bold;">갬</span><span style="color: #c8572d; font-weight: bold; ">성</span>' 포인트&nbsp;&nbsp;&nbsp;</span>
+									</div>
+									<div id="courseWordsContent" style="font-size: 90%; white-space:pre;">${c.c_words }</div>
+					  			</div>
+					  		 </div>
+						    </div>
+						    
+						     <div class="tab-pane fade" id="course-photo" role="tabpanel" aria-labelledby="course-photo-tab">
+						     	 <div class="col-md-12 heading-section text-center ftco-animate">
+						          		<span class="subheading">코스사진</span>
+						        	  <div style="margin: 20px 0 20px 0;"></div>
+						     	<div id="coursePhotoBox">
+							     	 <div class="row ftco-animate">
+							     	  <div class="col-md-12">
+	           							 <div class="carousel-properties owl-carousel">
+								  		<c:if test="${c.c_photo != null }">
+								  			<c:forEach var="p" items="${c.c_photo }">
+									  			 <div class="item" style="height: 400px;">
+	               									 <div class="property-wrap ftco-animate" style="height: 400px;">
+									  					<a class="img" style="background-image: url(${p.cp_path}/${p.cp_name})">
+									  					</a>
+									  				</div>
+									  			</div>
+								  			</c:forEach>
+								  		</c:if>
+								  		</div>
+								  	 </div>
+								  	</div>
+							  	</div>
+						  		</div>
+						     </div>
+						     
+						     <div class="tab-pane fade" id="course-pt" role="tabpanel" aria-labelledby="course-pt-tab">
+						      <div class="col-md-12 heading-section text-center ftco-animate">
+						          		<span class="subheading">대중교통</span>
+						        	  <div style="margin: 20px 0 20px 0; text-align: left;">
+						     <div  class="addInfoTitle">출발점</div>
+								<div id="transportS">
+						  			<div style="width: 100%; margin-top: 10px;">
+						  				<div style="float: left;  height:300px; width: 30%; text-align: center;">
+						  				<div class="pt-summury"><strong>${c.c_s_locname }</strong></div>
+						  				<c:forEach var="t" items="${ptList }">
+						  					<c:if test="${t.code_value=='00201' }">
+						  						<div class="pt-summury"><img src="publictransport/${t.pt_img }">&nbsp;${t.pt_station } ▷▷ 출발점</div>
+						  						<div class="pt-summury"><img src="/detailCourseImg/disArrow.png"> ${t.pt_distance }km&nbsp;
+						  						<img src="/detailCourseImg/run.png"><fmt:formatNumber value="${t.pt_distance/5*60+1 }" pattern=".0" />분&nbsp;&nbsp;
+						  						<img src="/detailCourseImg/bicycle.png">&nbsp;<fmt:formatNumber value="${t.pt_distance/20*60+1 }" pattern=".0" />분
+						  						</div>
+						  					</c:if>
+						  				</c:forEach>
+						  				</div>
+						  				<div id="PSmap" style=" height:300px; width: 1px%;">
+						  				</div>
+						  			</div>
+						  		</div>
+						  		</div>
+						  		
+						  		 <div style="margin: 80px 0 20px 0; text-align: left;">
+						  		<div class="addInfoTitle">도착점</div>
+						  		<div id="transportE">
+						  			<div style="width: 100%; margin-top: 10px;">
+						  				<div style="float: left;  height:300px; width: 30%; text-align: center;">
+						  				<div class="pt-summury"><strong>${c.c_e_locname }</strong></div>
+						  				<c:forEach var="t" items="${ptList }">
+						  					<c:if test="${t.code_value=='00202' }">
+						  						<div class="pt-summury"><img src="publictransport/${t.pt_img }">&nbsp;${t.pt_station } ▷▷ 출발점</div>
+						  						<div class="pt-summury"><img src="/detailCourseImg/disArrow.png"> ${t.pt_distance }km&nbsp;
+						  						<img src="/detailCourseImg/run.png"><fmt:formatNumber value="${t.pt_distance/5*60+1 }" pattern=".0" />분&nbsp;&nbsp;
+						  						<img src="/detailCourseImg/bicycle.png">&nbsp;<fmt:formatNumber value="${t.pt_distance/20*60+1 }" pattern=".0" />분
+						  						</div>
+						  					</c:if>
+						  				</c:forEach>
+						  				</div>
+						  				<div id="PEmap" style=" height: 300px;width: 1px%;">
+						  				</div>
+						  			</div>
+						  		</div>
+						  		</div>
+						  		</div>
+						     </div>
+						     
+
+						    <div class="tab-pane fade" id="course-review" role="tabpanel" aria-labelledby="course-review-tab">
+						     <div class="col-md-12 heading-section text-center ftco-animate">
+						          		<span class="subheading">코스후기</span>
+						        	  <div style="margin: 20px 0 20px 0;"></div>
+						      <div class="row">						      	
+							   		<div class="col-md-7">
+							   			<h3 class="head">23 Reviews</h3>
+							   			<div class="review d-flex">
+									   		<div class="user-img" style="background-image: url(images/person_1.jpg)"></div>
+									   		<div class="desc">
+									   			<h4>
+									   				<span class="text-left">Jacob Webb</span>
+									   				<span class="text-right">14 March 2018</span>
+									   			</h4>
+									   			<p class="star">
+									   				<span>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+								   					</span>
+								   					<span class="text-right"><a href="#" class="reply"><i class="fa fa-reply"></i></a></span>
+									   			</p>
+									   			<p>When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrov</p>
+									   		</div>
+									   	</div>
+									
+							   		</div>
+							   		<div class="col-md-5">
+							   			<div class="rating-wrap">
+								   			<h3 class="head">Give a Review</h3>
+								   			<div class="wrap">
+									   			<p class="star">
+									   				<span>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					(98%)
+								   					</span>
+								   					<span>20 Reviews</span>
+									   			</p>
+									   			<p class="star">
+									   				<span>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					(85%)
+								   					</span>
+								   					<span>10 Reviews</span>
+									   			</p>
+									   			<p class="star">
+									   				<span>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					(70%)
+								   					</span>
+								   					<span>5 Reviews</span>
+									   			</p>
+									   			<p class="star">
+									   				<span>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					(10%)
+								   					</span>
+								   					<span>0 Reviews</span>
+									   			</p>
+									   			<p class="star">
+									   				<span>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					<i class="fa fa-star"></i>
+									   					(0%)
+								   					</span>
+								   					<span>0 Reviews</span>
+									   			</p>
+									   		</div>
+								   		</div>
+							   		</div>
+							   	</div>
+							   	</div>
+						    </div>
+						  </div>
+						</div>
+		      </div>
+				</div>
+      </div>
+    </section>
   	
-  		<div id="transportE">
-  			<div style="border-bottom: solid 1px gray;" id="addInfoTitle"><img src="/detailCourseImg/subway.png">교통편</div>
-  			<div style="width: 100%; border: solid 1px gray; font-size: 80%;margin-top: 10px;">
-  				<div style="float: left;  border: solid 1px gray; height: 230px; width: 30%; text-align: center;">
-  				<br>
-  				<select name="startend"  id="selectPE">	
-  					<option value="2">도착점</option>
-  					<option value="1">출발점</option>
-  				</select>
-  				<br><br>
-  				<strong>${c.c_e_locname }</strong>
-  				<br><br>
-  				<c:forEach var="t" items="${ptList }">
-  					<c:if test="${t.code_value=='00202' }">
-  						도착점 ▷▷ <img src="publictransport/${t.pt_img }">&nbsp;${t.pt_station }<br>
-  						<img src="/detailCourseImg/disArrow.png"> ${t.pt_distance }km&nbsp;	
-  						<img src="/detailCourseImg/run.png"><fmt:formatNumber value="${t.pt_distance/5*60+1 }" pattern=".0" />분&nbsp;&nbsp;
-  						<img src="/detailCourseImg/bicycle.png">&nbsp;<fmt:formatNumber value="${t.pt_distance/20*60+1 }" pattern=".0" />분
-  						<br><br>
-  					</c:if>
-  				</c:forEach>
-  				</div>
-  				<div id="PEmap" style=" border: solid 1px black; height: 230px;width: 1px%;">
-  				</div>
-  			</div>
-  		</div>
-  	 	
-  	<!-- <div id="addInfo">
-  			<div style="border-bottom: solid 1px gray;" id="addInfoTitle"><img src="/detailCourseImg/food.png"> 맛집-오라pick</div>
-  			<c:forEach var="f" items="${fList }">
-  				<c:if test='${f.food_photo != null && f.food_photo.size() != 0}'>
-		  				<div class="foodBox" val="/detailFood?c_no=${f.c_no }&food_no=${f.food_no }" style="background-image: url('food/${f.food_photo.get(0).fp_name}'); background-size: cover;cursor: pointer; cursor: hand;">
-		  					<div class="foodBoxName"><span>${f.food_name }</span></div> 				
-	  					</div>		
-  				</c:if>
-  			</c:forEach>
-  		</div>-->
-  		<div id="addInfo">
-  			<div style="border-bottom: solid 1px gray;" id="addInfoTitle"><img src="/detailCourseImg/review.png">후기</div>
-  		</div>
-  	</section>
-  	
-  	<div id="clear"></div>
-<jsp:include page="footer.jsp"/>
+  	<footer class="ftco-footer ftco-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Ecoverde</h2>
+              <p>Far far away, behind the word mountains, far from the countries.</p>
+              <ul class="ftco-footer-social list-unstyled mt-5">
+                <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="fa fa-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">Community</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Search Properties</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>For Agents</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Reviews</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>FAQs</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">About Us</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Our Story</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Meet the team</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+             <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Company</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>About Us</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Press</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Contact</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon fa fa-map"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+	                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929 210</span></a></li>
+	                <li><a href="#"><span class="icon fa fa-envelope pr-4"></span><span class="text">info@yourdomain.com</span></a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+	
+            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+  <script src="/resources/js/jquery.min.js"></script>
+  <script src="/resources/js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="/resources/js/popper.min.js"></script>
+  <script src="/resources/js/bootstrap.min.js"></script>
+  <script src="/resources/js/jquery.easing.1.3.js"></script>
+  <script src="/resources/js/jquery.waypoints.min.js"></script>
+  <script src="/resources/js/jquery.stellar.min.js"></script>
+  <script src="/resources/js/owl.carousel.min.js"></script>
+  <script src="/resources/js/jquery.magnific-popup.min.js"></script>
+  <script src="/resources/js/jquery.animateNumber.min.js"></script>
+  <script src="/resources/js/scrollax.min.js"></script>
+  <script src="/resources/js/google-map.js"></script>
+  <script src="/resources/js/main.js"></script>   
 </body>
 </html>

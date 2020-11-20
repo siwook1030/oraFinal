@@ -176,7 +176,7 @@ input, button, select, textarea {
     z-index: 3;
 }
 
-.icon {
+.trackIcon {
     position: absolute;
     left: 6px;
     top: 9px;
@@ -216,7 +216,7 @@ input, button, select, textarea {
 </style>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="/js/durunubiStyle.min.css"></script>
+
 <script type="text/javascript">
 window.onload = function(){
 
@@ -264,7 +264,7 @@ function MarkerTracker(map, target) {
 
     // 내부 아이콘
     const icon = document.createElement('div');
-    icon.className = 'icon';
+    icon.className = 'trackIcon';
 
     // 외부에 있는 target의 위치에 따라 회전하는 말풍선 모양의 엘리먼트
     const balloon = document.createElement('div');
@@ -1307,22 +1307,43 @@ function MarkerTracker(map, target) {
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-		<div class="container">
-			<a class="navbar-brand" href="/mainPage"><img src='/headerImg/logo.png' height="100"></a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="oi oi-menu"></span> Menu
-			</button>
-			<div class="collapse navbar-collapse" id="ftco-nav">
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
-					<li class="nav-item active"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
-					<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
-					<li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
-					<li class="nav-item"><a href="" class="nav-link">라이딩 정보</a></li>
-				</ul>
-			</div>
-		</div>
-     </nav>
+      <div class="container">
+         <a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
+        <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
+        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="oi oi-menu"></span> Menu
+            </button>
+         
+         <div class="collapse navbar-collapse" id="ftco-nav">
+              <ul class="navbar-nav ml-auto">
+               <c:choose>
+                  <c:when test="${m == null }">
+                     <li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
+                     <li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
+                  </c:when>
+                  <c:when test="${m != null }">
+                     <li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
+                     <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
+                     <li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+                  </c:when>
+               </c:choose>
+            </ul>
+         </div>      
+
+         <div class="collapse navbar-collapse" id="ftco-nav">
+           <ul class="navbar-nav ml-auto">
+             <li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
+             <li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
+             <li class="nav-item active"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
+             <li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
+             <li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+             <li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
+             <!-- <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>-->
+           </ul>
+         </div>
+       </div>
+   </nav>
     <!-- END nav -->
 	<section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
@@ -1597,8 +1618,8 @@ function MarkerTracker(map, target) {
 
   <!-- loader -->
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
-
-  <script src="/resources/js/jquery.min.js"></script>
+ 
+   <script src="/resources/js/jquery.min.js"></script>
   <script src="/resources/js/jquery-migrate-3.0.1.min.js"></script>
   <script src="/resources/js/popper.min.js"></script>
   <script src="/resources/js/bootstrap.min.js"></script>
@@ -1609,6 +1630,7 @@ function MarkerTracker(map, target) {
   <script src="/resources/js/jquery.magnific-popup.min.js"></script>
   <script src="/resources/js/jquery.animateNumber.min.js"></script>
   <script src="/resources/js/scrollax.min.js"></script>
+  <script src="/resources/js/google-map.js"></script>
   <script src="/resources/js/main.js"></script>   
   </body>
 </html>
