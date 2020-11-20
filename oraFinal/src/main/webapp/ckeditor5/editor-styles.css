@@ -35,9 +35,9 @@
 
 /* During "Saving" display spinner and change content of label. */
 #snippet-autosave-status.busy #snippet-autosave-status_spinner-label::after  {
-	content: 'SAVING';
+	content: 'AUTO SAVING';
 	color: red;
-	width: 80px;
+	width: 200px;
 	display: inline-block;
 	margin-right: var(--ck-spacing-medium);
 }
