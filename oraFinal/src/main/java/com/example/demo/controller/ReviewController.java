@@ -9,6 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.sql.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 
@@ -342,12 +343,22 @@ public class ReviewController {
 	// ckeditor image를 사용자가 선택해서 delete할 경우
 	@RequestMapping(value = "/reviewImageDelete", produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public void reviewImageDelete(String url, HttpServletRequest request) {
+	public void reviewImageDelete(String[] urls, HttpServletRequest request) {
+		// 수정하다가 취소할 경우 사진이 여러개라면 모두 삭제하기 위해 배열로 받아서 처리한다.
 		String uploadFolder = request.getHeader("uploadFolder");
-		String fname = url.substring(url.lastIndexOf("/")+1);
 		String path = request.getServletContext().getRealPath("/");
-		File file = new File(path + "/"+uploadFolder+"/" + fname);
-		file.delete();
+		for(String url : urls) {
+			String fname = url.substring(url.lastIndexOf("/")+1);
+			String decodeResult = "";
+			try {
+				decodeResult = URLDecoder.decode(fname, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			File file = new File(path + "/"+uploadFolder+"/" + decodeResult);
+			file.delete();
+		}
 	}
 	// 사용자가 예전에 작성하던 게시글이 없을 경우 insert문으로 empty record생성. 그래야만 autosave로 update 가능(insert하기전에 update가 불가능하기 때문)
 	@RequestMapping(value = "/createReviewTempRecord", produces = "application/json;charset=utf-8")

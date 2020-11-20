@@ -12,6 +12,12 @@ section {
 	width: 1000px;
 	text-align: left;
 }
+#submitWrap {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+}
+
 </style>
 <link rel="stylesheet" type="text/css" href="/ckeditor5/editor-styles.css">
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -148,7 +154,7 @@ $(document).ready(function(){
 					if(isChanged) {
 						deleted_url = current_urls[i];
 						//console.log("삭제된URL:"+deleted_url);
-						imageDelete(deleted_url);
+						imageDelete(deleted_url, true);
 						break;
 					}
 				}
@@ -166,27 +172,34 @@ $(document).ready(function(){
 	} );
 	
 	$("#inputInsert").click(function(){		// 게시글 수정버튼 누르면 image src배열정보 전달. 이것을 토대로 review_file table에 record등록.
-		let $image_urls = $("<input>").attr({
-			type: "hidden",
-			name: "image_urls",
-			value: current_urls
-		});
-		$(this).parent("form").append($image_urls);
+		$("#image_urls").attr("value", current_urls);
 	});
 
+	$("#btnCancle").click(function(){
+		// input type submit이 아닌 그냥 button이어도 누르면 submit해버린다. 그래서 기본이벤트 삭제처리함.
+		event.preventDefault();
+		imageDelete(current_urls, false);
+		location.href = "/detailReview?r_no=${rvo.r_no }";
+	});
 	
 });
 
 // 사용자가 insert한 이미지 삭제 시 비동기 삭제처리를 위한 함수
-function imageDelete(url){
+function imageDelete(urls, async){
 	$.ajax({
 		url: "/reviewImageDelete",
 		beforeSend : function(xhr){
-            xhr.setRequestHeader("uploadFolder", "review_temp");
+            xhr.setRequestHeader("uploadFolder", "review_temp");	// 삭제할 파일위치 정보전달
         },
-		data: {url: url},
-		success: function(data){
-
+        method: "post",
+    	// string배열 전송용도. default인 false로 보내면 urls[] 로 보내서 컨트롤러의 String[] urls에서 받지못해서 null이 뜬다.
+        traditional: true,
+        // 에디터에서 사용자가 직접삭제할때는 비동기방식, 취소버튼으로 나갈때는 동기방식
+        // 취소버튼으로 나갈때 비동기방식으로 하면 파일이 삭제되기전에 페이지를 나가서 처리가 되지 않는다.		
+        async: async,
+		data: {urls: urls},
+		success: function(res){
+			
 		}
 	});
 }
@@ -233,9 +246,13 @@ function checkImageUrls(editor) {
 		<hr><br>
 		<!-- 글내용 -->
 		<textarea name="r_content" id="editor"></textarea>
+		<!-- 현재 editor에 있는 img src들의 배열 전달 -->
+		<input type="hidden" id="image_urls" name="image_urls">
 		<input type="hidden" name="r_no" value="${rvo.r_no }">
-		<input type="submit" value="수정" id="inputInsert">
-		<input type="reset" value="취소">
+		<div id="submitWrap">
+			<input type="submit" value="수정" id="inputInsert">
+			<button id="btnCancle">취소</button>
+		</div>
 	</form>
 	
 </section>
