@@ -249,6 +249,12 @@
       color: #fff !important;
     }
 
+    margin-bottom: 20px;
+
+    text-align: left;
+    width:440px;
+    height:40px;
+    }
 
     . new_input {
       display: block;
@@ -260,11 +266,11 @@
       padding-bottom: 0.375rem;
       padding-left: 0.75rem;
     }
+
     .phone_input {
       < !--새전화번호입력-->padding-right: 50px;
       font-size: 14px;
     }
-
 
 </style>
 </head>
@@ -289,7 +295,7 @@
                 <a href="/myPageSaveCourse">찜 목록 <i class="fa fa-chevron-right"></i></a>
                 <a href="/myPageMyCourse">내 작성 코스<i class="fa fa-chevron-right"></i></a>
                 <a href="/myPageListReview">내 작성 후기<i class="fa fa-chevron-right"></i></a>
-                <a href="myPageListMeeting">내 작성 번개<i class="fa fa-chevron-right"></i></a>
+                <a href="listMeeting?id=${m.id}">내 작성 번개<i class="fa fa-chevron-right"></i></a>
                 <a href="/myPageMyRank">랭킹</a>
               </span>
             </p>
@@ -300,17 +306,18 @@
     <section class="ftco-section contact-section">
       <div class="container">
         <div class="row block-9 justify-content-center mb-5">
+
           <div class="colmd8 mb-md-5 bg-light p-5 contact-form">
             <form action="#" id="update">
               <h2 class="text-center">회원정보수정</h2>
               <div class="form-group">
                 <div id=modify class="hidden">이름</div>
                 <input type="text"  class=" hidden form-control form-group " disabled="disabled" value="${m.name} " />
-
               </div>
               <div id=modify class="hidden">닉네임</div>
               <div class="form-group">
               </div>
+              
               <input class="updateMember form-control hidden" style="visibility: hidden ;focus {border:2px red solid}" placeholder="바꿀 닉네임을 입력하세요" name="nickName" />
 
               <div id=modify class="hidden">전화번호</div>
@@ -344,7 +351,6 @@
                 <button id=btnUpdate value="수정하기" class="btn form-control form-group btn-primary py-3 px-5 "> 수정하기</button>
                 <button id="btnUpdate2" style="visibility: hidden" class="btn form-group form-control btn-primary py-3 px-5">수정완료</button>
               </div>
-
           </div>
         </div>
       </div>

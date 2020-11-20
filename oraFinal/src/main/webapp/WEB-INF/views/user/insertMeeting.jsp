@@ -16,12 +16,15 @@
     <link rel="stylesheet" href="/resources/css/flaticon.css">
     <link rel="stylesheet" href="/resources/css/style.css">
 <style type="text/css">
+	.nav-item .nav-link { /* nava 로그인 */
+		font-size: 15px;
+	}
 	/* input, select, textarea 태그설정 */
 	input, select { border: none; background-color: transparent; width: 55%; text-align: center; }
 	textarea:focus, input:focus { outline: none; }
 	
 	/* 등록, 취소 버튼 */
-	.btn { color: white; padding: 7px 17px; margin-left: 3px; align-content: center; font-size: 19px; border: none; cursor: pointer; }
+	.btn { color: white; padding: 7px 17px; margin: 3px 1px; font-size: 19px; border: none; cursor: pointer; }
 	#btnDiv { clear: both; text-align: center; padding-top: 40px; }
 	
 	/* 미팅장소 */
@@ -136,7 +139,7 @@
 		}
 			
 		$("#thumbnails").on("click", ".close", function(e) {
-			const $target = $(e.target);
+			const $target = $(e.target.parentNode);
 			const idx = $target.attr('data-idx');
 			uploadFiles[idx].upload = 'disable'; //삭제된 항목은 업로드하지 않기 위해 플래그 생성
 			$target.parent().remove(); //프리뷰 삭제
@@ -423,13 +426,6 @@
 			});
 		});
 
-		function photoOff(obj) {
-			obj.src="../meetingImg/galleryOff.png";
-		}
-		
-		function photoOn(obj) {
-			obj.src="../meetingImg/galleryOn.png";
-		}
 
 		/* 사진등록버튼 */
 		const gallery = document.getElementById('gallery');
@@ -452,16 +448,21 @@
 					<span class="oi oi-menu"></span> Menu
 				</button>
 				
-<%-- 		<div id="login">
-			<c:choose>
-				<c:when test="${m == null }">
-					<a href="/login">로그인</a>&nbsp;&nbsp;&nbsp;<a href="/signUp">회원가입</a>
-				</c:when>
-				<c:when test="${m != null }">
-					${m.nickName } 라이더! &nbsp;&nbsp;<a href="/logout">로그아웃</a>&nbsp;&nbsp;<a href="/myPage?id=${m.id}">마이페이지</a>
-				</c:when>
-			</c:choose>
-		</div> --%>
+			<div class="collapse navbar-collapse" id="ftco-nav">
+		        <ul class="navbar-nav ml-auto">
+					<c:choose>
+						<c:when test="${m == null }">
+							<li class="nav-item"><a href="/login" class="nav-link">로그인</a></li>
+							<li class="nav-item"><a href="/signUp" class="nav-link">회원가입</a></li>
+						</c:when>
+						<c:when test="${m != null }">
+							<li class="nav-item"><a class="nav-link">${m.nickName } 라이더님</a></li>
+							<li class="nav-item"><a href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
+							<li class="nav-item"><a href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+						</c:when>
+					</c:choose>
+				</ul>
+			</div>
 
 	     
 				<div class="collapse navbar-collapse" id="ftco-nav">
@@ -498,7 +499,7 @@
 					<div class="container">
 						<div class="row justify-content-center pb-5">
 							<div class="col-md-12 heading-section text-center ftco-animate">
-								<span class="subheading"><input type="text" name="m_no" id="m_no" value="${m_no }" style="width: 20px;" class="subheading"></span>
+								<span class="subheading">Today's Riding</span>
 								<h2 class="mb-4"><input type="text" placeholder="제목을 입력해주세요." name="m_title" id="m_title"></h2>
 							</div>
 						</div>
@@ -567,8 +568,8 @@
 				</div>
 
 				<div id="btnDiv">
-					<button type="button" class="btn" id="btnAdd" style="background-color: #eccb6a">등록</button>
-					<button type="reset" class="btn" id="btnCancel" style="background-color: #d0a183">취소</button>
+					<button type="button" class="btn" style="background-color: #eccb6a">등록</button>
+					<button type="reset" class="btn" style="background-color: #d0a183">취소</button>
 				</div>
 			</form>
 		</div>

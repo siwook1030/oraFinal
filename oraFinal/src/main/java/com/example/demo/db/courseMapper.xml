@@ -145,6 +145,10 @@
 	<delete id="deleteMyCourse">
 		DELETE SAVE_COURSE WHERE ID=#{id} AND C_NO=#{c_no}
 	</delete>
+	<!-- 코스삭제시 찜코스 전체삭제 -->
+	<delete id="deleteSaveCourse">
+		DELETE SAVE_COURSE WHERE C_NO=#{c_no}
+	</delete>
 	
 	<!-- 찜코스 추가 -->
 	<insert id="addSaveCourse" parameterType="map">
