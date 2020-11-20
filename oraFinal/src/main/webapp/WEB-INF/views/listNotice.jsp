@@ -213,7 +213,7 @@ window.onload = function(){
 		rowDFlex.innerHTML="";
 		list.forEach(function(n, i) {
 			let listImg = '<img id=listImg src="/noticeImg/'+n.nf[0].nf_savename+'"';
-			
+			const contentImg;
 		}
 	}
 
