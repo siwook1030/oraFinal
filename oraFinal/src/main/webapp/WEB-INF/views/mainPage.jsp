@@ -349,8 +349,10 @@ window.onload = function(){
 	          <li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
 	          <li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
 	          <li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+
 	          <li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
 	          <!-- <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>-->
+
 	        </ul>
 	      </div>
 	    </div>
