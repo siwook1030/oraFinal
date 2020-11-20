@@ -54,6 +54,7 @@ public class CourseController {
 		System.out.println("경도 : "+longitude);
 		System.out.println("거리 : "+distance);
 		System.out.println("시간 : "+time);
+		System.out.println("풍경 : " + view);
 		int minDis = 0;
 		if(distance > 0) { 
 			 minDis = 20;

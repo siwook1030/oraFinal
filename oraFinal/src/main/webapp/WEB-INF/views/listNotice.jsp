@@ -127,6 +127,7 @@ span {
 <script src="/js/loginCheck.js"></script>
 <script type="text/javascript">
 window.onload = function(){
+	console.log("asdasd");
 	const checkM = checkLogin(); // 로그인이 되어있는 상태인지 체크한다
 	console.log(checkM);
 	
@@ -266,7 +267,6 @@ window.onload = function(){
 </script>
 </head>
 <body>
-	<jsp:include page="header.jsp"/>
    
 	<a href="listNotice"><h2>공지사항</h2></a>
 	<section>
@@ -318,6 +318,5 @@ window.onload = function(){
 		
 	</section>
 	<br>
-	<jsp:include page="footer.jsp"/>
 </body>
 </html>

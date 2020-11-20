@@ -423,13 +423,6 @@
 			});
 		});
 
-		function photoOff(obj) {
-			obj.src="../meetingImg/galleryOff.png";
-		}
-		
-		function photoOn(obj) {
-			obj.src="../meetingImg/galleryOn.png";
-		}
 
 		/* 사진등록버튼 */
 		const gallery = document.getElementById('gallery');
