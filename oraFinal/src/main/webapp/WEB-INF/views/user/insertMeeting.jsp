@@ -33,6 +33,9 @@
 	.selectMtAll { display: flex; }
 	.selectMtAll .selectMt { width: 40%; border: 1px #D5D5D5 solid; border-radius: 10px; margin: 20px; padding: 10px; text-align: center; }
 	.mtIcon { width: 40px; margin: 10px; }
+/* 	.selectMt input, #selectCourse {
+		width: 70%;
+	} */
 	
 	/* 제목 입력 */
 	#m_title { text-align: center; }
@@ -443,52 +446,62 @@
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 		<div class="container">
-			<a class="navbar-brand" href="/mainPage">오늘의 라이딩</a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="oi oi-menu"></span> Menu
-				</button>
-				
+			<a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
+				<span style="font-weight: bold;">
+					<font color="#45A3F5">오</font>
+					<font color="#bae4f0">늘</font>
+					<font color="#88bea6">의</font>
+					<font color="#eccb6a">라</font>
+					<font color="#d0a183">이</font>
+					<font color="#c8572d">딩
+				</span>
+			</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="oi oi-menu"></span> Menu
+            </button>
+         
 			<div class="collapse navbar-collapse" id="ftco-nav">
-		        <ul class="navbar-nav ml-auto">
+				<ul class="navbar-nav ml-auto">
 					<c:choose>
 						<c:when test="${m == null }">
-							<li class="nav-item"><a href="/login" class="nav-link">로그인</a></li>
-							<li class="nav-item"><a href="/signUp" class="nav-link">회원가입</a></li>
+							<li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
+							<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
 						</c:when>
 						<c:when test="${m != null }">
-							<li class="nav-item"><a class="nav-link">${m.nickName } 라이더님</a></li>
-							<li class="nav-item"><a href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
-							<li class="nav-item"><a href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+							<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
+							<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
+							<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
 						</c:when>
 					</c:choose>
 				</ul>
-			</div>
+			</div> 
 
-	     
-				<div class="collapse navbar-collapse" id="ftco-nav">
-					<ul class="navbar-nav ml-auto">
-						<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
-						<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
-						<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
-						<li class="nav-item active"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
-						<li class="nav-item"><a href="" class="nav-link">라이딩 정보</a></li>
-					</ul>
-				</div>
+			<div class="collapse navbar-collapse" id="ftco-nav">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
+					<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
+					<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
+					<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
+					<li class="nav-item active"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+					<li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
+				</ul>
 			</div>
-     	</nav>
+		</div>
+    </nav>
     <!-- END nav -->
     
     <section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
-          <div class="col-md-9 ftco-animate pb-0 text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="fa fa-chevron-right"></i></a></span> <span class="mr-2"><a href="blog.html">번개 라이딩 <i class="fa fa-chevron-right"></i></a></span> <span>번개 라이딩 등록 <i class="fa fa-chevron-right"></i></span></p>
-            <h1 class="mb-3 bread">번개 라이딩 등록</h1>
-          </div>
-        </div>
-      </div>
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
+				<div class="col-md-9 ftco-animate pb-0 text-center">
+					<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a></span><span class="mr-2"><a href="/listMeeting">번개 라이딩 <i class="fa fa-chevron-right"></i></a></span> <span>번개 라이딩 등록 <i class="fa fa-chevron-right"></i></span></p>
+					<h1 class="mb-3 bread">번개 라이딩 등록</h1>
+				</div>
+			</div>
+		</div>
     </section>
+    
     <section class="ftco-section">
 		<div class="container">
 			<!-- 글등록 -->
