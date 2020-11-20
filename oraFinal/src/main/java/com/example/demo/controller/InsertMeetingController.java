@@ -66,7 +66,7 @@ public class InsertMeetingController {
 		System.out.println("***map : "+map);
 		System.out.println("***uploadMtFiles : "+uploadMtFiles);
 		
-		int m_no = Integer.parseInt((String)map.get("m_no"));
+		int m_no = mdao.NextMNum();
 		int c_no = Integer.parseInt((String)map.get("c_no"));
 		String id = (String)map.get("id");
 		String m_title = (String)map.get("m_title");
