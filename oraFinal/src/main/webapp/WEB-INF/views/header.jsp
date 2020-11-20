@@ -8,7 +8,6 @@
 <title>Insert title here</title>
 <style type="text/css">
 * {
-
 	margin: 0px;
 	padding: 0px;
 
@@ -37,7 +36,6 @@ li{
    margin: 0 20px 0 20px;
 }
 #login {
-
 	font-size: 13px;
 	text-align: right;
 	margin: 0 20px 0 0;
@@ -45,7 +43,6 @@ li{
 a{
 	text-decoration: none;
 	color: black;
-
 }
 </style>
 </head>

@@ -6,17 +6,32 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/resources/css/animate.css"> 
+    <link rel="stylesheet" href="/resources/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/resources/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/resources/css/magnific-popup.css"> 
+    <link rel="stylesheet" href="/resources/css/flaticon.css">
+    <link rel="stylesheet" href="/resources/css/style.css">
+  </head>
 <style type="text/css">
-section {
-	margin: 0 auto;
-	width: 1000px;
-	text-align: left;
-}
-#submitWrap {
-	flex-grow: 1;
-	flex-basis: 80%;
-	text-align: right;
-}
+	/* 제목 입력 */
+	#r_title { text-align: center; }
+	/* input, select, textarea 태그설정 */
+	input, select { border: none; background-color: transparent; width: 55%; text-align: center; }
+	textarea:focus, input:focus { outline: none; }
+	#c_no { width: auto; }
+	/* 등록, 취소 버튼 */
+ 	.btn { color: white; padding: 7px 17px; margin: 3px 1px; font-size: 19px; border: none; cursor: pointer; width: auto; }
+ 	/* #btnDiv { clear: both; text-align: center; padding-top: 40px; text-align: center; } */
+  #submitWrap {
+    flex-grow: 1;
+    flex-basis: 80%;
+    text-align: right;
+  }
+
 </style>
 <link rel="stylesheet" type="text/css" href="/ckeditor5/editor-styles.css">
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -257,49 +272,189 @@ function displayStatus( editor ) {
 </script>
 </head>
 <body>
-
-<jsp:include page="../header.jsp"/>
-
-<section>
-	<br>
-	<p style="font-size: 20px">후기 게시판&nbsp;&gt;&nbsp;<font color="#c85725">게시글 등록</font></p>
-	<p style="font-size: 15px">라이딩 경험을 공유해요.</p>
-
-  	<!-- 글등록 -->
-	<br><br>
-	
-	<form action="/user/insertReview" method="post">
-	제목 <input type="text" name="r_title" id="r_title" size="50" required="required"><br><br>
-		
-		<div>
-			코스 
-			<select name="c_no" id="c_no">
-				<c:forEach var="vo" items="${list }">
-					<option value="${vo.c_no }">${vo.c_name }</option>
-				</c:forEach>
-			</select>
-		</div>
-		<br><br>
-		<hr><br>
-		<!-- 글내용 -->
-		<textarea name="r_content" id="editor"></textarea>
-		<!-- 현재 editor에 있는 img src들의 배열 전달 -->
-		<input type="hidden" id="image_urls" name="image_urls">
-		<!-- autosave 상태표시창 -->
-		<div id="snippet-autosave-status">
-			<div id="snippet-autosave-status_label">Status:</div>
-			<div id="snippet-autosave-status_spinner">
-				<span id="snippet-autosave-status_spinner-label"></span>
-				<span id="snippet-autosave-status_spinner-loader"></span>
+	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+		<div class="container">
+			<a class="navbar-brand" href="/mainPage">오늘의 라이딩</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="oi oi-menu"></span> Menu
+				</button>
+				
+			<div class="collapse navbar-collapse" id="ftco-nav">
+		        <ul class="navbar-nav ml-auto">
+					<c:choose>
+						<c:when test="${m == null }">
+							<li class="nav-item"><a href="/login" class="nav-link">로그인</a></li>
+							<li class="nav-item"><a href="/signUp" class="nav-link">회원가입</a></li>
+						</c:when>
+						<c:when test="${m != null }">
+							<li class="nav-item"><a class="nav-link">${m.nickName } 라이더님</a></li>
+							<li class="nav-item"><a href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
+							<li class="nav-item"><a href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+						</c:when>
+					</c:choose>
+				</ul>
 			</div>
-			<div id="submitWrap">
-				<input type="submit" value="등록" id="inputInsert">
-				<button id="btnCancle">취소</button>
+
+	     
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
+						<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
+						<li class="nav-item active"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
+						<li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+						<li class="nav-item"><a href="" class="nav-link">라이딩 정보</a></li>
+					</ul>
+				</div>
 			</div>
+     	</nav>
+    <!-- END nav -->
+    
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate pb-0 text-center">
+          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="fa fa-chevron-right"></i></a></span> <span>후기 게시판 <i class="fa fa-chevron-right"></i></span></p>
+            <h1 class="mb-3 bread">후기 게시판</h1>
+          </div>
+        </div>
+      </div>
+    </section>
+
+	<section class="ftco-section ftco-agent">
+    	<div class="container">
+    	
+    		<!-- 글 등록 -->
+			<form action="/user/insertReview" method="post">
+		    	<div class="row justify-content-center pb-5">
+					<div class="col-md-12 heading-section text-center ftco-animate">
+			          	<span class="subheading">Today's Riding</span>
+			          	<!-- 제목 -->
+			            <h2 class="mb-4"><input type="text" name="r_title" id="r_title" placeholder="제목을 입력해주세요." required="required"></h2>
+			          </div>
+		        </div>
+		        
+				<!-- 코스선택 -->
+				<div>
+					<img src="/meetingImg/ridingRoute.png" width="40px;" style="padding-bottom: 10px;">
+					<select name="c_no" id="c_no">
+						<c:forEach var="vo" items="${list }">
+							<option value="${vo.c_no }">${vo.c_name }</option>
+						</c:forEach>
+					</select>
+				</div>
+				
+        <br><br>
+        <hr><br>
+        <!-- 글내용 -->
+        <textarea name="r_content" id="editor"></textarea>
+        <!-- 현재 editor에 있는 img src들의 배열 전달 -->
+        <input type="hidden" id="image_urls" name="image_urls">
+        <!-- autosave 상태표시창 -->
+        <div id="snippet-autosave-status">
+          <div id="snippet-autosave-status_label">Status:</div>
+          <div id="snippet-autosave-status_spinner">
+            <span id="snippet-autosave-status_spinner-label"></span>
+            <span id="snippet-autosave-status_spinner-loader"></span>
+          </div>
+          <div id="submitWrap">
+            <input type="submit" value="등록" id="inputInsert">
+            <button id="btnCancle">취소</button>
+          </div>
+        </div>
+      </form>
 		</div>
-	</form>
+    
+
+	</section>
+<footer class="ftco-footer ftco-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Ecoverde</h2>
+              <p>Far far away, behind the word mountains, far from the countries.</p>
+              <ul class="ftco-footer-social list-unstyled mt-5">
+                <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="fa fa-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">Community</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Search Properties</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>For Agents</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Reviews</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>FAQs</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">About Us</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Our Story</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Meet the team</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+             <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Company</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>About Us</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Press</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Contact</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon fa fa-map"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+	                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929 210</span></a></li>
+	                <li><a href="#"><span class="icon fa fa-envelope pr-4"></span><span class="text">info@yourdomain.com</span></a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
 	
-</section>
-<jsp:include page="../footer.jsp"/>
+            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    
+  
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+  <script src="/resources/js/jquery.min.js"></script>
+  <script src="/resources/js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="/resources/js/popper.min.js"></script>
+  <script src="/resources/js/bootstrap.min.js"></script>
+  <script src="/resources/js/jquery.easing.1.3.js"></script>
+  <script src="/resources/js/jquery.waypoints.min.js"></script>
+  <script src="/resources/js/jquery.stellar.min.js"></script>
+  <script src="/resources/js/owl.carousel.min.js"></script>
+  <script src="/resources/js/jquery.magnific-popup.min.js"></script>
+  <script src="/resources/js/jquery.animateNumber.min.js"></script>
+  <script src="/resources/js/scrollax.min.js"></script>
+  <script src="/resources/js/main.js"></script>
+    
 </body>
 </html>
