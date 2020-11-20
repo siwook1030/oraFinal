@@ -5,7 +5,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>코스 수정</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/resources/css/animate.css">
+	<link rel="stylesheet" href="/resources/css/owl.carousel.min.css">
+	<link rel="stylesheet" href="/resources/css/owl.theme.default.min.css">
+	<link rel="stylesheet" href="/resources/css/magnific-popup.css">
+	<link rel="stylesheet" href="/resources/css/flaticon.css">
+	<link rel="stylesheet" href="/resources/css/style.css">
 <style type="text/css">
 
  /*매인섹션 시작----------------  */
@@ -26,6 +35,10 @@
 	font-weight: bold; 
 	
 	} 
+	
+	#courseForm {
+		width: 100%;
+	}
  
  #cTitle{
 	font-size: 140%;
@@ -41,7 +54,8 @@
     .drag-over { background-color: #CFF768; outline-style: dotted; outline-offset:-20px; }
 	.thumb { width:100px; height:100px; padding:5px; float:left; }
 	.thumb > img { width:100%; height: 100%; }
-	.thumb > .close { position:absolute; background-color:red; cursor:pointer; }
+	.thumb > .close { position:absolute; cursor:pointer; background: rgba(255,255,255,0.8); }
+	.x { width: 15px; height: 15px; float: left; }
 .map_wrap, .map_wrap * {margin:0; padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
 .map_wrap {position:relative;width:100%;height:500px;}	
 .placeinfo_wrap {position:absolute;bottom:28px;left:-150px;width:300px;}
@@ -77,7 +91,9 @@
  	.rankView img { width: 35px; align: center; padding-bottom: 3px; }
  	input { padding: 4px 0; margin-bottom: 3px; border: none; }
  	/* 첨부파일버튼 */
- 	.filebox label { margin: 3px 0; padding: 5px 15px; border: 1px solid #8C8C8C; color: #747474; font-size: 15px; vertical-align: middel; background-color: white; cursor: pointer; text-align: center; }
+ 	.readFilebox label {position:relative; right:30px; margin: 3px 0; padding: 5px 15px;  color: white; font-size: 15px; vertical-align: middel; background-color: #88BEA6; cursor: pointer; text-align: center; }
+	.readFilebox input[type="file"] { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; border: 0; }
+ 	.filebox label { position:relative; bottom:25px; left:20px;  color: #747474; font-size: 15px; vertical-align: middel; background-color: white; cursor: pointer; text-align: center; }
 	.filebox input[type="file"] { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; border: 0; }
 	#courseNameCnt { position: relative; left: 820px; bottom: 55px; }
 	#wordsCnt { position: relative; left: 790px; bottom: 55px; font-size: 13px; }
@@ -460,7 +476,7 @@ window.onload = function(){
 		// 되돌릴 수 있다면 undo 버튼을 활성화 시킵니다 
 		if (manager3.undoable()) {
 			undoBtn.disabled = false;
-			undoBtn.className = "";
+			undoBtn.className = "btnOption";
 		} else { // 아니면 undo 버튼을 비활성화 시킵니다 
 			undoBtn.disabled = true;
 			undoBtn.className = "disabled";
@@ -469,7 +485,7 @@ window.onload = function(){
 		// 취소할 수 있다면 redo 버튼을 활성화 시킵니다 
 		if (manager3.redoable()) {
 			redoBtn.disabled = false;
-			redoBtn.className = "";
+			redoBtn.className = "btnOption";
 		} else { // 아니면 redo 버튼을 비활성화 시킵니다 
 			redoBtn.disabled = true;
 			redoBtn.className = "disabled";
@@ -690,7 +706,7 @@ window.onload = function(){
 		// 되돌릴 수 있다면 undo 버튼을 활성화 시킵니다 
 		if (managerPS.undoable()) {
 			undoBtn.disabled = false;
-			undoBtn.className = "";
+			undoBtn.className = "btnOption";
 		} else { // 아니면 undo 버튼을 비활성화 시킵니다 
 			undoBtn.disabled = true;
 			undoBtn.className = "disabled";
@@ -699,7 +715,7 @@ window.onload = function(){
 		// 취소할 수 있다면 redo 버튼을 활성화 시킵니다 
 		if (managerPS.redoable()) {
 			redoBtn.disabled = false;
-			redoBtn.className = "";
+			redoBtn.className = "btnOption";
 		} else { // 아니면 redo 버튼을 비활성화 시킵니다 
 			redoBtn.disabled = true;
 			redoBtn.className = "disabled";
@@ -841,7 +857,7 @@ window.onload = function(){
 			// 되돌릴 수 있다면 undo 버튼을 활성화 시킵니다 
 			if (managerPE.undoable()) {
 				undoBtn.disabled = false;
-				undoBtn.className = "";
+				undoBtn.className = "btnOption";
 			} else { // 아니면 undo 버튼을 비활성화 시킵니다 
 				undoBtn.disabled = true;
 				undoBtn.className = "disabled";
@@ -850,7 +866,7 @@ window.onload = function(){
 			// 취소할 수 있다면 redo 버튼을 활성화 시킵니다 
 			if (managerPE.redoable()) {
 				redoBtn.disabled = false;
-				redoBtn.className = "";
+				redoBtn.className = "btnOption";
 			} else { // 아니면 redo 버튼을 비활성화 시킵니다 
 				redoBtn.disabled = true;
 				redoBtn.className = "disabled";
@@ -1042,6 +1058,7 @@ window.onload = function(){
 
         const chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
         chart.draw(data, options);
+        window.addEventListener("resize",drawAltitude,false);
       }
 //////////////////////////////////////////////////////// 파일드랍기능 구현
 	const photoReg = /(.*?)\/(jpg|jpeg|png|bmp)$/;
@@ -1096,7 +1113,7 @@ window.onload = function(){
 		reader.onload = (function(f, idx) {
 			return function(e) {
 				const div = '<div class="thumb"> \
-				<div class="close" data-idx="' + idx + '">X</div> \
+				<div class="close" data-idx="' + idx + '"><img class="x" src="../icons/x.png"/></div> \
 				<img src="' + e.target.result + '" title=""/> \
 				</div>';
 				$("#thumbnails").append(div);
@@ -1106,7 +1123,7 @@ window.onload = function(){
 	}
 
 	$("#thumbnails").on("click", ".close", function(e) {
-		const $target = $(e.target);
+		const $target = $(e.target.parentNode);
 		const idx = $target.attr('data-idx');
 		uploadFiles[idx].upload = 'disable'; //삭제된 항목은 업로드하지 않기 위해 플래그 생성
 		$target.parent().remove(); //프리뷰 삭제
@@ -1123,6 +1140,17 @@ window.onload = function(){
 		return cPhotoCnt;
 	}
 
+	/* 사진등록버튼 */
+	const gallery = document.getElementById('gallery');
+	gallery.addEventListener("mouseover", mouseOver);
+	gallery.addEventListener("mouseout", mouseOut);
+	function mouseOver() {
+		gallery.src="../meetingImg/galleryOn.png";
+	}
+	function mouseOut() {
+		gallery.src="../meetingImg/galleryOff.png";
+	}
+	
 	//----------------------------------------------------------------------------------------------- 무인자전거
 	kakao.maps.event.addListener(map, 'idle', removePlaceOveray);
 
@@ -1745,17 +1773,69 @@ window.onload = function(){
 </script>
 </head>
 <body>
-<jsp:include page="../header.jsp"/>
-<div id="clear"></div>
-<section>
-	<p style="font-size: 20px;"><a href="/user/makingCourse">오늘의 라이딩</a>&nbsp;&gt;&nbsp;<font color="#c85725">나만의 DIY 코스</font></p>
-	<p style="font-size: 15px; padding: 2px 0 30px;">나만의 코스를 만들어 공유해보세요.</p>
+	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+      <div class="container">
+         <a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
+        <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
+        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="oi oi-menu"></span> Menu
+            </button>
+         
+         <div class="collapse navbar-collapse" id="ftco-nav">
+              <ul class="navbar-nav ml-auto">
+               <c:choose>
+                  <c:when test="${m == null }">
+                     <li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
+                     <li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
+                  </c:when>
+                  <c:when test="${m != null }">
+                     <li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
+                     <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
+                     <li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+                  </c:when>
+               </c:choose>
+            </ul>
+         </div>      
+
+         <div class="collapse navbar-collapse" id="ftco-nav">
+           <ul class="navbar-nav ml-auto">
+             <li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
+             <li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
+             <li class="nav-item" ><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
+             <li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
+             <li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+             <li class="nav-item" active><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
+             <!-- <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>-->
+           </ul>
+         </div>
+       </div>
+   </nav>
+    <!-- END nav -->
+	<section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate pb-0 text-center">
+          	<p class="breadcrumbs"><span class="mr-2"><a href="#">라이딩 코스<i class="fa fa-chevron-right"></i></a></span> <span>코스 상세<i class="fa fa-chevron-right"></i></span></p>
+            <h1 class="mb-3 bread">코스 수정</h1>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="ftco-section ftco-property-details">
+      <div class="container">
+			<div class="col-md-12 heading-section text-center ftco-animate">
+     			<span class="subheading">코스를 수정합니다</span>
+     		</div>
 	
 	<div id="contents">
 		<form id="courseForm">
 			<input type="text" name="c_name"  id="courseName" maxlength="10" placeholder="나만의 코스에 이름을 붙여주세요.">
 			<span id="courseNameCnt"></span>
-			(수정전 코스명)<input type="text" id="oldCourseName" readonly="readonly">
+			<div>
+				<input type="text" id="oldCourseName" readonly="readonly">
+			</div>
 					
 			<!-- div 감싼 이유 물어보기 -->
 			<!-- <div id="detailMap">
@@ -1784,7 +1864,7 @@ window.onload = function(){
 	  		</div>
 	  		<!-- p지워도 되는지? -->
 			<p>
-				<div class="filebox" style="position: relative; left: 720px; z-index: 2;">
+				<div class="readFilebox" style="position: relative; left: 720px; z-index: 2;">
 					<label for="bikeFile">경로파일 불러오기</label>
 					<input type="file" value="경로파일" id="bikeFile"><br>
 				</div>
@@ -1795,7 +1875,8 @@ window.onload = function(){
 				    <button type="button" class="btnOption" id="polyC" >선</button>
 				    <button type="button" class="btnOption" id="backPolyC" class="disabled" disabled>선 되돌리기</button>
 				    <button type="button" class="btnOption" id="frontPolyC"  class="disabled" disabled>선 앞돌리기</button>
-				    <button type="button" class="btnOption" id="infoC" >가져오기</button><span id="fixC" val="y"></span> <br>
+				    <button type="button" class="btnOption" id="infoC" >가져오기</button><br>
+				     <span id="fixC" val="y" style="color: #d0a183; font-weight: bold;"></span>
 				</div>
 			</p>
 			
@@ -1866,7 +1947,7 @@ window.onload = function(){
 			
 			<!-- 선경로 숨겨도 되는지 물어보기 -->
 			<div style="display: none;">
-				<textarea rows="10" cols="80" id="line" name="c_line" readonly="readonly" style="border: none;"></textarea>
+				<textarea rows="10" cols="80" id="line" name="c_line" style="border: none;"></textarea>
 			</div>
 			
 			<!-- 코스 설명 -->
@@ -1882,7 +1963,7 @@ window.onload = function(){
 				</div>
 			</div><br>
 			<div class="filebox" style="position: relative; bottom: 90px; left: 770px;">
-				<label for="photoInput">파일등록</label>
+				<label for="photoInput"><img src="../meetingImg/galleryOff.png" title="사진등록" id="gallery" width="50px"/></label>
 				<input type="file" id="photoInput" multiple="multiple">
 			</div>
 				
@@ -1896,12 +1977,13 @@ window.onload = function(){
 				<button type="button" class="btnOption" id="polyPS" >선</button>
 				<button type="button" class="btnOption" id="backPolyPS" class="disabled" disabled>선 되돌리기</button>
 				<button type="button" class="btnOption" id="frontPolyPS" class="disabled" disabled>선 앞돌리기</button>
-				<button type="button" class="btnOption" id="infoPS" >가져오기</button><span id="fixPS" val="y"></span> <br>
+				<button type="button" class="btnOption" id="infoPS" >가져오기</button><br>
+				<span id="fixPS" val="y" style="color: #d0a183;; font-weight: bold;"></span>
 			</div>
 			<input type="hidden" id="pt_noPS" name="pt_noPS">
 			<!-- 대중교통위치 -->
-			<!-- 위도 --> <input type="hidden" id="latPS" name="pt_latitudePS" value="0" readonly="readonly">
-			<!-- 경도 --> <input type="hidden" id="lonPS" name="pt_longitudePS" value="0" readonly="readonly">
+			<!-- 위도 --> <input type="hidden" id="latPS" name="pt_latitudePS" value="0">
+			<!-- 경도 --> <input type="hidden" id="lonPS" name="pt_longitudePS" value="0">
 			거리 <input type="text" id="disPS" name="pt_distancePS" value="0" readonly="readonly">km<br>
 			<select id="sPT" name="pt_imgPS">
 				<option value="(입력안함)">--대중교통선택--</option>
@@ -1914,7 +1996,7 @@ window.onload = function(){
 			<br>
 			<!-- 대중교통출발 선경로 -->
 			<div style="display: none;">
-				<textarea rows="10" cols="80" id="linePS" name="pt_linePS" readonly="readonly"></textarea>
+				<textarea rows="10" cols="80" id="linePS" name="pt_linePS"></textarea>
 			</div>
 			<br><br><br>
 			
@@ -1930,12 +2012,13 @@ window.onload = function(){
 			    <button type="button" class="btnOption" id="polyPE" >선</button>
 			    <button type="button" class="btnOption" id="backPolyPE" class="disabled" disabled>선 되돌리기</button> <!-- disabled -->
 				<button type="button" class="btnOption" id="frontPolyPE" class="disabled" disabled>선 앞돌리기</button>
-				<button type="button" class="btnOption" id="infoPE" >가져오기</button><span id="fixPE" val="y"></span>
+				<button type="button" class="btnOption" id="infoPE" >가져오기</button><br>
+				<span id="fixPE" val="y" style="color: #d0a183;; font-weight: bold;"></span>
 			</div>
 			<input type="hidden" id="pt_noPE" name="pt_noPE">
 			<!-- 대중교통위치 --> 
-			<!-- 위도 --> <input type="hidden" id="latPE" name="pt_latitudePE" value="0" readonly="readonly">
-			<!-- 경도 --> <input type="hidden" id="lonPE" name="pt_longitudePE" value="0" readonly="readonly">
+			<!-- 위도 --> <input type="hidden" id="latPE" name="pt_latitudePE" value="0" >
+			<!-- 경도 --> <input type="hidden" id="lonPE" name="pt_longitudePE" value="0" >
 			거리 <input type="text" id="disPE" name="pt_distancePE" value="0" readonly="readonly">km<br>
 			<select id="ePT" name="pt_imgPE">
 				<option value="(입력안함)">--대중교통선택--</option>
@@ -1949,7 +2032,7 @@ window.onload = function(){
 			
 			<!-- 대중교통도착 선경로 -->
 			<div style="display: none;">
-				<textarea rows="10" cols="80" id="linePE" name="pt_linePE" readonly="readonly"></textarea>
+				<textarea rows="10" cols="80" id="linePE" name="pt_linePE" ></textarea>
 			</div>
 		</form>
 			
@@ -1958,8 +2041,94 @@ window.onload = function(){
 				<button type="button" class="btnAdd" id="previewUpdateCourse" style="background-color: #eccb6a">미리보기</button>
 				<button type="button" class="btnAdd" id="updateCourse" style="background-color: #d0a183">수정</button>
 			</div>
+			</div>
 		</section>
-	<div id="clear"></div>
-	<jsp:include page="../footer.jsp"/>
+<footer class="ftco-footer ftco-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Ecoverde</h2>
+              <p>Far far away, behind the word mountains, far from the countries.</p>
+              <ul class="ftco-footer-social list-unstyled mt-5">
+                <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="fa fa-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">Community</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Search Properties</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>For Agents</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Reviews</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>FAQs</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">About Us</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Our Story</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Meet the team</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+             <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Company</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>About Us</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Press</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Contact</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon fa fa-map"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+	                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929 210</span></a></li>
+	                <li><a href="#"><span class="icon fa fa-envelope pr-4"></span><span class="text">info@yourdomain.com</span></a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+	
+            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+  <script src="/resources/js/jquery.min.js"></script>
+  <script src="/resources/js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="/resources/js/popper.min.js"></script>
+  <script src="/resources/js/bootstrap.min.js"></script>
+  <script src="/resources/js/jquery.easing.1.3.js"></script>
+  <script src="/resources/js/jquery.waypoints.min.js"></script>
+  <script src="/resources/js/jquery.stellar.min.js"></script>
+  <script src="/resources/js/owl.carousel.min.js"></script>
+  <script src="/resources/js/jquery.magnific-popup.min.js"></script>
+  <script src="/resources/js/jquery.animateNumber.min.js"></script>
+  <script src="/resources/js/scrollax.min.js"></script>
+  <script src="/resources/js/google-map.js"></script>
+  <script src="/resources/js/main.js"></script>   
+
 </body>
 </html>
