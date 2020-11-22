@@ -126,15 +126,19 @@ td {
 	padding: 4px 8px;
 }
 
-   /*float 초기화 아이디*/
+   /*float 초기화 아이디
 #clear{
 	clear: both; 
-}
+}*/
 </style> 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="/js/loginCheck.js"></script>
 <script type="text/javascript">
 window.onload = function(){
+	const btn_search = document.getElementById("btn_search");
+	const code_value = document.getElementById("code_value");
+	const search = document.getElementById("search");
+	const rowDFlex = document.getElementById("rowDFlex");
 	console.log("asdasd");
 	const checkM = checkLogin(); // 로그인이 되어있는 상태인지 체크한다
 	console.log(checkM);
@@ -143,13 +147,10 @@ window.onload = function(){
 	const recordSize = ${recordSize};
 	const pageSize = ${pageSize};
 	listNotice();
+	$("#id1").css({"display": "bloak" ,});
+	$("#id2").css({"display": "none"});
 	
-	
-	const tbody = document.getElementById("tbody");
-	const btn_search = document.getElementById("btn_search");
-	const code_value = document.getElementById("code_value");
-	const search = document.getElementById("search");
-	const rowDFlex = document.getElementById("rowDFlex");
+	//const tbody = document.getElementById("tbody");
 	
 //
 	
@@ -175,6 +176,10 @@ window.onload = function(){
 					setList(map.list);
 					setPage(map.totRecord);
 					console.log(map.totRecord);
+					if(map.id !== '%'){
+						$("#id1").css({"display": "none"});
+						$("#id2").css({"display": "inline-block"});
+				    }
 				}
 			});
 		}
@@ -209,19 +214,19 @@ window.onload = function(){
 
 	function setList(list){
 		console.log(list);
-		rowDFlex.innerHTML="";
-		list.forEach(function(n, i) {
-			const listImg = document.createElement("listImg");
+		$('#rowDFlex').empty();
+		$.each(list, function(i, n) {
+			let listImg;
+			console.log(n);
 			if(n.nf.length!=0){
-				listImg = '<img id=listImg src="/noticeImg/'+n.nf[0].nf_savename+'">';
+				listImg = $('<img id="listImg"/>').attr('src',"/"+data.nf[0].nf_path+"/"+data.nf[0].nf_savename);
 			} else {
-				listImg = '<img id=listImg src="/meetingImg/empty.png">';
+				listImg = $('<img/>').attr('src',"/meetingImg/empty.png");
 			}
-			let contentImg = '<a class="block-20 img" href="detailNotice=?n_no='+n.n_no+'">'+listImg+'</a>';
-			listImg.innerHTML=contentImg;
-			rowDFlex.append(listImg);
+			const contentImg = $('<a></a>').addClass('block-20 img').attr("href",'detailNotice?n_no='+n.n_no).append(listImg);
 			// 목록 사진
 			
+			const code_name = $('<div></div>').html(n.code_name);
 			const n_regdate = $('<div></div>').html(n.n_regdate);
 			const n_hit = $('<div></div>').html(n.n_hit);
 			const n_titleA = $('<a></a>').attr('href','detailNotice?n_no='+n.n_no).html(n.n_title);
@@ -233,7 +238,7 @@ window.onload = function(){
             const blog_entryDiv = $('<div></div>').addClass('blog-entry justify-content-end');
             const col = $('<div></div>').addClass('col-md-3 d-flex ftco-animate fadeInUp ftco-animated');
 
-            metaDiv.append(n_regdate, m_hit);
+            metaDiv.append(code_name, n_regdate, n_hit);
             textDiv.append(contentImg, metaDiv, n_title);
             blog_entryDiv.append(textDiv);
             col.append(blog_entryDiv);
@@ -243,8 +248,8 @@ window.onload = function(){
 	}
 
 	function setPage(totRecord){
-		$('#page').empty();
-		$('#page').css('cursor','pointer');
+		$('#pageUl').empty();
+		$('#pageUl').css('cursor','pointer');
 		//$('#page').css('cursor','pointer');
 		// 총 페이지 수
 		let totPage = Math.ceil(totRecord/recordSize);
@@ -272,7 +277,7 @@ window.onload = function(){
 				pageNo = idx;
 				listNotice();
 			});
-			$('.pageUl').append(pageLi);
+			$('#pageUl').append(pageLi);
 		}
 		
 		for(let i=startPage; i<=endPage; i++){
@@ -299,17 +304,17 @@ window.onload = function(){
 				pageNo = idx;
 				listNotice();
 			});
-			$('.pageUl').append(pageLi);			
+			$('#pageUl').append(pageLi);			
 		}
 		if(totPage>endPage){
 			const next = $('<span></span>').attr('idx',(endPage+1)).html('>');
-			$('#page').append(next);
+			//$('#page').append(next);
 			$(next).click(function(){
 				const idx = $(this).attr('idx');
 				pageNo = idx;
 				listNotice();
 			});
-			$('.pageUl').append(pageLi);
+			$('#pageUl').append(pageLi);
 		}
 					
 	}
@@ -327,11 +332,12 @@ window.onload = function(){
 		<div class="container">
 			<a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
         <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
-        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></a>
+        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font></span></a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="oi oi-menu"></span> Menu
 				</button>
-	      
+				
+	      <div style="display: block;">
 			<div class="collapse navbar-collapse" id="ftco-nav">
 		        <ul class="navbar-nav ml-auto">
 					<c:choose>
@@ -360,6 +366,7 @@ window.onload = function(){
 	        </ul>
 	      </div>
 	    </div>
+	   </div> 
 	</nav>
     <!-- END nav -->
     
@@ -388,17 +395,17 @@ window.onload = function(){
 				<input type="search" id="search" placeholder="Search..." />
 				<button id="btn_search">검색</button>
 
-			</div>
+		</div>
 			
         <div class="row d-flex" id="rowDFlex"><!-- 리스트출력 --></div> 
-      <br>
+      	<br>
 
         
 		<div class="row mt-5">
 			<div class="col text-center">
 				<div><a href="/admin/insertNotice" id="btn_write">글쓰기</a></div>                    
 				<div class="block-27">
-					<ul class="pageUl"><!-- 페이징처리 --></ul>
+					<ul class="pageUl" id="pageUl"><!-- 페이징처리 --></ul>
 				</div>
 			</div>
 		</div>
