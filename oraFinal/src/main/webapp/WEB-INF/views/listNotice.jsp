@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="/resources/css/style.css">
 <style type="text/css">
 
-#box00{
+/*#box00{
   margin: 30px 10px 0 0;
   width: 400px;
   height: 30px;
@@ -38,7 +38,7 @@
 	height: 700px;
 	margin: 50px auto;
 	float: center;
-}
+}*/
 
 #btn_search,#btn_write{
 	width:50px;
@@ -63,18 +63,13 @@
 #btn_write{
 	float: right;
 	background-color: #88bea6;
+	display: none;
 }
 
 button:hover {
 	border: none;
     background-color: #ffffff;
     color: #c8572d;
-}
-
-select {
-	height: 30px;
-	width: 100px;
-	font-size: 15px;
 }
 
 input#search{
@@ -86,6 +81,13 @@ input#search{
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
+}
+
+
+/*select {
+	height: 30px;
+	width: 100px;
+	font-size: 15px;
 }
 
 #tb{
@@ -112,10 +114,6 @@ td {
 	padding: 6px;
 	text-align: center;
 	height: 30px;
-}
-
-#insertNotice{
-	display: none;
 }
 
 #page {
@@ -213,9 +211,35 @@ window.onload = function(){
 		console.log(list);
 		rowDFlex.innerHTML="";
 		list.forEach(function(n, i) {
-			let listImg = '<img id=listImg src="/noticeImg/'+n.nf[0].nf_savename+'"';
+			const listImg = document.createElement("listImg");
+			if(n.nf.length!=0){
+				listImg = '<img id=listImg src="/noticeImg/'+n.nf[0].nf_savename+'">';
+			} else {
+				listImg = '<img id=listImg src="/meetingImg/empty.png">';
+			}
+			let contentImg = '<a class="block-20 img" href="detailNotice=?n_no='+n.n_no+'">'+listImg+'</a>';
+			listImg.innerHTML=contentImg;
+			rowDFlex.append(listImg);
+			// 목록 사진
 			
-		}
+			const n_regdate = $('<div></div>').html(n.n_regdate);
+			const n_hit = $('<div></div>').html(n.n_hit);
+			const n_titleA = $('<a></a>').attr('href','detailNotice?n_no='+n.n_no).html(n.n_title);
+            const n_title = $('<h3></h3>').addClass('heading').append(n_titleA);
+			// 목록 상세
+
+            const metaDiv = $('<div></div>').addClass('meta mb-3');
+            const textDiv = $('<div></div>').addClass('text');
+            const blog_entryDiv = $('<div></div>').addClass('blog-entry justify-content-end');
+            const col = $('<div></div>').addClass('col-md-3 d-flex ftco-animate fadeInUp ftco-animated');
+
+            metaDiv.append(n_regdate, m_hit);
+            textDiv.append(contentImg, metaDiv, n_title);
+            blog_entryDiv.append(textDiv);
+            col.append(blog_entryDiv);
+
+			$('#rowDFlex').append(col);   
+		})
 	}
 
 	function setPage(totRecord){
@@ -238,24 +262,34 @@ window.onload = function(){
 
 		if(startPage>1) {
 			const prev = $('<span></span>').attr('idx',(startPage-1)).html('<');
-			$('#page').append(prev);
+			$(prev).css({
+				border: 'none'
+			});
+			const pageLi = $('<li></li>').append(prev);
+			//$('#page').append(prev);
 			$(prev).click(function(){
 				const idx = $(this).attr('idx');
 				pageNo = idx;
 				listNotice();
 			});
+			$('.pageUl').append(pageLi);
 		}
 		
 		for(let i=startPage; i<=endPage; i++){
 			const a = $('<span></span>').attr('idx',i).html(i);
+			const pageLi = $('<li></li>').append(a);
 			if(i==pageNo){
 				$(a).css({
 					color: 'white',
-					backgroundColor: '#bae4f0',
-					borderRadius: '15px'
+					backgroundColor: '#ECCB6A',
+					border: 'none'
 				});
-			}
-			$('#page').append(a);
+            } else {
+            	$(a).css({
+					border: 'none'
+				});
+		    }
+			//$('#page').append(a);
 			$(a).click(function() {
 				const idx = $(this).attr('idx');
 				if(pageNo==idx){
@@ -264,9 +298,10 @@ window.onload = function(){
 				console.log(idx);
 				pageNo = idx;
 				listNotice();
-			});			
+			});
+			$('.pageUl').append(pageLi);			
 		}
-			if(totPage>endPage){
+		if(totPage>endPage){
 			const next = $('<span></span>').attr('idx',(endPage+1)).html('>');
 			$('#page').append(next);
 			$(next).click(function(){
@@ -274,7 +309,9 @@ window.onload = function(){
 				pageNo = idx;
 				listNotice();
 			});
-		}			
+			$('.pageUl').append(pageLi);
+		}
+					
 	}
 
 }
@@ -314,7 +351,7 @@ window.onload = function(){
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
 	          <li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
-	          <li class="nav-item" active><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
+	          <li class="nav-item active"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
 	          <li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
 	          <li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
 	          <li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
@@ -331,7 +368,7 @@ window.onload = function(){
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate pb-0 text-center">
-             <p class="breadcrumbs"><span class="mr-2"><a href="mainPage">Home <i class="fa fa-chevron-right"></i></a></span> <span>공지사항 <i class="fa fa-chevron-right"></i></span></p>
+             <p class="breadcrumbs"><span class="mr-2"><a href="mainPage">Home <i class="fa fa-chevron-right"></i></a></span> <span>오늘의 라이딩 <i class="fa fa-chevron-right"></i></span></p>
             <h1 class="mb-3 bread">공지사항</h1>
           </div>
         </div>
@@ -340,13 +377,26 @@ window.onload = function(){
 
     <section class="ftco-section">
       <div class="container">
+      
+      	<div id="searchBox">
+		     	<select id="code_value" name="code_value" size="1">
+		     		<option value="0">전체</option>
+		     		<c:forEach var="c" items="${category }">
+		     			<option value="${c.code_value }">${c.code_name }</option>
+		     		</c:forEach>
+		        </select>
+				<input type="search" id="search" placeholder="Search..." />
+				<button id="btn_search">검색</button>
+
+			</div>
+			
         <div class="row d-flex" id="rowDFlex"><!-- 리스트출력 --></div> 
       <br>
 
         
 		<div class="row mt-5">
 			<div class="col text-center">
-				<div><a href="/user/insertMeeting" class="btn">등록</a></div>                    
+				<div><a href="/admin/insertNotice" id="btn_write">글쓰기</a></div>                    
 				<div class="block-27">
 					<ul class="pageUl"><!-- 페이징처리 --></ul>
 				</div>
