@@ -93,7 +93,7 @@ public class InsertMeetingController {
 		String id = (String)map.get("id");
 		String m_title = (String)map.get("m_title");
 		String m_content = (String)map.get("real_content");
-		String m_regdate = null;
+		Date m_regdate = null;
 		int m_hit = 0;
 		double m_latitude = Double.parseDouble((String)map.get("m_latitude"));
 		double m_longitude = Double.parseDouble((String)map.get("m_longitude"));
@@ -104,7 +104,7 @@ public class InsertMeetingController {
 		String c_name = "";
 		String rank_icon = "";
 		
-		MeetingVo mvo = new MeetingVo(m_no, c_no, id, m_title, m_content, m_regdate, m_hit, m_latitude, m_longitude, m_locname, m_time, m_numpeople, nickName, c_name, rank_icon, null, 0);
+		MeetingVo mvo = new MeetingVo(m_no, c_no, id, m_title, m_content, m_regdate, m_hit, m_latitude, m_longitude, m_locname, m_time, m_numpeople, nickName, c_name, rank_icon, null, 0, 0, null);
 		
     //System.out.println(mtvo.toString());
 		int re = mdao.insertMeeting(mvo);
