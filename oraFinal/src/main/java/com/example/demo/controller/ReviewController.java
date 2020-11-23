@@ -100,7 +100,6 @@ public class ReviewController {
 		//System.out.println("searchType:"+searchType);
 		//System.out.println("searchValue:"+searchValue);
 		//System.out.println("searchMethod:"+searchMethod);
-		
 		HashMap mybatis_map = new HashMap();
 		// listReview.jsp에서 검색하는 것은 post방식. mypage에서 내가 쓴 게시글 조회는 get방식
 		// id로 검색 ==> searchType=id&searchValue=hoja2242
@@ -108,13 +107,14 @@ public class ReviewController {
 		// 제목으로 검색 ==> searchType=r_title&searchValue=오라오라!&searchMethod=1 (1:일치, 2:포함)
 		// 내용으로 검색 ==> searchType=r_content&searchValue=라이딩합시다&searchMethod=2 (1:일치, 2:포함)
 		mybatis_map.put("searchType", searchType);
+
 		if(searchType.equals("c_no")) {
 			mybatis_map.put("searchValue", Integer.parseInt(searchValue));
 		}else {
 			mybatis_map.put("searchValue", searchValue);
 		}
 		mybatis_map.put("searchMethod", searchMethod);
-
+		
 		int total_records = rdao.count(mybatis_map);		// 총 레코드 수
 		// 총 페이지 수 계산
 		int total_pages = total_records / RECORDS_PER_PAGE;	

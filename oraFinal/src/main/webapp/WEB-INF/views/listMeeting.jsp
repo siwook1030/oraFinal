@@ -279,8 +279,29 @@
 		<div class="container">
 			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate pb-0 text-center">
-					<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a></span><span>번개 라이딩 <i class="fa fa-chevron-right"></i></span></p>
-					<h1 class="mb-3 bread">번개 라이딩</h1>
+				
+				<div id="id1">
+		          <p class="breadcrumbs"><span class="mr-2"><a href="mainPage">Home <i class="fa fa-chevron-right"></i></a></span> <span>번개 라이딩 <i class="fa fa-chevron-right"></i></span></p>
+		          <h1 class="mb-3 bread">번개 라이딩</h1>
+	            </div>
+	
+	            <div id="id2">
+		            <span >
+		              <h1 class="mb-3 bread">마이페이지</h1>
+		            </span>
+		            <p class="breadcrumbs">
+		              <span class="mr-2">
+		                <a href="index.html">Home <i class="fa fa-chevron-right"></i></a>
+		              </span>
+		              <a href="/myPage">정보 수정 <i class="fa fa-chevron-right"></i></a>
+		              <span>
+		                <a href="/myPageSaveCourse">찜 목록 <i class="fa fa-chevron-right"></i></a>
+		                <a href="/myPageMyCourse">내 작성 코스<i class="fa fa-chevron-right"></i></a>
+		                <a href="/myPageListReview">내 작성 후기<i class="fa fa-chevron-right"></i></a>
+		                <a href="listMeeting?id=${m.id}">내 작성 번개<i class="fa fa-chevron-right"></i></a>
+		                <a href="/myPageMyRank">랭킹</a>
+		              </span>
+	              </div>
 				</div>
 			</div>
 		</div>
