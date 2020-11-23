@@ -38,22 +38,24 @@
 			opacity: 0.2;
 		}
 		/* 썸네일사진 중앙기준 */
-		#listImg { 
+		#listImg {
 			position: absolute;
 			left: 50%;
 			top: 50%;
 			height: auto;
 			width: auto;
- 			-webkit-transform: translate(-50%,-50%);
-			-ms-transform: translate(-50%,-50%);
-			transform: translate(-50%,-50%);
+			width: 767px;
+		 	-webkit-transform: translate(-50%,-50%); /* 구글, 사파리 */
+			-ms-transform: translate(-50%,-50%); /* 익스플로러 */
+		 	transform: translate(-50%, -50%);
 		}
-		.pageUl {
-			border: none;
-		}
-		.btnPrevNext {
-			border: none;
-		}
+		/* 게시글 제목 */
+		.blog-entry .text { height: 450px; border: 1px solid orange; }
+		.meta.mb-3 { height: 120px; border: 1px solid purple; }
+		.meta.mb-3 div { border: 1px solid pink; }
+		/* 페이징 */
+		.pageUl { border: none; }
+		.btnPrevNext { border: none; }
 	</style>
 
 	<script type="text/javascript">
@@ -77,7 +79,8 @@
 	               "id": id
 	            },
 	            success: function(map){
-	               //$('#rowDFlex').empty();
+		           console.log(map.list);
+	               $('#rowDFlex').empty();
 	               setPage(map.totRecord);
 	               setList(map.list);
 	               if(map.id !== '%'){
@@ -173,21 +176,20 @@
 				if(data.mf.length!=0) {
 					listImg = $('<img id="listImg"/>').attr('src',"/"+data.mf[0].mf_path+"/"+data.mf[0].mf_savename);
 				} else {
-					listImg = $('<img/>').attr('src',"/meetingImg/empty.png");
+					listImg = $('<img/>').attr('src',"/icons/empty.png");
 					emptyStr = $('<div></div>').html('').addClass('emptyStr'); // 빈화면에 글씨적을 수 있음
 				}
-/* 	            const contentImg = $('<a></a>').addClass('block-20 img').attr("href",'detailMeeting?m_no='+data.m_no).append(listImg, emptyStr);
- */	            const contentImg = $('<a></a>').addClass('block-20 img').attr("href",'detailMeeting?m_no='+data.m_no).append(listImg, emptyStr);
+	            const contentImg = $('<a></a>').addClass('block-20 img').attr("href",'detailMeeting?m_no='+data.m_no).append(listImg, emptyStr);
 
 		        // 게시글 내용
 	            // const m_no = $('<div></div>').html(data.m_no);
-	            const c_nameA = $('<a></a>').html(data.c_name);
+	            const c_nameA = $('<a href="/detailCourse?c_no='+data.c_no+'"></a>').html(data.c_name);
 	            const c_name = $('<div></div>').append(c_nameA);
 	            const m_time = $('<div></div>').html(data.m_time);
 	            const nickName_icon = $('<img/>').attr({src : 'rank/'+data.rank_icon, height : '20px'});
 	            const nickNameA = $('<a href="/listMeeting?id='+data.id+'"></a>').html(data.nickName);
 	            const nickName = $('<div></div>').append(nickName_icon, nickNameA);
-	            const m_regdate = $('<div></div>').html(data.m_regdate);
+	            const m_regdate = $('<div></div>').html(data.date_diff_str);
 	            // const m_hit = $('<div></div>').html(data.m_hit);
 	            const speechImg = $('<span></span>').addClass('fa fa-comment'); // 말풍선
 	            const m_repCnt = $('<div></div>').addClass('meta-chat').append(speechImg, " "+data.m_repCnt); // 말풍선 + 댓글수
@@ -230,7 +232,7 @@
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 		<div class="container">
-			<a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
+			<a style="font-family: 나눔스퀘어라운드" class="navbar-brand" href="/mainPage">
 				<span style="font-weight: bold;">
 					<font color="#45A3F5">오</font>
 					<font color="#bae4f0">늘</font>
