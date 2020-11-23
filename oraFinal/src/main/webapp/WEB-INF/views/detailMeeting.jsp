@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>오늘의 라이딩</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -14,136 +14,54 @@
     <link rel="stylesheet" href="/resources/css/owl.theme.default.min.css">
     <link rel="stylesheet" href="/resources/css/magnific-popup.css">
     <link rel="stylesheet" href="/resources/css/flaticon.css">
-    <link rel="stylesheet" href="/resources/css/style.css">
- 	<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
-	<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
-
+    <link rel="stylesheet" href="/resources/css/style.css"> 
 	<style>
-		/* 개별 */
-		#reply { /* 댓글출력 */
-			padding-bottom: 3px;
-		}
-		#comment { /* 댓글입력 */
-			display: block;
-			position:relative;
-		}
-		#btnInsertReply { /* 댓글등록버튼 */
-			position:absolute;
-			color: white;
-			padding: 6px 9px;
-			background-color: #c8572d;
-			float: right;
-			font-size: 13px;
-			border: none;
-			bottom: 30px;
-			right: 10px;
-			cursor: pointer;
-		}
-		textarea { /* 글내용입력 */
-		     display: block;
-		}
-		#contents { /* 게시판 인덱스 제외 전체 */
-			border: 1px solid #D5D5D5;
-			padding: 60px;
-			margin: 50px 0 100px;
-		}
-		.repInfo { /* 댓글등록날짜 */
-			margin-left: 25px;
-			font-size: 13px;
-		}
+		/* 댓글출력 */
+		#reply { padding-bottom: 3px; }
+		/* 댓글입력 */
+		#comment { display: block; position:relative; }
+		/* 댓글등록버튼 */
+		#btnInsertReply { position:absolute; color: white; padding: 6px 9px; background-color: #c8572d; float: right; font-size: 13px; border: none; bottom: 30px; right: 10px; cursor: pointer; }
+		/* 글내용입력 */
+		textarea { display: block; }
+		/* 게시판 인덱스 제외 전체 */
+		#contents { border: 1px solid #D5D5D5; padding: 60px; margin: 50px 0 100px; }
+		/* 댓글등록날짜 */
+		.repInfo { margin-left: 25px; font-size: 13px; }
 		/* 삭제해도 되는지 물어보기 */
-		/* .repInput-noshow{
-			display: none;
-		}
-		.repInput-show{
-			display: inline;
-		} */
-		.repPageNum{ /* 댓글창 페이지번호 */
-			margin: 0 5px 0 5px;
-			cursor: pointer;
-		}
-		.btnRepSpan { /* 대댓글 등록수정삭제 버튼 */
-			cursor: pointer;
-			margin-left: 3px;
-			text-decoration: underline;
-		}
-		.btn { /* 게시글 수정삭제 버튼 */
-			color: white;
-			padding: 8px 12px;
-			margin: 20px 2px;
-			background-color: #88BEA6;
-			display: inline-block;
-			font-size: 15px;
-			border: none;
-			cursor: pointer;
-		}
-		.btnDiv {
-			text-align: center;
-		}
-		#mtInfoAll { /* 미팅 장소,날짜,인원 모은 div */
-			display: flex;
-		}
-		#mtInfoAll img { /* 미팅 장소,날짜,인원 아이콘 */
-			width: 40px;
-			margin: 10px;
-		}
-		#mtInfoAll .mtInfo { /* 미팅 장소,날짜,인원 각각의 div */
-			width: 40%;
-			border: 1px #D5D5D5 solid;
-			border-radius: 10px;
-			margin: 20px;
-			padding: 10px;
-			text-align: center;
-		}
-		.mfPhoto { /* 게시글 개별 사진 */
-			height: 300px;
-		}
-		.pointerDiv { /* 게시글 사진 버튼 div */
-			position: absolute;
-			top: 100px;
-			width: 880px;
-		}
-		/* 사진 왼쪽 클릭버튼 */
-		/* #btnLeft { 
-			width: 100px;
-			position: relative;
-			cursor: pointer;
-			z-index: 1;
-		} */
-		/* 사진 오른쪽 클릭버튼 */ 
-		/* #btnRight { 
-			width: 100px;
-			position: relative;
-			cursor: pointer;
-			left: 680px;
-			z-index: 1;
-		} */
-		#m_content { /* 글출력창 */
-			width: 100%; height: 400px; border: none; margin: 30px 0 0; padding: 10px;
-		}
-		#repImg, #repStr, #repCnt { /* 댓글이미지, 댓글수 */
-			vertical-align: middle;
-		}
-		#repImg {
-			margin-bottom: 2px; 
-			width: 20px;
-		}
-		.map_wrap { 
-			position: relative; 
-			width: 100%; 
-			height: 450px; 
-			font-size: 80%;
-		}
-		li {
-			list-style: none;
-		}
-		.attendPerson {
-			width: 30px;
-		}
-		.nav-item .nav-link { /* nava 로그인 */
-			font-size: 15px;
-		}
+		/* .repInput-noshow{ display: none; }
+		.repInput-show{ display: inline; } */
+		/* 댓글창 페이지번호 */
+		.repPageNum{ margin: 0 5px 0 5px; cursor: pointer; }
+		/* 대댓글 등록수정삭제 버튼 */
+		.btnRepSpan { cursor: pointer; margin-left: 3px; text-decoration: underline; }
+		/* 게시글 수정삭제 버튼 */
+		.btn { color: white; padding: 8px 12px; margin: 20px 0; background-color: #88BEA6; display: inline-block; font-size: 15px; border: none; cursor: pointer; }
+		#btnDiv { text-align: right; }
+		/* 미팅 장소,날짜,인원 모은 div */
+		#mtInfoAll { display: flex; }
+		/* 미팅 장소,날짜,인원 아이콘 */
+		#mtInfoAll img { width: 40px; margin: 10px; }
+		/* 미팅 장소,날짜,인원 각각의 div */
+		#mtInfoAll .mtInfo { width: 40%; border: 1px #D5D5D5 solid; border-radius: 10px; margin: 20px; padding: 10px; text-align: center; }
+		/* 게시글 개별 사진 */
+		.mfPhoto { height: 300px; }
+		/* 게시글 사진 버튼 div */
+		.pointerDiv { position: absolute; top: 100px; width: 880px; }
+		/* 글출력창 */
+		#m_content { width: 100%; height: 400px; border: none; margin: 30px 0 0; padding: 10px; }
+		/* 댓글이미지, 댓글수 */
+		#repImg, #repStr, #repCnt { vertical-align: middle; }
+		#repImg { margin-bottom: 2px; width: 20px; }
+		.map_wrap { position: relative; width: 100%; height: 450px; font-size: 80%; }
+		li { list-style: none; }
+		.attendPerson { width: 30px; }
+		/* nava 로그인 */
+		.nav-item .nav-link { font-size: 15px; }
 		textarea:focus { outline: none; }
+		/* 코스이미지 */
+		.selectedCourse img { width: 40px; }
+
 	</style>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -151,11 +69,14 @@
 	<script src="/js/loginCheck.js"></script>
 	<script type="text/javascript">
 window.onload = function(){
-	$('#btnDel').click(function(){
-		alert('게시글이 삭제되었습니다.');
+	$("#btnDel").click(function(event){
+		let answer = confirm("정말 삭제하시겠습니까?");
+		if(!answer) {
+			event.preventDefault();
+		}
 	});
 
-	$(document).ready(function(){
+/* 	$(document).ready(function(){
 		$('.mfPhotoDiv').slick({
 			dots: true,
 			infinite: true,
@@ -164,7 +85,7 @@ window.onload = function(){
 			centerMode: true,
 			variableWidth: true
 		});
-	});
+	}); */
 
 ///////////////////////////////////////////////////
 	const checkM = checkLogin(); // 로그인이 되어있는 상태인지 체크한다
@@ -239,7 +160,7 @@ window.onload = function(){
 		}
 	}
 	
- function setReply(mrList){  // 댓글동적노드 생성하는 함수
+	function setReply(mrList){  // 댓글동적노드 생성하는 함수
 	    const userId = checkM.item.id;
 	    repCnt.innerHTML=totalRecordR;
 	    reply.innerHTML="";
@@ -891,45 +812,47 @@ window.onload = function(){
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 		<div class="container">
-			<a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
+			<a style="font-size: 30px;" class="navbar-brand" href="/mainPage">
 				<span style="font-weight: bold;">
 					<font color="#45A3F5">오</font>
 					<font color="#bae4f0">늘</font>
 					<font color="#88bea6">의</font>
 					<font color="#eccb6a">라</font>
 					<font color="#d0a183">이</font>
-					<font color="#c8572d">딩
+					<font color="#c8572d">딩</font>
 				</span>
 			</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                <span class="oi oi-menu"></span> Menu
             </button>
-         
-			<div class="collapse navbar-collapse" id="ftco-nav">
-				<ul class="navbar-nav ml-auto">
-					<c:choose>
-						<c:when test="${m == null }">
-							<li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
-							<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
-						</c:when>
-						<c:when test="${m != null }">
-							<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
-							<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
-							<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
-						</c:when>
-					</c:choose>
-				</ul>
-			</div> 
-
-			<div class="collapse navbar-collapse" id="ftco-nav">
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
-					<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
-					<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
-					<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
-					<li class="nav-item active"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
-					<li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
-				</ul>
+            
+            <div style="display: block;">
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto">
+						<c:choose>
+							<c:when test="${m == null }">
+								<li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
+								<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
+							</c:when>
+							<c:when test="${m != null }">
+								<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
+								<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
+								<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+							</c:when>
+						</c:choose>
+					</ul>
+				</div> 
+	
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
+						<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
+						<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
+						<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
+						<li class="nav-item active"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+						<li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
+					</ul>
+				</div>
 			</div>
 		</div>
     </nav>
@@ -947,37 +870,32 @@ window.onload = function(){
 		</div>
     </section>
     
-    <!-- 글번호, 제목 -->
+	<!-- 본문 section 시작 -->
     <section class="ftco-section ftco-agent" style="padding-bottom: 30px;">
     	<div class="container">
+    	 	<!-- 글번호, 제목 -->
     		<div class="row justify-content-center pb-5">
           		<div class="col-md-12 heading-section text-center ftco-animate">
 		          	<span class="subheading">${mt.m_no }</span>
 					<a href="detailMeeting?m_no=${mt.m_no }"><h2 class="mb-4">${mt.m_title }</h2></a>
           		</div>
         	</div>
-<!--     	</div>
-    </section>  -->
-    
-    <!-- 전체 섹션 (글제목 제외) -->
-<!--     <section class="ftco-section" >
-      <div class="container"> -->
        
-  	 <!-- 닉네임 코스네임 조회수 작성자 -->
-				<img src="rank/${mt.rank_icon }" height="25" style="float: left;">
+  	 		<!-- 닉네임, 작성일자, 조회수, 코스 -->
+			<img src="rank/${mt.rank_icon }" height="25"> ${mt.nickName }
 				
-				<div>
-					<p>${mt.nickName }</p>
-					<p>${mt.m_regdate }</p>
-					<p>조회수 ${mt.m_hit }</p>
-				</div>
+			
+			${mt.m_regdate }
+			조회수 ${mt.m_hit }
+			
+			
+			<!-- 코스 -->
+			<div class="selectedCourse">
+				<img src="/meetingImg/ridingRoute.png">
+				<div style="padding: 3px; font-size: 20px;"><a href="detailCourse?c_no=${mt.c_no }"> ${mt.c_name }</a></div>
+			</div>
 
-				<hr style="margin: 10px 0 10px;">
-				<div style="padding: 3px; font-size: 20px;">코스 : ${mt.c_name }</div>
-				<hr style="margin: 10px 0 10px;">
-			
-			
-			
+			<!-- 지도 -->
 			<div class="map_wrap">
 				<div id="map" style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
 			</div>
@@ -991,8 +909,8 @@ window.onload = function(){
 				</div>
 			</div>
 			
+			<!-- 참여 닉네임 -->
 			<div><ul id="mPeople"></ul></div>
-			<br>
 			
 			<textarea class="about-author d-flex p-4 bg-light" id="m_content" readonly="readonly">${mt.m_content }</textarea>
 			
@@ -1004,14 +922,14 @@ window.onload = function(){
 			
 			<!-- 수정,삭제 버튼 -->
 			<c:if test="${m.id==mt.id }">
-			<div id="btnDiv">
-				<a href="/user/updateMeeting?m_no=${mt.m_no }&c_no=${mt.c_no}" class="btn" id="btnEdit">수정</a>
-				<a href="deleteMeeting?m_no=${mt.m_no }" class="btn" id="btnDel" style="background-color: #ECCB6A">삭제</a>
-			</div>
+				<div id="btnDiv">
+					<a href="/user/updateMeeting?m_no=${mt.m_no }&c_no=${mt.c_no}" class="btn" id="btnEdit">수정</a>
+					<a href="deleteMeeting?m_no=${mt.m_no }" class="btn" id="btnDel" style="background-color: #ECCB6A">삭제</a>
+				</div>
 			</c:if>
 			
 			<!-- 댓글 -->
-			<img id="repImg" src="meetingImg/speech.png" style="display: inline; size: 20px; padding-right: 5px;">
+			<img id="repImg" src="icons/speech.png" style="display: inline; size: 20px; padding-right: 5px;">
 			<h3 id="repStr" style="display: inline;">댓글<span id="repCnt" style="display: inline; padding-left: 10px;"></span></h3>
 			<hr style="margin: 10px 0 10px;">
 			

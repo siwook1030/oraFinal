@@ -11,6 +11,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import com.example.demo.vo.MeetingVo;
 import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.ReviewVo;
 import com.example.demo.vo.Review_fileVo;
@@ -33,6 +34,9 @@ public class ReviewManager {
 		SqlSession session = sqlSessionFactory.openSession();
 		list = session.selectList("review.selectList", mybatis_map);
 		session.close();
+		for(ReviewVo r : list) {
+			r.setRf(selectListFile(r.getR_no()));
+	    }
 		return list;
 	}
 	

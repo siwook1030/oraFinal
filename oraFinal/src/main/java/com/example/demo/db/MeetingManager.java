@@ -1,6 +1,7 @@
 package com.example.demo.db;
 
 import java.io.InputStream;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,8 +47,23 @@ public class MeetingManager {
 		return n;
 	}
 	
+	// 글 작성 시간
+	public static String getDate_diff_str(long date_diff, Date m_regdate) {
+		if(date_diff > 2592000) {						// 30일 : 30*24*60*60
+			return m_regdate.toString();
+		} else if (date_diff > 86400) {					// 1일 : 24*60*60
+			return (date_diff / 86400) + " 일 전";	
+		} else if (date_diff > 3600) {					// 1시간 : 60*60
+			return (date_diff / 3600) + " 시간 전";
+		} else if (date_diff > 60) {					// 1분 : 60
+			return (date_diff / 60) + " 분 전";
+		} else {										// 1분 미만
+			return "방금 전";
+		}
+	}
+	
 	// 게시글 리스트
-	   public static List<MeetingVo> listMeeting(HashMap map) {
+	  public static List<MeetingVo> listMeeting(HashMap map) {
 	      List<MeetingVo> list = null;
 	      SqlSession session = sqlSessionFactory.openSession();
 	      list = session.selectList("meeting.selectMAll",map);
@@ -55,6 +71,7 @@ public class MeetingManager {
 	      for(MeetingVo m : list) {
 	    	  m.setMf(detailMFile(m.getM_no()));
 	    	  m.setM_repCnt(cntRep(m.getM_no()));
+	    	  m.setDate_diff_str(getDate_diff_str(m.getDate_diff(),m.getM_regdate()));
 	      }
 	      return list;
 	   }
@@ -63,7 +80,6 @@ public class MeetingManager {
 	public static MeetingVo detailMeeting(int m_no) {
 		MeetingVo m = null;
 		SqlSession session = sqlSessionFactory.openSession();
-		//m.setM_hit(m_no);
 		m = session.selectOne("meeting.selectMByNo", m_no);
 		session.close();
 		return m;
@@ -156,9 +172,9 @@ public class MeetingManager {
 		List<Meeting_fileVo> list = null;
 		SqlSession session = sqlSessionFactory.openSession();
 		list = session.selectList("meeting.selectMfByNo", m_no);
-		for(Meeting_fileVo vo : list) {
-			System.out.println(vo);
-		}
+//		for(Meeting_fileVo vo : list) {
+//			System.out.println(vo);
+//		}
 		session.close();
 		return list;
 	}

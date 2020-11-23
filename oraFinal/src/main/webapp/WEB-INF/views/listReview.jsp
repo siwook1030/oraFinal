@@ -15,88 +15,39 @@
 	<link rel="stylesheet" href="resources/css/magnific-popup.css">
 	<link rel="stylesheet" href="resources/css/flaticon.css">
 	<link rel="stylesheet" href="resources/css/style.css">
-<style type="text/css">
-/* section {
-	margin: 0 auto;
-	width: 1000px;
-	text-align: left;
-} */
-/* table {
-	border-collapse: collapse;
-	text-align: center;
-} */
-/* .pageStr {
-	text-align: center;
-} */
-/* td, th {
-	border-bottom: 1px #7a7a7a solid;
-}
-a {
-	text-decoration: none;
-	color: black;
-} */
-/* #pageLink {
-	text-align: center;
-} */
-/* .pageClick {
-	color: white;
-	background-color: #ECCB6A;
-	border: none;
-} */
-/* .col.text-center div {
-	clear: both;
-	margin-bottom: 20px;
-} */
-/* #searchANDinsertContainer {
-	display: flex;
-	flex-direction: row;
-} */
-/* #btnInsert {
-	flex-grow: 1;
-	flex-basis: 50%;
-} */
-/* #searchInputWrap {
-	float: right;
-}
-#searchTypeWrap {
-	margin-top: 1px;
-} */
-/* .total_reply {
-	color: blue;
-	font-size: 10px;
-} */
-	.btn {
-		color: white;
-		padding: 8px 12px;
-		background-color: #88BEA6;
-		float: right;
-		font-size: 15px;
-		border: none;
-		cursor: pointer;
-	}
-	/* 썸네일사진 중앙기준 */
-	#listImg { 
-		position: absolute;
-		left: 50%;
-		top: 50%;
-		height: auto;
-		width: auto;
- 		-webkit-transform: translate(-50%,-50%);
-		-ms-transform: translate(-50%,-50%);
-		transform: translate(-50%,-50%);
-	}
-</style>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script type="text/javascript">
-let searchType = "";	// id,코스번호,제목,내용
-let searchValue = "";	// 검색을 위한 사용자입력값
-let searchMethod = 0;	// 제목,내용 검색방법을 일치or포함중에 선택
-let courseList;			// List<CourseVo> 를 담은 변수. select-option 태그 만들기 위한 용도
-
-// 마이페이지에서 내가 쓴 게시글 조회했을때 처리하기위한 코드.
-// GET방식 쿼리라서 querystring을 가져오기 위한 설정
+	<style type="text/css">
+		/* 검색창 */
+		#searchANDinsertContainer { padding-bottom: 40px; text-align: right; }
+		#searchInputWrap { display: inline-block; }
+		#searchInputWrap .btn { background-color: #bae4f0; }
+		#searchType, #searchValue, #searchMethod { height: 37px; width: auto; vertical-align: middle;  }
+		#searchValue { width: 200px; }
+		#searchMethod { margin-right: 5px; }
+		/* 모든 버튼 */
+		.btnDiv { height: 40px; text-align: right; margin-bottom: 30px; }
+		.btn { color: white; padding: 8px 12px; margin-left: 5px; float: right; font-size: 15px; border: none; cursor: pointer; }
+		/* 썸네일사진 중앙기준 */
+		#listImg {
+			position: absolute; left: 50%; top: 50%; height: auto; width: auto; width: 767px;
+			-webkit-transform: translate(-50%,-50%); /* 구글, 사파리 */
+			-ms-transform: translate(-50%,-50%); /* 익스플로러 */
+			transform: translate(-50%, -50%);
+		}
+		/* 게시글 제목 */
+		.blog-entry .text { height: 450px; /* border: 1px solid orange; */ }
+		.meta.mb-3 { height: 90px; /* border: 1px solid purple; */ }
+		.meta.mb-3 div { border: /* 1px solid pink; */ }
+	</style>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script type="text/javascript">
+	let searchType = "";	// id,코스번호,제목,내용
+	let searchValue = "";	// 검색을 위한 사용자입력값
+	let searchMethod = 0;	// 제목,내용 검색방법을 일치or포함중에 선택
+	let courseList;			// List<CourseVo> 를 담은 변수. select-option 태그 만들기 위한 용도
+	
+	// 마이페이지에서 내가 쓴 게시글 조회했을때 처리하기위한 코드.
+	// GET방식 쿼리라서 querystring을 가져오기 위한 설정
 const URLSearch = new URLSearchParams(location.search);
-
 const RECORDS_PER_PAGE = 8;	// 페이지당 레코드 수
 const PAGE_LINKS = 5;			// 페이지 하단에 표시되는 페이지링크 수
 let page = 1;	// 현재 페이지 저장 변수(기본은 1페이지)
@@ -116,6 +67,7 @@ $(document).ready(function(){
 		searchMethod = URLSearch.get("searchMethod");
 	}
 	
+
 	getJson();			// 댓글과 페이지링크 만드는 함수
 	getCourseList();	// List<CourseVo> 받아오기. 코스명으로 게시글 검색용도
 	createInput("id");	// 처음엔 기본으로 id기반 검색으로 설정됨
@@ -131,222 +83,227 @@ $(document).ready(function(){
 
 	$("#searchType").change(function(){		// searchType이 바뀔때마다 동적으로 검색기능 생성
 		createInput($(this).val());
-	});
-	$(document).on("click", "#btnSearch", function(){	// 검색버튼 눌렀을때 게시물 목록을 거기에 맞춰서 다시 가져온다.
-		searchType = $("#searchType").val();
-		searchValue = $("#searchValue").val();
-		if(searchType === "r_title" || searchType === "r_content") {
-			searchMethod = $("#searchMethod").val();
-		}
-		getJson();
-	});
-});
-function createInput(searchType){	// 검색기능 동적으로 생성
-	$("#searchInputWrap").empty();
-	if(searchType === "c_no") {
-		let $select = $("<select></select>").attr("id", "searchValue");
-		for(let i = 0; i < courseList.length; i++) {
-			let $option = $("<option></option>").val(courseList[i].c_no).text(courseList[i].c_name);
-			$select.append($option);
-		}
-		$("#searchInputWrap").append($select);
-	}else {
-		let $input = $("<input>").attr({type: "text", id: "searchValue", size: 10});
-		$("#searchInputWrap").append($input);
-	}
 
-	if(searchType === "r_title" || searchType === "r_content") {
-		let $select = $("<select></select>").attr("id", "searchMethod");
-		let $option1 = $("<option></option>").val("1").text("일치");
-		let $option2 = $("<option></option>").val("2").text("포함");
-		$select.append($option1, $option2);
-		$("#searchInputWrap").append($select);
+		$(document).on("click", "#btnSearch", function(){	// 검색버튼 눌렀을때 게시물 목록을 거기에 맞춰서 다시 가져온다.
+			searchType = $("#searchType").val();
+			searchValue = $("#searchValue").val();
+			if(searchType === "r_title" || searchType === "r_content") {
+				searchMethod = $("#searchMethod").val();
+			}
+			getJson();
+		});
+	});
+	function createInput(searchType){	// 검색기능 동적으로 생성
+		$("#searchInputWrap").empty();
+		if(searchType === "r_title" || searchType === "r_content") {
+			let $select = $("<select></select>").attr("id", "searchMethod");
+			let $option1 = $("<option></option>").val("1").text("일치");
+			let $option2 = $("<option></option>").val("2").text("포함");
+			$select.append($option1, $option2);
+			$("#searchInputWrap").append($select);
+		}
+		if(searchType === "c_no") {
+			let $select = $("<select></select>").attr("id", "searchValue");
+			for(let i = 0; i < courseList.length; i++) {
+				let $option = $("<option></option>").val(courseList[i].c_no).text(courseList[i].c_name);
+				$select.append($option);
+			}
+			$("#searchInputWrap").append($select);
+		} else {
+			let $input = $("<input>").attr({type: "text", id: "searchValue", size: 10});
+			$("#searchInputWrap").append($input);
+		}
+		let $button = $("<button></button>").attr({id: "btnSearch", class: "btn"}).text("검색");
+		$("#searchInputWrap").append($button);
 	}
 	
-	let $button = $("<button></button>").attr("id", "btnSearch").text("검색");
-	$("#searchInputWrap").append($button);
-}
-
-function getCourseList(){	// List<CourseVo> 받아오기. 코스명으로 게시글 검색용도
-	$.ajax({
-		url: "/getCourseList",
-		success: function(data){
-			courseList = data;
-		}
-	});
-}
-
-function getJson(){
-	$.ajax({
-		url: "/listReviewJson",
-		dataType: "json",
-		method: "post",
-		data: {
-			page: page,	// 현재 페이지 정보 전달
-			RECORDS_PER_PAGE: RECORDS_PER_PAGE,	// 페이지당 레코드 수 전달
-			searchType: searchType,
-			searchValue: searchValue,
-			searchMethod: searchMethod
-		},
-		success: function(data){
-			var total_pages = data.total_pages;
-			console.log("total_pages : " + total_pages);
-			//console.log("data.list : " + data.list);
-			$('#rowDFlex').empty();
-			$(data.list).each(function(idx,item){
-				console.log(data.list);
-
-				// 사진출력
-				let listImg;
-				let emptyStr;
-				/* if(data.mf.length!=0) {
-					listImg = $('<img id="listImg"/>').attr('src',"/");
-				} else { */
-					listImg = $('<img/>').attr('src',"/meetingImg/empty.png");
-					emptyStr = $('<div></div>').html('').addClass('emptyStr'); // 빈화면에 글씨적을 수 있음
-				/* } */
-	            const contentImg = $('<a></a>').addClass('block-20 img').attr("href",'detailReview?r_no='+item.r_no).append(listImg, emptyStr);
-
-				// 게시글 정보
-	            const r_no = $('<div><div>').html(item.r_no);
-	            const c_nameA = $("<a href='/detailCourse?c_no="+item.c_no+"'></a>").html(item.c_name);
-	            const c_name = $('<div></div>').append(c_nameA);
-	            const nickName_icon = $('<img/>').attr({src : 'rank/'+item.rank_icon, height : '20px'});
-	            const nickNameA = $('<a href="/listReview?id='+item.id+'"></a>').html(item.nickName);
-	            const nickName = $('<div></div>').append(nickName_icon, nickNameA);
-	            const date_diff_str = $('<div></div>').html(item.date_diff_str);
-	            const r_hit = $('<div></div>').html(item.r_hit);
-	            const speechImg = $('<span></span>').addClass('fa fa-comment'); // 말풍선
-	            const total_reply = $('<div></div>').addClass('meta-chat').append(speechImg, " "+item.total_reply); // 말풍선 + 댓글수
-	            const r_titleA = $('<a></a>').attr('href','detailReview?r_no='+item.r_no).html(item.r_title);
-	            const r_title = $('<h3></h3>').addClass('heading').append(r_titleA);
-
-	        	// div에 내용담기
-				const metaDiv = $('<div></div>').addClass('meta mb-3');
-	            const textDiv = $('<div></div>').addClass('text');
-	            const blog_entryDiv = $('<div></div>').addClass('blog-entry justify-content-end');
-	            const col = $('<div></div>').addClass('col-md-3 d-flex ftco-animate fadeInUp ftco-animated');
-	        
-	            metaDiv.append(c_name, nickName, date_diff_str, /* r_hit, */ total_reply);
-	            textDiv.append(contentImg, metaDiv, r_title);
-	            blog_entryDiv.append(textDiv);
-	            col.append(blog_entryDiv);
-
-	            $('#rowDFlex').append(col);
-			});
-
-			// 페이지 하단에 표시되는 페이지링크 수에 따른 시작페이지, 종료페이지 계산
-			// tmp는 시작페이지, 종료페이지 계산을 위한 임시변수
-			var tmp = parseInt(page / PAGE_LINKS);	// 소수점에서 정수로 변환
-			if(page % PAGE_LINKS != 0) {
-				tmp += 1;
+	function getCourseList(){	// List<CourseVo> 받아오기. 코스명으로 게시글 검색용도
+		$.ajax({
+			url: "/getCourseList",
+			success: function(data){
+				courseList = data;
 			}
-			var end_page = PAGE_LINKS * tmp;
-			var begin_page = end_page - (PAGE_LINKS - 1);
-			if(end_page > total_pages) {
-				end_page = total_pages;
-			}
-			
-			$("#pageLink").empty();		// 기존 페이지 링크 삭제
-			if(begin_page > PAGE_LINKS) {
-				var $previous = $("<a></a>").attr("href", "").text("[이전]");
-				var pageLi = $('<li></li>').append($previous);
-				$previous.css({
-					border: "none"
-				});
-				$previous.click(function(event){
-					event.preventDefault();
-					page = page - PAGE_LINKS;
-					getJson();
-				});
-				$("#pageLink").append(pageLi, " ");
-			}
-			for(var i = begin_page; i <= end_page; i++) {
-				// a태그 속성 idx는 클릭이벤트때 페이지값을 알기위한 임의로 만든 속성
-				var $a = $("<a></a>").attr({href: "",idx: i}).text(i);
-				var pageLi = $('<li></li>').append($a);
-				if(page == i) {
-					// 버튼 클릭시 css 적용
-					$a.css({
-						color: "white",
-						backgroundColor: "#ECCB6A",
-						border: "none"
-					});	
-				} else {
-	            	$a.css({
-						border: "none"
-					});
-			    }
-				$a.click(function(event){
-					event.preventDefault();
-					page = $(this).attr("idx");
-					getJson();
-				});
-				$("#pageLink").append(pageLi, " ");
-			}
-			if(total_pages > end_page) {
-				var $next = $("<a></a>").attr("href", "").text("[다음]");
-				var pageLi = $('<li></li>').append($next);
-				$next.css({
-					border: "none"
-				});
-				$next.click(function(event){
-					event.preventDefault();
-					page = Number(page) + PAGE_LINKS;	// page를 문자열로 인식해서 Number로 형변환 후 계산해야 함.
-					if(page > total_pages) {
-						page = total_pages;
+		});
+	}
+	
+	function getJson(){
+		$.ajax({
+			url: "/listReviewJson",
+			dataType: "json",
+			method: "post",
+			data: {
+				page: page,	// 현재 페이지 정보 전달
+				RECORDS_PER_PAGE: RECORDS_PER_PAGE,	// 페이지당 레코드 수 전달
+				searchType: searchType,
+				searchValue: searchValue,
+				searchMethod: searchMethod
+			},
+			success: function(data){
+				var total_pages = data.total_pages;
+				console.log("total_pages : " + total_pages);
+				//console.log("data.list : " + data.list);
+				$('#rowDFlex').empty();
+				$(data.list).each(function(idx,item){
+					//console.log(data.list);
+					// 사진출력
+					
+					//console.log(item.rf[0].rf_path);
+					//console.log(item.rf[0].rf_savename);
+					let listImg;
+					let emptyStr;
+					if(item.rf.length!=0) {
+						listImg = $('<img id="listImg"/>').attr('src',"/"+item.rf[0].rf_path+"/"+item.rf[0].rf_savename);
+					} else {
+						listImg = $('<img/>').attr('src',"/icons/empty.png");
+						emptyStr = $('<div></div>').html('').addClass('emptyStr'); // 빈화면에 글씨적을 수 있음
 					}
-					getJson();
+		            const contentImg = $('<a></a>').addClass('block-20 img').attr("href",'detailReview?r_no='+item.r_no).append(listImg, emptyStr);
+	
+					// 게시글 정보
+		            const r_no = $('<div><div>').html(item.r_no);
+		            const c_nameA = $("<a href='/detailCourse?c_no="+item.c_no+"'></a>").html(item.c_name);
+		            const c_name = $('<div></div>').append(c_nameA);
+		            const nickName_icon = $('<img/>').attr({src : 'rank/'+item.rank_icon, height : '20px'});
+		            const nickNameA = $('<a href="/listReview?id='+item.id+'"></a>').html(item.nickName);
+		            const nickName = $('<div></div>').append(nickName_icon, nickNameA);
+		            const date_diff_str = $('<div></div>').html(item.date_diff_str);
+		            const r_hit = $('<div></div>').html(item.r_hit);
+		            const speechImg = $('<span></span>').addClass('fa fa-comment'); // 말풍선
+		            const total_reply = $('<div></div>').addClass('meta-chat').append(speechImg, " "+item.total_reply); // 말풍선 + 댓글수
+		            const r_titleA = $('<a></a>').attr('href','detailReview?r_no='+item.r_no).html(item.r_title);
+		            const r_title = $('<h3></h3>').addClass('heading').append(r_titleA);
+	
+		        	// div에 내용담기
+					const metaDiv = $('<div></div>').addClass('meta mb-3');
+		            const textDiv = $('<div></div>').addClass('text');
+		            const blog_entryDiv = $('<div></div>').addClass('blog-entry justify-content-end');
+		            const col = $('<div></div>').addClass('col-md-3 d-flex ftco-animate fadeInUp ftco-animated');
+		        
+		            metaDiv.append(c_name, nickName, date_diff_str, /* r_hit, */ total_reply);
+		            textDiv.append(contentImg, metaDiv, r_title);
+		            blog_entryDiv.append(textDiv);
+		            col.append(blog_entryDiv);
+	
+		            $('#rowDFlex').append(col);
 				});
-				$("#pageLink").append(pageLi, " ");
+	
+				// 페이지 하단에 표시되는 페이지링크 수에 따른 시작페이지, 종료페이지 계산
+				// tmp는 시작페이지, 종료페이지 계산을 위한 임시변수
+				var tmp = parseInt(page / PAGE_LINKS);	// 소수점에서 정수로 변환
+				if(page % PAGE_LINKS != 0) {
+					tmp += 1;
+				}
+				var end_page = PAGE_LINKS * tmp;
+				var begin_page = end_page - (PAGE_LINKS - 1);
+				if(end_page > total_pages) {
+					end_page = total_pages;
+				}
+				
+				$("#pageLink").empty();		// 기존 페이지 링크 삭제
+				if(begin_page > PAGE_LINKS) {
+					var $previous = $("<a></a>").attr("href", "").text("<");
+					var pageLi = $('<li></li>').append($previous);
+					$previous.css({
+						border: "none",
+						color: "black"
+					});
+					$previous.click(function(event){
+						event.preventDefault();
+						page = page - PAGE_LINKS;
+						getJson();
+					});
+					$("#pageLink").append(pageLi, " ");
+				}
+				for(var i = begin_page; i <= end_page; i++) {
+					// a태그 속성 idx는 클릭이벤트때 페이지값을 알기위한 임의로 만든 속성
+					var $a = $("<a></a>").attr({href: "",idx: i}).text(i);
+					var pageLi = $('<li></li>').append($a);
+					if(page == i) {
+						// 버튼 클릭시 css 적용
+						$a.css({
+							color: "white",
+							backgroundColor: "#ECCB6A",
+							border: "none"
+						});	
+					} else {
+		            	$a.css({
+							border: "none",
+							color: "black"
+						});
+				    }
+					$a.click(function(event){
+						event.preventDefault();
+						page = $(this).attr("idx");
+						getJson();
+					});
+					$("#pageLink").append(pageLi, " ");
+				}
+				if(total_pages > end_page) {
+					var $next = $("<a></a>").attr("href", "").text(">");
+					var pageLi = $('<li></li>').append($next);
+					$next.css({
+						border: "none",
+						color: "black"
+					});
+					$next.click(function(event){
+						event.preventDefault();
+						page = Number(page) + PAGE_LINKS;	// page를 문자열로 인식해서 Number로 형변환 후 계산해야 함.
+						if(page > total_pages) {
+							page = total_pages;
+						}
+						getJson();
+					});
+					$("#pageLink").append(pageLi, " ");
+				}
 			}
-		}
-	})
-}
-</script>
+		})
+	}
+	</script>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 		<div class="container">
-			<a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
+			<a style="font-family: 나눔스퀘어라운드; font-size: 30px;" class="navbar-brand" href="/mainPage">
 				<span style="font-weight: bold;">
 					<font color="#45A3F5">오</font>
 					<font color="#bae4f0">늘</font>
 					<font color="#88bea6">의</font>
 					<font color="#eccb6a">라</font>
 					<font color="#d0a183">이</font>
-					<font color="#c8572d">딩
+					<font color="#c8572d">딩</font>
 				</span>
 			</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                <span class="oi oi-menu"></span> Menu
             </button>
-         
-			<div class="collapse navbar-collapse" id="ftco-nav">
-				<ul class="navbar-nav ml-auto">
-					<c:choose>
-						<c:when test="${m == null }">
-							<li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
-							<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
-						</c:when>
-						<c:when test="${m != null }">
-							<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
-							<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
-							<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
-						</c:when>
-					</c:choose>
-				</ul>
-			</div> 
-
-			<div class="collapse navbar-collapse" id="ftco-nav">
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
-					<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
-					<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
-					<li class="nav-item active"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
-					<li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
-					<li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
-				</ul>
+            
+         	<div style="display: block;">
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto">
+						<c:choose>
+							<c:when test="${m == null }">
+								<li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
+								<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
+							</c:when>
+							<c:when test="${m != null }">
+								<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
+								<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
+								<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+							</c:when>
+						</c:choose>
+					</ul>
+				</div> 
+	
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
+						<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
+						<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
+						<li class="nav-item active"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
+						<li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+						<li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
+					</ul>
+				</div>
 			</div>
 		</div>
     </nav>
@@ -389,59 +346,25 @@ function getJson(){
 	<section class="ftco-section ftco-agent">
 		<div class="container">
 			<!-- 검색 -->
-			<div id="searchANDinsertContainer">
-				<div id="searchTypeWrap">
-					<select id="searchType">
-						<option value="id">ID</option>
-						<option value="c_no">코스</option>
-						<option value="r_title">글제목</option>
-						<option value="r_content">글내용</option>
-					</select>
-				</div>
-				<div id="searchInputWrap"></div>
-			</div>
-			<!-- 리스트출력 -->
-			<div class="row d-flex" id="rowDFlex"></div> 
-				<div class="row mt-5">
-					<div class="col text-center">
-						<!-- 등록버튼 -->
-						<div><a href="/user/insertReview" class="btn">등록</a></div>                    
-						<div class="block-27"><ul id="pageLink"><!-- 페이징처리 --></ul></div>
-					</div>
-				</div>
-			
-		
-		<!-- 이전 테이블 -->
-		<!-- <table width="100%">
-			<thead>
-				<tr>
-					<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-					 <th>코스</th>
-					 <th>제목</th>
-					 <th>작성자</th>
-					 <th>작성시간</th>
-					 <th>조회</th>
-				</tr>
-			</thead>
-			<tbody></tbody>
-		</table>
-		<div id="pageLink"></div>
-		<br>
-		
-		<div id="searchANDinsertContainer">
-			<div id="searchTypeWrap">
+			<div id="searchANDinsertContainer" >
 				<select id="searchType">
 					<option value="id">ID</option>
 					<option value="c_no">코스</option>
 					<option value="r_title">글제목</option>
 					<option value="r_content">글내용</option>
 				</select>
+				<div id="searchInputWrap"></div>
 			</div>
-			<div id="searchInputWrap"></div>
-			<div id="btnInsert">
-				<a href="/user/insertReview"><img src="buttons/insert.png" height="30px" align="right"></a>
-			</div>
-		</div> -->	
+			<!-- 리스트출력 -->
+			<div class="row d-flex" id="rowDFlex"></div> 
+			<div class="row mt-5">
+				<div class="col text-center">
+					<!-- 등록버튼 -->
+					<div class="btnDiv"><a href="/user/insertReview" class="btn" style="background-color: #88BEA6;">등록</a></div>
+					<!-- 페이징처리 -->                  
+					<div class="block-27"><ul id="pageLink"></ul></div>
+				</div>
+			</div>	
 		</div> <!-- container 끝 -->
 	</section>
 		
