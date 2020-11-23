@@ -18,7 +18,8 @@ public class MeetingVo {
    private String id;
    private String m_title;
    private String m_content;
-   private String m_regdate;
+//   private String m_regdate;
+   private Date m_regdate;
    private int m_hit;
    private double m_latitude;
    private double m_longitude;
@@ -30,4 +31,7 @@ public class MeetingVo {
    private String rank_icon;
    private List<Meeting_fileVo> mf;
    private int m_repCnt;
+   private long date_diff;		// 현재시간-글등록시간
+   private String date_diff_str;	// 현재시간-글등록시간을 문자열로
+
 }

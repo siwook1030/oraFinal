@@ -73,12 +73,12 @@ public class MeetingController {
 		if (id.equals("null") || id.equals("") || id.equals(null) || "".equals(id) ||  "null".equals(id)) {
 			id = "%";
 		}
-		HashMap map = new HashMap();
+		
 		totRecord = mdao.totMRecord(id); 
-		System.out.println("=========================");
-		System.out.println(totRecord);
-		System.out.println("*** recordSize : "+recordSize);
-		System.out.println("*** pageNo : "+pageNo);
+//		System.out.println("=========================");
+//		System.out.println("*** totRecord"+totRecord);
+//		System.out.println("*** recordSize : "+recordSize);
+//		System.out.println("*** pageNo : "+pageNo);
 		
 		// 페이지에 출력되는 레코드 번호
 		int start = (pageNo-1)*recordSize+1;
@@ -87,9 +87,8 @@ public class MeetingController {
 			end = totRecord;
 		}
 		
-		System.out.println("*** start : "+start);
-		System.out.println("*** end : "+end);
-		
+		//System.out.println("*** start : "+start);
+		//System.out.println("*** end : "+end);
 		map.put("start", start);
 		map.put("end", end);
 		map.put("totRecord", totRecord);
@@ -112,11 +111,10 @@ public class MeetingController {
 		
 		int totalRecordR = mdao.cntRep(m_no);
 		int totalPageNum = (int)Math.ceil((double)totalRecordR/recordSizeR);
-		System.out.println("토탈페이지넘 : " +totalPageNum);
+		//System.out.println("토탈페이지넘 : " +totalPageNum);
 		int start = 1;
 		int end = start+recordSizeR-1;
 			
-		//HashMap map = new HashMap();
 		map.put("start", start);
 		map.put("end", end);
 		map.put("m_no", m_no);
@@ -144,8 +142,8 @@ public class MeetingController {
 	@PostMapping(value = "/user/attendMpeople", produces = "application/json;charset=utf-8")
 	@ResponseBody
 	public String attendMpeople(int m_no, String id) {
-		System.out.println(m_no);
-		System.out.println(id);
+//		System.out.println(m_no);
+//		System.out.println(id);
 		int re = mdao.insertMPeople(new Meeting_peopleVo(id, m_no, "", "", ""));
 		return Integer.toString(re); 
 	}
@@ -163,7 +161,6 @@ public class MeetingController {
 		int end = num*recordSizeR;
 		int start = end-recordSizeR+1;
 		
-		//HashMap map = new HashMap();
 		map.put("start", start);
 		map.put("end", end);
 		map.put("m_no", m_no);
@@ -179,7 +176,7 @@ public class MeetingController {
 	
 	@GetMapping(value = "/user/updateMeeting", produces = "application/json; charset=utf-8")
 	public void updateMForm(HttpServletRequest request, int m_no, Model model, int c_no) {	
-		System.out.println("작동완");
+		//System.out.println("작동완");
 		Gson gson = new Gson();
 		String path = request.getRealPath("/couraseLine");
 		MeetingVo mt = mdao.detailMeeting(m_no);
@@ -198,14 +195,14 @@ public class MeetingController {
 	@PostMapping(value = "/user/updateMeeting", produces = "application/json;charset=utf-8")
 	@ResponseBody
 	public String updateMSubmit(@RequestParam HashMap map, HttpServletRequest request, List<MultipartFile> uploadMtFiles) {
-		System.out.println("*** map(updtCntr Sbmt) : "+map);
+//		System.out.println("*** map(updtCntr Sbmt) : "+map);
 		
 		int m_no = Integer.parseInt((String)map.get("m_no"));
 		int c_no = Integer.parseInt((String)map.get("c_no"));
 		String id = "";
 		String m_title = (String)map.get("m_title");
 		String m_content = (String)map.get("m_content");
-		String m_regdate = null;
+		Date m_regdate = null;
 		int m_hit = 0;
 		double m_latitude = Double.parseDouble((String)map.get("m_latitude"));
 		double m_longitude = Double.parseDouble((String)map.get("m_longitude"));
@@ -216,16 +213,16 @@ public class MeetingController {
 		String c_name = "";
 		String rank_icon = "";
 		
-		MeetingVo mtvo = new MeetingVo(m_no, c_no, id, m_title, m_content, m_regdate, m_hit, m_latitude, m_longitude, m_locname, m_time, m_numpeople, nickName, c_name, rank_icon, null, 0);
+		MeetingVo mtvo = new MeetingVo(m_no, c_no, id, m_title, m_content, m_regdate, m_hit, m_latitude, m_longitude, m_locname, m_time, m_numpeople, nickName, c_name, rank_icon, null, 0, 0, null);
 
 		//System.out.println(mtvo.toString());
 		int re = mdao.updateMeeting(mtvo);
 		
 		
-		System.out.println("***uploadMtFiles1 : "+uploadMtFiles);
+//		System.out.println("***uploadMtFiles1 : "+uploadMtFiles);
 		// Meeting_fileVo를 먼저 삭제
 		mdao.deleteMFile(m_no);
-		System.out.println("***uploadMtFiles2 : "+uploadMtFiles);
+//		System.out.println("***uploadMtFiles2 : "+uploadMtFiles);
 		
 			
 		// 사진등록
@@ -255,7 +252,7 @@ public class MeetingController {
 							fos.close();
 						} catch (Exception e) {
 							// TODO: handle exception
-							System.out.println("insertCntr size exp : "+e.getMessage());
+							// System.out.println("insertCntr size exp : "+e.getMessage());
 						}	
 					}
 				}
@@ -267,10 +264,10 @@ public class MeetingController {
 	@RequestMapping("/deleteMeeting")
 	public ModelAndView deleteMeeting(int m_no, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView("redirect:/listMeeting");
-		System.out.println("*** m_no(deleteM cntr) : "+m_no);
+		// System.out.println("*** m_no(deleteM cntr) : "+m_no);
 		
 		String path = request.getRealPath("meetingFile");
-		System.out.println("*** path (DltMtng Cntr) : "+path);
+		// System.out.println("*** path (DltMtng Cntr) : "+path);
 		File file = null;
 		int re = 0;
 		
@@ -354,15 +351,14 @@ public class MeetingController {
 		if(end>totRecord) {
 			end = totRecord;
 		}
-		HashMap map = new HashMap();
 		map.put("start", start);
 		map.put("end", end);
 		map.put("id", getMemberId(httpSession));
 		
-		System.out.println("===================");
-		System.out.println("totRecord: "+totRecord+" /totPage: "+totPage);
-		System.out.println("start: "+start+" /end: "+end);
-		System.out.println("startPage: "+startPage+" /endPage: "+endPage);
+//		System.out.println("===================");
+//		System.out.println("totRecord: "+totRecord+" /totPage: "+totPage);
+//		System.out.println("start: "+start+" /end: "+end);
+//		System.out.println("startPage: "+startPage+" /endPage: "+endPage);
 		
 		model.addAttribute("pageStr", pageStr);
 		model.addAttribute("list", mdao.myPageListMeeting(map));

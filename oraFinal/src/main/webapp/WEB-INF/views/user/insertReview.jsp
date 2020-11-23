@@ -31,8 +31,8 @@
 	#snippet-autosave-status_spinner-label { padding: 3px 5px; width: 75px; }
 	#snippet-autosave-status_spinner-loader { width: 400px; margin-left: 50px; }
 	/* 코스선택 */
-	#chooseCourse { width: 30%; border: 1px #D5D5D5 solid; border-radius: 10px; margin: 2px auto; padding: 25px; text-align: center; }
-	#chooseCourse #c_no { vertical-align: bottom; width: 70%; }
+	#selectCourse { width: 30%; border: 1px #D5D5D5 solid; border-radius: 10px; margin: 2px auto; padding: 25px; text-align: center; }
+	#selectCourse #c_no { vertical-align: bottom; width: 70%; }
 	
 
 </style>
@@ -335,7 +335,6 @@ function displayStatus( editor ) {
 
 		<section class="ftco-section ftco-agent">
 			<div class="container">
-    	
     			<!-- 글등록 form 시작 -->
 				<form action="/user/insertReview" method="post">
 			    	<div class="row justify-content-center pb-5">
@@ -344,7 +343,7 @@ function displayStatus( editor ) {
 				          	<!-- 제목 -->
 				            <h2 class="mb-4"><input type="text" name="r_title" id="r_title" placeholder="제목을 입력해주세요." required="required"></h2>
 				            <!-- 코스선택 -->
-							<div id="chooseCourse">
+							<div id="selectCourse">
 								<img src="/meetingImg/ridingRoute.png" style="margin-right: 20px; width: 40px;">
 								<select name="c_no" id="c_no">
 									<c:forEach var="vo" items="${list }">
