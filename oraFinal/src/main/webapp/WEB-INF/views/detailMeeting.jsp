@@ -814,12 +814,7 @@ window.onload = function(){
 		<div class="container">
 			<a style="font-size: 30px;" class="navbar-brand" href="/mainPage">
 				<span style="font-weight: bold;">
-					<font color="#45A3F5">오</font>
-					<font color="#bae4f0">늘</font>
-					<font color="#88bea6">의</font>
-					<font color="#eccb6a">라</font>
-					<font color="#d0a183">이</font>
-					<font color="#c8572d">딩</font>
+					<font color="#45A3F5">오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font> <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font>
 				</span>
 			</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
@@ -864,7 +859,7 @@ window.onload = function(){
 			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate pb-0 text-center">
 					<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a></span><span class="mr-2"><a href="/listMeeting">번개 라이딩 <i class="fa fa-chevron-right"></i></a></span> <span>번개 라이딩 상세 <i class="fa fa-chevron-right"></i></span></p>
-					<h1 class="mb-3 bread">번개 라이딩 상세</h1>
+					<h1 class="mb-3 bread">번개 상세</h1>
 				</div>
 			</div>
 		</div>
