@@ -5,60 +5,39 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
+<title>오늘의 라이딩 - Today's riding</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/resources/css/animate.css">
+    <link rel="stylesheet" href="/resources/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/resources/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/resources/css/magnific-popup.css">
+    <link rel="stylesheet" href="/resources/css/flaticon.css">
+    <link rel="stylesheet" href="/resources/css/style.css">
 <style type="text/css">
 
-
-h2 {
-	padding: 20px;
-	width: 120px;
-	margin: 40px auto;
-	color: #c8572d;
-	text-align: center;
-	text-decoration: none;
-}
-
-section {
-	width: 900px;
-	height: 700px;
-	margin: 20px auto;
-	font-size: 14pt;
-	margin-top: 50px;
-	margin-bottom: 100px;
-}
-
-#title{
-	width: 700px;
-	height: 30px;
-	font-size: 15px;
-	padding-left: 5px;
-	margin-left: 5px;
-}
-
-select {
+.code_select{
 	width:100px;
-	height: 30px;
+	height: 40px;
 	font-size: 13pt;
-}
-
-#content{
-	font-size: 13pt;
-	padding: 8px;
 }
 
 #btnCancel,#btnInsert {
-	width:50px;
-	height: 30px;
+	width:58px;
+	height: 39px;
     border: none;
     border-radius:5px;
     background-color: #eccb6a;
     color:#ffffff;
-    padding: 5px 0;
+    padding: 7px 0;
     font: bold;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 13px;
+    font-size: 16px;
+    font-weight: bold;
     margin: 0 5px 0 0;
     cursor: pointer;
     float: right;
@@ -68,12 +47,12 @@ select {
 	background-color: #88bea6;
 }
 
-
-
-   /*float 초기화 아이디*/
-#clear{
-	clear: both; 
+#n_insert_text{
+	font-weight: bold;
+	font-size: 28px;
+	color: #c8572d;
 }
+
 </style>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
@@ -116,30 +95,92 @@ window.onload = function(){
 </script>
 </head>
 <body>
-	<jsp:include page="../header.jsp"/>
-   
-	<a href="listNotice"><h2>공지사항</h2></a>
-	<section>
-		<form id="form">
-			<select name="code_value" size="1">
-	     		<c:forEach var="c" items="${category}">
-	     			<option value="${c.code_value }">${c.code_name }</option>
-	     		</c:forEach>
-	        </select>
-	        <br>
-			<br>
-			<input type="hidden" name="n_no" value="${n_no }">
-			글 제목  <input type="text" name="n_title" id="title" placeholder="제목을 입력하세요" >
-			<br>
-			<br>
-			<textarea rows="20" cols="95" name="n_content" id="content" placeholder="내용을 입력하세요"></textarea>
-			<br>
-			<br>
-			<button type="reset" id="btnCancel">취소</button>
-		</form>
-		<button type="button" id="btnInsert">등록</button>	
+
+	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+		<div class="container">
+			<a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
+		        <span style="font-weight: bold;">
+			        <font color="#45A3F5">오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
+			        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font></span></a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="oi oi-menu"></span> Menu
+				</button>
+				
+	      <div style="display: block;">
+			<div class="collapse navbar-collapse" id="ftco-nav">
+		        <ul class="navbar-nav ml-auto">
+					<c:choose>
+						<c:when test="${m == null }">
+							<li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
+							<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
+						</c:when>
+						<c:when test="${m != null }">
+							<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
+							<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
+							<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+						</c:when>
+					</c:choose>
+				</ul>
+			</div>      
+
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	          <li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
+	          <li class="nav-item active"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
+	          <li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
+	          <li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
+	          <li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+	          <li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
+	          <!-- <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>-->
+	        </ul>
+	      </div>
+	    </div>
+	   </div> 
+	</nav>
+    <!-- END nav -->
+    
+	<section class="hero-wrap hero-wrap-2" style="background-image: url('resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate pb-0 text-center">
+             <p class="breadcrumbs"><span class="mr-2"><a href="mainPage">Home <i class="fa fa-chevron-right"></i></a></span> <span>오늘의 라이딩 <i class="fa fa-chevron-right"></i></span></p>
+            <h1 class="mb-3 bread">공지사항</h1>
+          </div>
+        </div>
+      </div>
+    </section>
+
+	<section class="ftco-section contact-section">
+      <div class="container">
+        <div class="row block-9 justify-content-center mb-5">
+          <div class="col-md-8 mb-md-5">
+          	<h2 class="text-center" id="n_insert_text">공지사항 등록</h2>
+			<form id="form" action="#" class="bg-light p-5 contact-form">
+				<select class="code_select" name="code_value" size="1">
+		     		<c:forEach var="c" items="${category}">
+		     			<option value="${c.code_value }">${c.code_name }</option>
+		     		</c:forEach>
+		        </select>
+		        <br>
+				<div class="form-group">
+					<input type="hidden" name="n_no" value="${n_no }">
+				</div>
+				<div class="form-group">
+					<input type="text" name="n_title" class="form-control" id="n_insert_title" placeholder="제목을 입력하세요" >
+				</div>
+				<div class="form-group">
+					<textarea rows="20" cols="100" name="n_content" class="form-control" id="n_insert_content" placeholder="내용을 입력하세요"></textarea>
+				</div>
+				<br>
+				<button type="reset" id="btnCancel">취소</button>
+				<button type="button" id="btnInsert">등록</button>	
+			</form>
+	      </div>
+	    </div>
+	  </div>
 	</section>	
 	<br>
-	<jsp:include page="../footer.jsp"/>
+	<jsp:include page="footer.jsp" />
 </body>
 </html>
