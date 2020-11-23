@@ -47,10 +47,19 @@
 	
 	// 마이페이지에서 내가 쓴 게시글 조회했을때 처리하기위한 코드.
 	// GET방식 쿼리라서 querystring을 가져오기 위한 설정
-	const URLSearch = new URLSearchParams(location.search);
+const URLSearch = new URLSearchParams(location.search);
+const RECORDS_PER_PAGE = 8;	// 페이지당 레코드 수
+const PAGE_LINKS = 5;			// 페이지 하단에 표시되는 페이지링크 수
+let page = 1;	// 현재 페이지 저장 변수(기본은 1페이지)
+
+$(document).ready(function(){
+	$("#myPage2").css({"display": "none"});
 	if(URLSearch.has("searchType")) {
 		searchType = URLSearch.get("searchType");
+		$("#myPage1").css({"display": "none"});
+		$("#myPage2").css({"display": "inline-block"});
 	}
+
 	if(URLSearch.has("searchValue")) {
 		searchValue = URLSearch.get("searchValue");
 	}
@@ -58,18 +67,23 @@
 		searchMethod = URLSearch.get("searchMethod");
 	}
 	
-	const RECORDS_PER_PAGE = 8;	// 페이지당 레코드 수
-	const PAGE_LINKS = 5;			// 페이지 하단에 표시되는 페이지링크 수
-	let page = 1;	// 현재 페이지 저장 변수(기본은 1페이지)
-	
-	$(document).ready(function(){
-		getJson();			// 댓글과 페이지링크 만드는 함수
-		getCourseList();	// List<CourseVo> 받아오기. 코스명으로 게시글 검색용도
-		createInput("id");	// 처음엔 기본으로 id기반 검색으로 설정됨
-	
-		$("#searchType").change(function(){		// searchType이 바뀔때마다 동적으로 검색기능 생성
-			createInput($(this).val());
-		});
+
+	getJson();			// 댓글과 페이지링크 만드는 함수
+	getCourseList();	// List<CourseVo> 받아오기. 코스명으로 게시글 검색용도
+	createInput("id");	// 처음엔 기본으로 id기반 검색으로 설정됨
+
+	/* 삭제예정 유진 */
+	/* // 마우스 over,leave 이벤트
+	$(document).on("mouseover", ".row", function(){
+		$(this).css("background-color","#88bea6");
+	});
+	$(document).on("mouseleave", ".row", function(){
+		$(this).css("background-color","white");
+	}); */
+
+	$("#searchType").change(function(){		// searchType이 바뀔때마다 동적으로 검색기능 생성
+		createInput($(this).val());
+
 		$(document).on("click", "#btnSearch", function(){	// 검색버튼 눌렀을때 게시물 목록을 거기에 맞춰서 다시 가져온다.
 			searchType = $("#searchType").val();
 			searchValue = $("#searchValue").val();
@@ -300,10 +314,32 @@
 		<div class="container">
 			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate pb-0 text-center">
-					<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a></span><span>라이딩 후기 <i class="fa fa-chevron-right"></i></span></p>
-					<h1 class="mb-3 bread">라이딩 후기</h1>
-				</div>
-			</div>
+				
+					<div id="myPage1">
+						<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a></span><span>라이딩 후기 <i class="fa fa-chevron-right"></i></span></p>
+						<h1 class="mb-3 bread">라이딩 후기</h1>
+					</div>
+				
+					<div id="myPage2">	
+			            <span>
+			              <h1 class="mb-3 bread">마이페이지</h1>
+			            </span>
+			            <p class="breadcrumbs">
+			              <span class="mr-2">
+			                <a href="index.html">Home <i class="fa fa-chevron-right"></i></a>
+			              </span>
+			              <a href="/myPage">정보 수정 <i class="fa fa-chevron-right"></i></a>
+			              <span>
+			                <a href="/myPageSaveCourse">찜 목록 <i class="fa fa-chevron-right"></i></a>
+			                <a href="/myPageMyCourse">내 작성 코스<i class="fa fa-chevron-right"></i></a>
+			                <a href="/listReview?searchType=id&searchValue=${m.id }">내 작성 후기<i class="fa fa-chevron-right"></i></a>
+			                <a href="listMeeting?id=${m.id}">내 작성 번개<i class="fa fa-chevron-right"></i></a>
+			                <a href="/myPageMyRank">랭킹</a>
+			              </span>
+			            </p> 
+			         </div>
+	         	</div>
+	      </div>
 		</div>
 	</section>
 

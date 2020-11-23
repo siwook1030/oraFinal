@@ -16,12 +16,35 @@
       const checkNum = document.getElementById("checkNum");
       const inputNum = document.getElementById("inputNum");
       const inf = document.getElementById("inputNumForm");
-
+      const nickName = document.getElementById("nickName");
+      
       sendPhone.onclick=sendPhoneReq;   
       checkNum.onclick=checkNumReq;   
 
-      
 
+      function checkNick(){
+  		let nickCheck = 1;
+  			$.ajax({
+  				url: "/nickCheck",
+  				type: "POST",
+  				async: false,
+  				data:{
+  					"nickName":nickName.value.trim()
+  				},
+  				success: function(data){
+  					if(data == "0"){
+  						nickCheck = 0;
+  					}else{
+  						nickCheck = 1;
+  					}
+  				},
+  				error: function(){
+  					alert('서버에러');
+  				}
+  			});
+
+  		return nickCheck;		
+  }		
       function sendPhoneReq(){// 인증번호 발송
          const phAvail = /^01[0179][0-9]{7,8}$/;
          const phAvailCheck = phAvail.test(phone.value.trim());
@@ -158,6 +181,23 @@
          });
 
        $("#btnUpdate2").click(function() {
+    	   const nickNameAvail = /^[가-힣a-zA-Z0-9]{2,8}$/;
+     	   const nickNameAvailCheck = nickNameAvail.test(nickName.value.trim());
+
+     		if(nickName.value.trim() != '')
+   	  			if(nickNameAvailCheck == false){
+   	  				alert("닉네임 형식이 올바르지 않습니다(한글,영문자,숫자 2~8자).");
+   	  				nickName.focus();
+   	  				return;
+   	  			}
+
+
+     			if(checkNick() != 0){
+     				alert("중복된 닉네임입니다");
+     				nickName.focus();
+     				return;
+     			}
+     		
           if(phone.value.trim() != ''){
               if($("#btnUpdate2").attr("i") == "1"){
             alert("휴대전화 변경시 인증을먼저진행해주세요");
@@ -283,6 +323,7 @@
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate pb-0 text-center">
+          
             <span>
               <h1 class="mb-3 bread">마이페이지</h1>
             </span>
@@ -294,11 +335,12 @@
               <span>
                 <a href="/myPageSaveCourse">찜 목록 <i class="fa fa-chevron-right"></i></a>
                 <a href="/myPageMyCourse">내 작성 코스<i class="fa fa-chevron-right"></i></a>
-                <a href="/myPageListReview">내 작성 후기<i class="fa fa-chevron-right"></i></a>
+                <a href="/listReview?searchType=id&searchValue=${m.id }">내 작성 후기<i class="fa fa-chevron-right"></i></a>
                 <a href="listMeeting?id=${m.id}">내 작성 번개<i class="fa fa-chevron-right"></i></a>
                 <a href="/myPageMyRank">랭킹</a>
               </span>
             </p>
+            
           </div>
         </div>
       </div>
@@ -317,8 +359,7 @@
               <div id=modify class="hidden">닉네임</div>
               <div class="form-group">
               </div>
-              
-              <input class="updateMember form-control hidden" style="visibility: hidden ;focus {border:2px red solid}" placeholder="바꿀 닉네임을 입력하세요" name="nickName" />
+              <input id="nickName" class="updateMember form-control hidden" style="visibility: hidden ;" placeholder="바꿀 닉네임을 입력하세요" name="nickName" />
 
               <div id=modify class="hidden">전화번호</div>
               <div class="form-group">
