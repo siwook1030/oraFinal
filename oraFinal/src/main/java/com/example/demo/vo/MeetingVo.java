@@ -18,7 +18,6 @@ public class MeetingVo {
    private String id;
    private String m_title;
    private String m_content;
-//   private String m_regdate;
    private Date m_regdate;
    private int m_hit;
    private double m_latitude;
