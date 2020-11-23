@@ -34,9 +34,15 @@
 			transform: translate(-50%, -50%);
 		}
 		/* 게시글 제목 */
-		.blog-entry .text { height: 450px; /* border: 1px solid orange; */ }
-		.meta.mb-3 { height: 90px; /* border: 1px solid purple; */ }
-		.meta.mb-3 div { border: /* 1px solid pink; */ }
+		.blog-entry .text { height: 450px; }
+		.meta.mb-3 { height: 90px; }
+		
+		.metaDiv_1, .metaDiv_2 { width: 100%; }
+		
+		.c_name { display: inline-block; }
+		.nickName { display: inline-block; }
+		.date_diff_str { font-size: 13px; display: inline-block; vertical-align: top;  float: right; }
+		.meta-chat { font-size: 14px; display: inline-block; float: right;}
 	</style>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script type="text/javascript">
@@ -153,11 +159,11 @@
 						// 게시글 정보
 			            const r_no = $('<div><div>').html(item.r_no);
 			            const c_nameA = $("<a href='/detailCourse?c_no="+item.c_no+"'></a>").html(item.c_name);
-			            const c_name = $('<div></div>').append(c_nameA);
+			            const c_name = $('<div></div>').append(c_nameA).addClass('c_name');
 			            const nickName_icon = $('<img/>').attr({src : 'rank/'+item.rank_icon, height : '20px'});
-			            const nickNameA = $('<a href="/listReview?id='+item.id+'"></a>').html(item.nickName);
-			            const nickName = $('<div></div>').append(nickName_icon, nickNameA);
-			            const date_diff_str = $('<div></div>').html(item.date_diff_str);
+			            const nickNameA = $('<a href="/listReview?searchType=id&searchValue='+item.id+'"></a>').html(' '+item.nickName);
+			            const nickName = $('<div></div>').append(nickName_icon, nickNameA).addClass('nickName');
+			            const date_diff_str = $('<div></div>').html(item.date_diff_str).addClass('date_diff_str');
 			            const r_hit = $('<div></div>').html(item.r_hit);
 			            const speechImg = $('<span></span>').addClass('fa fa-comment'); // 말풍선
 			            const total_reply = $('<div></div>').addClass('meta-chat').append(speechImg, " "+item.total_reply); // 말풍선 + 댓글수
@@ -169,8 +175,11 @@
 			            const textDiv = $('<div></div>').addClass('text');
 			            const blog_entryDiv = $('<div></div>').addClass('blog-entry justify-content-end');
 			            const col = $('<div></div>').addClass('col-md-3 d-flex ftco-animate fadeInUp ftco-animated');
-			        
-			            metaDiv.append(c_name, nickName, date_diff_str, /* r_hit, */ total_reply);
+
+				        const metaDiv_1 = $('<div></div>').append(c_name, total_reply).addClass('metaDiv_1');
+				        const metaDiv_2 = $('<div></div>').append(nickName, date_diff_str, /* r_hit, */).addClass('metaDiv_2');
+			            /* metaDiv.append(c_name, nickName, date_diff_str, total_reply); */
+			            metaDiv.append(metaDiv_1, metaDiv_2);
 			            textDiv.append(contentImg, metaDiv, r_title);
 			            blog_entryDiv.append(textDiv);
 			            col.append(blog_entryDiv);
@@ -301,32 +310,27 @@
 		<div class="container">
 			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate pb-0 text-center">
-				
 					<div id="myPage1">
 						<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a></span><span>라이딩 후기 <i class="fa fa-chevron-right"></i></span></p>
 						<h1 class="mb-3 bread">라이딩 후기</h1>
 					</div>
 				
 					<div id="myPage2">	
-			            <span>
-			              <h1 class="mb-3 bread">마이페이지</h1>
-			            </span>
+			            <span><h1 class="mb-3 bread">마이페이지</h1></span>
 			            <p class="breadcrumbs">
-			              <span class="mr-2">
-			                <a href="index.html">Home <i class="fa fa-chevron-right"></i></a>
-			              </span>
-			              <a href="/myPage">정보 수정 <i class="fa fa-chevron-right"></i></a>
-			              <span>
-			                <a href="/myPageSaveCourse">찜 목록 <i class="fa fa-chevron-right"></i></a>
-			                <a href="/myPageMyCourse">내 작성 코스<i class="fa fa-chevron-right"></i></a>
-			                <a href="/listReview?searchType=id&searchValue=${m.id }">내 작성 후기<i class="fa fa-chevron-right"></i></a>
-			                <a href="listMeeting?id=${m.id}">내 작성 번개<i class="fa fa-chevron-right"></i></a>
-			                <a href="/myPageMyRank">랭킹</a>
-			              </span>
-			            </p> 
-			         </div>
-	         	</div>
-	      </div>
+							<span class="mr-2"><a href="index.html">Home <i class="fa fa-chevron-right"></i></a></span>
+			              	<a href="/myPage">정보 수정 <i class="fa fa-chevron-right"></i></a>
+							<span>
+				                <a href="/myPageSaveCourse">찜 목록 <i class="fa fa-chevron-right"></i></a>
+				                <a href="/myPageMyCourse">내 작성 코스<i class="fa fa-chevron-right"></i></a>
+				                <a href="/listReview?searchType=id&searchValue=${m.id }">내 작성 후기<i class="fa fa-chevron-right"></i></a>
+				                <a href="listMeeting?id=${m.id}">내 작성 번개<i class="fa fa-chevron-right"></i></a>
+				                <a href="/myPageMyRank">랭킹</a>
+							</span>
+						</p> 
+					</div>
+				</div>
+			</div>
 		</div>
 	</section>
 

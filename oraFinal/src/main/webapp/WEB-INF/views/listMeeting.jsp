@@ -29,6 +29,12 @@
 		.blog-entry .text { height: 450px; border: 1px solid orange; }
 		.meta.mb-3 { height: 120px; border: 1px solid purple; }
 		.meta.mb-3 div { border: 1px solid pink; }
+		.metaDiv_1, .metaDiv_2 { width: 100%; }
+		.c_name { display: inline-block; }
+		.nickName { display: inline-block; }
+		.m_regdate { font-size: 13px; display: inline-block; vertical-align: top;  float: right; }
+		.meta-chat { font-size: 14px; display: inline-block; float: right;}
+		.m_timeImg, .m_time { display: inline-block; padding-left: 3px; vertical-align: bottom; border: 1px solid red; text-align: center; }
 		/* 페이징 */
 		.pageUl { border: none; }
 		.btnPrevNext { border: none; }
@@ -160,12 +166,13 @@
 		        // 게시글 내용
 	            // const m_no = $('<div></div>').html(data.m_no);
 	            const c_nameA = $('<a href="/detailCourse?c_no='+data.c_no+'"></a>').html(data.c_name);
-	            const c_name = $('<div></div>').append(c_nameA);
-	            const m_time = $('<div></div>').html(data.m_time);
-	            const nickName_icon = $('<img/>').attr({src : 'rank/'+data.rank_icon, height : '20px'});
+	            const c_name = $('<div></div>').append(c_nameA).addClass('c_name');
+	            const m_timeImg = $('<img/>').attr({src : '/meetingImg/meetingTime.png', height : '30px'}).addClass('m_timeImg');
+	            const m_time = $('<div></div>').html(data.m_time).addClass('m_time');
+	            const nickNameImg = $('<img/>').attr({src : '/rank/'+data.rank_icon, height : '20px'});
 	            const nickNameA = $('<a href="/listMeeting?id='+data.id+'"></a>').html(data.nickName);
-	            const nickName = $('<div></div>').append(nickName_icon, nickNameA);
-	            const m_regdate = $('<div></div>').html(data.date_diff_str);
+	            const nickName = $('<div></div>').append(nickNameImg, nickNameA).addClass('nickName');
+	            const m_regdate = $('<div></div>').html(data.date_diff_str).addClass('m_regdate');
 	            // const m_hit = $('<div></div>').html(data.m_hit);
 	            const speechImg = $('<span></span>').addClass('fa fa-comment'); // 말풍선
 	            const m_repCnt = $('<div></div>').addClass('meta-chat').append(speechImg, " "+data.m_repCnt); // 말풍선 + 댓글수
@@ -178,8 +185,10 @@
 	            const blog_entryDiv = $('<div></div>').addClass('blog-entry justify-content-end');
 	            const col = $('<div></div>').addClass('col-md-3 d-flex ftco-animate fadeInUp ftco-animated');
 
-	            metaDiv.append(c_name, m_time, nickName, m_regdate, /* m_hit, */ m_repCnt);
-	            textDiv.append(contentImg, metaDiv, m_title);
+	            const metaDiv_1 = $('<div></div>').append(c_name, m_repCnt).addClass('metaDiv_1');
+		        const metaDiv_2 = $('<div></div>').append(nickName, m_regdate /* , m_hit */).addClass('metaDiv_2');
+	            metaDiv.append(metaDiv_1, metaDiv_2);
+	            textDiv.append(contentImg, m_timeImg, m_time, metaDiv, m_title);
 	            blog_entryDiv.append(textDiv);
 	            col.append(blog_entryDiv);
 
