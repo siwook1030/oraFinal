@@ -141,4 +141,23 @@
 	<update id="updateMasDelCourse"> <!--코스삭제로 인해 해당코스로 등록되어있던 게시물은 0번(선택안함)으로 변경 -->
 		UPDATE MEETING SET C_NO = 0 WHERE C_NO = #{c_no}
 	</update>
+	
+	<!-- 정재호 -->
+	<select id="selectTemp" resultType="meeting_tempVo">
+		SELECT * FROM meeting_temp WHERE id=#{id}
+	</select>
+	<insert id="insertTempId">
+		INSERT INTO meeting_temp(id) VALUES(#{id})
+	</insert>
+	<update id="updateTemp">
+		UPDATE meeting_temp SET c_no=#{c_no},m_title=#{m_title},m_content=#{m_content},m_latitude=#{m_latitude},m_longitude=#{m_longitude},m_locname=#{m_locname},m_numpeople=#{m_numpeople}
+		<if test="m_time != null">
+			,m_time=#{m_time}
+		</if>
+		WHERE id=#{id}
+	</update>
+	<delete id="deleteTemp">
+		DELETE FROM meeting_temp WHERE id=#{id}
+	</delete>
+	
 </mapper>	

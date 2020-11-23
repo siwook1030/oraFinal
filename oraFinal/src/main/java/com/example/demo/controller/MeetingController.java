@@ -33,6 +33,7 @@ import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.Meeting_fileVo;
 import com.example.demo.vo.Meeting_peopleVo;
 import com.example.demo.vo.Meeting_repVo;
+import com.example.demo.vo.Meeting_tempVo;
 import com.example.demo.vo.MemberVo;
 
 import com.example.demo.vo.ResponseDataVo;
@@ -178,7 +179,7 @@ public class MeetingController {
 	public void updateMForm(HttpServletRequest request, int m_no, Model model, int c_no) {	
 		//System.out.println("작동완");
 		Gson gson = new Gson();
-		String path = request.getRealPath("/couraseLine");
+		String path = request.getRealPath("/courseLine");
 		MeetingVo mt = mdao.detailMeeting(m_no);
 		List<Meeting_fileVo> mf = mdao.detailMFile(m_no);
 		model.addAttribute("mt", mt);
@@ -239,7 +240,8 @@ public class MeetingController {
 				long mf_size = mf.getSize();	
 				mfvo.add(new Meeting_fileVo(mf_no, m_no, mf_name, mf_savename, mf_path, mf_size));
 			}
-			re_mf = mdao.insertMFile(mfvo);
+			//re_mf = mdao.insertMFile(mfvo);
+			// insertMFile 수정했으므로 같이 수정해줘야됨. << 정재호
 		}
 			
 			if(re>0) {
@@ -377,4 +379,12 @@ public class MeetingController {
 		return new Gson().toJson(responseDataVo);
 	}
 	
+	// 사용자가 예전에 작성하던 게시글이 없을 경우 insert문으로 empty record생성. 그래야만 autosave로 update 가능(insert하기전에 update가 불가능하기 때문)
+	@RequestMapping(value = "/createMeetingTempRecord", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public void createMeetingTempRecord(HttpSession session) {
+		Meeting_tempVo mtvo = new Meeting_tempVo();
+		MemberVo mvo = (MemberVo)session.getAttribute("m");
+		mdao.insertTempId(mvo.getId());
+	}
 }

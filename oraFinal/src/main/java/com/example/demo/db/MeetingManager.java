@@ -13,6 +13,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import com.example.demo.vo.Meeting_fileVo;
 import com.example.demo.vo.Meeting_peopleVo;
 import com.example.demo.vo.Meeting_repVo;
+import com.example.demo.vo.Meeting_tempVo;
 import com.example.demo.vo.MeetingVo;
 
 public class MeetingManager {
@@ -180,12 +181,10 @@ public class MeetingManager {
 	}
 	
 	// 첨부파일 등록
-	public static int insertMFile(List<Meeting_fileVo> mf) {
+	public static int insertMFile(Meeting_fileVo mfvo) {
 		int re = -1;
 		SqlSession session = sqlSessionFactory.openSession(true);
-		for(Meeting_fileVo mfvo : mf) {
-			re = session.insert("meeting.insertMf", mfvo);
-		}
+		re = session.insert("meeting.insertMf", mfvo);
 		session.close();
 		return re;
 	}
@@ -308,4 +307,38 @@ public class MeetingManager {
 		return n;
 	}
 	
+	public static Meeting_tempVo selectTemp(String id) {
+		Meeting_tempVo mtvo = null;
+		SqlSession session = sqlSessionFactory.openSession();
+		mtvo = session.selectOne("meeting.selectTemp", id);
+		session.close();
+		return mtvo;
+	}
+	
+	public static int insertTempId(String id) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.insert("meeting.insertTempId", id);
+		session.commit();
+		session.close();
+		return re;
+	}
+	
+	public static int updateTemp(Meeting_tempVo mtvo) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.update("meeting.updateTemp", mtvo);
+		session.commit();
+		session.close();
+		return re;
+	}
+	
+	public static int deleteTemp(String id) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.delete("meeting.deleteTemp", id);
+		session.commit();
+		session.close();
+		return re;
+	}
 }
