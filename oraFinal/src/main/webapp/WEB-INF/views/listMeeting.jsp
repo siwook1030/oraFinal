@@ -50,9 +50,9 @@
 		 	transform: translate(-50%, -50%);
 		}
 		/* 게시글 제목 */
-		.blog-entry .text { height: 450px; border: 1px solid orange; }
-		.meta.mb-3 { height: 120px; border: 1px solid purple; }
-		.meta.mb-3 div { border: 1px solid pink; }
+		.blog-entry .text { height: 450px; /* border: 1px solid orange; */ }
+		.meta.mb-3 { height: 120px; /* border: 1px solid purple; */ }
+		.meta.mb-3 div { /* border: 1px solid pink; */ }
 		/* 페이징 */
 		.pageUl { border: none; }
 		.btnPrevNext { border: none; }
