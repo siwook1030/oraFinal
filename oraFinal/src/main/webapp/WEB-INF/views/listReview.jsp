@@ -258,6 +258,7 @@ $(document).ready(function(){
 			}
 		})
 	}
+});
 	</script>
 </head>
 <body>
@@ -323,7 +324,7 @@ $(document).ready(function(){
 					<div id="myPage2">	
 			            <span>
 			              <h1 class="mb-3 bread">마이페이지</h1>
-			            </span>
+			            </span>   
 			            <p class="breadcrumbs">
 			              <span class="mr-2">
 			                <a href="index.html">Home <i class="fa fa-chevron-right"></i></a>
@@ -338,6 +339,7 @@ $(document).ready(function(){
 			              </span>
 			            </p> 
 			         </div>
+			         
 	         	</div>
 	      </div>
 		</div>
