@@ -17,6 +17,7 @@
 		<typeAlias type="com.example.demo.vo.Meeting_fileVo" alias="meeting_fileVo"/>
 		<typeAlias type="com.example.demo.vo.Meeting_repVo" alias="meeting_repVo"/>
 		<typeAlias type="com.example.demo.vo.Meeting_peopleVo" alias="meeting_peopleVo"/>
+		<typeAlias type="com.example.demo.vo.Meeting_tempVo" alias="meeting_tempVo"/>
 		
 		<typeAlias type="com.example.demo.vo.ReviewVo" alias="reviewVo"/>
 		<typeAlias type="com.example.demo.vo.RankVo" alias="rankVo"/>

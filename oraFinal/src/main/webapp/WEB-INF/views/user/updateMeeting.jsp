@@ -409,8 +409,8 @@
 			}
 			   const mtJson = ${mtJson};
 			   const mfJson = ${mfJson};
-			   const meetingLatLng = new kakao.maps.LatLng(mtJson.m_latitude, mtJson.m_longitude);
-			   setCourse(mtJson.c_no,meetingLatLng);
+			   const meetingLatLng = new kakao.maps.LatLng(mtJson.m_latitude, mtJson.m_longitude);	// 미팅장소표시 <<<
+			   setCourse(mtJson.c_no,meetingLatLng);	// 코스구간표시 <<<
 			   meetingMarker.setPosition(meetingLatLng);
 			   meetingMarker.setMap(map);
 			   document.getElementById("m_locname").value = mtJson.m_locname;

@@ -144,7 +144,13 @@
 			font-size: 15px;
 		}
 		textarea:focus { outline: none; }
+		
+		/*.ck-content {
+			border: 1px solid #D9D9D9;
+		}*/
 	</style>
+	<!-- ckeditor스타일 적용을 위한 css -->
+	<link rel="stylesheet" type="text/css" href="/ckeditor5/content-styles.css">
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script type="text/javascript" src="slick/slick.min.js"></script>
@@ -983,14 +989,17 @@ window.onload = function(){
 			
 			<div><ul id="mPeople"></ul></div>
 			<br>
-			
+			<div class="ck-content">${mt.m_content }</div>
+			<!-- 
 			<textarea class="about-author d-flex p-4 bg-light" id="m_content" readonly="readonly">${mt.m_content }</textarea>
-			
+			 -->
+			<!-- 
 			<c:if test="${mf.size()>0 }">
 				<div class="photo_canvas">
 					<div class="mfPhotoDiv" id="mfPhotoDiv"></div>
 				</div>
 			</c:if>
+			 -->
 			
 			<!-- 수정,삭제 버튼 -->
 			<c:if test="${m.id==mt.id }">
