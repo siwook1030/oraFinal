@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.admin.PointCause;
+import com.example.demo.admin.PointGet;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.dao.MeetingDao;
 import com.example.demo.dao.MemberDao;
 import com.example.demo.util.FileUtilCollection;
-import com.example.demo.util.PointCause;
-import com.example.demo.util.PointGet;
 import com.example.demo.util.ResponseDataCode;
 import com.example.demo.vo.MeetingVo;
 import com.example.demo.vo.Meeting_fileVo;

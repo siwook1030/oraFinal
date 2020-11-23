@@ -1,4 +1,4 @@
-package com.example.demo.util;
+package com.example.demo.admin;
 
 public class PointCause {
 	public static final String writeReviewCause = "후기 작성";

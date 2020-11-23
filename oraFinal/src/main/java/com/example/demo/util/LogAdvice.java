@@ -1,5 +1,8 @@
 package com.example.demo.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.ServletContext;
 
 import org.aspectj.lang.JoinPoint;
@@ -11,7 +14,11 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.admin.PointCause;
+import com.example.demo.admin.PointGet;
+import com.example.demo.dao.LogDao;
 import com.example.demo.dao.MemberDao;
+import com.example.demo.vo.LogVo;
 import com.example.demo.vo.MeetingVo;
 import com.example.demo.vo.Meeting_repVo;
 import com.example.demo.vo.PointVo;
@@ -23,27 +30,100 @@ import lombok.Setter;
 @Service
 @Aspect
 public class LogAdvice {
-	
-	@Autowired
-	ServletContext sc;
-	
+
 	@Autowired
 	MemberDao mdao;
+	
+	@Autowired
+	LogDao ldao;
 	
 	
 	@Before("PointCut.detailCoursePointCut()")  // 디테일코스에서 어떤 코스번호를 선택했는지 로그로 기록하기 위해 
 	public void detatilCourseBefore(JoinPoint jp) {
 		Object[] detailCourseArg = jp.getArgs();
-		System.out.println("코스경로 : " + sc.getRealPath("/courseLine"));
-		System.out.println("디테일코스정보 : " + detailCourseArg[2].toString());
+		
+		try {
+			System.out.println("디테일코스로그 : " + detailCourseArg[2].toString());
+			ldao.insertLog(new LogVo("00701",(Integer)detailCourseArg[2]+"" , null, 0));
+		}catch (Exception e) {
+			System.out.println("로그어드바이스 디테일코스비포 예외 " +e.getMessage());
+		}
+		
 	}
 	
 	@Before("PointCut.searchCoursePointCut()")  // 서치코스에서 검색을 위해 어떤 항목들을 선택했는지 로그로 기록하기 위해 
 	public void searchCourseBrfore(JoinPoint jp) {
 		Object[] detailCourseArg = jp.getArgs();
-		System.out.println("서치코스 거리 : " + detailCourseArg[2].toString());
-		System.out.println("서치코스 시간 : " + detailCourseArg[3].toString());
-		//System.out.println("서치코스  뷰 : " + detailCourseArg[4].toString());
+		String disLog = "";
+		String timeLog = "";
+		
+		try {
+				int distance = (Integer)detailCourseArg[2];
+				int time = (Integer)detailCourseArg[3];
+				
+				switch (distance) {
+				case 0: disLog ="전체"; break;
+				case 10:disLog = "10km 이하";break;
+				case 30:disLog = "10-30km";break;
+				case 50:disLog = "30-50km";break;
+				case 1000:disLog = "50km 이상";break;
+				}
+				
+				switch (time) {
+				case 0:timeLog = "전체";break;
+				case 60:timeLog = "1시간 미만";break;
+				case 120:timeLog = "1-2 시간";break;
+				case 180:timeLog = "2-3 시간";break;
+				case 1000:timeLog = "3시간 이상";break;
+				}
+				
+				ldao.insertLog(new LogVo("00702", disLog, null, 0));
+				ldao.insertLog(new LogVo("00703", timeLog, null, 0));
+				
+				if(detailCourseArg[4] != null) {
+					for(String v : (List<String>)detailCourseArg[4]) {
+						ldao.insertLog(new LogVo("00704", v, null, 0));
+					}
+				}
+				else {
+					ldao.insertLog(new LogVo("00704", "선택안함", null, 0));
+				}
+		
+			
+		}catch (Exception e) {
+			System.out.println("로그어드바이스 서치코스비포 예외 " +e.getMessage());
+		}
+		
+		
+	}
+	
+	@Before("PointCut.tagSearchCoursePointCut()")  // 서치코스에서 검색을 위해 어떤 항목들을 선택했는지 로그로 기록하기 위해 
+	public void tagSearchCoursePointCutBrfore(JoinPoint jp) {
+		Object[] detailCourseArg = jp.getArgs();
+
+		try {
+			String tags = (String)detailCourseArg[0];
+			
+			if(!tags.equals("") && tags != null) {
+				ArrayList<String> tagLogList = new ArrayList<String>();
+				String [] tagArr = (((String)detailCourseArg[0]).replaceAll(" ", "")).split(",");
+				for(String t : tagArr) {
+					if(!t.equals("")) {
+						tagLogList.add(t);
+					}
+				}
+				
+				for(String t : tagLogList) {
+					ldao.insertLog(new LogVo("00705", t, null, 0));
+				}
+			}
+
+		}catch (Exception e) {
+			System.out.println("로그어드바이스 태그서치코스비포 예외 " +e.getMessage());
+		}
+		
+		
+
 	}
 
 	 @AfterReturning(pointcut = "PointCut.insertReview() || PointCut.insertReviewReply() || PointCut.insertMeeting() || PointCut.insertMeetingReply()", returning = "ret") 

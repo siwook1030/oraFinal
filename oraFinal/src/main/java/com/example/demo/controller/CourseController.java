@@ -39,61 +39,7 @@ import com.google.gson.Gson;
 public class CourseController {	
 	
 	@Autowired
-	private CourseDao cdao;
-	
-	@GetMapping("/searchCourse")
-	public void searchCourseForm() {
-		
-	}
-	
-	@PostMapping(value ="/searchCourse", produces = "application/json; charset=utf8")
-	@ResponseBody
-	public String searchCourse(double latitude, double longitude, int distance, int time,@RequestParam(value="view[]",required = false) List<String> view) {
-		HashMap map = new HashMap();
-		System.out.println("위도 : "+latitude);
-		System.out.println("경도 : "+longitude);
-		System.out.println("거리 : "+distance);
-		System.out.println("시간 : "+time);
-		System.out.println("풍경 : " + view);
-		int minDis = 0;
-		if(distance > 0) { 
-			 minDis = 20;
-		}
-		if(distance >50) {
-			minDis = 950;
-		}
-		
-		int minTime = 0;
-		if(time > 0) {
-			 minTime = 60;
-		}
-		if(time > 180) {
-			minTime = 820;
-		}
-		
-		
-		if(view != null) {
-			int cnt=1;
-			for(String v : view) {
-				map.put("view"+cnt, v);
-				cnt++;
-			}
-		}
-
-		map.put("latitude", latitude);
-		map.put("longitude", longitude);
-		map.put("distance", distance);
-		map.put("minDis", minDis);
-		map.put("time", time);
-		map.put("minTime", minTime);
-		List<CourseVo> sclList = cdao.searchCourseList(map);
-		
-		Gson gson = new Gson();
-		
-		return gson.toJson(sclList);
-		
-	}
-	
+	private CourseDao cdao;	
 	
 	@RequestMapping(value = "/detailCourse", produces = "application/json; charset=utf-8")
 	public void detailCourse(HttpServletRequest request,Model model, int c_no) {
