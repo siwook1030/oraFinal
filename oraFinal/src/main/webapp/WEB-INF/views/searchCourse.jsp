@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>라이딩 코스</title>   
+<title>코스 지도검색</title>   
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -16,6 +16,16 @@
 	<link rel="stylesheet" href="/resources/css/flaticon.css">
 	<link rel="stylesheet" href="/resources/css/style.css">
 <style type="text/css">
+   
+   
+   .cInfoIcon {
+   	width: 20px;
+   }
+   
+    .cViewIcon {
+   	width: 34px;
+   }
+   
    
    /*매인섹션부분css------------ ----------------*/
 
@@ -921,7 +931,7 @@ function MarkerTracker(map, target) {
 			diffContent = '매우어려움';
 		}
      let content = '<div class="placeinfo">' +
-     				' <a class="title" href="/detailCourse?c_no='+c.c_no+'" target="_blank" title="' + c.c_name + '"><img width="22px" src="/courseViewImg/'+c.c_views[0]+'.png"> ' + c.c_name + '</a>';   
+     				' <a class="title" href="/detailCourse?c_no='+c.c_no+'" target="_blank" title="' + c.c_name + '"><img width="22px" title="'+c.c_views[0]+'" src="/courseViewImg/'+c.c_views[0]+'.png"> ' + c.c_name + '</a>';   
 	
 	    content += '    <span title="' + c.nickName + '">' + "made by "+c.nickName + '</span>';
 	             
@@ -964,16 +974,16 @@ function MarkerTracker(map, target) {
 
 		let courseViewContent="";
 		c.c_views.forEach(function(v, i) {
-			courseViewContent += '<div class="img" style="background-image: url(/courseViewImg/'+v+'.png);"></div>';
+			courseViewContent += '<div title="'+v+'" class="img" style="background-image: url(/courseViewImg/'+v+'.png);"></div>';
 		});
-		
+
 		
 	let courseContent = '<div class="property-wrap ftco-animate fadeInUp ftco-animated">\
 			<a href="/detailCourse?c_no='+c.c_no+'" class="img" target="_blank" style="background-image: url('+c.c_photo[0].cp_path+'/'+c.c_photo[0].cp_name+');">\
 				<div class="rent-sale">\
 					<span class="rent">'+c.c_loc+'</span>\
 				</div>\
-				<p class="price"><span class="orig-price">'+c.userDis+'km 떨어짐</span></p>\
+				<p title="떨어진 거리" class="price"><span class="orig-price" style="color:black;">'+c.userDis+'km 떨어짐</span></p>\
 			</a>\
 			<div class="text">\
 				<h3><a href="/detailCourse?c_no='+c.c_no+'" target="_blank">'+c.c_name+'</a></h3>\
@@ -982,9 +992,9 @@ function MarkerTracker(map, target) {
 					<span class="fa fa-link" id="linkMap2" lat="'+c.c_s_latitude+'" lng="'+c.c_s_longitude+'"></span>\
 				</a>\
 				<ul class="property_list" style="font-weight: bold;" >\
-					<li><span class="flaticon-bed"><img src="/searchCourseImg/distance.png"></span>'+c.c_distance+'km</li>\
-					<li><span class="flaticon-bathtub"><img src="/searchCourseImg/time.png"></span>'+courseTime+'</li>\
-					<li><span class="flaticon-floor-plan"><img src="/searchCourseImg/difficulty.png"></span>'+diffContent+'</li>\
+					<li title="코스거리" ><span class="flaticon-bed"><img class="cInfoIcon" src="/searchCourseImg/distance.png"></span>'+c.c_distance+'km</li>\
+					<li title="소요시간" ><span class="flaticon-bathtub"><img class="cInfoIcon" src="/searchCourseImg/time.png"></span>'+courseTime+'</li>\
+					<li title="난이도" ><span class="flaticon-floor-plan"><img class="cInfoIcon" src="/searchCourseImg/difficulty.png"></span>'+diffContent+'</li>\
 				</ul>\
 				<div class="list-team d-flex align-items-center mt-2 pt-2 border-top">\
 					<div class="d-flex align-items-center">'+courseViewContent+'</div>\
@@ -1310,15 +1320,15 @@ function MarkerTracker(map, target) {
       <div class="container">
          <a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
         <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
-        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></a>
+        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font></span></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                <span class="oi oi-menu"></span> Menu
             </button>
-         
-         <div class="collapse navbar-collapse" id="ftco-nav">
+        <div style="display: block;"> 
+         <div class="collapse navbar-collapse" id="ftco-nav" style="height: 20px;">
               <ul class="navbar-nav ml-auto">
                <c:choose>
-                  <c:when test="${m == null }">
+                  <c:when test="${m == null }" >
                      <li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
                      <li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
                   </c:when>
@@ -1331,7 +1341,7 @@ function MarkerTracker(map, target) {
             </ul>
          </div>      
 
-         <div class="collapse navbar-collapse" id="ftco-nav">
+         <div class="collapse navbar-collapse" id="ftco-nav" style="height: 40px;">
            <ul class="navbar-nav ml-auto">
              <li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
              <li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
@@ -1343,6 +1353,7 @@ function MarkerTracker(map, target) {
            </ul>
          </div>
        </div>
+      </div>
    </nav>
     <!-- END nav -->
 	<section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
@@ -1350,8 +1361,8 @@ function MarkerTracker(map, target) {
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate pb-0 text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="fa fa-chevron-right"></i></a></span> <span>라이딩 코스 <i class="fa fa-chevron-right"></i></span></p>
-            <h1 class="mb-3 bread">라이딩 코스</h1>
+          	<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">오늘의 라이딩 <i class="fa fa-chevron-right"></i></a></span> <span>라이딩 코스 <i class="fa fa-chevron-right"></i></span></p>
+            <h1 class="mb-3 bread">코스 지도검색</h1>
           </div>
         </div>
       </div>
@@ -1359,6 +1370,10 @@ function MarkerTracker(map, target) {
     
    <section class="ftco-section goto-here">
    <div class="container">
+   		<div class="col-md-12 heading-section text-center ftco-animate">
+     		<span class="subheading">맞춤 코스를 검색해보아요</span>
+     	</div>
+     	<div style="margin-bottom: 50px;"></div>
 		<div style="text-align: center;">
   	 	<div class="map_wrap">
 		    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
@@ -1401,7 +1416,8 @@ function MarkerTracker(map, target) {
 					<div class="panel-heading" role="tab" id="headingOne">
 						<h5 class="panel-title">
 							<a role="button" class="success" data-toggle="collapse" data-parent="#accordion" href="#searchPanel" title="상세검색을 열고 닫습니다." aria-controls="searchPanel" aria-expanded="true">
-				                             	빠르게 코스를 검색해보세요<span style="padding-right: 940px;"></span>
+				                    <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
+        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font></span>과 함께 꼭 맞는 코스를 찾아보아요<span style="padding-right: 750px;"></span>
                             			</a>
                         			</h5>
                     			</div>
@@ -1472,7 +1488,7 @@ function MarkerTracker(map, target) {
 															<input type="radio" name="time" id="time3" value="180" autocomplete="off"> 2 - 3시간
 														</label>
 														<label class="btn btn-success btn-line btn-small">
-															<input type="radio" name="time" id="time3" value="1000" autocomplete="off"> 3시간 초과
+															<input type="radio" name="time" id="time3" value="1000" autocomplete="off"> 3시간 이상
 														</label>
 													</div>
 												</div>
@@ -1630,7 +1646,6 @@ function MarkerTracker(map, target) {
   <script src="/resources/js/jquery.magnific-popup.min.js"></script>
   <script src="/resources/js/jquery.animateNumber.min.js"></script>
   <script src="/resources/js/scrollax.min.js"></script>
-  <script src="/resources/js/google-map.js"></script>
   <script src="/resources/js/main.js"></script>   
   </body>
 </html>

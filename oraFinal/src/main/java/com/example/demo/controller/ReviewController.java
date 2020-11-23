@@ -26,11 +26,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.admin.PointCause;
+import com.example.demo.admin.PointGet;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.dao.MemberDao;
 import com.example.demo.dao.ReviewDao;
-import com.example.demo.util.PointCause;
-import com.example.demo.util.PointGet;
 import com.example.demo.vo.CourseVo;
 import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.PointVo;

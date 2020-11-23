@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -140,6 +141,8 @@ public class CourseManager {
 		SqlSession session = sqlSessionFactory.openSession();
 		clist = session.selectList("course.selectByView", view);
 		for(CourseVo c : clist) {
+			List<String> tagList = Arrays.asList(c.getC_tag().split("#"));
+			c.setC_tags(tagList.subList(1, tagList.size()));
 			c.setC_views(c.getC_view().split("-"));
 			List<CoursePhotoVo> cpList = session.selectList("course.selectCoursePhoto", c.getC_no());
 			Collections.shuffle(cpList);
@@ -154,13 +157,14 @@ public class CourseManager {
 		CourseVo c = null;
 		SqlSession session = sqlSessionFactory.openSession();
 		c = session.selectOne("course.selectByCno", c_no);
+		List<String> tagList = Arrays.asList(c.getC_tag().split("#"));
+		c.setC_tags(tagList.subList(1, tagList.size()));
+		System.out.println(tagList);
+		System.out.println(c.getC_tags());
 		c.setC_views(c.getC_view().split("-"));
 		c.setC_line(FileUtilCollection.readText(c.getC_line(), path));
 		List<CoursePhotoVo> cpList = session.selectList("course.selectCoursePhoto", c_no);			
 		Collections.shuffle(cpList);
-		if(cpList.size() == 0 ) {
-			cpList = null;
-		} 
 		c.setC_photo(cpList);
 		session.close();
 		
@@ -217,11 +221,27 @@ public class CourseManager {
 		return scList;
 	}
 	
+	public static List<CourseVo> tagSearchCourseList(String searchTag) {
+		List<CourseVo> tscList = null;
+		SqlSession session = sqlSessionFactory.openSession();
+		tscList = session.selectList("course.selectTagSearchCourse", searchTag);
+		
+		for(CourseVo c : tscList) {
+			c.setC_views(c.getC_view().split("-"));
+			List<CoursePhotoVo> cpList = session.selectList("course.selectCoursePhoto", c.getC_no());			
+			Collections.shuffle(cpList);
+			c.setC_photo(cpList);
+		}
+		
+		session.close();
+		return tscList;
+	}
+	
 	public static int cnameDupCheck(String c_name) {
 		int re = 1;
 		SqlSession session = sqlSessionFactory.openSession();
 		re = session.selectOne("course.cnameDupCheck", c_name);
-		
+		session.close();
 		return re;
 		
 	}
