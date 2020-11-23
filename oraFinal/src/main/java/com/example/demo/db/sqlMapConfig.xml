@@ -27,6 +27,8 @@
 		
 		<typeAlias type="com.example.demo.vo.NoticeVo" alias="noticeVo" />
 		<typeAlias type="com.example.demo.vo.CodeVo" alias="codeVo" />
+		
+		<typeAlias type="com.example.demo.vo.LogVo" alias="logVo" />
 
 	</typeAliases>
   <environments default="development">
@@ -46,5 +48,6 @@
     <mapper resource="com/example/demo/db/meetingMapper.xml"/>
     <mapper resource="com/example/demo/db/reviewMapper.xml"/>
     <mapper resource="com/example/demo/db/noticeMapper.xml"/>
+    <mapper resource="com/example/demo/db/logMapper.xml"/>
   </mappers>
 </configuration>

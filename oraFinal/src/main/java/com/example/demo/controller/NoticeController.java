@@ -19,7 +19,7 @@ import com.google.gson.Gson;
 public class NoticeController {
 	
 	public static int totRecord = 0; // 총 게시글 수
-	public static int recordSize = 6; // 한 번에 보이는 게시글 수
+	public static int recordSize = 8; // 한 번에 보이는 게시글 수
 	public static int totPage = 0; // 총 페이지 수
 	public static int pageSize = 2; // 한 번에 보이는 페이지 수
 	

@@ -25,12 +25,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.admin.PointCause;
+import com.example.demo.admin.PointGet;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.dao.MeetingDao;
 import com.example.demo.dao.MemberDao;
 import com.example.demo.util.FileUtilCollection;
-import com.example.demo.util.PointCause;
-import com.example.demo.util.PointGet;
 import com.example.demo.util.ResponseDataCode;
 import com.example.demo.vo.MeetingVo;
 import com.example.demo.vo.Meeting_fileVo;
@@ -105,8 +105,8 @@ public class InsertMeetingController {
 		String rank_icon = "";
 		
 		MeetingVo mvo = new MeetingVo(m_no, c_no, id, m_title, m_content, m_regdate, m_hit, m_latitude, m_longitude, m_locname, m_time, m_numpeople, nickName, c_name, rank_icon, null, 0);
-
-		//System.out.println(mtvo.toString());
+		
+    //System.out.println(mtvo.toString());
 		int re = mdao.insertMeeting(mvo);
 		
 		if(re > 0) {	// mvo insert성공 시

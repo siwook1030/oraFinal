@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="log">
+  
+  <insert id="insertLog">
+  	INSERT INTO LOG(LOG_NO, CODE_VALUE, LOG_CONTENT, LOG_REGDATE) 
+  	VALUES(LOG_SEQ.NEXTVAL, #{code_value}, #{log_content}, SYSDATE)
+  </insert>
+  
+  <select id="selectCourseLog" resultType="logVo">
+  	<if test=" code_value == '00705' or code_value == '00701' ">
+  		<![CDATA[
+		  	SELECT ROWNUM, LOG_CONTENT, LOG_COUNT FROM 
+			(SELECT LOG_CONTENT, COUNT(*) AS LOG_COUNT  FROM LOG WHERE CODE_VALUE=#{code_value} GROUP BY LOG_CONTENT ORDER BY LOG_COUNT DESC) 
+			WHERE ROWNUM <= 10	
+		]]>
+  	</if>
+  	
+  	<if test="code_value != '00705' and code_value != '00701'">
+  		SELECT LOG_CONTENT, COUNT(*) AS LOG_COUNT  FROM LOG WHERE CODE_VALUE=#{code_value} GROUP BY LOG_CONTENT ORDER BY LOG_COUNT DESC
+  	</if>
+  	
+  </select>
+  
+</mapper>

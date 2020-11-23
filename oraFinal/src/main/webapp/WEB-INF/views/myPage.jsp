@@ -16,12 +16,35 @@
       const checkNum = document.getElementById("checkNum");
       const inputNum = document.getElementById("inputNum");
       const inf = document.getElementById("inputNumForm");
-
+      const nickName = document.getElementById("nickName");
+      
       sendPhone.onclick=sendPhoneReq;   
       checkNum.onclick=checkNumReq;   
 
-      
 
+      function checkNick(){
+  		let nickCheck = 1;
+  			$.ajax({
+  				url: "/nickCheck",
+  				type: "POST",
+  				async: false,
+  				data:{
+  					"nickName":nickName.value.trim()
+  				},
+  				success: function(data){
+  					if(data == "0"){
+  						nickCheck = 0;
+  					}else{
+  						nickCheck = 1;
+  					}
+  				},
+  				error: function(){
+  					alert('서버에러');
+  				}
+  			});
+
+  		return nickCheck;		
+  }		
       function sendPhoneReq(){// 인증번호 발송
          const phAvail = /^01[0179][0-9]{7,8}$/;
          const phAvailCheck = phAvail.test(phone.value.trim());
@@ -158,6 +181,23 @@
          });
 
        $("#btnUpdate2").click(function() {
+    	   const nickNameAvail = /^[가-힣a-zA-Z0-9]{2,8}$/;
+     	   const nickNameAvailCheck = nickNameAvail.test(nickName.value.trim());
+
+     		if(nickName.value.trim() != '')
+   	  			if(nickNameAvailCheck == false){
+   	  				alert("닉네임 형식이 올바르지 않습니다(한글,영문자,숫자 2~8자).");
+   	  				nickName.focus();
+   	  				return;
+   	  			}
+
+
+     			if(checkNick() != 0){
+     				alert("중복된 닉네임입니다");
+     				nickName.focus();
+     				return;
+     			}
+     		
           if(phone.value.trim() != ''){
               if($("#btnUpdate2").attr("i") == "1"){
             alert("휴대전화 변경시 인증을먼저진행해주세요");
@@ -265,40 +305,11 @@
       padding-right: 0.75rem;
       padding-bottom: 0.375rem;
       padding-left: 0.75rem;
-
-
     }
 
     .phone_input {
       < !--새전화번호입력-->padding-right: 50px;
       font-size: 14px;
-    }
-
-    .my {
-      float: center;
-    }
-
-    .my a {
-      display: block;
-      background-color: #ffffff;
-      color: gray;
-      padding: 15px;
-      float: left;
-      width: 100px;
-      text-align: center;
-      text-decoration: none;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    .my a.current {
-      color: black;
-      background-color: #FF6347; //주황색 클릭
-    }
-
-    .my a:hover:not(.current) {
-      background-color: #CD853F; //갈색 마우스위로
-      color: white;
     }
 
 </style>
@@ -312,6 +323,7 @@
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate pb-0 text-center">
+          
             <span>
               <h1 class="mb-3 bread">마이페이지</h1>
             </span>
@@ -323,11 +335,12 @@
               <span>
                 <a href="/myPageSaveCourse">찜 목록 <i class="fa fa-chevron-right"></i></a>
                 <a href="/myPageMyCourse">내 작성 코스<i class="fa fa-chevron-right"></i></a>
-                <a href="/myPageListReview">내 작성 후기<i class="fa fa-chevron-right"></i></a>
+                <a href="/listReview?searchType=id&searchValue=${m.id }">내 작성 후기<i class="fa fa-chevron-right"></i></a>
                 <a href="listMeeting?id=${m.id}">내 작성 번개<i class="fa fa-chevron-right"></i></a>
                 <a href="/myPageMyRank">랭킹</a>
               </span>
             </p>
+            
           </div>
         </div>
       </div>
@@ -335,26 +348,24 @@
     <section class="ftco-section contact-section">
       <div class="container">
         <div class="row block-9 justify-content-center mb-5">
-          <div class="col-md-8 mb-md-5">
-            <form action="#" id="update" class="bg-light p-5 contact-form">
+
+          <div class="colmd8 mb-md-5 bg-light p-5 contact-form">
+            <form action="#" id="update">
               <h2 class="text-center">회원정보수정</h2>
               <div class="form-group">
-                <div id=modify>이름</div>
-                <input type="text" class="form-control text-muted " disabled="disabled" value="${m.name} " />
-
+                <div id=modify class="hidden">이름</div>
+                <input type="text"  class=" hidden form-control form-group " disabled="disabled" value="${m.name} " />
               </div>
-              <div id=modify>닉네임</div>
+              <div id=modify class="hidden">닉네임</div>
               <div class="form-group">
-                <input type="text" class="form-control" disabled="disabled" value="${m.nickName}" style="background-color: #e2e2e2;">
               </div>
-              <input class="updateMember form-control hidden" style="visibility: hidden ;" placeholder="바꿀 닉네임을 입력하세요" name="nickName" />
+              <input id="nickName" class="updateMember form-control hidden" style="visibility: hidden ;" placeholder="바꿀 닉네임을 입력하세요" name="nickName" />
 
-              <div id=modify>전화번호</div>
+              <div id=modify class="hidden">전화번호</div>
               <div class="form-group">
-                <input type="text" class="form-control" disabled="disabled" value="${m.phone }">
-              </div>
               <input type="tel" id="phone" name="phone" class="updateMember form-control form-group hidden" maxlength="11"
                 placeholder="새 전화번호를 입력하세요 ex)01012345678">
+              </div>
 
               <div id="clickForm">
                 <input type="button" id="sendPhone" class="btn btn-primary  hidden form-control form-group " value="인증번호 받기">
@@ -369,20 +380,18 @@
               <div></div>
               <input type="password" id="password1" class="modify updateMember form-control form-group hidden" style="visibility: hidden ;"
                 placeholder="새 비밀번호를 입력하세요" name="password" />
-
               <input type="password" id="password2" class="updateMember form-control form-group hidden" style="visibility: hidden ;"
                 placeholder="새 비밀번호를 다시 입력하세요" name="password2" />
-
-            </form>
               <input type="password" id="pwd" class="updateMember form-control form-group " placeholder="회원정보 수정을 위해서는 비밀번호 입력하세요" name="pwd"
                 style="border: 1px solid #ff0000; visibility: visible;" />
-              <div></div>
+              <div>
+            </div>
 
-              <div style="text-align: center">
+            </form>
+              <div class="form-group" >
                 <button id=btnUpdate value="수정하기" class="btn form-control form-group btn-primary py-3 px-5 "> 수정하기</button>
                 <button id="btnUpdate2" style="visibility: hidden" class="btn form-group form-control btn-primary py-3 px-5">수정완료</button>
               </div>
-
           </div>
         </div>
       </div>

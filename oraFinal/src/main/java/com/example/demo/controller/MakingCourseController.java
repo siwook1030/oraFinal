@@ -46,7 +46,6 @@ public class MakingCourseController {
 	public static String coursePhotoPathSub = "/course";    // 각 코스번호마다 공통 폴더명 (뒤에는 기본키 코스번호 붙임)
 	
 	@Autowired
-	@Setter
 	CourseDao cdao;
 	
 	@GetMapping("/user/makingCourse")
@@ -74,6 +73,7 @@ public class MakingCourseController {
 	@ResponseBody
 	public String makingCoursePreview(HttpSession session,HttpServletRequest request,Model model,
 			@RequestParam Map<String, Object> map,@RequestParam(value="c_views",required = false) String[] c_views,
+			@RequestParam(value="c_tags",required = false) List<String> c_tags,
 			List<MultipartFile> uploadfile){
 
 		System.out.println("코스데이타 : "+ map);
@@ -94,6 +94,7 @@ public class MakingCourseController {
 		 double c_distance = Double.parseDouble((String)map.get("c_distance"));
 		 int c_time = Integer.parseInt((String)map.get("c_time"));
 		 int c_difficulty = Integer.parseInt((String)map.get("c_difficulty"));
+		 String c_tag = (String)map.get("c_tag");
 		 String c_view = (String)map.get("c_view");
 		 String c_words = (String)map.get("c_words");
 		 String c_line=(String)map.get("c_line");
@@ -101,7 +102,7 @@ public class MakingCourseController {
 		 double userDis = 0; //코스와 유저의현재위치와의  거리
 		 List<CoursePhotoVo> c_photo = null;
 		
-		 CourseVo c = new CourseVo(c_no, code_value, id, nickName, c_name, c_s_locname, c_s_latitude, c_s_longitude, c_e_locname, c_e_latitude, c_e_longitude, c_loc, c_distance, c_time, c_difficulty, c_view, c_views, c_words, c_line, c_temp, userDis, c_photo);
+		 CourseVo c = new CourseVo(c_no, code_value, id, nickName, c_name, c_s_locname, c_s_latitude, c_s_longitude, c_e_locname, c_e_latitude, c_e_longitude, c_loc, c_distance, c_time, c_difficulty, c_tag, c_tags, c_view, c_views, c_words, c_line, c_temp, userDis, c_photo);
 		 
 		 int pt_noPS = 0;
 		 String code_valuePS = "00201";
@@ -177,7 +178,10 @@ public class MakingCourseController {
 	
 	@PostMapping(value = "/user/regCourse", produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String regCourse(HttpSession session,HttpServletRequest request,@RequestParam Map<String, Object> map,@RequestParam(value="c_views",required = false) String[] c_views, List<MultipartFile> uploadfile){
+	public String regCourse(HttpSession session,HttpServletRequest request,
+			@RequestParam Map<String, Object> map,@RequestParam(value="c_views",required = false) String[] c_views,
+			@RequestParam(value="c_tags",required = false) List<String> c_tags,
+			List<MultipartFile> uploadfile){
 
 		 int c_no = cdao.nextCno();
 		 String code_value = (String)map.get("code_value");
@@ -194,6 +198,7 @@ public class MakingCourseController {
 		 double c_distance = Double.parseDouble((String)map.get("c_distance"));
 		 int c_time = Integer.parseInt((String)map.get("c_time"));
 		 int c_difficulty = Integer.parseInt((String)map.get("c_difficulty"));
+		 String c_tag = (String)map.get("c_tag");
 		 String c_view = (String)map.get("c_view");
 		 String c_words = (String)map.get("c_words");
 		 String c_temp = "Y";
@@ -213,7 +218,7 @@ public class MakingCourseController {
 			 c_photo.add(new CoursePhotoVo(0, c_no,cp_name, coursePhotoPath+cPhotoPathSub, 0, 0));
 		 }
 		 
-		 CourseVo c = new CourseVo(c_no, code_value, id, nickName, c_name, c_s_locname, c_s_latitude, c_s_longitude, c_e_locname, c_e_latitude, c_e_longitude, c_loc, c_distance, c_time, c_difficulty, c_view, c_views, c_words, c_line, c_temp, userDis, c_photo);
+		 CourseVo c = new CourseVo(c_no, code_value, id, nickName, c_name, c_s_locname, c_s_latitude, c_s_longitude, c_e_locname, c_e_latitude, c_e_longitude, c_loc, c_distance, c_time, c_difficulty, c_tag, c_tags, c_view, c_views, c_words, c_line, c_temp, userDis, c_photo);
 	
 		 
 		 int pt_noPS = 0;

@@ -1,4 +1,4 @@
-/* autosave»ç¿ë ½Ã status µ¿Àû Ç¥½Ã¸¦ À§ÇÑ css. ÇÊ¼ö´Â ¾Æ´Ï¸ç ÇÊ¿äÇÒ¶§ »ç¿ëÇÑ´Ù. */
+/* autosaveï¿½ï¿½ï¿½ ï¿½ï¿½ status ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½Ã¸ï¿½ ï¿½ï¿½ï¿½ï¿½ css. ï¿½Ê¼ï¿½ï¿½ï¿½ ï¿½Æ´Ï¸ï¿½ ï¿½Ê¿ï¿½ï¿½Ò¶ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½. */
 
 #snippet-autosave-header {
 	display: flex;
@@ -25,16 +25,21 @@
 }
 
 #snippet-autosave-status_spinner-label::after {
-	content: 'Saved!';
+	content: 'SAVED';
 	color: green;
+	width: 80px;
+	font-weight: bold;
 	display: inline-block;
 	margin-right: var(--ck-spacing-medium);
 }
 
 /* During "Saving" display spinner and change content of label. */
 #snippet-autosave-status.busy #snippet-autosave-status_spinner-label::after  {
-	content: 'Saving...';
+	content: 'AUTO SAVING';
 	color: red;
+	width: 200px;
+	display: inline-block;
+	margin-right: var(--ck-spacing-medium);
 }
 
 #snippet-autosave-status.busy #snippet-autosave-status_spinner-loader {
@@ -84,7 +89,7 @@
 	to { transform: rotate( 360deg ); }
 }
 
-/* editor ±âº» »çÀÌÁî */
+/* editor ï¿½âº» ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 .ck-editor__editable_inline {
     min-height: 500px;
 }
