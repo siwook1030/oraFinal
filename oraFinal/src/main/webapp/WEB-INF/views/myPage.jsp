@@ -305,40 +305,11 @@
       padding-right: 0.75rem;
       padding-bottom: 0.375rem;
       padding-left: 0.75rem;
-
-
     }
 
     .phone_input {
       < !--새전화번호입력-->padding-right: 50px;
       font-size: 14px;
-    }
-
-    .my {
-      float: center;
-    }
-
-    .my a {
-      display: block;
-      background-color: #ffffff;
-      color: gray;
-      padding: 15px;
-      float: left;
-      width: 100px;
-      text-align: center;
-      text-decoration: none;
-      text-align: center;
-      font-weight: bold;
-    }
-
-    .my a.current {
-      color: black;
-      background-color: #FF6347; //주황색 클릭
-    }
-
-    .my a:hover:not(.current) {
-      background-color: #CD853F; //갈색 마우스위로
-      color: white;
     }
 
 </style>
@@ -375,26 +346,24 @@
     <section class="ftco-section contact-section">
       <div class="container">
         <div class="row block-9 justify-content-center mb-5">
-          <div class="col-md-8 mb-md-5">
-            <form action="#" id="update" class="bg-light p-5 contact-form">
+
+          <div class="colmd8 mb-md-5 bg-light p-5 contact-form">
+            <form action="#" id="update">
               <h2 class="text-center">회원정보수정</h2>
               <div class="form-group">
-                <div id=modify>이름</div>
-                <input type="text" class="form-control text-muted " disabled="disabled" value="${m.name} " />
-
+                <div id=modify class="hidden">이름</div>
+                <input type="text"  class=" hidden form-control form-group " disabled="disabled" value="${m.name} " />
               </div>
-              <div id=modify>닉네임</div>
+              <div id=modify class="hidden">닉네임</div>
               <div class="form-group">
-                <input type="text" class="form-control" disabled="disabled" value="${m.nickName}" style="background-color: #e2e2e2;">
               </div>
               <input id="nickName" class="updateMember form-control hidden" style="visibility: hidden ;" placeholder="바꿀 닉네임을 입력하세요" name="nickName" />
 
-              <div id=modify>전화번호</div>
+              <div id=modify class="hidden">전화번호</div>
               <div class="form-group">
-                <input type="text" class="form-control" disabled="disabled" value="${m.phone }">
-              </div>
               <input type="tel" id="phone" name="phone" class="updateMember form-control form-group hidden" maxlength="11"
                 placeholder="새 전화번호를 입력하세요 ex)01012345678">
+              </div>
 
               <div id="clickForm">
                 <input type="button" id="sendPhone" class="btn btn-primary  hidden form-control form-group " value="인증번호 받기">
@@ -409,20 +378,18 @@
               <div></div>
               <input type="password" id="password1" class="modify updateMember form-control form-group hidden" style="visibility: hidden ;"
                 placeholder="새 비밀번호를 입력하세요" name="password" />
-
               <input type="password" id="password2" class="updateMember form-control form-group hidden" style="visibility: hidden ;"
                 placeholder="새 비밀번호를 다시 입력하세요" name="password2" />
-
-            </form>
               <input type="password" id="pwd" class="updateMember form-control form-group " placeholder="회원정보 수정을 위해서는 비밀번호 입력하세요" name="pwd"
                 style="border: 1px solid #ff0000; visibility: visible;" />
-              <div></div>
+              <div>
+            </div>
 
-              <div style="text-align: center">
+            </form>
+              <div class="form-group" >
                 <button id=btnUpdate value="수정하기" class="btn form-control form-group btn-primary py-3 px-5 "> 수정하기</button>
                 <button id="btnUpdate2" style="visibility: hidden" class="btn form-group form-control btn-primary py-3 px-5">수정완료</button>
               </div>
-
           </div>
         </div>
       </div>
