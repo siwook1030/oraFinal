@@ -26,15 +26,15 @@
 			-ms-transform: translate(-50%,-50%); /* 익스플로러 */
 		 	transform: translate(-50%, -50%); }
 		/* 게시글 제목 */
-		.blog-entry .text { height: 450px; border: 1px solid orange; }
-		.meta.mb-3 { height: 120px; border: 1px solid purple; }
-		.meta.mb-3 div { border: 1px solid pink; }
+		.blog-entry .text { height: 500px; /* border: 1px solid orange; */ }
+		.meta.mb-3 { height: 95px; /* border: 1px solid purple */; }
+		.meta.mb-3 div { /* border: 1px solid pink; */ }
 		.metaDiv_1, .metaDiv_2 { width: 100%; }
 		.c_name { display: inline-block; }
 		.nickName { display: inline-block; }
 		.m_regdate { font-size: 13px; display: inline-block; vertical-align: top;  float: right; }
 		.meta-chat { font-size: 14px; display: inline-block; float: right;}
-		.m_timeImg, .m_time { display: inline-block; padding-left: 3px; vertical-align: bottom; border: 1px solid red; text-align: center; }
+		.m_timeImg, .m_time { display: inline-block; padding-left: 3px; vertical-align: bottom; /* border: 1px solid red; */ text-align: center; }
 		/* 페이징 */
 		.pageUl { border: none; }
 		.btnPrevNext { border: none; }
@@ -188,6 +188,7 @@
 	            const metaDiv_1 = $('<div></div>').append(c_name, m_repCnt).addClass('metaDiv_1');
 		        const metaDiv_2 = $('<div></div>').append(nickName, m_regdate /* , m_hit */).addClass('metaDiv_2');
 	            metaDiv.append(metaDiv_1, metaDiv_2);
+	            
 	            textDiv.append(contentImg, m_timeImg, m_time, metaDiv, m_title);
 	            blog_entryDiv.append(textDiv);
 	            col.append(blog_entryDiv);
