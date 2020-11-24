@@ -25,12 +25,7 @@
 	
 	/* 등록, 취소 버튼 */
 	.btn { color: white; padding: 7px 17px; margin-left: 3px; align-content: center; font-size: 19px; border: none; cursor: pointer; }
-	#submitWrap {
-		flex-grow: 1;
-		flex-basis: 80%;
-		text-align: right;
-	}
-  
+	#submitWrap { text-align: center; padding-top: 50px; }
 	/* 미팅장소 */
 	#selectLoc { text-align: center; padding: 40px 0 20px; }
 	/* 코스, 시간, 인원 선택박스 */
@@ -45,7 +40,9 @@
 	#m_title { text-align: center; }
 	/* 내용 입력 */
 	#m_content { width: 100%; height: 400px; border: none; margin: 30px 0 0; padding: 10px; }
-	
+	/* 임시저장상태 */
+	#snippet-autosave-status_spinner-label { padding: 3px 5px; width: 75px; }
+	#snippet-autosave-status_spinner-loader { width: 400px; margin-left: 50px; }
 	/* 카카오 맵 css */
 	.map_wrap { position: relative; width: 100%; height: 450px; font-size: 80%; }
 	.map_title { font-weight: bold; display: block; }
@@ -781,15 +778,15 @@
 				
 				<!-- autosave 상태표시창 -->
 				<div id="snippet-autosave-status">
-					<div id="snippet-autosave-status_label">Status:</div>
+					<!-- <div id="snippet-autosave-status_label">Status:</div> -->
 					<div id="snippet-autosave-status_spinner">
 						<span id="snippet-autosave-status_spinner-label"></span>
 						<span id="snippet-autosave-status_spinner-loader"></span>
 					</div>
-					<div id="submitWrap">
-						<button type="button" class="btn" id="btnAdd" style="background-color: #eccb6a">등록</button>
-						<button type="reset" class="btn" id="btnCancel" style="background-color: #d0a183">취소</button>
-					</div>
+				</div>
+				<div id="submitWrap">
+					<button type="button" class="btn" id="btnAdd" style="background-color: #eccb6a">등록</button>
+					<button type="reset" class="btn" id="btnCancel" style="background-color: #d0a183">취소</button>
 				</div>
 			</form>
 		</div>

@@ -35,14 +35,13 @@
 		/* 댓글출력 */
 		#reply { padding-bottom: 3px; }
 		#comment { display: block; position:relative; width: 100%; }
-		#btnInsertReply { position:absolute; color: white; padding: 6px 9px; background-color: #c8572d; float: right; font-size: 13px; border: none; bottom: 30px; right: 10px; cursor: pointer; }
 		.repInfo { margin-left: 25px; font-size: 13px; }
 		.repPageNum{ margin: 0 5px 0 5px; cursor: pointer; }
-		/* 댓글이미지, 댓글수 */
+		/* 댓글수 */
 		#repImg, #repStr, #repCnt { display: inline-block; font-size: 18px; }
 		#repImg { display: inline-block; width: 25px; padding-right: 5px; margin-bottom: 3px; }
 		/* 대댓글 등록수정삭제 버튼 */
-		.btnRepSpan { cursor: pointer; margin-left: 3px; text-decoration: underline; }
+		.btnRepSpan { cursor: pointer; margin-left: 3px; font-size: 13px; }
 		/* 지도 */
 		.map_wrap { position: relative; width: 100%; height: 450px; font-size: 80%; }
 		/* 번개참여 */
@@ -53,7 +52,10 @@
 		.attendToggle { cursor: pointer; display: inline-block; font-size: 14px; }
 		#attendRiding { display: inline-block; cursor: pointer; }
 		.btnCancel { display: inline-block; cursor: pointer;  }
-		.btnCancel img { width: 30px; border: 1px solid green; padding: 5px; }
+		.btnCancel img { width: 30px; padding: 5px; }
+		#mPeople { position: relative; left: 79%; margin-bottom: 2px; }
+		#mPeople li { padding-bottom: 5px; }
+		#mPeople a { color: gray; font-size: 14px; }
 		/* 글내용 */
 		.ck-content { padding: 20px; margin-bottom: 100px; width: auto; }
 		/* 게시글 수정삭제 버튼 */
@@ -177,15 +179,15 @@ window.onload = function(){
 				mrDiv.style.paddingLeft="30px";
 				mrDiv.style.backgroundColor="#EFEFEF";
 			}
-			li1Content += '<img src="rank/'+mr.rank_icon+'" height="25">'+mr.nickName;
+			li1Content += '<img src="rank/'+mr.rank_icon+'" height="25">'+' '+mr.nickName;
 	//		if(userId == mr.id){ // 내가쓴 댓글이면 내댓글이라 표현  // 이건 추후에 디자인다시할때 if문 하나로 밑에있는 if문이랑 합쳐서 처리할거임
 	//			li1Content +=' (내 댓글)';
 	//		}
-			li1Content += '<br><p style="margin-left: 25px;"><span style="font-weight: bold;">'+toName+'&nbsp;</span>'+content+'</p>';
+			li1Content += '<br><div style="margin-left: 25px;"><span style="font-weight: bold;">'+toName+'&nbsp;</span>'+content+'</div>';
 			if(mr.mr_file1 != "0"){  // 사진이없으면 0으로 db에 0으로 저장할예정
 				li1Content += '<p style="margin-left: 25px;"><img src="meetingFile/'+mr.mr_file1+'" height="100"></p>';
 			}
-			li1Content += '<p class="repInfo" style="float: left;">'+mr.mr_regdate+'<p>';
+			li1Content += '<div class="repInfo" style="float: left;">'+mr.mr_regdate+'</div>';
 			const repSpan = document.createElement("span");
 			repSpan.innerHTML="답글달기";
 			repSpan.className="btnRepSpan";
@@ -864,7 +866,7 @@ window.onload = function(){
     </section>
     
 	<!-- 본문 section 시작 -->
-    <section class="ftco-section ftco-agent" style="padding-bottom: 30px;">
+    <section class="ftco-section ftco-agent">
     	<div class="container">
     	 	<!-- 글번호, 제목 -->
     		<div class="row justify-content-center pb-5">
@@ -908,8 +910,8 @@ window.onload = function(){
 			</div>
 
 			<!-- 참여 닉네임 -->
-			<div class="attendRidingAll" style="border: 1px solid red;">
-				<div id="mPeople" style="border: 1px solid pink; display: inline-block;"></div>
+			<div class="attendRidingAll">
+				<div id="mPeople" style="display: inline-block;"></div>
 			</div>
 			
 			
@@ -931,15 +933,17 @@ window.onload = function(){
 			<!-- 댓글출력 -->
 			<div id="reply"></div>
 			<div id="replyPgaeNum" style="text-align: center;"></div>
-			
-			<br>
+			<!-- 댓글작성 -->
 			<div>
-				댓글등록<br>
 				<form id="comment">
-					<textarea name="mr_content" id="mr_content" maxlength="300"></textarea>
-					<button id="btnInsertReply" type="button">등록</button>
-					<div><span id="mr_contentSpan"></span></div>
-					<div style="display: none;"><input type="file" name="mr_file1" id="mr_file1"></div>			
+					<div style="border: 1px solid gray; width: auto;">
+						<textarea name="mr_content" id="mr_content" maxlength="300" placeholder="댓글을 입력해주세요." style="width: 100%; height: 110px; padding: 10px 10px 10px 13px; font-size: 14px; border: none;"></textarea>
+						<div style="text-align: right; margin: 0 7px 7px 0;">
+							<span id="mr_contentSpan" style="display: inline-block; font-size: 13px; vertical-align: bottom; margin-right: 10px;"></span>
+							<button id="btnInsertReply" class="btn" type="button" style="background-color: #c8572d">등록</button>
+						</div>
+					</div>
+					<!-- <div style="display: none;"><input type="file" name="mr_file1" id="mr_file1"></div> -->
 				</form>
 			</div>
        </div> <!-- container -->
