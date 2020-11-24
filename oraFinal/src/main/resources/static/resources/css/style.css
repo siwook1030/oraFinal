@@ -10189,7 +10189,7 @@ textarea.form-control {
 
     
 
-/* ----------- °øÁö»çÇ× ------------ */
+/* ----------- �������� ------------ */
 
 
 
@@ -10233,10 +10233,6 @@ textarea.form-control {
 
 #btnUD{
 	display: none;
-}
-
-#btn_write,#btnDelete,#btnCancel{
-	float: right;
 }
 
 #btnUpdate,#btnInsert{
