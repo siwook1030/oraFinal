@@ -283,7 +283,7 @@ function checkImageUrls(editor) {
 			<form action="/user/updateReview" method="post">
 				<div class="row justify-content-center pb-5">
 					<div class="col-md-12 heading-section text-center ftco-animate">
-						<span class="subheading">Today's Riding</span>
+						<span class="subheading">${rvo.r_no }</span>
 						<!-- 제목 -->
 						<h2 class="mb-4"><input type="text" name="r_title" id="r_title" size="50" required="required"></h2>
 						<!-- 코스선택 -->
