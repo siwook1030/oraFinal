@@ -18,41 +18,6 @@
     <link rel="stylesheet" href="/resources/css/style.css">
 <style type="text/css">
 
-.code_select{
-	width:100px;
-	height: 40px;
-	font-size: 13pt;
-}
-
-#btnCancel,#btnInsert {
-	width:58px;
-	height: 39px;
-    border: none;
-    border-radius:5px;
-    background-color: #eccb6a;
-    color:#ffffff;
-    padding: 7px 0;
-    font: bold;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    font-weight: bold;
-    margin: 0 5px 0 0;
-    cursor: pointer;
-    float: right;
-}
-
-#btnInsert{
-	background-color: #88bea6;
-}
-
-#n_insert_text{
-	font-weight: bold;
-	font-size: 28px;
-	color: #c8572d;
-}
-
 </style>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
@@ -98,7 +63,7 @@ window.onload = function(){
 
 	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 		<div class="container">
-			<a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
+			<a style="font-size: 30px;" class="navbar-brand" href="/mainPage">
 		        <span style="font-weight: bold;">
 			        <font color="#45A3F5">오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
 			        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font></span></a>
@@ -145,7 +110,7 @@ window.onload = function(){
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate pb-0 text-center">
              <p class="breadcrumbs"><span class="mr-2"><a href="mainPage">Home <i class="fa fa-chevron-right"></i></a></span> <span>오늘의 라이딩 <i class="fa fa-chevron-right"></i></span></p>
-            <h1 class="mb-3 bread">공지사항</h1>
+            <h1 class="mb-3 bread">공지사항 등록</h1>
           </div>
         </div>
       </div>
@@ -155,7 +120,7 @@ window.onload = function(){
       <div class="container">
         <div class="row block-9 justify-content-center mb-5">
           <div class="col-md-8 mb-md-5">
-          	<h2 class="text-center" id="n_insert_text">공지사항 등록</h2>
+          	<h2 class="text-center" id="n_text">공지사항 등록</h2>
 			<form id="form" action="#" class="bg-light p-5 contact-form">
 				<select class="code_select" name="code_value" size="1">
 		     		<c:forEach var="c" items="${category}">
@@ -173,8 +138,8 @@ window.onload = function(){
 					<textarea rows="20" cols="100" name="n_content" class="form-control" id="n_insert_content" placeholder="내용을 입력하세요"></textarea>
 				</div>
 				<br>
-				<button type="reset" id="btnCancel">취소</button>
-				<button type="button" id="btnInsert">등록</button>	
+				<a href="/listNotice"><button type="button" class="btn btn-warning" id="btnCancel">취소</button></a>
+				<button type="button" class="btn btn-success" id="btnInsert">등록</button>	
 			</form>
 	      </div>
 	    </div>
