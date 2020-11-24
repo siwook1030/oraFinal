@@ -4,16 +4,9 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Ora - meeting Board</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="resources/css/animate.css">
-	<link rel="stylesheet" href="resources/css/owl.carousel.min.css">
-	<link rel="stylesheet" href="resources/css/owl.theme.default.min.css">
-	<link rel="stylesheet" href="resources/css/magnific-popup.css">
-	<link rel="stylesheet" href="resources/css/flaticon.css">
-	<link rel="stylesheet" href="resources/css/style.css">
+<title>회원가입</title>
+<jsp:include page="my_header.jsp"/>
+
 <style>
       #change {
         margin: 50px auto;
@@ -85,6 +78,26 @@
         height: 45%;
         width: 70%;
       }
+      
+         <!-- 메뉴 탭조절 	-->
+.my-wrap {
+  width: 100%;
+  height: 850px;
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top center;
+  z-index: 0; }
+  @media (max-width: 991.98px) {
+    .my-wrap {
+      background-position: top center !important; } }
+  .my-wrap.my-wrap-2 {
+    height: 170px !important;
+    position: relative; }
+    .my-wrap.my-wrap-2 .slider-text {
+      height: 190px !important; }
+      
+      
 </style>
 
 
@@ -93,41 +106,10 @@
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script type="text/javascript" src="/js/signUp.js"></script>
     <!-- 부트 nav시작 -->
-	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-		<div class="container">
-			<a class="navbar-brand" href="/mainPage"><img src='/headerImg/logo.png' height="100"></a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="oi oi-menu"></span> Menu
-			</button>
-			
-<%-- 					<div id="login">
-						<c:choose>
-							<c:when test="${m == null }">
-								<a href="/login">로그인</a>&nbsp;&nbsp;&nbsp;<a href="/signUp">회원가입</a>
-							</c:when>
-							<c:when test="${m != null }">
-								${m.nickName } 라이더! &nbsp;&nbsp;<a href="/logout">로그아웃</a>&nbsp;&nbsp;<a href="/myPage?id=${m.id}">마이페이지</a>
-							</c:when>
-						</c:choose>
-					</div> --%>
-
-			<div class="collapse navbar-collapse" id="ftco-nav">
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
-					<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
-					<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
-					<li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
-					<li class="nav-item"><a href="" class="nav-link">라이딩 정보</a></li>
-				</ul>
-			</div>
-		</div>
-     </nav>
-    <!-- END nav -->
     
     
     <!-- nav 아래 사진부분 시작 -->
-    <section class="hero-wrap hero-wrap-2" style="background-image: url('resources/images/bg_3.jpg');" data-stellar-background-ratio="0.5">
-      <div class="overlay"></div>
+ <section class="my-wrap my-wrap-2" style="background-color: #fff;"  id=top>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate pb-0 text-center">
@@ -142,31 +124,32 @@
 
 
 <!-- 회원가입 입력창 시작 -->
-<section class="ftco-section contact-section">
+<section class="my-wrap my-wrap-2">
          <div class="container">
-           <div class="row block-9 justify-content-center mb-5">
+                     <div class="row block-9 justify-content-center mb-5">
              <div class="col-md-8 mb-md-5">
                 <form action="/signUp" id="signUpForm" method="post" class="bg-light p-5 contact-form">
-                  <h2 class="text-center">회원가입 </h2>
-                  <div id="form"><input type="text" type="text" class="form-control text-muted " id="id" name="id" maxlength="12" placeholder="id(8~12자리)"></div>
-                  <div id="form"><input type="password" class="form-control text-muted " id="password" name="password" maxlength="12" type="password" placeholder="password(8~12자리)"></div>
-                  <div id="form"><input type="password" class="form-control text-muted " id="passwordCheck" name="passwordCheck" maxlength="12" type="password" placeholder="password Check"></div>
-                  <div id="form"><input type="text" class="form-control text-muted " id="name" name="name" type="text" maxlength="6" placeholder="name ex)홍길동"></div>
+                  						<h2 class="mb-4" style="text-align: center; font-size: 30px;">회원가입</h2>
+                  <div id="form" ><input type="text" type="text" class="form-control text-muted " id="id" name="id" maxlength="12" placeholder="사용하실 ID를 입력하세요(8~12자리)" required></div>
+                  <div id="form"><input type="password" class="form-control text-muted " id="password" name="password" maxlength="12" type="password" placeholder="비밀번호를 입력하세요 영문+숫자+특수문자(8~12자리)조합"></div>
+                  <div id="form"><input type="password" class="form-control text-muted " id="passwordCheck" name="passwordCheck" maxlength="12" type="password" placeholder="비밀번호를 다시 입력하세요"></div>
+                  <div id="form"><input type="text" class="form-control text-muted " id="name" name="name" type="text" maxlength="6" placeholder="이름을 입력하세요"></div>
                   <div id="radioBox">
-	                  여자<input type="radio" id="genderW" name="gender" value="W" checked="checked">
-	                  남자<input type="radio" id="genderM" name="gender" value="M">
+	                <label  style="font-size:14pt; padding-right: 100px;">여자<input type="radio" id="genderW" name="gender" value="W" checked="checked"></label>
+	                <label  style="font-size:14pt;">  남자<input type="radio" id="genderM" name="gender" value="M"></label>
                   </div>
-                  <div id="form"><input id="nickName" class="form-control text-muted  " name="nickName" type="text" maxlength="8" placeholder="닉네임(최대 8자리)"></div>
-                  <div id="form"><input type="tel" class="form-control form-group text-muted " id="phone" name="phone" maxlength="11" placeholder="ex)01012345678"><input type="hidden" id="chekedPhone" value=""><input type="hidden" id="chekingPhone" value="N"></div>
+                  <div id="form"><input id="nickName" class="form-control text-muted  " name="nickName" type="text" maxlength="8" placeholder="사용하실 닉네임을 입력하세요(최대 8자리)"></div>
+                  <div id="form"><input type="tel" class="form-control form-group text-muted " id="phone" name="phone" maxlength="11" placeholder="휴대폰 번호 '-'없이 입력하세요">
+                  <input type="hidden" id="chekedPhone" value=""><input type="hidden" id="chekingPhone" value="N"></div>
                   <div id="join"><input type="button" id="sendPhone" value="인증번호 발송" class="btn form-control form-group btn-primary py-3 px-5"></div>
-                  <div id="inputNumForm"><input type="tel" id="inputNum" name="inputNum" maxlength="6" placeholder="인증번호" class=" form-control "><input type="button" id="checkNum" value="인증" class=" form-control btn btn-primary "></div>
+                  <div id="inputNumForm"><input type="tel" id="inputNum" name="inputNum" maxlength="6" placeholder="인증번호" class=" form-control " style="display: inline-block;">
+                  <input type="button" id="checkNum" value="인증" class=" form-control btn btn-primary "></div>
                   <div id="join"><input type="button" id="signUp" value="Sign Up" class="btn form-control form-group btn-primary py-3 px-5 "></div>
                 </form>
               </div>
             </div>
           </div>
         </section>
-
 <!-- 회원가입 입력창 끝-->
 
 
