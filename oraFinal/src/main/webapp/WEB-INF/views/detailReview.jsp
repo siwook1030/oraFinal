@@ -18,6 +18,7 @@
 	<!-- ckeditor스타일 적용을 위한 css -->
 	<link rel="stylesheet" type="text/css" href="/ckeditor5/content-styles.css">
 	<style type="text/css">
+		input:focus, textarea:focus { outline: none; }
 		.btnContainer {
 			/* display: flex; */
 			/* flex-direction: row; */
@@ -44,17 +45,18 @@
 		#repImg { display: inline-block; width: 25px; padding-right: 5px; margin-bottom: 3px; }
 		#total_reply { display: inline-block; font-size: 18px; }
 		/* 댓글 */
-		.replyNicknameContainer { display: flex; height: auto; }
+		.replyNicknameContainer { display: flex; /* height: auto; */ }
 		.regdate { float: left; padding-left: 30px; font-size: 13px; /* display: inline-block; */ margin-bottom: 5px; }
 		.replyContent { padding-left: 30px; margin-top: 2px; font-size: 14px; height: auto; }
-		.replyNickname { /* margin-top: 3px;  */font-size: 14px; padding-left: 5px; width: auto; margin-top: 3px; }
-		.textareaContainer > textarea { width: 100%; height: 130px; padding: 10px 10px 10px 13px; font-size: 14px; }
-		.btnContainer img { width: 18px; margin-left: 5px; }
+		.replyNickname { margin-top: 3px; font-size: 14px; padding-left: 5px; width: auto; margin-top: 3px; }
+		.textareaContainer > textarea { width: 100%; height: 110px; padding: 10px 10px 10px 13px; font-size: 14px; border: none; }
+		.btnContainer { height: auto; }
+		.btnContainer img { width: 20px; margin-left: 5px; } /* 댓글 수정삭제 이미지 */
+		.modAndDel { display: inline; padding-right: 10px; width: auto; float: right; } /* 댓글수정삭제 div */
 		.btnReply { font-size: 13px; display: inline-block; vertical-align: top; padding-left: 10px; cursor: pointer; }
-		.modAndDel { display: inline; padding-right: 10px; width: auto; float: right; }
-		.myRep { display: inline-block; margin-left: 10px; padding: 2px 6px; border: 1px solid red; border-radius: 12px; font-size: 12px; }
-		.sendReply { margin: 0px; float: right; position: relative; bottom: 60px; right: 10px; }
-		/* .divRep { height: 80px; } */
+		.myRep { display: inline-block; margin-left: 10px; padding: 2px 6px; border: 1px solid red; border-radius: 12px; font-size: 12px; } /* 내댓글 표시 */
+		.sendReply { margin: 0 7px 7px 0; }
+		.textareaContainer { border: 1px solid gray; text-align: right; }
 
 
 </style>
@@ -70,11 +72,13 @@
 		// 본문 댓글을 위한 입력창 만들기
 		let $div1 = $("<div></div>").addClass("textareaContainer");		// 자식인 textarea 찾기위해 클래스 지정
 		let $textarea = $("<textarea></textarea>").attr("placeholder", "댓글을 입력하세요.");
-		$div1.append($textarea);
+		
 		let $div2 = $("<div></div>").addClass("btnContainer");			// css적용을 위한 클래스
 		let $button = $("<button></button>").addClass("sendReply btn").text("등록");
 		$div2.append($button);
-		$("#replyToBoardArea").append($div1, $div2).attr("rr_ref", 0);	// rr_ref가 0이면 본문 댓글
+		
+		$div1.append($textarea, $div2);
+		$("#replyToBoardArea").append($div1).attr("rr_ref", 0);	// rr_ref가 0이면 본문 댓글
 		
 		$(document).on("click", ".btnReply", function(event){	// 댓글 아이콘 입력시 댓글 입력창 동적생성 이벤트
 			$(".div_c3_c2").empty();		// 모든 대댓글 입력창,등록버튼 비우기
@@ -83,7 +87,8 @@
 			let $btn = $("<button></button>").addClass("sendReply btn").text("등록");		// 클릭 이벤트 적용을 위한 클래스
 	
 			$div2.append($btn);
-			$(this).parent().siblings(".div_c3_c2").append($div1, $div2);
+			$div1.append($div2)
+			$(this).parent().siblings(".div_c3_c2").append($div1);
 		});
 		
 		$(document).on("click", ".sendReply", function(event){		// 댓글 내용을 추출하여 insert ajax함수 호출
@@ -132,7 +137,7 @@
 						
 					} else {
 						$div_c1_c2 = $("<div></div>").append(item.nickName).addClass("replyNickname");
-						$div.css("height", "75px");
+						$div.css("height", "auto");
 			 		}
 	/* 작성일자 */		let $div_c1_c3 = $("<div></div>").text(item.date_diff_str).addClass("regdate"); // css적용을 위한 클래스
 					$div_c1.append($div_c1_c1, $div_c1_c2/* , $div_c1_c3 */);
