@@ -114,7 +114,7 @@
         top:100%;
         left: 50%;
         padding:20px;
-        margin: -420% 0 0 -210%; /*위치*/
+        margin: -420px 0 0 -210px; /*위치*/
         background:#ffffff;
         z-index: 3;
         font-family: sans-serif;

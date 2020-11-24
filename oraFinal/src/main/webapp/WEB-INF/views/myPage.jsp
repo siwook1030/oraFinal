@@ -8,7 +8,6 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
 <script type="text/javascript" src="/js/myPage.js"></script>
-
 <style>
 
     /* 개별 */
@@ -98,34 +97,8 @@
 <body>
     
   
-   
+    
 <section class="my-wrap my-wrap-2" style="background-color: #fff;"  id=top>
-
-    <div class="overlay"></div>
-      <div class="container">
-        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
-          <div class="col-md-9 ftco-animate pb-0 text-center">
-          
-            <span>
-              <h1 class="mb-3 bread">마이페이지</h1>
-            </span>
-            <p class="breadcrumbs">
-              <span class="mr-2">
-                <a href="index.html">Home <i class="fa fa-chevron-right"></i></a>
-              </span>
-              <a href="/myPage">정보 수정 <i class="fa fa-chevron-right"></i></a>
-              <span>
-                <a href="/myPageSaveCourse">찜 목록 <i class="fa fa-chevron-right"></i></a>
-                <a href="/myPageMyCourse">내 작성 코스<i class="fa fa-chevron-right"></i></a>
-                <a href="/listReview?searchType=id&searchValue=${m.id }">내 작성 후기<i class="fa fa-chevron-right"></i></a>
-                <a href="listMeeting?id=${m.id}">내 작성 번개<i class="fa fa-chevron-right"></i></a>
-                <a href="/myPageMyRank">랭킹</a>
-              </span>
-            </p>
-            
-          </div>
-        </div>
-      </div>
     </section>
     <section class="ftco-section contact-section">
       <div class="container" >
@@ -141,9 +114,8 @@
               <div id=modify class="hidden">닉네임</div>
               <div class="form-group">
               </div>
-
-              <input id="nickName" class="updateMember form-control hidden" style="visibility: hidden ;" placeholder="바꿀 닉네임을 입력하세요" name="nickName" />
-
+              
+              <input id="nickName"class="updateMember form-control hidden" style="visibility: hidden ;focus {border:2px red solid}" placeholder="바꿀 닉네임을 입력하세요" name="nickName" />
 
               <div id=modify class="hidden">전화번호</div>
               <div class="form-group">

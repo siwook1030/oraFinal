@@ -114,7 +114,7 @@
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate pb-0 text-center">
              
-            <h1 class="mb-3 bread">회원가입</h1>
+           
           </div>
         </div>
       </div>
