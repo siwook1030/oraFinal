@@ -7,6 +7,9 @@
 <meta charset="UTF-8">
 <title>오늘의 라이딩</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/resources/css/animate.css">    
@@ -68,6 +71,7 @@
 			flex-basis: 90%;
 		}
 </style>
+
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script type="text/javascript">
 	var querystring = location.search;		// querystring 가져오기 ex) r_no=1
@@ -187,7 +191,6 @@
 								$(".replyContent").children("div").remove();		// 모든 댓글 수정창 제거
 							});
 							$btnMod.click(function(event){		// 댓글 수정
-								alert("수정!")
 								let rr_no = $(this).closest(".replyContent").attr("rr_no");
 								// text는 예전 데이터. val로 해야 현재 수정된 데이터를 가져옴.
 								let rr_content = $(this).siblings("textarea").val();
@@ -283,6 +286,9 @@
 								<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
 								<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
 								<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+							<c:if test="${m.code_value == '00101' }">
+								<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
+							</c:if>
 							</c:when>
 						</c:choose>
 					</ul>

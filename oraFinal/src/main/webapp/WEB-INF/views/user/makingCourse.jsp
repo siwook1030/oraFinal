@@ -7,6 +7,9 @@
 <meta charset="UTF-8">
 <title>메이킹 코스</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="/resources/css/animate.css">
@@ -36,6 +39,10 @@
 	#sPTStation, #ePTStation {
 		width: 300px;
 	}
+	
+	   #map, #mapPE, #mapPS {
+    	border-radius: 20px;
+    }
 	/*매인섹션 끝 ------------------*/
 
 	/*float 초기화 아이디*/
@@ -99,6 +106,14 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=drawing,services"></script>
 <script>
 window.onload = function(){
+	 const token = $("meta[name='_csrf']").attr("content");
+	    const header = $("meta[name='_csrf_header']").attr("content");
+	    $(document).ajaxSend(function(e, xhr, options) {
+	        if(token && header) {
+	            xhr.setRequestHeader(header, token);
+	        }
+	    });
+	
 	const courseName =  document.getElementById("courseName");
 	const slat =  document.getElementById("slat");
 	const slon =  document.getElementById("slon");
@@ -1754,6 +1769,9 @@ const mNickName = checkM.item.nickName;
                      <li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
                      <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
                      <li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+                  <c:if test="${m.code_value == '00101' }">
+								<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
+							</c:if>
                   </c:when>
                </c:choose>
             </ul>
@@ -1859,7 +1877,7 @@ const mNickName = checkM.item.nickName;
 				<option value="1">쉬움</option>
 				<option value="2">보통</option>
 				<option value="3">어려움</option>
-				<option value="4">매우 어려움</option>
+				<option value="4">힘듬</option>
 			</select>
 			</div>
 			<div>

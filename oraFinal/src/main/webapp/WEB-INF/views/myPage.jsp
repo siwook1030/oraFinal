@@ -4,237 +4,12 @@
 <html>
 <head>
 <title>회원 정보 수정</title>
-<jsp:include page="my_header.jsp"/>
-    
-     
+
+<jsp:include page="my_header2.jsp"/>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script type="text/javascript">
-   $(function(){
-      
-      const phone = document.getElementById("phone");
-      const sendPhone = document.getElementById("sendPhone");
-      const checkNum = document.getElementById("checkNum");
-      const inputNum = document.getElementById("inputNum");
-      const inf = document.getElementById("inputNumForm");
-      const nickName = document.getElementById("nickName");
-      
-      sendPhone.onclick=sendPhoneReq;   
-      checkNum.onclick=checkNumReq;   
+<script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
+<script type="text/javascript" src="/js/myPage.js"></script>`
 
-
-      function checkNick(){
-  		let nickCheck = 1;
-  			$.ajax({
-  				url: "/nickCheck",
-  				type: "POST",
-  				async: false,
-  				data:{
-  					"nickName":nickName.value.trim()
-  				},
-  				success: function(data){
-  					if(data == "0"){
-  						nickCheck = 0;
-  					}else{
-  						nickCheck = 1;
-  					}
-  				},
-  				error: function(){
-  					alert('서버에러');
-  				}
-  			});
-
-  		return nickCheck;		
-  }		
-      function sendPhoneReq(){// 인증번호 발송
-         const phAvail = /^01[0179][0-9]{7,8}$/;
-         const phAvailCheck = phAvail.test(phone.value.trim());
-         
-            if(phone.value.trim() == ''){
-               alert("휴대전화를 입력하세요");
-               phone.focus();
-               return;
-            }
-               if(phone.value.trim() == ''){
-                  alert("휴대전화번호를 입력하세요.");
-                  phone.focus();
-                  return;
-               }
-               else if(phAvailCheck == false){
-                  alert("유효하지 않은 번호입니다.");
-                  phone.focus();
-                  return;
-               }
-               else if(checkPhoneNum() == 1){
-                  alert("이미 가입되어있는 번호입니다");
-                  phone.focus();
-                  return;
-               }
-               
-               $.ajax({
-                  url: "/smsSend",
-                  type: "GET",
-                  data:{
-                     "phoneNum":phone.value.trim()
-                  },
-                  success: function(data){
-                     if(data == "1"){
-                        alert("인증번호가 발송되었습니다.");
-                        $("#phone").prop('readonly', true);
-                        $(".hiddenPhone").css({display: "inline-block"});
-                        //inf.style.visibility="visible";
-                        
-                        inputNum.value="";
-                        inputNum.focus();
-                        //$('#inputNum').val('');
-                        //$('#inputNum').focus();
-                     }else{
-                        alert("인증번호 발송에 실패하였습니다.");
-                     }
-                  },
-                  error: function(){
-                     alert("서버에러");
-                  }
-               });
-               
-      }
-      
-      function checkNumReq(){//인증번호 확인
-         
-               if(inputNum.value.trim() == ''){
-                  alert("인증번호를 입력하세요.");
-                  inputNum.focus();
-                  return;
-               }
-               else if(inputNum.value.trim().length != 6){
-                  alert("인증번호는 6자리입니다.");
-                  inputNum.focus();
-                  return;
-               }
-                     
-               $.ajax({
-                  url: "/smsSend",
-                  type: "POST",
-                  data:{
-                     "num":inputNum.value.trim()
-                  },
-                  success: function(data){
-                     if(data == '1'){
-                        alert("인증되었습니다.");
-                        inputNum.value="";
-                        //$('#chekingPhone').attr("value","Y");
-                     //   $('#inputNum').val('');
-                        //inf.style.visibility="hidden";
-                        $("#btnUpdate2").attr("i", "0");
-                        $(".hiddenPhone").css({display: "none"});
-                     }else{
-                        alert("인증번호가 일치하지 않습니다.");
-                     }
-                  },
-                  error: function(){
-                     alert("서버에러");
-                  }
-               });
-               
-      }
-
-      function checkPhoneNum(){//디비저장 폰있는지 중복방지
-         let check = 1;
-         const phoneNum = phone.value.trim();
-         
-         $.ajax({
-            url:"/phoneNumCheck",
-            type:"POST",
-            async: false,
-            data:{"phone":phoneNum},
-            success:function(data){
-               if(data == "0"){
-                  check = 0;
-               }
-            },
-            error:function(){
-               alert("에러발생");
-            }
-         });
-         return check;
-      }
-
-      $(".hidden").css({display: "none"});
-      $(".hiddenPhone").css({display: "none"});
-      $("#btnUpdate").click(function() {
-          $("#btnUpdate2").attr("i", "1");
-          let data = $("#pwd").val();
-          console.log(data);
-          $.ajax({
-         url:"/passwordConfirm",
-         method:"POST",
-         data:{password:data},
-         success: function(c){
-            if(c == "확인되었습니다"){
-               $(".updateMember").css({visibility: "visible"});
-                  $("#btnUpdate").css({display:"none"});
-                  $("#btnUpdate2").css({visibility: "visible"});
-                  $("#pwd").css({display:"none"});
-                  $(".hidden").css({display: "inline-block"});
-            }
-             alert(c);
-        }});
-         });
-
-       $("#btnUpdate2").click(function() {
-    	   const nickNameAvail = /^[가-힣a-zA-Z0-9]{2,8}$/;
-     	   const nickNameAvailCheck = nickNameAvail.test(nickName.value.trim());
-
-     		if(nickName.value.trim() != '')
-   	  			if(nickNameAvailCheck == false){
-   	  				alert("닉네임 형식이 올바르지 않습니다(한글,영문자,숫자 2~8자).");
-   	  				nickName.focus();
-   	  				return;
-   	  			}
-
-
-     			if(checkNick() != 0){
-     				alert("중복된 닉네임입니다");
-     				nickName.focus();
-     				return;
-     			}
-     		
-          if(phone.value.trim() != ''){
-              if($("#btnUpdate2").attr("i") == "1"){
-            alert("휴대전화 변경시 인증을먼저진행해주세요");
-            phone.focus();
-            return;
-              }
-         }
-         const pwd1 = document.getElementById("password1").value;
-         const pwd2 = document.getElementById("password2").value;
-         var pass = false;
-         if(pwd1 == pwd2){
-            if(pwd1 != "" && pwd2 !=""){
-            alert("비밀번호가 일치합니다");
-           }
-            pass = true;
-         }else{
-            alert("비밀번호가 일치하지 않습니다.");
-             return false;
-         }
-         if(pass){
-            if(pwd1 != "" && pwd2 !=""){
-                const pwAvail = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^*()\-_=+\\\|\[\]{};:\'",.<>\/?]).{8,12}$/;
-                const pwAvailCheck = pwAvail.test(pwd1.trim());
-                if(!pwAvailCheck){
-                    alert("비밀번호는 문자,숫자,특수기호 1가지이상 포함하여야합니다");
-                    return;
-                }
-            }
-            var data =$("#update").serialize();
-            $.ajax("/update", {data:data,type: "POST",success:function(re){         
-               alert("회원 정보가 수정되었습니다");         
-               window.location.reload();
-            }});      
-         }
-       });
-   });
-</script>
 <style>
 
     /* 개별 */
@@ -249,38 +24,6 @@
       margin: 10px auto;
       text-align: left;
     }
-
-    #modify2 {
-      margin: 10px auto;
-      text-align: left;
-      width: 500px;
-      height: 40px;
-    }
-
-    #modify_input {
-      margin-bottom: 20px;
-
-      text-align: left;
-      width: 500px;
-      height: 40px;
-    }
-
-    .modify_input {
-      margin-bottom: 20px;
-
-      text-align: left;
-      width: 500px;
-      height: 40px;
-    }
-
-    .phone_input {
-      margin-bottom: 20px;
-
-      text-align: left;
-      width: 440px;
-      height: 40px;
-    }
-
 
 
     .send {
@@ -312,13 +55,53 @@
       font-size: 14px;
     }
 
+<!-- 탭조절 	-->
+.my-wrap {
+  width: 100%;
+  height: 850px;
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top center;
+  z-index: 0; }
+  @media (max-width: 991.98px) {
+    .my-wrap {
+      background-position: top center !important; } }
+  .my-wrap .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: '';
+    opacity: .5;
+    background: #21243d;
+    height: 100px; }
+  .my-wrap.my-wrap-2 {
+    height: 170px !important;
+    position: relative; }
+    .my-wrap.my-wrap-2 .overlay {
+      width: 100%;
+      opacity: .8;
+      height: 190px; }
+    .my-wrap.my-wrap-2 .slider-text {
+      height: 190px !important; }
+      
+           /*회색부분 크기*/
+    .colmd8 { 
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 66.66667%;
+    flex: 0 0 66.66667%;
+    max-width: 50%; }   /*여기*/
+      
 </style>
 </head>
 <body>
     
   
-    
-<section class="hero-wrap hero-wrap-2" style="background-image: url('images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+   
+<section class="my-wrap my-wrap-2" style="background-color: #fff;"  id=top>
+
     <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
@@ -346,20 +129,22 @@
       </div>
     </section>
     <section class="ftco-section contact-section">
-      <div class="container">
+      <div class="container" >
         <div class="row block-9 justify-content-center mb-5">
 
           <div class="colmd8 mb-md-5 bg-light p-5 contact-form">
             <form action="#" id="update">
-              <h2 class="text-center">회원정보수정</h2>
+              <h2 class="text-center" >회원정보수정</h2>
               <div class="form-group">
-                <div id=modify class="hidden">이름</div>
+                <div id="modify" class="hidden">이름</div>
                 <input type="text"  class=" hidden form-control form-group " disabled="disabled" value="${m.name} " />
               </div>
               <div id=modify class="hidden">닉네임</div>
               <div class="form-group">
               </div>
+
               <input id="nickName" class="updateMember form-control hidden" style="visibility: hidden ;" placeholder="바꿀 닉네임을 입력하세요" name="nickName" />
+
 
               <div id=modify class="hidden">전화번호</div>
               <div class="form-group">
@@ -379,7 +164,7 @@
               <div id=modify class="hidden">비밀번호</div>
               <div></div>
               <input type="password" id="password1" class="modify updateMember form-control form-group hidden" style="visibility: hidden ;"
-                placeholder="새 비밀번호를 입력하세요" name="password" />
+                placeholder="새 비밀번호를 입력하세요 영문+숫자+특수문자(8~12자리)조합" name="password" />
               <input type="password" id="password2" class="updateMember form-control form-group hidden" style="visibility: hidden ;"
                 placeholder="새 비밀번호를 다시 입력하세요" name="password2" />
               <input type="password" id="pwd" class="updateMember form-control form-group " placeholder="회원정보 수정을 위해서는 비밀번호 입력하세요" name="pwd"
@@ -388,16 +173,16 @@
             </div>
 
             </form>
-              <div class="form-group" >
+              <div class="form-group" ><a href="#top">
                 <button id=btnUpdate value="수정하기" class="btn form-control form-group btn-primary py-3 px-5 "> 수정하기</button>
-                <button id="btnUpdate2" style="visibility: hidden" class="btn form-group form-control btn-primary py-3 px-5">수정완료</button>
-              </div>
+              	<button id="btnUpdate2" style="visibility: hidden" class="btn form-group form-control btn-primary py-3 px-5">수정완료</button>
+              </a></div>
           </div>
         </div>
       </div>
 
     </section>
-    <jsp:include page="my_footer.jsp" />
+    <jsp:include page="footer.jsp" />
 
     </body>
 

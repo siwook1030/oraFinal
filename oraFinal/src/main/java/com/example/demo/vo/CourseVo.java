@@ -30,6 +30,7 @@ public class CourseVo {
 	private int c_difficulty;
 	private String c_tag;
 	private List<String> c_tags; // 디비에서 꺼내온 뷰를 "-" 나눠서 다시 배열로 넣기위해
+	private String c_regdate;
 	private String c_view;
 	private String[] c_views; // 디비에서 꺼내온 뷰를 "-" 나눠서 다시 배열로 넣기위해
 	private String c_words;
