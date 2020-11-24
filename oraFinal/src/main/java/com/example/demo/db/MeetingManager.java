@@ -341,4 +341,13 @@ public class MeetingManager {
 		session.close();
 		return re;
 	}
+	
+	public static int deleteMfOne(int mf_no) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.delete("meeting.deleteMfOne", mf_no);
+		session.commit();
+		session.close();
+		return re;
+	}
 }

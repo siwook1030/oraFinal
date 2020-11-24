@@ -1,7 +1,10 @@
 package com.example.demo.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +40,8 @@ import com.example.demo.vo.Meeting_tempVo;
 import com.example.demo.vo.MemberVo;
 
 import com.example.demo.vo.ResponseDataVo;
+import com.example.demo.vo.ReviewVo;
+import com.example.demo.vo.Review_fileVo;
 import com.fasterxml.jackson.annotation.JacksonInject.Value;
 import com.google.gson.Gson;
 
@@ -182,6 +187,31 @@ public class MeetingController {
 		String path = request.getRealPath("/courseLine");
 		MeetingVo mt = mdao.detailMeeting(m_no);
 		List<Meeting_fileVo> mf = mdao.detailMFile(m_no);
+		String meetingFilePath = request.getServletContext().getRealPath("/meetingFile");
+		String meetingFile_tempPath = request.getServletContext().getRealPath("/meetingFile_temp");
+		for(Meeting_fileVo mfvo : mf) {
+			try {
+				String mf_savename = mfvo.getMf_savename();
+				FileInputStream fis = new FileInputStream(meetingFilePath+"/"+mf_savename);
+				byte[] data = fis.readAllBytes();
+				fis.close();
+				File file = new File(meetingFile_tempPath+"/"+mf_savename);
+				FileOutputStream fos = new FileOutputStream(file);
+				fos.write(data);
+				fos.close();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		String m_title = mt.getM_title().replace("\"", "\\\"").replace("\'", "\\\'");		// JS에서 원활한 string처리를 위해 변경처리
+		// 사진임시저장폴더의 이미지를 사용하기 위해 경로변경
+		String m_content = mt.getM_content().replace("<img src=\"/meetingFile/", "<img src=\"/meetingFile_temp/");
+		m_content = m_content.replace("\"", "\\\"").replace("\'", "\\\'");
+				
+		mt.setM_title(m_title);
+		mt.setM_content(m_content);
+		
 		model.addAttribute("mt", mt);
 		model.addAttribute("mf", mf);
 		model.addAttribute("mtJson", gson.toJson(mt));
@@ -195,14 +225,15 @@ public class MeetingController {
 	
 	@PostMapping(value = "/user/updateMeeting", produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public String updateMSubmit(@RequestParam HashMap map, HttpServletRequest request, List<MultipartFile> uploadMtFiles) {
+	public String updateMSubmit(@RequestParam HashMap map, HttpServletRequest request) {
 //		System.out.println("*** map(updtCntr Sbmt) : "+map);
 		
 		int m_no = Integer.parseInt((String)map.get("m_no"));
 		int c_no = Integer.parseInt((String)map.get("c_no"));
 		String id = "";
 		String m_title = (String)map.get("m_title");
-		String m_content = (String)map.get("m_content");
+		String m_content = (String)map.get("real_content");
+		m_content = m_content.replace("<img src=\"/meetingFile_temp/", "<img src=\"/meetingFile/");
 		Date m_regdate = null;
 		int m_hit = 0;
 		double m_latitude = Double.parseDouble((String)map.get("m_latitude"));
@@ -215,51 +246,94 @@ public class MeetingController {
 		String rank_icon = "";
 		
 		MeetingVo mtvo = new MeetingVo(m_no, c_no, id, m_title, m_content, m_regdate, m_hit, m_latitude, m_longitude, m_locname, m_time, m_numpeople, nickName, c_name, rank_icon, null, 0, 0, null);
-
+		
 		//System.out.println(mtvo.toString());
 		int re = mdao.updateMeeting(mtvo);
-		
-		
-//		System.out.println("***uploadMtFiles1 : "+uploadMtFiles);
-		// Meeting_fileVo를 먼저 삭제
-		mdao.deleteMFile(m_no);
-//		System.out.println("***uploadMtFiles2 : "+uploadMtFiles);
-		
+		if(re > 0) {	// mvo update성공 시
+			List<Meeting_fileVo> mflist = mdao.detailMFile(m_no);
+			String urls = (String)map.get("image_urls");
 			
-		// 사진등록
-		List<Meeting_fileVo> mfvo = new ArrayList<Meeting_fileVo>();
-		String path = request.getRealPath("/meetingFile");
-		int re_mf = 0;
-		if(uploadMtFiles.size()>0) {
-			for(MultipartFile mf: uploadMtFiles) {
-				int mf_no = 0;
-				int mt_no = m_no;
-				String mf_name = mf.getOriginalFilename();
-				String mf_savename = FileUtilCollection.filePrefixName()+".png";
-				String mf_path = "meetingFile";
-				long mf_size = mf.getSize();	
-				mfvo.add(new Meeting_fileVo(mf_no, m_no, mf_name, mf_savename, mf_path, mf_size));
-			}
-			//re_mf = mdao.insertMFile(mfvo);
-			// insertMFile 수정했으므로 같이 수정해줘야됨. << 정재호
-		}
-			
-			if(re>0) {
-				if(uploadMtFiles.size()>0) {
-					for(int i=0; i<uploadMtFiles.size(); i++) {
+			if(!urls.equals("")) {	// 게시글에 사진이 있을 경우
+				String[] image_urls = urls.split(",");	// JS에서 FormData로 배열 보낼경우 쉼표(,)로 구분해서 보내짐.
+				String path = request.getServletContext().getRealPath("/");
+				
+				for(int i = 0; i < image_urls.length; i++) {
+					String mf_savename = image_urls[i].substring(image_urls[i].lastIndexOf("/") + 1);
+					String decodeResult = "";
+					try {
+						// DB에 decode된 파일명으로 저장되어있으므로 비교를 위해 똑같이 decode한다.
+						decodeResult = URLDecoder.decode(mf_savename, "UTF-8");
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					File temp_file = new File(path+"/meetingFile_temp/"+decodeResult);
+					
+					boolean isNew = true;	// 신규 사진인지여부 저장 변수
+					for(Meeting_fileVo mfvo : mflist) {
+						if(decodeResult.equals(mfvo.getMf_savename())) {
+							isNew = false;	// DB에 같은 사진이 있으면 false
+							temp_file.delete();	// DB에 같은 사진이 있으므로 temp폴더의 사진 삭제
+						}
+					}
+					if(isNew) {				// DB에 같은 사진이 없으면 insert처리
+						Meeting_fileVo mfvo = new Meeting_fileVo();
+						mfvo.setMf_no(0);	// 시퀀스 처리
+						mfvo.setM_no(m_no);	
+						mfvo.setMf_savename(decodeResult);
+						String mf_name = decodeResult.substring(6);
+						mfvo.setMf_name(mf_name);
+						String mf_path = "meetingFile";
+						mfvo.setMf_path(mf_path);
+						long mf_size = temp_file.length();
+						mfvo.setMf_size(mf_size);
+						mdao.insertMFile(mfvo);
+						// 임시폴더에서 원본폴더로 사진복사
 						try {
-							byte []data = uploadMtFiles.get(i).getBytes();
-							FileOutputStream fos = new FileOutputStream(path+"/"+mfvo.get(i).getMf_savename());
+							FileInputStream fis = new FileInputStream(temp_file);
+							byte[] data = fis.readAllBytes();
+							fis.close();
+							temp_file.delete();		// 복사끝나면 임시파일 삭제
+							File file = new File(path+"/meetingFile/"+decodeResult);
+							FileOutputStream fos = new FileOutputStream(file);
 							fos.write(data);
 							fos.close();
 						} catch (Exception e) {
-							// TODO: handle exception
-							// System.out.println("insertCntr size exp : "+e.getMessage());
-						}	
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}	
+				}
+				// 만약 수정하면서 게시글의 사진을 삭제했다면 DB에서도 제거해야 함. 따라서 게시글에 사진이 있든없든 검사해야함.
+				for(Meeting_fileVo mfvo : mflist) {
+					boolean isExist = false;	// DB의 사진이 수정된 게시글 사진목록에 존재여부
+					for(int i = 0; i < image_urls.length; i++) {
+						String mf_savename = image_urls[i].substring(image_urls[i].lastIndexOf("/") + 1);
+						String decodeResult = "";
+						try {
+							// DB에 decode된 파일명으로 저장되어있으므로 비교를 위해 똑같이 decode한다.
+							decodeResult = URLDecoder.decode(mf_savename, "UTF-8");
+						} catch (UnsupportedEncodingException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						if(mfvo.getMf_savename().equals(decodeResult)) {
+							isExist = true;		// 게시글에 동일한 사진이 존재하면 true
+							break;
+						}
+					}
+					if(!isExist) {				// 게시글에 동일한 사진이 존재하지 않으면 삭제
+						File file = new File(path+"/meetingFile/"+mfvo.getMf_savename());
+						file.delete();
+						mdao.deleteMfOne(mfvo.getMf_no());
 					}
 				}
-			} 
-		
+			}else {		// 게시글에 사진이 없을 경우 전부 삭제
+				mdao.deleteMFile(m_no);
+			}
+			
+		}
 		return Integer.toString(m_no);
 	}
 	

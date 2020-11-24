@@ -159,5 +159,8 @@
 	<delete id="deleteTemp">
 		DELETE FROM meeting_temp WHERE id=#{id}
 	</delete>
+	<delete id="deleteMfOne">
+		DELETE FROM meeting_file WHERE mf_no=#{mf_no}
+	</delete>
 	
 </mapper>	
