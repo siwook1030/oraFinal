@@ -9,8 +9,8 @@
   
   <select id="listNotice" resultType="noticeVo">
     select * 
-	from (select rownum r, n_no, code_value, code_name, n_title, n_content, N_REGDATE, n_hit 
-	from (SELECT n_no, n.code_value, code_name, n_title, n_content, N_REGDATE, n_hit FROM NOTICE n, 
+	from (select rownum r, n_no, code_value, code_name, n_title, n_content, N_REGDATE, n_hit ,n_file
+	from (SELECT n_no, n.code_value, code_name, n_title, n_content, N_REGDATE, n_hit ,n_file FROM NOTICE n, 
 		CODE c 
 	<where>
    	 n.CODE_VALUE = c.CODE_VALUE  
@@ -37,11 +37,11 @@
   
   <select id="detailNotice" resultType="noticeVo">
     SELECT n_no,n.code_value,code_name,n_title,n_content,TO_CHAR(n_regdate,'yyyy.mm.dd hh:mi') n_regdate,
-    n_hit FROM NOTICE n, CODE c WHERE n.CODE_VALUE = c.CODE_VALUE AND N_NO=#{N_NO}
+    n_hit ,n_file FROM NOTICE n, CODE c WHERE n.CODE_VALUE = c.CODE_VALUE AND N_NO=#{N_NO}
   </select>
   
   <insert id="insertNotice">
-    insert into notice values(#{n_no},#{code_value},#{n_title},#{n_content},sysdate,#{n_hit})
+    insert into notice values(#{n_no},#{code_value},#{n_title},#{n_content},sysdate,#{n_hit},#{n_file})
   </insert>
   
   <update id="updateHit">
@@ -49,7 +49,7 @@
   </update>
   
   <update id="updateNotice">
-  	UPDATE NOTICE SET N_TITLE=#{n_title},N_CONTENT=#{n_content} WHERE N_NO=#{n_no}
+  	UPDATE NOTICE SET N_TITLE=#{n_title},N_CONTENT=#{n_content},N_FILE=#{n_file} WHERE N_NO=#{n_no}
   </update>
   
   <delete id="deleteNotice">

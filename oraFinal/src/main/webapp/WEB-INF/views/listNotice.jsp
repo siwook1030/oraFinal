@@ -103,8 +103,8 @@ window.onload = function(){
 		$.each(list, function(i, n) {
 			let listImg;
 			console.log(n);
-			if(n.nf.length!=0){
-				listImg = $('<img id="listImg"/>').attr('src',"/"+n.nf[0].nf_path+"/"+n.nf[0].nf_savename);
+			if(n.n_file != null){
+				listImg = $('<img id="listImg"/>').attr('src',"/noticeImg/"+n.n_file);
 			} else {
 				listImg = $('<img/>').attr('src',"/icons/empty.png");
 			}
