@@ -98,7 +98,7 @@ window.onload = function(){
 	
 	if(checkM.item.code_value != null && checkM.item.code_value == "00101"){
 		btnUD.style.display = "inline";
-	}
+	};
 
 	
 
@@ -107,7 +107,7 @@ window.onload = function(){
 		console.log(n_no);
 		window.location = "/admin/updateNotice?n_no="+n_no;
 	}*/
-}
+};
 	
 
 	
@@ -175,12 +175,12 @@ window.onload = function(){
           <div class="col-md-8 ftco-animate">
             <h2 class="mb-3">${n.n_title }</h2>
             <div>
-	            <div>${n.n_code_name }</div>
-	            <div>${n.n_regdate }</div>
-	            <div>${n.n_hit }</div>
+	            <p>${n.code_name }</p>
+	            <p>${n.n_regdate }</p>
+	            <p>${n.n_hit }</p>
 	        </div>
           	<p>
-              <img src="noticeImg/image_7.jpg" alt="" class="img-fluid">
+              <img src="mainPageImg/main1.jpg" alt="" class="img-fluid">
             </p>
             <div id="content" style="white-space:pre;"><c:out value="${n.n_content}" /></div>
           </div>
@@ -189,7 +189,7 @@ window.onload = function(){
 		<br>
 		<a href="listNotice"><button type="button" id="btnList">목록</button></a>
 		<div id="btnUD">
-			<button type="button" id="btnDelete">삭제</button>
+			<a href="/deleteNotice?n_no=${n.n_no }"><button type="button" id="btnDelete">삭제</button></a>
 			<!-- <button type="button" id="btnUpdate" value="${n.n_no }">수정</button> -->
 		 	<a href="/admin/updateNotice?n_no=${n.n_no}"><button type="button" id="btnUpdate" value="${n.n_no }">수정</button></a> 
 		</div>
