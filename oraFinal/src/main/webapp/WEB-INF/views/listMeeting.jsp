@@ -34,7 +34,8 @@
 		.nickName { display: inline-block; }
 		.m_regdate { font-size: 13px; display: inline-block; vertical-align: top;  float: right; }
 		.meta-chat { font-size: 14px; display: inline-block; float: right;}
-		.m_timeImg, .m_time { display: inline-block; padding-left: 3px; vertical-align: bottom; /* border: 1px solid red; */ text-align: center; }
+		.m_timeImg, .m_time { display: inline-block; margin-right: 10px; vertical-align: bottom; font-size: 20px; }
+		.m_timeImg { margin-bottom: 4px; }
 		/* 페이징 */
 		.pageUl { border: none; }
 		.btnPrevNext { border: none; }
@@ -167,10 +168,10 @@
 	            // const m_no = $('<div></div>').html(data.m_no);
 	            const c_nameA = $('<a href="/detailCourse?c_no='+data.c_no+'"></a>').html(data.c_name);
 	            const c_name = $('<div></div>').append(c_nameA).addClass('c_name');
-	            const m_timeImg = $('<img/>').attr({src : '/meetingImg/meetingTime.png', height : '30px'}).addClass('m_timeImg');
+	            const m_timeImg = $('<img/>').attr({src : '/meetingImg/calendar.png', height : '30px'}).addClass('m_timeImg');
 	            const m_time = $('<div></div>').html(data.m_time).addClass('m_time');
 	            const nickNameImg = $('<img/>').attr({src : '/rank/'+data.rank_icon, height : '20px'});
-	            const nickNameA = $('<a href="/listMeeting?id='+data.id+'"></a>').html(data.nickName);
+	            const nickNameA = $('<a href="/listMeeting?id='+data.id+'"></a>').html(' '+data.nickName);
 	            const nickName = $('<div></div>').append(nickNameImg, nickNameA).addClass('nickName');
 	            const m_regdate = $('<div></div>').html(data.date_diff_str).addClass('m_regdate');
 	            // const m_hit = $('<div></div>').html(data.m_hit);
