@@ -7,6 +7,9 @@
 <meta charset="utf-8">
 <title>오늘의 라이딩</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="resources/css/animate.css">
@@ -43,6 +46,14 @@
 
 	<script type="text/javascript">
 	window.onload = function(){
+		 const token = $("meta[name='_csrf']").attr("content");
+		    const header = $("meta[name='_csrf_header']").attr("content");
+		    $(document).ajaxSend(function(e, xhr, options) {
+		        if(token && header) {
+		            xhr.setRequestHeader(header, token);
+		        }
+		    });
+		
 		let pageNo = 1;
 		let id = `${id}`;
 		const recordSize = ${recordSize};
@@ -255,11 +266,12 @@
 						<li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
 					</ul>
 				</div>
+
 			</div>
 		</div>
 	</nav>
 	<!-- END nav -->	
-  
+
     <section class="hero-wrap hero-wrap-2" style="background-image: url('resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
 		<div class="overlay"></div>
 		<div class="container">

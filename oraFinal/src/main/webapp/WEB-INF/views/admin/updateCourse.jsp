@@ -5,6 +5,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
 <title>코스 수정</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
@@ -46,6 +49,10 @@
  #cTitle{
 	font-size: 140%;
 }
+
+  #map, #mapPE, #mapPS {
+    	border-radius: 20px;
+    }
 
  /*매인섹션 끝 ------------------*/
 
@@ -111,6 +118,14 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=drawing,services"></script>
 <script>
 window.onload = function(){
+	 const token = $("meta[name='_csrf']").attr("content");
+	    const header = $("meta[name='_csrf_header']").attr("content");
+	    $(document).ajaxSend(function(e, xhr, options) {
+	        if(token && header) {
+	            xhr.setRequestHeader(header, token);
+	        }
+	    });
+	
 	const oldCourseName = document.getElementById("oldCourseName");
 	
 	const nickName = document.getElementById("nickName");
@@ -1870,6 +1885,9 @@ window.onload = function(){
                      <li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
                      <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
                      <li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+                  <c:if test="${m.code_value == '00101' }">
+								<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
+							</c:if>
                   </c:when>
                </c:choose>
             </ul>
@@ -1988,7 +2006,7 @@ window.onload = function(){
 				<option value="1">쉬움</option>
 				<option value="2">보통</option>
 				<option value="3">어려움</option>
-				<option value="4">매우 어려움</option>
+				<option value="4">힘듬</option>
 			</select>
 			</div>
 			<div>

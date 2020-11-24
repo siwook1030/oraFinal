@@ -8,6 +8,9 @@
 <meta charset="UTF-8">
 <title>미리보기</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="/resources/css/animate.css">
@@ -173,6 +176,14 @@
      .search-place:hover .desc span {
     background: #d8572d;
     color: #fff; }
+    
+       .search-place:after,	 .col-md-4, .img, .search-place img {
+   	border-radius: 10px;
+   }
+   
+      #map, #PSmap, #PEmap {
+    	border-radius: 20px;
+    }
 
    /*메인섹션 끝css--------------------------*/
    /*float 초기화 아이디*/
@@ -219,6 +230,14 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 <script type="text/javascript">
 window.onload = function(){
+
+	 const token = $("meta[name='_csrf']").attr("content");
+	    const header = $("meta[name='_csrf_header']").attr("content");
+	    $(document).ajaxSend(function(e, xhr, options) {
+	        if(token && header) {
+	            xhr.setRequestHeader(header, token);
+	        }
+	    });
 	
 	// 마커를 클릭했을 때 해당 장소의 상세정보를 보여줄 커스텀오버레이입니다
 	const placeOverlay = new kakao.maps.CustomOverlay({zIndex:1}), 
@@ -1207,7 +1226,7 @@ document.addEventListener("DOMContentLoaded", function(){
 							  					<c:if test="${c.c_difficulty ==1 }"><span style="color: #88bea6;">쉬움</span><br></c:if>
 							  					<c:if test="${c.c_difficulty ==2 }"><span style="color: #eccb6a;">보통</span><br></c:if>
 							  					<c:if test="${c.c_difficulty ==3 }"><span style="color: #c8572d;">어려움</span><br></c:if>
-							  					<c:if test="${c.c_difficulty ==4 }"><span style="color: red;">매우 어려움</span><br></c:if>
+							  					<c:if test="${c.c_difficulty ==4 }"><span style="color: red;">힘듬</span><br></c:if>
 							  					</td>
 							  					<td>
 							  					<c:forEach var="v" items="${c.c_views }">

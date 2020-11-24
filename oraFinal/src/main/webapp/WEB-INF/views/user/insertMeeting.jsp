@@ -7,6 +7,9 @@
     <title>오늘의 라이딩</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+	<meta name="_csrf_header" content="${_csrf.headerName}" />
+	<meta name="_csrf" content="${_csrf.token}" />
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/resources/css/animate.css">
@@ -58,6 +61,7 @@
 <script type="text/javascript" src="/ckeditor5/build/ckeditor.js"></script>
 <script type="text/javascript">
 	window.onload = function(){
+
 		let current_urls = [];		// 현재 editor에 있는 img src들의 배열을 담은 변수. url저장형식 => /meeting/46076431.jpg
 
 		const checkM = checkLogin();
@@ -668,6 +672,7 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                <span class="oi oi-menu"></span> Menu
             </button>
+
             
 			<div style="display: block;">
 				<div class="collapse navbar-collapse" id="ftco-nav">

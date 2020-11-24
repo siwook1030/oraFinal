@@ -7,6 +7,9 @@
 <meta charset="UTF-8">
 <title>오늘의 라이딩</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/resources/css/animate.css">    
@@ -38,6 +41,14 @@ let current_urls = [];		// 현재 editor에 있는 img src들의 배열을 담�
 $(document).ready(function(){
 	// let pluginList = ClassicEditor.builtinPlugins.map( plugin => plugin.pluginName );
 	// console.log(pluginList);	// 사용가능한 플러그인 리스트
+		 const token = $("meta[name='_csrf']").attr("content");
+		    const header = $("meta[name='_csrf_header']").attr("content");
+		    $(document).ajaxSend(function(e, xhr, options) {
+		        if(token && header) {
+		            xhr.setRequestHeader(header, token);
+		        }
+		    });
+	
 	
 	$("#r_title").val('${rvo.r_title}');
 	$("#editor").text('${rvo.r_content}');
@@ -283,7 +294,7 @@ function checkImageUrls(editor) {
 			<form action="/user/updateReview" method="post">
 				<div class="row justify-content-center pb-5">
 					<div class="col-md-12 heading-section text-center ftco-animate">
-						<span class="subheading">Today's Riding</span>
+						<span class="subheading">${rvo.r_no }</span>
 						<!-- 제목 -->
 						<h2 class="mb-4"><input type="text" name="r_title" id="r_title" size="50" required="required"></h2>
 						<!-- 코스선택 -->

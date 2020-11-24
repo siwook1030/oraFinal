@@ -41,9 +41,6 @@ public class NoticeManager {
 		List<NoticeVo> list = null;
 		SqlSession session = sqlSessionFactory.openSession();
 		list = session.selectList("notice.listNotice",map);
-		for (NoticeVo noticeVo : list) {
-			noticeVo.setNf(new ArrayList<Notice_fileVo>());
-		}
 		session.close();
 		return list;
 	}

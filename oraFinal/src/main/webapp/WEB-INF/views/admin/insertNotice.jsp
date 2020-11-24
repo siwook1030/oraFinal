@@ -5,6 +5,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
 <link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
 <title>오늘의 라이딩 - Today's riding</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -22,8 +25,18 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
 window.onload = function(){
-	const nTitle = document.getElementById("n_insert_title");
-	const nContent = document.getElementById("n_insert_content");
+	 const token = $("meta[name='_csrf']").attr("content");
+	    const header = $("meta[name='_csrf_header']").attr("content");
+	    $(document).ajaxSend(function(e, xhr, options) {
+	        if(token && header) {
+	            xhr.setRequestHeader(header, token);
+	        }
+	    });
+
+	
+	const nTitle = document.getElementById("title");
+	const nContent = document.getElementById("content");
+
 
 	const btnInsert = document.getElementById("btnInsert");
 	
@@ -36,11 +49,16 @@ window.onload = function(){
 			alert("내용도 입력안하고 등록할거야~~?!");
 			return;
 		}
+
+		const form = document.getElementById("form");
+		const formData = new FormData(form);
 		
 		$.ajax({
 			url: "/admin/insertNotice",
 			type: "POST",
-			data: $("#form").serialize(),
+			data: formData,
+			contentType: false,
+			processData: false,
 			success: function(response){
 				if(response.code == "200"){
 					alert(response.message);
@@ -65,7 +83,7 @@ window.onload = function(){
 		<div class="container">
 			<a style="font-size: 30px;" class="navbar-brand" href="/mainPage">
 		        <span style="font-weight: bold;">
-			        <font color="#45A3F5">오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
+		        	<font color="#45A3F5">오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
 			        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font></span></a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="oi oi-menu"></span> Menu
@@ -83,6 +101,9 @@ window.onload = function(){
 							<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
 							<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
 							<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+						<c:if test="${m.code_value == '00101' }">
+								<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
+							</c:if>
 						</c:when>
 					</c:choose>
 				</ul>
@@ -121,7 +142,7 @@ window.onload = function(){
         <div class="row block-9 justify-content-center mb-5">
           <div class="col-md-8 mb-md-5">
           	<h2 class="text-center" id="n_text">공지사항 등록</h2>
-			<form id="form" action="#" class="bg-light p-5 contact-form">
+			<form id="form" class="bg-light p-5 contact-form">
 				<select class="code_select" name="code_value" size="1">
 		     		<c:forEach var="c" items="${category}">
 		     			<option value="${c.code_value }">${c.code_name }</option>
@@ -137,6 +158,7 @@ window.onload = function(){
 				<div class="form-group">
 					<textarea rows="20" cols="100" name="n_content" class="form-control" id="n_insert_content" placeholder="내용을 입력하세요"></textarea>
 				</div>
+				<input class="mb-6" type="file" name="uploadFile">
 				<br>
 				<a href="/listNotice"><button type="button" class="btn btn-warning" id="btnCancel">취소</button></a>
 				<button type="button" class="btn btn-success" id="btnInsert">등록</button>	

@@ -19,7 +19,7 @@ import com.example.demo.util.BitSms;
 @RequestMapping("/smsSend")
 public class SmsController {
 	@Autowired
-	BitSms bs;
+	private BitSms bs;
 
 	public void setBs(BitSms bs) {
 		this.bs = bs;

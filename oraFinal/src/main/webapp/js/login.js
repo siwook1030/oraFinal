@@ -2,7 +2,13 @@
 
 /*** 로그인(시욱씨) 시작 */
 window.onload = function(){
-	
+		 const token = $("meta[name='_csrf']").attr("content");
+		    const header = $("meta[name='_csrf_header']").attr("content");
+		    $(document).ajaxSend(function(e, xhr, options) {
+		        if(token && header) {
+		            xhr.setRequestHeader(header, token);
+		        }
+		    });
 	
 	document.getElementById("member-id").onkeyup=enterkey;
 	document.getElementById("member-password").onkeyup=enterkey;

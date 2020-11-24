@@ -7,6 +7,9 @@
 <meta charset="UTF-8">
 <title>오늘의 라이딩</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/resources/css/animate.css">    
@@ -40,7 +43,7 @@
 		.selectedCourse a { font-size: 18px; display: inline-block; vertical-align: bottom; }
 		.selectedCourse { width: 300px; border: 1px #D5D5D5 solid; border-radius: 10px; margin: 2px auto; padding: 25px; text-align: center; }
 		/* 게시글 수정삭제 버튼 */
-		.btn { color: white; padding: 8px 12px; margin: 20px 0; background-color: #88BEA6; display: inline-block; font-size: 15px; border: none; cursor: pointer; }
+		.btn { color: white; padding: 8px 12px; margin: 20px 2px; background-color: #88BEA6; display: inline-block; font-size: 15px; border: none; cursor: pointer; }
 		/* 댓글수 */
 		#repImg { display: inline-block; width: 25px; padding-right: 5px; margin-bottom: 3px; }
 		#total_reply { display: inline-block; font-size: 18px; }
@@ -57,6 +60,7 @@
 		.myRep { display: inline-block; margin-left: 10px; padding: 2px 6px; border: 1px solid red; border-radius: 12px; font-size: 12px; } /* 내댓글 표시 */
 		.sendReply { margin: 0 7px 7px 0; }
 		.textareaContainer { border: 1px solid gray; text-align: right; }
+		.divRep { padding-bottom: 14px; }
 
 		.modReplyWrap {
 			display: flex;
@@ -67,6 +71,7 @@
 			flex-basis: 90%;
 		}
 </style>
+
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script type="text/javascript">
 	var querystring = location.search;		// querystring 가져오기 ex) r_no=1
@@ -281,6 +286,9 @@
 								<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
 								<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
 								<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+							<c:if test="${m.code_value == '00101' }">
+								<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
+							</c:if>
 							</c:when>
 						</c:choose>
 					</ul>

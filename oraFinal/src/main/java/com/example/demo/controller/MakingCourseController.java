@@ -102,7 +102,7 @@ public class MakingCourseController {
 		 double userDis = 0; //코스와 유저의현재위치와의  거리
 		 List<CoursePhotoVo> c_photo = null;
 		
-		 CourseVo c = new CourseVo(c_no, code_value, id, nickName, c_name, c_s_locname, c_s_latitude, c_s_longitude, c_e_locname, c_e_latitude, c_e_longitude, c_loc, c_distance, c_time, c_difficulty, c_tag, c_tags, c_view, c_views, c_words, c_line, c_temp, userDis, c_photo);
+		 CourseVo c = new CourseVo(c_no, code_value, id, nickName, c_name, c_s_locname, c_s_latitude, c_s_longitude, c_e_locname, c_e_latitude, c_e_longitude, c_loc, c_distance, c_time, c_difficulty, c_tag, c_tags, null,c_view, c_views, c_words, c_line, c_temp, userDis, c_photo);
 		 
 		 int pt_noPS = 0;
 		 String code_valuePS = "00201";
@@ -218,7 +218,7 @@ public class MakingCourseController {
 			 c_photo.add(new CoursePhotoVo(0, c_no,cp_name, coursePhotoPath+cPhotoPathSub, 0, 0));
 		 }
 		 
-		 CourseVo c = new CourseVo(c_no, code_value, id, nickName, c_name, c_s_locname, c_s_latitude, c_s_longitude, c_e_locname, c_e_latitude, c_e_longitude, c_loc, c_distance, c_time, c_difficulty, c_tag, c_tags, c_view, c_views, c_words, c_line, c_temp, userDis, c_photo);
+		 CourseVo c = new CourseVo(c_no, code_value, id, nickName, c_name, c_s_locname, c_s_latitude, c_s_longitude, c_e_locname, c_e_latitude, c_e_longitude, c_loc, c_distance, c_time, c_difficulty, c_tag, c_tags, null,c_view, c_views, c_words, c_line, c_temp, userDis, c_photo);
 	
 		 
 		 int pt_noPS = 0;
@@ -266,7 +266,7 @@ public class MakingCourseController {
 				System.out.println("메이킹코스 파일예외 " + e.getMessage());
 			}	 
 			 responseDataVo.setCode(ResponseDataCode.SUCCESS);
-			 responseDataVo.setMessage("등록에 성공하였습니다.\r\n(최종 등록은 관리자 승인 후 진행되며 등록문자가 발송됩니다. 마이페이지 'My Making-Course'에서 확인 할 수 있습니다.\r\n코스를 등록해주셔서 감사합니다.-오늘의 라이더-)");
+			 responseDataVo.setMessage("등록에 성공하였습니다.\r\n(최종 등록은 관리자 승인 후 진행되며 등록문자가 발송됩니다. 마이페이지 '내가 만든코스'에서 확인 할 수 있습니다.\r\n코스를 등록해주셔서 감사합니다.-오늘의 라이딩-)");
 		 }
 		 	 
 		 Gson gson = new Gson();

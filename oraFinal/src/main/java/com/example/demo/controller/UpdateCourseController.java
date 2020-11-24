@@ -95,7 +95,7 @@ public class UpdateCourseController {
 			 cpCnt++;
 		 }
 		
-		 CourseVo c = new CourseVo(c_no, code_value, id, nickName, c_name, c_s_locname, c_s_latitude, c_s_longitude, c_e_locname, c_e_latitude, c_e_longitude, c_loc, c_distance, c_time, c_difficulty, c_tag, c_tags, c_view, c_views, c_words, c_line, c_temp, userDis, c_photo);
+		 CourseVo c = new CourseVo(c_no, code_value, id, nickName, c_name, c_s_locname, c_s_latitude, c_s_longitude, c_e_locname, c_e_latitude, c_e_longitude, c_loc, c_distance, c_time, c_difficulty, c_tag, c_tags, null,c_view, c_views, c_words, c_line, c_temp, userDis, c_photo);
 	
 		 
 		 int pt_noPS = Integer.parseInt((String)map.get("pt_noPS"));

@@ -8,6 +8,9 @@
 <meta charset="UTF-8">
 <title>코스상세</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="/resources/css/animate.css">
@@ -148,6 +151,10 @@
     color: #fff; 
     font-weight: bold;
     }
+    
+    #map, #PSmap, #PEmap {
+    	border-radius: 20px;
+    }
 
    /*메인섹션 끝css--------------------------*/
 
@@ -179,6 +186,10 @@
      .search-place:hover .desc span {
     background: #d8572d;
     color: #fff; }
+    
+       .search-place:after,	 .col-md-4, .img, .search-place img {
+   	border-radius: 10px;
+   }
 
 </style>
 <style>
@@ -216,6 +227,14 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 <script>
 window.onload = function(){
+	 const token = $("meta[name='_csrf']").attr("content");
+	    const header = $("meta[name='_csrf_header']").attr("content");
+	    $(document).ajaxSend(function(e, xhr, options) {
+	        if(token && header) {
+	            xhr.setRequestHeader(header, token);
+	        }
+	    });
+	
 	const adminMenu = document.getElementById("adminMenu");
 	const updateCourse = document.getElementById("updateCourse");
 	const deleteCourse = document.getElementById("deleteCourse");
@@ -1176,6 +1195,9 @@ window.onload = function(){
                      <li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
                      <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
                      <li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+                 <c:if test="${m.code_value == '00101' }">
+								<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
+							</c:if>
                   </c:when>
                </c:choose>
             </ul>
@@ -1233,7 +1255,7 @@ window.onload = function(){
 				
       	<div id="detailMap">
   		<div class="map_wrap">
-  		<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+  		<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;border-radius: 20px;"></div>
   		 <ul id="category">
   		 <li id="HP8" data-order="0"> 
             <span class="category_bg hospital"></span>
@@ -1346,7 +1368,7 @@ window.onload = function(){
 							  					<c:if test="${c.c_difficulty ==1 }"><span style="color: #88bea6;">쉬움</span><br></c:if>
 							  					<c:if test="${c.c_difficulty ==2 }"><span style="color: #eccb6a;">보통</span><br></c:if>
 							  					<c:if test="${c.c_difficulty ==3 }"><span style="color: #c8572d;">어려움</span><br></c:if>
-							  					<c:if test="${c.c_difficulty ==4 }"><span style="color: red;">매우 어려움</span><br></c:if>
+							  					<c:if test="${c.c_difficulty ==4 }"><span style="color: red;">힘듬</span><br></c:if>
 							  					</td>
 							  					<td>
 							  					<c:forEach var="v" items="${c.c_views }">
