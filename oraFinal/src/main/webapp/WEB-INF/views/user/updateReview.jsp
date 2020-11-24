@@ -18,19 +18,20 @@
     <link rel="stylesheet" href="/resources/css/magnific-popup.css">   
     <link rel="stylesheet" href="/resources/css/flaticon.css">
     <link rel="stylesheet" href="/resources/css/style.css">
-<style type="text/css">
-section {
-	margin: 0 auto;
-	width: 1000px;
-	text-align: left;
-}
-#submitWrap {
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-end;
-}
-
-</style>
+	<style type="text/css">
+		/* 제목 입력 */
+		#r_title { text-align: center; }
+		/* input, select, textarea 태그설정 */
+		input, select { border: none; background-color: transparent; width: auto; text-align: center; }
+		input:focus { outline: none; }
+		/* 등록, 취소 버튼 */
+	 	.btn { color: white; padding: 7px 17px; margin: 3px 1px; font-size: 19px; border: none; cursor: pointer; width: auto; }
+	 	/* 등록, 취소버튼 div */
+		#submitWrap { text-align: center; padding-top: 50px; }
+		/* 코스선택 */
+		#selectCourse { width: 30%; border: 1px #D5D5D5 solid; border-radius: 10px; margin: 2px auto; padding: 25px; text-align: center; }
+		#selectCourse #c_no { vertical-align: bottom; width: 70%; }
+	</style>
 <link rel="stylesheet" type="text/css" href="/ckeditor5/editor-styles.css">
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="/ckeditor5/build/ckeditor.js"></script>
@@ -195,7 +196,7 @@ $(document).ready(function(){
 		$("#image_urls").attr("value", current_urls);
 	});
 
-	$("#btnCancle").click(function(){
+	$("#btnCancle").click(function(event){
 		// input type submit이 아닌 그냥 button이어도 누르면 submit해버린다. 그래서 기본이벤트 삭제처리함.
 		event.preventDefault();
 		imageDelete(current_urls, false);
@@ -235,48 +236,41 @@ function checkImageUrls(editor) {
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 		<div class="container">
-			<a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
+			<a style="font-size: 30px;" class="navbar-brand" href="/mainPage">
 				<span style="font-weight: bold;">
-					<font color="#45A3F5">오</font>
-					<font color="#bae4f0">늘</font>
-					<font color="#88bea6">의</font>
-					<font color="#eccb6a">라</font>
-					<font color="#d0a183">이</font>
-					<font color="#c8572d">딩
+					<font color="#45A3F5">오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font> <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font>
 				</span>
 			</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                <span class="oi oi-menu"></span> Menu
             </button>
-         
-			<div class="collapse navbar-collapse" id="ftco-nav">
-				<ul class="navbar-nav ml-auto">
-					<c:choose>
-						<c:when test="${m == null }">
-							<li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
-							<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
-						</c:when>
-						<c:when test="${m != null }">
-							<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
-							<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
-							<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
-						<c:if test="${m.code_value == '00101' }">
-								<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
-							</c:if>
-						</c:when>
-					</c:choose>
-				</ul>
-			</div> 
-
-			<div class="collapse navbar-collapse" id="ftco-nav">
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
-					<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
-					<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
-					<li class="nav-item active"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
-					<li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
-					<li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
-				</ul>
+            
+            <div style="display: block;">
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto">
+						<c:choose>
+							<c:when test="${m == null }">
+								<li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
+								<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
+							</c:when>
+							<c:when test="${m != null }">
+								<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
+								<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
+								<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+							</c:when>
+						</c:choose>
+					</ul>
+				</div>
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
+						<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
+						<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
+						<li class="nav-item active"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
+						<li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+						<li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
+					</ul>
+				</div>
 			</div>
 		</div>
     </nav>
@@ -294,41 +288,47 @@ function checkImageUrls(editor) {
 		</div>
     </section>
 
-	<section>
+	<section class="ftco-section ftco-agent">
+		<div class="container">
+			<!-- 글등록 -->
+			<form action="/user/updateReview" method="post">
+				<div class="row justify-content-center pb-5">
+					<div class="col-md-12 heading-section text-center ftco-animate">
+						<span class="subheading">${rvo.r_no }</span>
+						<!-- 제목 -->
+						<h2 class="mb-4"><input type="text" name="r_title" id="r_title" size="50" required="required"></h2>
+						<!-- 코스선택 -->
+						<div id="selectCourse">
+							<img src="/meetingImg/ridingRoute.png" style="margin-right: 10px; width: 40px;">
+							<select name="c_no" id="c_no">
+								<c:forEach var="vo" items="${list }">
+									<c:choose>
+										<c:when test="${vo.c_no == rvo.c_no}">
+											<option value="${vo.c_no }" selected="selected">${vo.c_name }</option>
+										</c:when>
+										<c:otherwise>
+											<option value="${vo.c_no }">${vo.c_name }</option>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+							</select>
+						</div>
+					</div>
+				</div>
 
-  	<!-- 글등록 -->
-	<form action="/user/updateReview" method="post">
-	제목 <input type="text" name="r_title" id="r_title" size="50" required="required"><br><br>
-		
-		<div>
-			코스 
-			<select name="c_no" id="c_no">
-				<c:forEach var="vo" items="${list }">
-					<c:choose>
-						<c:when test="${vo.c_no == rvo.c_no}">
-							<option value="${vo.c_no }" selected="selected">${vo.c_name }</option>
-						</c:when>
-						<c:otherwise>
-							<option value="${vo.c_no }">${vo.c_name }</option>
-						</c:otherwise>
-					</c:choose>
-				</c:forEach>
-			</select>
+				<!-- 글내용 -->
+				<textarea name="r_content" id="editor"></textarea>
+				<!-- 현재 editor에 있는 img src들의 배열 전달 -->
+				<input type="hidden" id="image_urls" name="image_urls">
+				<input type="hidden" name="r_no" value="${rvo.r_no }">
+				<div id="submitWrap">
+					<input type="submit" value="수정" id="inputInsert" class="btn" style="background-color: #d0a183">
+					<button id="btnCancle" class="btn" style="background-color: #bae4f0">취소</button>
+				</div>
+			</form>
 		</div>
-		<br><br>
-		<hr><br>
-		<!-- 글내용 -->
-		<textarea name="r_content" id="editor"></textarea>
-		<!-- 현재 editor에 있는 img src들의 배열 전달 -->
-		<input type="hidden" id="image_urls" name="image_urls">
-		<input type="hidden" name="r_no" value="${rvo.r_no }">
-		<div id="submitWrap">
-			<input type="submit" value="수정" id="inputInsert">
-			<button id="btnCancle">취소</button>
-		</div>
-	</form>
+	</section>
 	
-</section>
 	<!-- footer 시작 -->
 	<footer class="ftco-footer ftco-section">
       <div class="container">

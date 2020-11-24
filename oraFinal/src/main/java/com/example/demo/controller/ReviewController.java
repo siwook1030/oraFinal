@@ -498,7 +498,7 @@ public class ReviewController {
 							FileInputStream fis = new FileInputStream(temp_file);
 							byte[] data = fis.readAllBytes();
 							fis.close();
-							temp_file.delete();
+							temp_file.delete();		// 복사끝나면 임시파일 삭제
 							File file = new File(path+"/review/"+decodeResult);
 							FileOutputStream fos = new FileOutputStream(file);
 							fos.write(data);
@@ -541,5 +541,19 @@ public class ReviewController {
 			mav.setViewName("errorPage");
 		}
 		return mav;
+	}
+	
+	@RequestMapping(value = "/deleteRepOne", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public void deleteRepOne(int rr_no) {
+		rdao.deleteRepOne(rr_no);
+	}
+	
+	@RequestMapping(value = "/updateRep", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public void updateRep(Review_repVo rrvo) {
+		//System.out.println("rr_no:"+rrvo.getRr_no());
+		//System.out.println("rr_content:"+rrvo.getRr_content());
+		rdao.updateRep(rrvo);
 	}
 }
