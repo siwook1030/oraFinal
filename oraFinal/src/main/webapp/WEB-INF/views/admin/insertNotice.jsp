@@ -57,8 +57,8 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
 window.onload = function(){
-	const nTitle = document.getElementById("title");
-	const nContent = document.getElementById("content");
+	const nTitle = document.getElementById("n_insert_title");
+	const nContent = document.getElementById("n_insert_content");
 
 	const btnInsert = document.getElementById("btnInsert");
 	

@@ -164,7 +164,7 @@ window.onload = function(){
 			if(n.nf.length!=0){
 				listImg = $('<img id="listImg"/>').attr('src',"/"+n.nf[0].nf_path+"/"+n.nf[0].nf_savename);
 			} else {
-				listImg = $('<img/>').attr('src',"/meetingImg/empty.png");
+				listImg = $('<img/>').attr('src',"/icons/empty.png");
 			}
 			const contentImg = $('<a></a>').addClass('block-20 img').attr("href",'detailNotice?n_no='+n.n_no).append(listImg);
 			// 목록 사진

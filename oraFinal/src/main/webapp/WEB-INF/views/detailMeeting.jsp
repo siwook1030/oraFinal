@@ -804,7 +804,6 @@ window.onload = function(){
 	$('.attendToggle').click(function(){
 		$('.attendRidingAll').slideToggle('slow');
 	});
-
 };
 	</script>
 </head>
