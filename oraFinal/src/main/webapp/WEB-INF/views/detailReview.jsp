@@ -58,7 +58,14 @@
 		.sendReply { margin: 0 7px 7px 0; }
 		.textareaContainer { border: 1px solid gray; text-align: right; }
 
-
+		.modReplyWrap {
+			display: flex;
+			flex-direction: row;
+		}
+		.modReplyTextArea {
+			flex-grow: 1;
+			flex-basis: 90%;
+		}
 </style>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script type="text/javascript">
@@ -141,10 +148,12 @@
 			 		}
 	/* 작성일자 */		let $div_c1_c3 = $("<div></div>").text(item.date_diff_str).addClass("regdate"); // css적용을 위한 클래스
 					$div_c1.append($div_c1_c1, $div_c1_c2/* , $div_c1_c3 */);
-	
-					let $div_c2 = $("<div></div>").html(item.rr_content).addClass("replyContent"); // 댓글내용
-	
-					let $div_c3 = $("<div></div>");
+
+					let $span = $("<span></span>").text(item.rr_content);
+					// 댓글내용. 수정을 위해 rr_no값 속성에 추가
+					let $div_c2 = $("<div></div>").html($span).addClass("replyContent").attr("rr_no", item.rr_no);
+					
+					let $div_c3 = $("<div></div>").addClass("div_c3");	// 댓글 수정버튼 클릭 시 댓글내용 찾기위한 클래스지정
 					let $div_c3_c1 = $("<div></div>").addClass("btnContainer");	// css적용을 위한 클래스
 					let $btn_rep;
 					let $img_mod;
@@ -158,12 +167,44 @@
 					}
 					if(login_id === rr_id) {	// 로그인id와 댓글작성id가 일치할 경우 수정,삭제 아이콘 보이기
 						$img_mod = $("<img>").attr({src: "icons/eraser.png", title: "수정", class: "img_mod"});
-						//let $a_mod = $("<a></a>").attr("href", "").append($btn_mod);
+						let $a_mod = $("<a></a>").attr({href: "", rr_no: item.rr_no}).append($img_mod);
+						$a_mod.click(function(event){	// 댓글 수정 이벤트
+							$(".replyContent").children("span").css("display","unset");		// 숨겨진거 보이게 하기
+							$(".replyContent").children("div").remove();		// 모든 댓글 수정창 제거
+							event.preventDefault();
+							let replyContent = $(this).closest(".div_c3").siblings(".replyContent");
+							let span = $(replyContent).children("span").css("display","none");
+							let $textarea = $("<textarea></textarea>").text($(span).text()).addClass("modReplyTextArea");
+							let $btnMod = $("<button></button>").text("수정");
+							let $btnCancel = $("<button></button>").text("취소");
+							let $div = $("<div></div>").addClass("modReplyWrap");	// css적용을 위한 클래스
+							$div.append($textarea, $btnMod, $btnCancel);
+							$(replyContent).children("div").remove();
+							replyContent.append($div);
+							$btnCancel.click(function(event){	// 댓글 수정 취소
+								$(".replyContent").children("span").css("display","unset");		// 숨겨진거 보이게 하기
+								$(".replyContent").children("div").remove();		// 모든 댓글 수정창 제거
+							});
+							$btnMod.click(function(event){		// 댓글 수정
+								alert("수정!")
+								let rr_no = $(this).closest(".replyContent").attr("rr_no");
+								// text는 예전 데이터. val로 해야 현재 수정된 데이터를 가져옴.
+								let rr_content = $(this).siblings("textarea").val();
+								updateRep(rr_no, rr_content);
+							});
+						});
 						
 						$img_del = $("<img>").attr({src: "icons/remove.png", title: "삭제", class: "img_del"});
-						//let $a_del = $("<a></a>").attr("href", "").append($btn_del);
+						let $a_del = $("<a></a>").attr({href: "", rr_no: item.rr_no}).append($img_del);
+						$a_del.click(function(event){	// 댓글 삭제 이벤트
+							event.preventDefault();
+							let answer = confirm("댓글을 삭제하시겠습니까?");
+							if(answer) {
+								deleteRepOne($(this).attr("rr_no"));
+							}
+						});
 						
-						$btn_modDel = $("<div></div>").addClass('modAndDel').append($img_mod, $img_del);
+						$btn_modDel = $("<div></div>").addClass('modAndDel').append($a_mod, $a_del);
 					}
 					$div_c3_c1.append($div_c1_c3, $btn_rep, $btn_modDel);
 					let $div_c3_c2 = $("<div></div>").addClass("div_c3_c2").addClass("replyToReplyArea").attr("rr_ref", item.rr_ref);
@@ -192,6 +233,28 @@
 				detailReviewReply();	// 입력한 댓글을 보이기 위해 select ajax함수 재호출
 			}
 		})
+	}
+	function deleteRepOne(rr_no){
+		$.ajax({
+			url: "/deleteRepOne",
+			data: {rr_no: rr_no},
+			method: "post",
+			async: false,				// 동기방식으로해서 처리결과 확인 후 select ajax함수 재호출
+			success: function(){
+				detailReviewReply();	// 삭제한 댓글 결과를 보기 위해 select ajax함수 재호출
+			}
+		});
+	}
+	function updateRep(rr_no, rr_content){
+		$.ajax({
+			url: "/updateRep",
+			data: {rr_no: rr_no, rr_content: rr_content},
+			method: "post",
+			async: false,				// 동기방식으로해서 처리결과 확인 후 select ajax함수 재호출
+			success: function(){
+				detailReviewReply();	// 수정한 댓글 결과를 보기 위해 select ajax함수 재호출
+			}
+		});
 	}
 	</script>
 </head>
@@ -273,7 +336,7 @@
 					<img src="rank/${rvo.rank_icon }" height="25"> ${rvo.nickName }
 				</div>
 				<div class="boardInfo">
-					<div style="margin-right: 10px;">${rvo.r_regdate }</div>
+					<div style="margin-right: 10px;">${rvo.date_diff_str }</div>
 					<div>조회수 ${rvo.r_hit }</div>
 				</div>
 			</div>
@@ -376,8 +439,6 @@
       </div>
     </footer>
     
-  
-
   <!-- loader -->
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 

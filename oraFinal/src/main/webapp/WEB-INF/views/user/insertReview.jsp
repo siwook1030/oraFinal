@@ -214,7 +214,14 @@ $(document).ready(function(){
 		
 	} );
 	
-	$("#inputInsert").click(function(){		// 게시글 등록버튼 누르면 image src배열정보 전달. 이것을 토대로 review_file table에 record등록.
+	$("#inputInsert").click(function(event){		// 게시글 등록버튼 누르면 image src배열정보 전달. 이것을 토대로 review_file table에 record등록.
+		let r_content = editor.getData();
+		if($.trim(r_content) === '') {
+			event.preventDefault();
+			alert('글 내용을 입력해주세요.');
+			// $("#editor").focus();	// 에디터에는 focus 적용 안되는듯.
+			return;
+		}
 		$("#image_urls").attr("value", current_urls);
 	});
 

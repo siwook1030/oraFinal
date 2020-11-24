@@ -106,6 +106,13 @@
   </delete>
   <!-- autosave용도 임시게시판 끝 -->
   
+  <delete id="deleteRepOne">
+  	DELETE FROM review_rep WHERE rr_no=#{rr_no}
+  </delete>
+  <update id="updateRep">
+  	UPDATE review_rep SET rr_content=#{rr_content},rr_regdate=SYSDATE WHERE rr_no=#{rr_no}
+  </update>
+  
   <update id="updateRasDelCourse"> <!--코스삭제로 인해 해당코스로 등록되어있던 게시물은 0번(선택안함)으로 변경 -->
 		UPDATE REVIEW SET C_NO = 0 WHERE C_NO = #{c_no}
 	</update>
