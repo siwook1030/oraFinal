@@ -43,7 +43,7 @@
 		.selectedCourse a { font-size: 18px; display: inline-block; vertical-align: bottom; }
 		.selectedCourse { width: 300px; border: 1px #D5D5D5 solid; border-radius: 10px; margin: 2px auto; padding: 25px; text-align: center; }
 		/* 게시글 수정삭제 버튼 */
-		.btn { color: white; padding: 8px 12px; margin: 20px 2px; background-color: #88BEA6; display: inline-block; font-size: 15px; border: none; cursor: pointer; }
+		.btn { color: white; padding: 8px 12px; margin: 20px 0; background-color: #88BEA6; display: inline-block; font-size: 15px; border: none; cursor: pointer; }
 		/* 댓글수 */
 		#repImg { display: inline-block; width: 25px; padding-right: 5px; margin-bottom: 3px; }
 		#total_reply { display: inline-block; font-size: 18px; }

@@ -25,8 +25,8 @@
 		input, select { border: none; background-color: transparent; width: auto; text-align: center; }
 		input:focus { outline: none; }
 		/* 등록, 취소 버튼 */
-	 	.btn { color: white; padding: 7px 17px; margin: 3px 1px; font-size: 19px; border: none; cursor: pointer; width: auto; }
-		#btnDiv { text-align: center; }
+		.btn { color: white; padding: 8px 12px; background-color: #88BEA6; display: inline-block; font-size: 15px; border: none; cursor: pointer; }
+		#btnDiv { text-align: center; padding-top: 50px; }
 		.mtIcon {
 			width: 40px;
 			margin: 10px;
