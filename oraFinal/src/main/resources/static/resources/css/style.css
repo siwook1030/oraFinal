@@ -908,13 +908,6 @@ pre {
     -ms-flex: 0 0 66.66667%;
     flex: 0 0 66.66667%;
     max-width: 66.66667%; }
-  
-  .colmd8 { /*로그인 마이페이지*/
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 66.66667%;
-    flex: 0 0 66.66667%;
-    max-width: 40%; }
-    
   .col-md-9 {
     -webkit-box-flex: 0;
     -ms-flex: 0 0 75%;
