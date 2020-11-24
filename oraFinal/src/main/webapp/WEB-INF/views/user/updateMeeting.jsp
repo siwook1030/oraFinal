@@ -16,46 +16,21 @@
     <link rel="stylesheet" href="/resources/css/magnific-popup.css">   
     <link rel="stylesheet" href="/resources/css/flaticon.css">
     <link rel="stylesheet" href="/resources/css/style.css">
-		<style type="text/css">
-		section {
-			margin: 0 auto;
-			width: 1000px;
-			text-align: left;
-			padding: 50px;
-		}
-		#selectLoc {
-			text-align: center;
-			padding: 40px 0 20px;
-		}
-		#contents {
-				border: 1px solid #D5D5D5;
-				padding: 60px;
-				margin: 50px 0 100px;
-		}
-		input {
-			border: none;
-		}
-		.btn {
-			color: white;
-			padding: 8px 12px;
-			margin: 40px 0px;
-			background-color: #88BEA6;
-			align-content: center;
-			font-size: 15px;
-			border: none;
-			cursor: pointer;
-		}
-		#btnDiv {
-			text-align: center;
-		}
+	<style type="text/css">
+		#selectLoc { text-align: center; padding: 40px 0 20px; }
+		/* 제목 입력 */
+		#r_title { text-align: center; }
+		/* input, select, textarea 태그설정 */
+		input, select { border: none; background-color: transparent; width: auto; text-align: center; }
+		input:focus { outline: none; }
+		/* 등록, 취소 버튼 */
+	 	.btn { color: white; padding: 7px 17px; margin: 3px 1px; font-size: 19px; border: none; cursor: pointer; width: auto; }
+		#btnDiv { text-align: center; }
 		.mtIcon {
 			width: 40px;
 			margin: 10px;
 		}
-		.selectMtAll {
-			display: flex;
-			
-		}
+		.selectMtAll { display: flex; }
 		.selectMtAll .selectMt {
 			width: 40%;
 			border: 1px #BDBDBD solid;
@@ -66,14 +41,6 @@
 		}
 		textarea {
 			border: none;
-		}
-		#m_title {
-			border-bottom: 1px solid gray;
-			margin: 10px;
-			width: 880px;
-			height: 50px;
-			margin: 20px 0;
-			font-size: 30px;
 		}
 		/*#m_content {
 			padding: 10px 0;
@@ -693,58 +660,75 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                <span class="oi oi-menu"></span> Menu
             </button>
-         
-			<div class="collapse navbar-collapse" id="ftco-nav">
-				<ul class="navbar-nav ml-auto">
-					<c:choose>
-						<c:when test="${m == null }">
-							<li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
-							<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
-						</c:when>
-						<c:when test="${m != null }">
-							<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
-							<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
-							<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
-						</c:when>
-					</c:choose>
-				</ul>
-			</div> 
-
-			<div class="collapse navbar-collapse" id="ftco-nav">
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
-					<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
-					<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
-					<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
-					<li class="nav-item active"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
-					<li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
-				</ul>
+            
+			<div style="display: block;">
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto">
+						<c:choose>
+							<c:when test="${m == null }">
+								<li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
+								<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
+							</c:when>
+							<c:when test="${m != null }">
+								<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
+								<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
+								<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+							</c:when>
+						</c:choose>
+					</ul>
+				</div> 
+	
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
+						<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
+						<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
+						<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
+						<li class="nav-item active"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+						<li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
+					</ul>
+				</div>
 			</div>
 		</div>
     </nav>
     <!-- END nav -->
-
+    
     <section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
 		<div class="overlay"></div>
 		<div class="container">
 			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate pb-0 text-center">
-					<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a></span><span class="mr-2"><a href="/listMeeting">번개 라이딩 <i class="fa fa-chevron-right"></i></a></span> <span>번개 라이딩 수정 <i class="fa fa-chevron-right"></i></span></p>
-					<h1 class="mb-3 bread">번개 라이딩 수정</h1>
+					<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a></span><span class="mr-2"><a href="/listMeeting">번개 라이딩 <i class="fa fa-chevron-right"></i></a></span> <span>번개 라이딩 등록 <i class="fa fa-chevron-right"></i></span></p>
+					<h1 class="mb-3 bread">번개 등록</h1>
 				</div>
 			</div>
 		</div>
     </section>
     
-    <section>    
-		<div id="contents">
+    <section class="ftco-section">
+		<div class="container">
 			<!-- 글등록 -->
 			<form id="updateMt">
-				<div>
-					<div>
-						<input type="hidden" name="m_no" value="${mt.m_no }">
-						<input type="text" placeholder="제목" name="m_title" id="m_title" value="${mt.m_title }">
+				<!-- 글번호, 제목 -->
+				<section class="ftco-section ftco-agent" style="padding-bottom: 30px;">
+					<div class="container">
+						<div class="row justify-content-center pb-5">
+							<div class="col-md-12 heading-section text-center ftco-animate">
+								<span class="subheading">${mt.m_no }</span>
+								<!-- 제목 -->
+								<h2 class="mb-4"><input type="text" name="m_title" id="m_title" value="${mt.m_title }"></h2>
+							</div>
+						</div>
 					</div>
+				</section> 
+				
+				
+				
+				
+				<!-- 기존수정 -->
+			
+				<div>
+					
 					<div class="selectMtAll">
 						<!-- 코스 지도 & 만날 위치 -->
 						<div class="selectMt">
