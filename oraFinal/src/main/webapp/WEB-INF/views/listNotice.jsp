@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="/resources/css/style.css">
 <style type="text/css">
 
-#btn_search,#btn_write{
+/*#btn_search,#btn_write{
 	width:58px;
 	height: 39px;
     border: none;
@@ -33,65 +33,7 @@
     font-weight: bold;
     margin: 0px;
     cursor: pointer;
-}
-
-#btn_search{
-	background-color: #ECCB6A;
-	margin-top: 20px;
-}
-
-#btn_write{
-	float: right;
-	background-color: #88bea6;
-}
-
-button:hover {
-	border: none;
-    background-color: #ffffff;
-    color: #c8572d;
-}
-
-#insertNotice{
-	display: none;
-}
-
-input#search{
-	width: 300px;
-	height: 40px;
-	border: solid 1px;
-	font-size: 11pt;
-	color: #63717f;
-	padding-left: 15px;
-	margin-left: 5px;
-	margin-right: 10px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-}
-
-.list_code_name{
-	color: #d0a183;
-	font-weight: bold;
-	padding-right: 10px;
-}
-
-.list_n_regdate{
-	padding-right: 15px;
-	font-weight: bold;
-}
-
-.list_n_bar{
-	padding-right: 15px;
-}
-
-.code_select{
-	height: 40px;
-	border-radius:5px;
-}
-
-#searchBox{
-	margin-bottom: 50px;
-}
+}*/
 
 </style> 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -334,7 +276,7 @@ window.onload = function(){
 		     		</c:forEach>
 		        </select>
 				<input type="search" id="search" placeholder="Search..." />
-				<button id="btn_search">검색</button>
+				<button class="btn btn-warning" id="btn_search">검색</button>
 
 		</div>
 			
@@ -344,7 +286,7 @@ window.onload = function(){
         
 		<div class="row mt-5">
 			<div class="col text-center">
-				<div id="insertNotice"><a href="/admin/insertNotice" id="btn_write">글쓰기</a></div>                    
+				<div id="insertNotice"><a href="/admin/insertNotice" class="btn btn-success" id="btn_write">글쓰기</a></div>                    
 				<div class="block-27">
 					<ul class="pageUl" id="pageUl"><!-- 페이징처리 --></ul>
 				</div>

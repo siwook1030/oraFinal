@@ -16,74 +16,7 @@
     <link rel="stylesheet" href="/resources/css/flaticon.css">
     <link rel="stylesheet" href="/resources/css/style.css">
 <style type="text/css">
-/*
-#contents {
-	width: 900px;
-	height: 700px;
-	margin: 20px auto;
-	font-size: 15px;
-}
 
-table, th, td {
-	border: solid 1px #fff2e4;
-	border-collapse: collapse;
-}
-
-th {
-	padding: 6px;
-	text-align: center;
-	background-color: #fff2e4;
-	color: #0f0f0f;
-	height: 25px;
-}
-
-td {
-	padding: 6px;
-	text-align: center;
-}
-
-#content {
-	padding: 15px;
-	height: 500px;
-	width: 850px;
-	border: none;
-}
-
-#clear{
-	clear: both; 
-}
-*/
-#btnList,#btnUpdate,#btnDelete {
-	width:58px;
-	height: 39px;
-    background-color: #88bea6;
-    border: none;
-    border-radius:5px;
-    color:#ffffff;
-    padding: 7px 0;
-    font: bold;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    font-weight: bold;
-    margin: 0 5px 0 0;
-    cursor: pointer;
-    float: right;
-}
-
-#btnUD{
-	display: none;
-}
-
-#btnDelete{
-	background-color: #eccb6a;
-}
-
-#btnList{
-	background-color: #d0a183;
-	float: left;
-}
 
 </style> 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -117,7 +50,7 @@ window.onload = function(){
 
 	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 		<div class="container">
-			<a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
+			<a style="font-size: 30px;" class="navbar-brand" href="/mainPage">
 		        <span style="font-weight: bold;">
 			        <font color="#45A3F5">오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
 			        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font></span></a>
@@ -163,7 +96,7 @@ window.onload = function(){
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate pb-0 text-center">
              <p class="breadcrumbs"><span class="mr-2"><a href="mainPage">Home <i class="fa fa-chevron-right"></i></a></span> <span>오늘의 라이딩 <i class="fa fa-chevron-right"></i></span></p>
-            <h1 class="mb-3 bread">공지사항</h1>
+            <h1 class="mb-3 bread">공지사항 상세</h1>
           </div>
         </div>
       </div>
@@ -171,28 +104,33 @@ window.onload = function(){
 
 	<section class="ftco-section">
       <div class="container">
-        <div class="row" id="row">
-          <div class="col-md-8 ftco-animate">
-            <h2 class="mb-3">${n.n_title }</h2>
-            <div>
-	            <p>${n.code_name }</p>
-	            <p>${n.n_regdate }</p>
-	            <p>${n.n_hit }</p>
+        <div class="row justify-content-center mb-5" id="row">
+          <div class="col-md-8 mx-md-5 ftco-animate">
+            <h2 class="mb-5">${n.n_title }</h2>
+            <hr>
+            <div class="mb-5">
+	            <div class="float-left">
+	            	<strong><span class="list_code_name" id="detail_code_name">${n.code_name }</span></strong>
+	            </div>
+	            <div class="float-right">
+	            	<strong><span>${n.n_regdate }</span></strong>
+	            </div>
 	        </div>
+	        <hr class="mb-6">
           	<p>
               <img src="mainPageImg/main1.jpg" alt="" class="img-fluid">
             </p>
-            <div id="content" style="white-space:pre;"><c:out value="${n.n_content}" /></div>
+            <div id="n_content" style="white-space:pre;"><c:out value="${n.n_content}" /></div>
+			<br>
+			<a href="listNotice"><button type="button" class="btn btn-primary" id="btnList">목록</button></a>
+			<div id="btnUD">
+				<a href="/deleteNotice?n_no=${n.n_no }"><button type="button" class="btn btn-warning" id="btnDelete">삭제</button></a>
+				<!-- <button type="button" id="btnUpdate" value="${n.n_no }">수정</button> -->
+			 	<a href="/admin/updateNotice?n_no=${n.n_no}"><button type="button" class="btn btn-success" id="btnUpdate" value="${n.n_no }">수정</button></a> 
+			</div>
           </div>
         </div> 
     
-		<br>
-		<a href="listNotice"><button type="button" id="btnList">목록</button></a>
-		<div id="btnUD">
-			<a href="/deleteNotice?n_no=${n.n_no }"><button type="button" id="btnDelete">삭제</button></a>
-			<!-- <button type="button" id="btnUpdate" value="${n.n_no }">수정</button> -->
-		 	<a href="/admin/updateNotice?n_no=${n.n_no}"><button type="button" id="btnUpdate" value="${n.n_no }">수정</button></a> 
-		</div>
 	  </div>	
 	</section>
 	<br>
