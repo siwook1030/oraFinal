@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
    <title>내 작성 코스</title>
 <meta charset="UTF-8">
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -104,9 +105,6 @@
                 <li class="my"><a class="my-link_2" href="myPageListReview?id=${m.id}">내 후기</a></li>
                 <li class="my"><a class="my-link_2"href="listMeeting?id=${m.id}">내 번개</a></li>
                 <li class="my"><a class="my-link_2"href="/myPageMyRank">랭킹</a></li>
-                
-              
-
               </ul>
          </div>      
 

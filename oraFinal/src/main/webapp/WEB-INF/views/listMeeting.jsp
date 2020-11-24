@@ -7,6 +7,9 @@
 <meta charset="utf-8">
 <title>오늘의 라이딩</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="resources/css/animate.css">
@@ -43,6 +46,14 @@
 
 	<script type="text/javascript">
 	window.onload = function(){
+		 const token = $("meta[name='_csrf']").attr("content");
+		    const header = $("meta[name='_csrf_header']").attr("content");
+		    $(document).ajaxSend(function(e, xhr, options) {
+		        if(token && header) {
+		            xhr.setRequestHeader(header, token);
+		        }
+		    });
+		
 		let pageNo = 1;
 		let id = `${id}`;
 		const recordSize = ${recordSize};
@@ -255,46 +266,12 @@
 						<li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
 					</ul>
 				</div>
+
 			</div>
 		</div>
 	</nav>
 	<!-- END nav -->	
     
-<<<<<<< HEAD
-    <section class="hero-wrap hero-wrap-2" style="background-image: url('https://cdn.pixabay.com/photo/2017/08/07/00/02/people-2597767__340.jpg'; background-size:100% 800px;');" data-stellar-background-ratio="0.5">
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
-          <div class="col-md-9 ftco-animate pb-0 text-center">
-          
-          	<div id="id1">
-	          <p class="breadcrumbs"><span class="mr-2"><a href="mainPage">Home <i class="fa fa-chevron-right"></i></a></span> <span>번개 라이딩 <i class="fa fa-chevron-right"></i></span></p>
-	          <h1 class="mb-3 bread">번개 라이딩</h1>
-            </div>
-            
-            <div id="id2">
-             <span >
-              <h1 class="mb-3 bread">마이페이지</h1>
-            </span>
-            <p class="breadcrumbs">
-              <span class="mr-2">
-                <a href="index.html">Home <i class="fa fa-chevron-right"></i></a>
-              </span>
-              <a href="/myPage">정보 수정 <i class="fa fa-chevron-right"></i></a>
-              <span>
-                <a href="/myPageSaveCourse">찜 목록 <i class="fa fa-chevron-right"></i></a>
-                <a href="/myPageMyCourse">내 작성 코스<i class="fa fa-chevron-right"></i></a>
-                <a href="/myPageListReview">내 작성 후기<i class="fa fa-chevron-right"></i></a>
-                <a href="listMeeting?id=${m.id}">내 작성 번개<i class="fa fa-chevron-right"></i></a>
-                <a href="/myPageMyRank">랭킹</a>
-              </span>
-              </div>
-              
-          </div>
-        </div>
-      </div>
-    </section>
-=======
     <section class="hero-wrap hero-wrap-2" style="background-image: url('resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
 		<div class="overlay"></div>
 		<div class="container">
@@ -327,7 +304,6 @@
 			</div>
 		</div>
 	</section>
->>>>>>> branch '김미진' of https://github.com/siwook1030/oraFinal.git
 
 	<section class="ftco-section">
 		<div class="container">

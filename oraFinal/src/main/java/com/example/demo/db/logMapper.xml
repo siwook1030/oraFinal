@@ -4,11 +4,13 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="log">
   
-  <insert id="insertLog">
+  <!-- 코스검색, 태그검색 로그기록저장 -->
+  <insert id="insertLog">  
   	INSERT INTO LOG(LOG_NO, CODE_VALUE, LOG_CONTENT, LOG_REGDATE) 
   	VALUES(LOG_SEQ.NEXTVAL, #{code_value}, #{log_content}, SYSDATE)
   </insert>
   
+    <!-- 로그기록 갖고오기 코드밸류에 따라 달라짐-->
   <select id="selectCourseLog" resultType="logVo">
   	<if test=" code_value == '00705' or code_value == '00701' ">
   		<![CDATA[
@@ -20,6 +22,54 @@
   	
   	<if test="code_value != '00705' and code_value != '00701'">
   		SELECT LOG_CONTENT, COUNT(*) AS LOG_COUNT  FROM LOG WHERE CODE_VALUE=#{code_value} GROUP BY LOG_CONTENT ORDER BY LOG_COUNT DESC
+  	</if>
+  	
+  </select>
+  
+  <!-- 전체회원수 갖고오기 day변수에 따라 다름 -->
+  <select id="memberAllCnt" resultType="int">
+  
+  	SELECT COUNT(*) FROM MEMBER 
+  	<if test="day != 0">
+  	<![CDATA[
+  		WHERE TO_DATE(REGDATE, 'YYYY-MM-DD') < TO_DATE(SYSDATE, 'YYYY-MM-DD')
+  	]]>
+  	</if>
+  
+  </select>
+  
+  <!-- 전체코스갯수 갖고오기 day변수에 따라 다름-->
+  <select id="courseAllCnt" resultType="int">
+    
+  	SELECT COUNT(*) FROM COURSE WHERE C_TEMP = 'N'
+  	<if test="day != 0">
+  		<![CDATA[
+  			AND	 TO_DATE(C_REGDATE, 'YYYY-MM-DD') < TO_DATE(SYSDATE, 'YYYY-MM-DD')
+  		]]>
+  	</if>
+  		
+  </select>
+  
+  <!-- 전체리뷰게시판 게시물수 갖고오기 day변수에 따라 다름-->
+  <select id="reviewAllCnt" resultType="int">
+  
+  	SELECT COUNT(*) FROM REVIEW
+  	<if test="day != 0">
+  	<![CDATA[
+  		WHERE TO_DATE(R_REGDATE, 'YYYY-MM-DD') < TO_DATE(SYSDATE, 'YYYY-MM-DD')
+  	]]>
+  	</if>
+  	
+  </select>
+  
+  <!-- 전체번개게시판 게시물수 갖고오기 day변수에 따라 다름-->
+  <select id="meetingAllCnt" resultType="int">
+  
+  	SELECT COUNT(*) FROM MEETING
+  	<if test="day != 0">
+  	<![CDATA[
+  		WHERE TO_DATE(M_REGDATE, 'YYYY-MM-DD') < TO_DATE(SYSDATE, 'YYYY-MM-DD')
+  	]]>
   	</if>
   	
   </select>

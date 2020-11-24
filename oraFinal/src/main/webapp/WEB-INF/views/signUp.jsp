@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta charset="utf-8">
+
 <title>회원가입</title>
 <jsp:include page="my_header.jsp"/>
-
 <style>
       #change {
         margin: 50px auto;

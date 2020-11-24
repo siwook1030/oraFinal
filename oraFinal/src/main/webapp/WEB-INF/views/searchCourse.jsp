@@ -7,6 +7,9 @@
 <meta charset="UTF-8">
 <title>코스 지도검색</title>   
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="/resources/css/animate.css">
@@ -19,11 +22,15 @@
    
    
    .cInfoIcon {
-   	width: 20px;
+   	width: 25px;
    }
    
     .cViewIcon {
    	width: 34px;
+   }
+   
+      .viewImg {
+   	margin-right: 10px;
    }
    
    
@@ -143,6 +150,10 @@
 	font-weight: bold; 
 	}
 	
+	   .search-place:after,	 .col-md-4, .img, .search-place img {
+   	border-radius: 10px;
+   }
+	
    /* 두루누비 따온 소스*/
    [data-toggle="buttons"] .btn.btn-line.btn-success {
     background-color: #eee;
@@ -229,6 +240,13 @@ input, button, select, textarea {
 
 <script type="text/javascript">
 window.onload = function(){
+	const token = $("meta[name='_csrf']").attr("content");
+    const header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) {
+        if(token && header) {
+            xhr.setRequestHeader(header, token);
+        }
+    });
 
 	const myLat = document.getElementById("lat");
 	const myLon  = document.getElementById("lon");
@@ -969,12 +987,12 @@ function MarkerTracker(map, target) {
 			diffContent = '<span style="color: #c8572d;">어려움</span>';
 		}
 		else if(diff == 4){
-			diffContent = '<span style="color:red;">매우어려움</span>';
+			diffContent = '<span style="color:red;">힘듬</span>';
 		}
 
 		let courseViewContent="";
 		c.c_views.forEach(function(v, i) {
-			courseViewContent += '<div title="'+v+'" class="img" style="background-image: url(/courseViewImg/'+v+'.png);"></div>';
+			courseViewContent += '<div title="'+v+'" class="img viewImg" style="background-image: url(/courseViewImg/'+v+'.png);"></div>';
 		});
 
 		
@@ -1336,6 +1354,9 @@ function MarkerTracker(map, target) {
                      <li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
                      <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
                      <li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+                 <c:if test="${m.code_value == '00101' }">
+								<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
+							</c:if>
                   </c:when>
                </c:choose>
             </ul>
@@ -1376,7 +1397,7 @@ function MarkerTracker(map, target) {
      	<div style="margin-bottom: 50px;"></div>
 		<div style="text-align: center;">
   	 	<div class="map_wrap">
-		    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+		    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;border-radius: 20px;"></div>
 			    <div class="hAddr">
 			        <span class="title">지도중심기준 주소</span>
 			        <span id="centerAddr"></span>

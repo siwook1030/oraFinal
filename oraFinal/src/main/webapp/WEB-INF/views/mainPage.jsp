@@ -1,11 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-
+<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
 
 
 <link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
@@ -41,6 +44,28 @@
    #clear{
    	clear: both; 
    }
+
+   
+    .cViewIcon {
+   	width: 34px;
+   }
+      .viewImg {
+   	margin-right: 10px;
+   }
+   
+   .owl-carousel .owl-item img{
+   		display: inline;
+   		width: 25px;
+   }
+   
+     .cInfoIcon {
+		width: 25px;
+   }
+   .search-place:after,	 .col-md-4, .img, .search-place img {
+   	border-radius: 10px;
+   }
+   
+   
 .placeinfo_wrap {position:absolute;bottom:28px;left:-150px;width:300px;}
 .placeinfo {position:relative;width:100%;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;padding-bottom: 10px;background: #fff;}
 .placeinfo:nth-of-type(n) {border:0; box-shadow:0px 1px 2px #888;}
@@ -59,6 +84,14 @@
 <script src="/js/shuffleArray.js"></script>
 <script type="text/javascript">
 window.onload = function(){
+	 const token = $("meta[name='_csrf']").attr("content");
+	    const header = $("meta[name='_csrf_header']").attr("content");
+	    $(document).ajaxSend(function(e, xhr, options) {
+	        if(token && header) {
+	            xhr.setRequestHeader(header, token);
+	        }
+	    });
+	
 	console.log("자스작동한다");
 	
 	const rcViewWord = document.getElementById("rcViewWord");
@@ -305,7 +338,11 @@ window.onload = function(){
 							<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
 							<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
 							<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+							<c:if test="${m.code_value == '00101' }">
+								<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
+							</c:if>
 						</c:when>
+						
 					</c:choose>
 				</ul>
 			</div>      
@@ -363,9 +400,10 @@ window.onload = function(){
                 <div class="property-wrap ftco-animate">
 		        			<a href="/detailCourse?c_no=${c.c_no}" class="img" style="background-image: url(${c.c_photo[0].cp_path}/${ c.c_photo[0].cp_name});">
 		        				<div class="rent-sale">
-		        					<span class="rent">${thisMonth}월</span>
+		        					<span class="rent" style="font-size: 120%;">${thisMonth}월</span><br>
+		        					<span class="rent">${c.c_loc}</span>
 		        				</div>
-		        				<p title="코스태그" class="price"><span class="orig-price">${c.c_loc}${c.c_tag }</span></p>
+		        				<p title="코스태그" class="price"><span class="orig-price">${c.c_tag }</span></p>
 		        			</a>
 		        			<div class="text">	
 		        				<h3><a href="#">${c.c_name }</a></h3>
@@ -373,10 +411,29 @@ window.onload = function(){
 		        				<a href="#" class="d-flex align-items-center justify-content-center btn-custom">
 		        					<span class="fa fa-link"></span>
 		        				</a>
+		        				
+		        				<ul class="property_list" style="font-weight: bold;" > 
+									<li title="코스거리" ><span class="flaticon-bed"><img class="cInfoIcon" src="/searchCourseImg/distance.png"></span>${c.c_distance }km</li>
+									<li title="소요시간" ><span class="flaticon-bathtub"><img class="cInfoIcon" src="/searchCourseImg/time.png"></span>
+									<c:if test="${c.c_time >= 60 }">
+										<fmt:formatNumber value="${c.c_time/60}" pattern="0" />시간 ${c.c_time%60}분
+									</c:if>
+									<c:if test="${c.c_time < 60 }">
+										${c.c_time%60}분
+									</c:if>
+									</li>
+									<li title="난이도" ><span class="flaticon-floor-plan"><img class="cInfoIcon" src="/searchCourseImg/difficulty.png"></span>
+									<c:if test="${c.c_difficulty == 1 }"><span style="color:#88bea6;">쉬움</span></c:if>
+									<c:if test="${c.c_difficulty == 2 }"><span style="color: #eccb6a;">보통</span></c:if>
+									<c:if test="${c.c_difficulty == 3 }"><span style="color: #c8572d;">어려움</span></c:if>
+									<c:if test="${c.c_difficulty == 4 }"><span style="color:red;">힘듬</span></c:if>
+									</li>
+								</ul>
+						
 		        				<div class="list-team d-flex align-items-center mt-2 pt-2 border-top">
 		        					<div class="d-flex align-items-center">
 			        				<c:forEach var="v" items="${c.c_views }">
-			        					<div class="img" title="${v }" style="background-image: url(/courseViewImg/${v}.png);"></div>
+			        					<div class="img viewImg" title="${v }" style="background-image: url(/courseViewImg/${v}.png);"></div>
 			        				</c:forEach>
 			        				</div>
 			        				<span class="text-right">풍경</span>
@@ -390,17 +447,18 @@ window.onload = function(){
           </div>
         </div>
         
-        <div class="row justify-content-center" style="margin-top: 100px;">
-          <div class="col-md-12 heading-section text-center ftco-animate mb-5">
-          	<span class="subheading">Today's Riding</span>
-            <h2 class="mb-2">풍경별 추천코스</h2>
-            <span style="font: italic bold 1.5em/1em Georgia,serif; font-size:15px; color: gray;">view is <span id="rcViewWord"></span></span>
-          </div>
-        </div>
+	        <div class="row justify-content-center" style="margin-top: 100px;">
+	          <div class="col-md-12 heading-section text-center ftco-animate mb-5">
+	          	<span class="subheading">Today's Riding</span>
+	            <h2 class="mb-2">풍경별 추천코스</h2>
+	            <span style="font: italic bold 1.5em/1em Georgia,serif; font-size:15px; color: gray;">view is <span id="rcViewWord"></span></span>
+	          </div>
+	        </div>
+	        
+	        <div class="row" id="rcList">
+	        
+	        </div>
         
-        <div class="row" id="rcList">
-        
-        </div>
         <div id="mapLink"></div>
          <div  class="row justify-content-center" style="margin-top: 150px;">
           <div class="col-md-12 heading-section text-center ftco-animate mb-5">
@@ -409,7 +467,7 @@ window.onload = function(){
           </div>
         </div>
 	        <div class="col-md-12" >
-	           <div id="map" style="width:100%;height:600px; text-align: center;"></div>
+	           <div id="map" style="width:100%;height:600px; text-align: center; border-radius: 20px;"></div>
 	           <button id="cBound" title="한눈에 보기" style="margin-top:5px;
 				padding : 6px;
 				border : 1px solid white;
