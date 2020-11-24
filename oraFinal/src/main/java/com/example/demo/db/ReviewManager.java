@@ -11,6 +11,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
+import com.example.demo.vo.MeetingVo;
 import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.ReviewVo;
 import com.example.demo.vo.Review_fileVo;
@@ -33,6 +34,9 @@ public class ReviewManager {
 		SqlSession session = sqlSessionFactory.openSession();
 		list = session.selectList("review.selectList", mybatis_map);
 		session.close();
+		for(ReviewVo r : list) {
+			r.setRf(selectListFile(r.getR_no()));
+	    }
 		return list;
 	}
 	
@@ -201,6 +205,22 @@ public class ReviewManager {
 		int re = 0;
 		SqlSession session = sqlSessionFactory.openSession();
 		re = session.delete("review.deleteTemp", id);
+		session.commit();
+		session.close();
+		return re;
+	}
+	public static int deleteRepOne(int rr_no) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.delete("review.deleteRepOne", rr_no);
+		session.commit();
+		session.close();
+		return re;
+	}
+	public static int updateRep(Review_repVo rrvo) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.update("review.updateRep", rrvo);
 		session.commit();
 		session.close();
 		return re;

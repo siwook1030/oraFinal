@@ -10,10 +10,10 @@
 	
 	<insert id="insertCourse">
 		INSERT INTO COURSE(C_NO, CODE_VALUE, ID, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
-		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP)
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_TAG, C_VIEW, C_WORDS, C_LINE, C_TEMP)
 		VALUES (#{c_no}, #{code_value}, #{id}, #{c_name}, #{c_s_locname}, #{c_s_latitude}, #{c_s_longitude}, #{c_e_locname},
 		#{c_e_latitude}, #{c_e_longitude}, #{c_loc}, #{c_distance}, #{c_time}, #{c_difficulty}, 
-		#{c_view}, #{c_words}, #{c_line}, #{c_temp})
+		#{c_tag}, #{c_view}, #{c_words}, #{c_line}, #{c_temp})
 	</insert>
 	
 	<insert id="insertCphoto">
@@ -29,7 +29,7 @@
 	<update id="updateCourse">
 		UPDATE COURSE SET C_NAME=#{c_name}, C_S_LOCNAME=#{c_s_locname}, C_S_LATITUDE=#{c_s_latitude}, 
 		C_S_LONGITUDE=#{c_s_longitude}, C_E_LOCNAME=#{c_e_locname},C_E_LATITUDE=#{c_e_latitude}, C_E_LONGITUDE=#{c_e_longitude}, 
-		C_LOC=#{c_loc}, C_DISTANCE=#{c_distance}, C_TIME=#{c_time}, C_DIFFICULTY=#{c_difficulty}, C_VIEW=#{c_view}, 
+		C_LOC=#{c_loc}, C_DISTANCE=#{c_distance}, C_TIME=#{c_time}, C_DIFFICULTY=#{c_difficulty}, C_TAG=#{c_tag},C_VIEW=#{c_view}, 
 		C_WORDS=#{c_words}, C_LINE=#{c_line}, C_TEMP=#{c_temp} WHERE C_NO = #{c_no}
 	</update>
 		
@@ -53,26 +53,27 @@
 
 	<select id="selectByView" resultType="courseVo">
 		SELECT C_NO, C.CODE_VALUE, C.ID, M.NICKNAME,C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
-		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP 
-		FROM COURSE C, MEMBER M WHERE C.ID=M.ID AND C_TEMP ='N' AND C_VIEW LIKE #{view} || '%' ORDER BY C_NAME
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY,  C_TAG, C_VIEW, C_WORDS, C_LINE, C_TEMP 
+		FROM COURSE C, MEMBER M WHERE C.ID=M.ID AND C_TEMP ='N'  AND NOT C_NO IN (0)
+		 AND C_VIEW LIKE #{view} || '%' ORDER BY C_NAME
 	</select>
 	
 	<select id="selectByCno" resultType="courseVo">
 		SELECT C_NO, C.CODE_VALUE, C.ID, M.NICKNAME, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
-		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP 
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_TAG, C_VIEW, C_WORDS, C_LINE, C_TEMP 
 		FROM COURSE C, MEMBER M WHERE C.ID=M.ID AND C_NO = #{c_no}
 	</select>
 	
 	<select id="selectCourseList" resultType="courseVo">
 		SELECT C_NO, C.CODE_VALUE, C.ID, M.NICKNAME, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
-		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP 
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY,  C_TAG, C_VIEW, C_WORDS, C_LINE, C_TEMP 
 		FROM COURSE C, MEMBER M WHERE C.ID=M.ID AND C_TEMP ='N' ORDER BY C_NO
 	</select>
 	
 	<select id="selectSearchCourseNum" resultType="int" parameterType="map">
 		SELECT C_NO FROM (SELECT CALC_DISTANCE(#{latitude},#{longitude},C_S_LATITUDE,C_S_LONGITUDE) AS D, C_NO FROM COURSE
 		<where>
-		    C_TEMP ='N'
+		    C_TEMP ='N'  AND NOT C_NO IN (0)
 			AND CALC_DISTANCE(#{latitude},#{longitude},C_S_LATITUDE,C_S_LONGITUDE) BETWEEN 0 AND #{maxNearDis}
 			<if test="distance != 0">
 				AND C_DISTANCE BETWEEN #{minDis} AND #{maxDis}
@@ -88,10 +89,20 @@
 		ORDER BY D)
 	</select>
 	
+	<select id="selectTagSearchCourse" resultType="courseVo">
+			SELECT C_NO, C.CODE_VALUE, C.ID, M.NICKNAME, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
+			C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY,  C_TAG, C_VIEW, C_WORDS, C_LINE, C_TEMP 
+			FROM COURSE C, MEMBER M WHERE C.ID=M.ID AND C_TEMP ='N' AND NOT C_NO IN (0) AND
+			(
+			REGEXP_LIKE(C_NAME, #{searchTag}) OR REGEXP_LIKE(C_S_LOCNAME, #{searchTag}) OR REGEXP_LIKE(C_E_LOCNAME, #{searchTag}) OR
+			REGEXP_LIKE(C_TAG, #{searchTag}) OR REGEXP_LIKE(C_VIEW, #{searchTag}) OR REGEXP_LIKE(C_WORDS, #{searchTag})
+			) 
+	</select>
+	
 	<select id="selectByCnoandUserDis" resultType="courseVo" parameterType="map">
 		SELECT C_NO, C.CODE_VALUE, C.ID, M.NICKNAME, C_NAME, CALC_DISTANCE(#{latitude},#{longitude},C_S_LATITUDE,C_S_LONGITUDE) AS userDis,
 		C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
-		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP 
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY,  C_TAG, C_VIEW, C_WORDS, C_LINE, C_TEMP 
 		FROM COURSE C, MEMBER M WHERE C.ID=M.ID AND C_TEMP ='N' AND C_NO = #{c_no} 
 	</select>
 	

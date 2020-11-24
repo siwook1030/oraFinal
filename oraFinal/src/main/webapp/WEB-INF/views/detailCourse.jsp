@@ -19,6 +19,17 @@
 <style type="text/css">
    
    /*매인섹션부분css------------ ----------------*/
+	.cInfoIcon {
+   	width: 20px;
+   }
+   
+    .cViewIcon {
+   	width: 34px;
+   }
+   .cPtIcon{
+   	width: 32px;
+   }
+
 
    #adminMenu{
    	display: none;
@@ -60,19 +71,7 @@
    #detailTitle{
    		margin : 30px 0 30px 0;
    }
-   .ySaveCourse{
-   		background-image: url("/detailCourseImg/yfavor.png");
-   		background-size: cover;
-   		width: 100px;
-   		height: 100px;
-   }
-   .nSaveCourse{
-   		background-image: url("/detailCourseImg/nfavor.png");
-   		background-size: cover;
-   		width: 100px;
-   		height: 100px;
-   }
-   
+ 
    #course-summury-table{
    		width: 100%; 
    		padding-top: 30px;		
@@ -124,11 +123,31 @@
 	.addInfoTitle{
 		border-bottom : 1px solid #EBEBEB;
 		font-size: 120%;
+		
 	}
 	
 	.property-wrap .img {
 		height: 350px;
 	}
+	
+	.d-flex .nav-link active, .d-flex .nav-link {
+		font-weight: bold;
+	}
+	
+	.d-flex .nav-link:hover, .d-flex .nav-link:focus{
+		background: #f4dfcf;
+   		 color: white; 
+	}
+	
+	.tagA {
+		margin-left: 5px;
+	}
+	
+   .tagA:hover, .tagA:focus {
+    background: #c8572d;
+    color: #fff; 
+    font-weight: bold;
+    }
 
    /*메인섹션 끝css--------------------------*/
 
@@ -136,6 +155,30 @@
    #clear{
    	clear: both; 
    }
+   
+     .search-place:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: '';
+    background: none;
+    opacity: 0;
+    z-index: -1;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    transition: all 0.3s ease; }
+    
+    #desc span{
+    	font-size: 20px;
+    }
+    
+     .search-place:hover .desc span {
+    background: #d8572d;
+    color: #fff; }
 
 </style>
 <style>
@@ -523,7 +566,7 @@ window.onload = function(){
 				},
 				success:function(re){
 					if(re == "1"){
-						alert("찜코스로 등록되었습니다");
+						alert("찜코스로 등록되었습니다.(마이페이지 '찜코스'에서 확인하세요)");
 						location.reload();
 					}
 					else{
@@ -1117,12 +1160,12 @@ window.onload = function(){
       <div class="container">
          <a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
         <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
-        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></a>
+        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font></span></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                <span class="oi oi-menu"></span> Menu
             </button>
-         
-         <div class="collapse navbar-collapse" id="ftco-nav">
+       <div style="display: block;">
+         <div class="collapse navbar-collapse" id="ftco-nav" style="height: 20px;">
               <ul class="navbar-nav ml-auto">
                <c:choose>
                   <c:when test="${m == null }">
@@ -1138,7 +1181,7 @@ window.onload = function(){
             </ul>
          </div>      
 
-         <div class="collapse navbar-collapse" id="ftco-nav">
+         <div class="collapse navbar-collapse" id="ftco-nav" style="height: 40px;">
            <ul class="navbar-nav ml-auto">
              <li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
              <li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
@@ -1150,6 +1193,7 @@ window.onload = function(){
            </ul>
          </div>
        </div>
+     </div>
    </nav>
     <!-- END nav -->
 	<section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
@@ -1157,7 +1201,7 @@ window.onload = function(){
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate pb-0 text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="#">오늘의 라이딩<i class="fa fa-chevron-right"></i></a></span> <span>코스 상세<i class="fa fa-chevron-right"></i></span></p>
+          	<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">오늘의 라이딩<i class="fa fa-chevron-right"></i></a></span> <span>코스 상세<i class="fa fa-chevron-right"></i></span></p>
             <h1 class="mb-3 bread">${c.c_name}</h1>
           </div>
         </div>
@@ -1173,9 +1217,20 @@ window.onload = function(){
 			  			<span>관리자 메뉴</span>
 			  			<button id="updateCourse" value="${c.c_no}">코스수정</button>  <button id="deleteCourse" value="${c.c_no}">코스삭제</button>
   					</div>
-		 			<div><a href="" id="nSaveCoruse" title="코스 찜하기" ><img src="/detailCourseImg/nfavor.png" width="50px" height="50px"><i></i></a></div>
-		 			<div><a href="" id="ySaveCoruse" ><img src="/detailCourseImg/yfavor.png" width="50px" height="50px"><i></i></a></div>
-		 			
+		
+		<div class="ftco-animate">
+			<a class="search-place img" style="background-image: url(${c.c_photo[0].cp_path}/${c.c_photo[0].cp_name});">	
+				<div class="desc" id="desc">
+					<span>${c.c_loc}</span> <span>${c.c_view}</span> <br><span>${c.c_tag}</span>		
+				</div>
+				<div class="desc" style="text-align: right;">
+					<img id="ySaveCoruse"  title="코스 찜하기" src="/detailCourseImg/yfavor.png" width="50px" height="50px" style="cursor: pointer;">
+					<img id="nSaveCoruse" title="코스 찜하기" src="/detailCourseImg/nfavor.png" width="50px" height="50px" style="cursor: pointer;">
+				</div>
+			</a>
+		</div>
+		
+				
       	<div id="detailMap">
   		<div class="map_wrap">
   		<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
@@ -1232,6 +1287,11 @@ window.onload = function(){
       				<div class="text" style="margin-top: 20px;">
       					<span class="subheading" style="margin-left: 10px;">made by ${c.nickName }</span>
       					<h2>${c.c_name}</h2>
+      				</div>
+      				<div>
+      					<c:forEach var="t" items="${c.c_tags }">
+      						<a class="tagA" title="태그검색" target="_blank" href="/tagSearchCourse?searchTag=${t}">#${t}</a>
+      					</c:forEach>
       				</div>
       			</div>
       		</div>
@@ -1290,7 +1350,7 @@ window.onload = function(){
 							  					</td>
 							  					<td>
 							  					<c:forEach var="v" items="${c.c_views }">
-							  						<img src="/courseViewImg/${v}.png">&nbsp;
+							  						<img class="cViewIcon" title="${v }" src="/courseViewImg/${v}.png">&nbsp;
 							  					</c:forEach>		
 							  					</td>
 							  				</tr>
@@ -1310,7 +1370,7 @@ window.onload = function(){
 									<div id="courseWordsTitle" style="margin-bottom: 20px; font-size: 110%;">
 										<span style="text-decoration: underline;">&nbsp;&nbsp;${c.c_name } 코스만의&nbsp;&nbsp;'<span style="color: #eccb6a;font-weight: bold;">갬</span><span style="color: #c8572d; font-weight: bold; ">성</span>' 포인트&nbsp;&nbsp;&nbsp;</span>
 									</div>
-									<div id="courseWordsContent" style="font-size: 90%; white-space:pre;">${c.c_words }</div>
+									<div id="courseWordsContent" style="white-space: pre-wrap;">${c.c_words }</div>
 					  			</div>
 					  		 </div>
 						    </div>
@@ -1323,7 +1383,7 @@ window.onload = function(){
 							     	 <div class="row ftco-animate">
 							     	  <div class="col-md-12">
 	           							 <div class="carousel-properties owl-carousel">
-								  		<c:if test="${c.c_photo != null }">
+								  		<c:if test="${not empty c.c_photo }">
 								  			<c:forEach var="p" items="${c.c_photo }">
 									  			 <div class="item" style="height: 400px;">
 	               									 <div class="property-wrap ftco-animate" style="height: 400px;">
@@ -1351,10 +1411,10 @@ window.onload = function(){
 						  				<div class="pt-summury"><strong>${c.c_s_locname }</strong></div>
 						  				<c:forEach var="t" items="${ptList }">
 						  					<c:if test="${t.code_value=='00201' }">
-						  						<div class="pt-summury"><img src="publictransport/${t.pt_img }">&nbsp;${t.pt_station } ▷▷ 출발점</div>
-						  						<div class="pt-summury"><img src="/detailCourseImg/disArrow.png"> ${t.pt_distance }km&nbsp;
-						  						<img src="/detailCourseImg/run.png"><fmt:formatNumber value="${t.pt_distance/5*60+1 }" pattern=".0" />분&nbsp;&nbsp;
-						  						<img src="/detailCourseImg/bicycle.png">&nbsp;<fmt:formatNumber value="${t.pt_distance/20*60+1 }" pattern=".0" />분
+						  						<div class="pt-summury"><img class="cPtIcon" src="publictransport/${t.pt_img }">&nbsp;${t.pt_station } ▷▷ 출발점</div>
+						  						<div class="pt-summury"><img class="cInfoIcon" src="/detailCourseImg/disArrow.png"> ${t.pt_distance }km&nbsp;
+						  						<img class="cInfoIcon" src="/detailCourseImg/run.png"><fmt:formatNumber value="${t.pt_distance/5*60+1 }" pattern=".0" />분&nbsp;&nbsp;
+						  						<img class="cInfoIcon" src="/detailCourseImg/bicycle.png">&nbsp;<fmt:formatNumber value="${t.pt_distance/20*60+1 }" pattern=".0" />분
 						  						</div>
 						  					</c:if>
 						  				</c:forEach>
@@ -1373,10 +1433,10 @@ window.onload = function(){
 						  				<div class="pt-summury"><strong>${c.c_e_locname }</strong></div>
 						  				<c:forEach var="t" items="${ptList }">
 						  					<c:if test="${t.code_value=='00202' }">
-						  						<div class="pt-summury"><img src="publictransport/${t.pt_img }">&nbsp;${t.pt_station } ▷▷ 출발점</div>
-						  						<div class="pt-summury"><img src="/detailCourseImg/disArrow.png"> ${t.pt_distance }km&nbsp;
-						  						<img src="/detailCourseImg/run.png"><fmt:formatNumber value="${t.pt_distance/5*60+1 }" pattern=".0" />분&nbsp;&nbsp;
-						  						<img src="/detailCourseImg/bicycle.png">&nbsp;<fmt:formatNumber value="${t.pt_distance/20*60+1 }" pattern=".0" />분
+						  						<div class="pt-summury"><img class="cInfoIcon" src="publictransport/${t.pt_img }">&nbsp;${t.pt_station } ▷▷ 출발점</div>
+						  						<div class="pt-summury"><img class="cInfoIcon" src="/detailCourseImg/disArrow.png"> ${t.pt_distance }km&nbsp;
+						  						<img class="cInfoIcon" src="/detailCourseImg/run.png"><fmt:formatNumber value="${t.pt_distance/5*60+1 }" pattern=".0" />분&nbsp;&nbsp;
+						  						<img class="cInfoIcon" src="/detailCourseImg/bicycle.png">&nbsp;<fmt:formatNumber value="${t.pt_distance/20*60+1 }" pattern=".0" />분
 						  						</div>
 						  					</c:if>
 						  				</c:forEach>
@@ -1575,7 +1635,6 @@ window.onload = function(){
   <script src="/resources/js/jquery.magnific-popup.min.js"></script>
   <script src="/resources/js/jquery.animateNumber.min.js"></script>
   <script src="/resources/js/scrollax.min.js"></script>
-  <script src="/resources/js/google-map.js"></script>
   <script src="/resources/js/main.js"></script>   
 </body>
 </html>

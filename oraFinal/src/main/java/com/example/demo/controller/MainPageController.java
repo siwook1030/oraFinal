@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.admin.ThisMonthCourse;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.vo.CourseVo;
 import com.google.gson.Gson;
@@ -27,13 +30,28 @@ public class MainPageController {
 	CourseDao cdao;
 	
 	@RequestMapping("/mainPage")
-	public void mainPage() {
+	public void mainPage(Model model) {
+		Calendar cal = Calendar.getInstance();
+		int thisMonth = cal.get(Calendar.MONTH) + 1;
 		
+		String searchTag = ThisMonthCourse.thisMonth;  // 이달의 추천코스 따로 클래스를 만들어 태그단어들만 바꿔주면 된다
+		String [] tagArr = (searchTag.replaceAll(" ", "")).split(",");
+		String tags = "";
+		for(String t : tagArr) {
+			if(!t.equals("") && t != null) {
+				tags += t+"|";
+			}
+		}	
+		tags = tags.substring(0, tags.length()-1);
+		
+		model.addAttribute("thisMonthList", cdao.tagSearchCourseList(tags));
+		model.addAttribute("thisMonth", thisMonth);
 	}
 	
 	@GetMapping(value = "/recomandCourse",  produces = "application/json; charset=utf8")
 	@ResponseBody
 	public String recomandCourse() {
+		System.out.println("리커코스작동");
 		HashMap map = new HashMap();
 		Gson gson = new Gson();
 		List<List<CourseVo>> cListByView = new ArrayList<List<CourseVo>>();

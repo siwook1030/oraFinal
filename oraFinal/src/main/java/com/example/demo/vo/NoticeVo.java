@@ -20,6 +20,6 @@ public class NoticeVo {
 	private String n_content;
 	private String n_regdate;
 	private int n_hit;
-	private List<Notice_fileVo> mf;
+	private List<Notice_fileVo> nf;
 }
 

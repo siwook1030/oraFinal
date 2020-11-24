@@ -87,4 +87,10 @@ public class ReviewDao {
 	public int deleteTemp(String id) {
 		return ReviewManager.deleteTemp(id);
 	}
+	public int deleteRepOne(int rr_no) {
+		return ReviewManager.deleteRepOne(rr_no);
+	}
+	public int updateRep(Review_repVo rrvo) {
+		return ReviewManager.updateRep(rrvo);
+	}
 }

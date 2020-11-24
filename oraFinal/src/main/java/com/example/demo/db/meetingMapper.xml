@@ -8,34 +8,34 @@
 		SELECT NVL(MAX(M_NO),0)+1 FROM MEETING
 	</select>
 	<select id="selectMAll" resultType="meetingVo"> <!-- 게시글 목록 -->
-		<!-- SELECT * FROM (SELECT ROWNUM N, M_NO, C_NAME, M_TIME, M_TITLE, RANK_ICON, NICKNAME, TO_CHAR(M_REGDATE, 'YYYY. MM. DD HH24:MI') AS M_REGDATE, M_HIT 
-		FROM (SELECT M_NO, C_NAME, M_TIME, M_TITLE, RANK_ICON, NICKNAME, M_REGDATE, M_HIT 
-		FROM meeting MT, MEMBER MB, COURSE C, RANK R 
+<!-- 	SELECT * FROM (SELECT ROWNUM N, M_NO, C_NAME, M_TIME, M_TITLE, RANK_ICON, NICKNAME, TO_CHAR(M_REGDATE, 'YYYY. MM. DD HH24:MI') AS M_REGDATE, M_HIT, id 
+		FROM (SELECT M_NO, C_NAME, M_TIME, M_TITLE, RANK_ICON, NICKNAME, M_REGDATE, M_HIT, mb.id 
+		FROM meeting MT,MEMBER MB, COURSE C, RANK R 
+		WHERE MT.ID=MB.ID AND C.C_NO=MT.C_NO AND R.RANK_NAME = MB.RANK_NAME -->
+		
+		SELECT m.*, CAST(24*60*60*(SYSDATE-m.m_regdate) AS INT) date_diff
+		FROM (SELECT ROW_NUMBER() OVER (ORDER BY m_no DESC) N, M_NO, C_NAME, M_TIME, M_TITLE, RANK_ICON, NICKNAME, M_REGDATE, M_HIT, ID
+		FROM (SELECT M_NO, C_NAME, M_TIME, M_TITLE, RANK_ICON, NICKNAME, M_REGDATE, M_HIT, MB.ID
+		FROM MEETING MT, MEMBER MB, COURSE C, RANK R
 		WHERE MT.ID=MB.ID AND C.C_NO=MT.C_NO AND R.RANK_NAME = MB.RANK_NAME 
-		ORDER BY M_NO DESC)) WHERE N BETWEEN #{start} and #{end} -->
-				SELECT * FROM (SELECT ROWNUM N, M_NO, C_NAME, M_TIME, M_TITLE, RANK_ICON, NICKNAME, TO_CHAR(M_REGDATE, 'YYYY. MM. DD HH24:MI') AS M_REGDATE, M_HIT, id
-	FROM (SELECT M_NO, C_NAME, M_TIME, M_TITLE, RANK_ICON, NICKNAME, M_REGDATE, M_HIT, mb.id
-	FROM meeting MT,MEMBER MB, COURSE C, RANK R 
-	WHERE MT.ID=MB.ID AND C.C_NO=MT.C_NO AND R.RANK_NAME = MB.RANK_NAME
 		<if test=' !id.equals("%")'>
-		and MB.ID=#{id}
+			AND MB.ID=#{id}
 		</if>
 		<if test='id.equals("%")'>
-		and MB.ID LIKE '%'
+			AND MB.ID LIKE '%'
 		</if>
-	ORDER BY M_NO DESC)) WHERE N BETWEEN #{start} and #{end}
+		ORDER BY M_NO DESC)) m WHERE N BETWEEN #{start} AND #{end}
 	</select>
 	<select id="selectMByNo" resultType="meetingVo"> <!-- 게시글 상세 -->
-	 	SELECT MT.M_NO, MT.C_NO, MT.ID, NICKNAME, C_NAME, RANK_ICON, M_TITLE, M_CONTENT, TO_CHAR(M_REGDATE, 'YYYY. MM. DD HH24:MI') AS M_REGDATE, M_HIT, M_LATITUDE, M_LONGITUDE, M_LOCNAME, M_TIME, M_NUMPEOPLE FROM MEETING MT, MEMBER MB, COURSE C, RANK R WHERE MT.ID=MB.ID AND C.C_NO=MT.C_NO AND R.RANK_NAME=MB.RANK_NAME AND M_NO=#{m_no}
+	 	SELECT MT.M_NO, MT.C_NO, MT.ID, NICKNAME, C_NAME, RANK_ICON, M_TITLE, M_CONTENT, M_REGDATE, M_HIT, M_LATITUDE, M_LONGITUDE, M_LOCNAME, M_TIME, M_NUMPEOPLE FROM MEETING MT, MEMBER MB, COURSE C, RANK R WHERE MT.ID=MB.ID AND C.C_NO=MT.C_NO AND R.RANK_NAME=MB.RANK_NAME AND M_NO=#{m_no}
 	</select>
 	<select id="totMRecord" resultType="int"> <!-- 게시글 수 -->
-		<!-- SELECT COUNT(*) FROM MEETING -->	
 		SELECT COUNT(*) FROM MEETING  
 		<if test='!id.equals("%")'>
-		 WHERE ID=#{id}
+			WHERE ID=#{id}
 		</if>
 		<if test='id.equals("%")'>
-		 WHERE ID LIKE '%'
+			WHERE ID LIKE '%'
 		</if>	
 	</select>
 	<insert id="insertM" parameterType="meetingVo"> <!-- 게시글 등록 -->
@@ -141,4 +141,26 @@
 	<update id="updateMasDelCourse"> <!--코스삭제로 인해 해당코스로 등록되어있던 게시물은 0번(선택안함)으로 변경 -->
 		UPDATE MEETING SET C_NO = 0 WHERE C_NO = #{c_no}
 	</update>
+	
+	<!-- 정재호 -->
+	<select id="selectTemp" resultType="meeting_tempVo">
+		SELECT * FROM meeting_temp WHERE id=#{id}
+	</select>
+	<insert id="insertTempId">
+		INSERT INTO meeting_temp(id) VALUES(#{id})
+	</insert>
+	<update id="updateTemp">
+		UPDATE meeting_temp SET c_no=#{c_no},m_title=#{m_title},m_content=#{m_content},m_latitude=#{m_latitude},m_longitude=#{m_longitude},m_locname=#{m_locname},m_numpeople=#{m_numpeople}
+		<if test="m_time != null">
+			,m_time=#{m_time}
+		</if>
+		WHERE id=#{id}
+	</update>
+	<delete id="deleteTemp">
+		DELETE FROM meeting_temp WHERE id=#{id}
+	</delete>
+	<delete id="deleteMfOne">
+		DELETE FROM meeting_file WHERE mf_no=#{mf_no}
+	</delete>
+	
 </mapper>	

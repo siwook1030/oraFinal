@@ -1,6 +1,7 @@
 package com.example.demo.db;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import com.example.demo.vo.CodeVo;
 import com.example.demo.vo.NoticeVo;
+import com.example.demo.vo.Notice_fileVo;
 
 public class NoticeManager {
 
@@ -39,6 +41,9 @@ public class NoticeManager {
 		List<NoticeVo> list = null;
 		SqlSession session = sqlSessionFactory.openSession();
 		list = session.selectList("notice.listNotice",map);
+		for (NoticeVo noticeVo : list) {
+			noticeVo.setNf(new ArrayList<Notice_fileVo>());
+		}
 		session.close();
 		return list;
 	}

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,17 +20,20 @@
 	/* 제목 입력 */
 	#r_title { text-align: center; }
 	/* input, select, textarea 태그설정 */
-	input, select { border: none; background-color: transparent; width: 55%; text-align: center; }
-	textarea:focus, input:focus { outline: none; }
+	input, select { border: none; background-color: transparent; width: auto; text-align: center; }
+	input:focus { outline: none; }
 	#c_no { width: auto; }
 	/* 등록, 취소 버튼 */
  	.btn { color: white; padding: 7px 17px; margin: 3px 1px; font-size: 19px; border: none; cursor: pointer; width: auto; }
- 	/* #btnDiv { clear: both; text-align: center; padding-top: 40px; text-align: center; } */
-  #submitWrap {
-    flex-grow: 1;
-    flex-basis: 80%;
-    text-align: right;
-  }
+ 	/* 등록, 취소버튼 div */
+	#submitWrap { text-align: center; padding-top: 50px; }
+	/* 임시저장상태 */
+	#snippet-autosave-status_spinner-label { padding: 3px 5px; width: 75px; }
+	#snippet-autosave-status_spinner-loader { width: 400px; margin-left: 50px; }
+	/* 코스선택 */
+	#selectCourse { width: 30%; border: 1px #D5D5D5 solid; border-radius: 10px; margin: 2px auto; padding: 25px; text-align: center; }
+	#selectCourse #c_no { vertical-align: bottom; width: 70%; }
+	
 
 </style>
 <link rel="stylesheet" type="text/css" href="/ckeditor5/editor-styles.css">
@@ -48,6 +51,13 @@ $(document).ready(function(){
 			$("#r_title").val('${rtvo.r_title}');
 			$("#c_no").val(${rtvo.c_no});
 			$("#editor").text('${rtvo.r_content}');
+		}else {				// 기존 작성글 불러오기 취소할 경우 기존 사진 삭제 
+			let urls = Array.from( new DOMParser().parseFromString( '${rtvo.r_content}', 'text/html' )
+				    .querySelectorAll( 'img' ) )
+				    .map( img => img.getAttribute( 'src' ) );
+			if(urls.length > 0) {
+				imageDelete(urls);
+			}
 		}
 	}
 	
@@ -204,7 +214,14 @@ $(document).ready(function(){
 		
 	} );
 	
-	$("#inputInsert").click(function(){		// 게시글 등록버튼 누르면 image src배열정보 전달. 이것을 토대로 review_file table에 record등록.
+	$("#inputInsert").click(function(event){		// 게시글 등록버튼 누르면 image src배열정보 전달. 이것을 토대로 review_file table에 record등록.
+		let r_content = editor.getData();
+		if($.trim(r_content) === '') {
+			event.preventDefault();
+			alert('글 내용을 입력해주세요.');
+			// $("#editor").focus();	// 에디터에는 focus 적용 안되는듯.
+			return;
+		}
 		$("#image_urls").attr("value", current_urls);
 	});
 
@@ -223,6 +240,8 @@ function imageDelete(urls){
 		beforeSend : function(xhr){
             xhr.setRequestHeader("uploadFolder", "review");		// 삭제할 파일위치 정보전달
         },
+        method: "post",
+        traditional: true,
 		data: {urls: urls},
 		success: function(data){
 
@@ -274,100 +293,101 @@ function displayStatus( editor ) {
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 		<div class="container">
-			<a class="navbar-brand" href="/mainPage">오늘의 라이딩</a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="oi oi-menu"></span> Menu
-				</button>
-				
-			<div class="collapse navbar-collapse" id="ftco-nav">
-		        <ul class="navbar-nav ml-auto">
-					<c:choose>
-						<c:when test="${m == null }">
-							<li class="nav-item"><a href="/login" class="nav-link">로그인</a></li>
-							<li class="nav-item"><a href="/signUp" class="nav-link">회원가입</a></li>
-						</c:when>
-						<c:when test="${m != null }">
-							<li class="nav-item"><a class="nav-link">${m.nickName } 라이더님</a></li>
-							<li class="nav-item"><a href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
-							<li class="nav-item"><a href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
-						</c:when>
-					</c:choose>
-				</ul>
-			</div>
-
-	     
+			<a style="font-size: 30px;" class="navbar-brand" href="/mainPage">
+				<span style="font-weight: bold;">
+					<font color="#45A3F5">오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font> <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font>
+				</span>
+			</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="oi oi-menu"></span> Menu
+            </button>
+            
+            <div style="display: block;">
 				<div class="collapse navbar-collapse" id="ftco-nav">
 					<ul class="navbar-nav ml-auto">
+						<c:choose>
+							<c:when test="${m == null }">
+								<li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
+								<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
+							</c:when>
+							<c:when test="${m != null }">
+								<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
+								<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
+								<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+							</c:when>
+						</c:choose>
+					</ul>
+				</div>
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
 						<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
 						<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
 						<li class="nav-item active"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
 						<li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
-						<li class="nav-item"><a href="" class="nav-link">라이딩 정보</a></li>
+						<li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
 					</ul>
 				</div>
 			</div>
-     	</nav>
+		</div>
+    </nav>
     <!-- END nav -->
     
     <section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
-          <div class="col-md-9 ftco-animate pb-0 text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="fa fa-chevron-right"></i></a></span> <span>후기 게시판 <i class="fa fa-chevron-right"></i></span></p>
-            <h1 class="mb-3 bread">후기 게시판</h1>
-          </div>
-        </div>
-      </div>
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
+				<div class="col-md-9 ftco-animate pb-0 text-center">
+					<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a></span><span class="mr-2"><a href="/listReview">라이딩 후기 <i class="fa fa-chevron-right"></i></a></span> <span>라이딩 후기 등록 <i class="fa fa-chevron-right"></i></span></p>
+					<h1 class="mb-3 bread">후기 등록</h1>
+				</div>
+			</div>
+		</div>
     </section>
 
-	<section class="ftco-section ftco-agent">
-    	<div class="container">
-    	
-    		<!-- 글 등록 -->
-			<form action="/user/insertReview" method="post">
-		    	<div class="row justify-content-center pb-5">
-					<div class="col-md-12 heading-section text-center ftco-animate">
-			          	<span class="subheading">Today's Riding</span>
-			          	<!-- 제목 -->
-			            <h2 class="mb-4"><input type="text" name="r_title" id="r_title" placeholder="제목을 입력해주세요." required="required"></h2>
-			          </div>
-		        </div>
-		        
-				<!-- 코스선택 -->
-				<div>
-					<img src="/meetingImg/ridingRoute.png" width="40px;" style="padding-bottom: 10px;">
-					<select name="c_no" id="c_no">
-						<c:forEach var="vo" items="${list }">
-							<option value="${vo.c_no }">${vo.c_name }</option>
-						</c:forEach>
-					</select>
-				</div>
-				
-        <br><br>
-        <hr><br>
-        <!-- 글내용 -->
-        <textarea name="r_content" id="editor"></textarea>
-        <!-- 현재 editor에 있는 img src들의 배열 전달 -->
-        <input type="hidden" id="image_urls" name="image_urls">
-        <!-- autosave 상태표시창 -->
-        <div id="snippet-autosave-status">
-          <div id="snippet-autosave-status_label">Status:</div>
-          <div id="snippet-autosave-status_spinner">
-            <span id="snippet-autosave-status_spinner-label"></span>
-            <span id="snippet-autosave-status_spinner-loader"></span>
-          </div>
-          <div id="submitWrap">
-            <input type="submit" value="등록" id="inputInsert">
-            <button id="btnCancle">취소</button>
-          </div>
-        </div>
-      </form>
-		</div>
-    
-
-	</section>
-<footer class="ftco-footer ftco-section">
+		<section class="ftco-section ftco-agent">
+			<div class="container">
+    			<!-- 글등록 form 시작 -->
+				<form action="/user/insertReview" method="post">
+			    	<div class="row justify-content-center pb-5">
+						<div class="col-md-12 heading-section text-center ftco-animate">
+				          	<span class="subheading">Today's Riding</span>
+				          	<!-- 제목 -->
+				            <h2 class="mb-4"><input type="text" name="r_title" id="r_title" placeholder="제목을 입력해주세요." required="required"></h2>
+				            <!-- 코스선택 -->
+							<div id="selectCourse">
+								<img src="/meetingImg/ridingRoute.png" style="margin-right: 20px; width: 40px;">
+								<select name="c_no" id="c_no">
+									<c:forEach var="vo" items="${list }">
+										<option value="${vo.c_no }">${vo.c_name }</option>
+									</c:forEach>
+								</select>
+							</div>
+						</div>
+			        </div>
+			        
+					<!-- 글내용 -->
+					<textarea name="r_content" id="editor"></textarea>
+					<!-- 현재 editor에 있는 img src들의 배열 전달 -->
+	        		<input type="hidden" id="image_urls" name="image_urls">
+	        		<!-- autosave 상태표시창 -->
+	        		<div id="snippet-autosave-status">
+						<!-- div id="snippet-autosave-status_label">Status:</div> -->
+						<div id="snippet-autosave-status_spinner">
+							<span id="snippet-autosave-status_spinner-label"></span>
+							<span id="snippet-autosave-status_spinner-loader"></span>
+						</div>
+					</div>
+					<div id="submitWrap">
+						<input type="submit" value="등록" class="btn" id="inputInsert" style="background-color: #eccb6a">
+						<button class="btn" id="btnCancle" style="background-color: #d0a183">취소</button>
+	 				</div>
+				</form>
+			</div>
+		</section>
+		
+	<!-- footer 시작 -->
+	<footer class="ftco-footer ftco-section">
       <div class="container">
         <div class="row mb-5">
           <div class="col-md">

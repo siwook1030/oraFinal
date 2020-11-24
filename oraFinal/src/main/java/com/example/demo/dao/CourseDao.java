@@ -64,6 +64,10 @@ public class CourseDao {
 		return CourseManager.searchCourseList(map);
 	}
 	
+	public List<CourseVo> tagSearchCourseList(String searchTag){
+		return CourseManager.tagSearchCourseList(searchTag);
+	}
+	
 	public List<Integer> getAllSaveCourse(String id){
 		return CourseManager.getAllSaveCourse(id);
 	}
