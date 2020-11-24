@@ -6,6 +6,37 @@
 <head>
 <jsp:include page="my_header.jsp"/>
     <title>내 작성 코스</title>
+    <meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
+<script type="text/javascript">
+window.onload = function(){
+	const token = $("meta[name='_csrf']").attr("content");
+    const header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) {
+        if(token && header) {
+            xhr.setRequestHeader(header, token);
+        }
+    });
+	
+}
+</script>
+<style type="text/css">
+	.cInfoIcon {
+   	width: 24px;
+   }
+   
+    .cViewIcon {
+   	width: 34px;
+   }
+   
+      .viewImg {
+   	margin-right: 10px;
+   }
+      .search-place:after,	 .col-md-4, .img, .search-place img {
+   	border-radius: 10px;
+   }
+</style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
 
@@ -37,28 +68,65 @@ window.onload = function(){
            const courseBox = document.createElement("div");
            courseBox.className="col-md-4";
 
+       		let courseTime;
+       		const hour = parseInt(c.c_time/60);
+       		const mi = c.c_time%60;
+       		if(hour >= 1){
+       			courseTime = hour+'시간 '+mi+'분';
+       		}
+       		else{
+       			courseTime = mi+'분';
+       		}
 
+       		const diff = c.c_difficulty;
+       		let diffContent;
+       		if(diff == 1){
+       			diffContent = '<span style="color:#88bea6;">쉬움</span>';
+       		}
+       		else if(diff == 2){
+       			diffContent = '<span style="color: #eccb6a;">보통</span>';
+       		}
+       		else if(diff == 3){
+       			diffContent = '<span style="color: #c8572d;">어려움</span>';
+       		}
+       		else if(diff == 4){
+       			diffContent = '<span style="color:red;">힘듬</span>';
+       		}
 
+       		let courseViewContent="";
+       		c.c_views.forEach(function(v, i) {
+       			courseViewContent += '<div title="'+v+'" class="img viewImg" style="background-image: url(/courseViewImg/'+v+'.png);"></div>';
+       		});
 
-           let courseContent = '<div class="property-wrap ftco-animate fadeInUp ftco-animated">\
-               <a href="/detailCourse?c_no='+c.c_no+'" class="img" target="_blank" style="background-image: url('+c.c_photo[0].cp_path+'/'+c.c_photo[0].cp_name+');">\
-                  <div class="rent-sale">\
-                     <span class="rent">'+c.c_loc+'</span>\
-                  </div>\
-                  <p class="price"><span class="orig-price">'+"Level:"+c.c_difficulty+'</span></p>\
-               </a>\
-               <div class="text">\
-                  <h3><a href="/detailCourse?c_no='+c.c_no+'" target="_blank">'+c.c_name+'</a></h3>\
-                  <span class="location"></span>\
-                  <ul class="property_list">\
-                  </ul>\
-                  <div class="list-team d-flex align-items-center mt-2 pt-2 border-top">\
-                     <div class="d-flex align-items-center"></div>\
-                      <span class="text-right">'+c.c_distance+'km </span>\
-                  </div>\
-               </div>\
-            </div>'; 
-
+       		
+       	let courseContent = '<div class="property-wrap ftco-animate fadeInUp ftco-animated">\
+       			<a href="/detailCourse?c_no='+c.c_no+'" class="img" target="_blank" style="background-image: url('+c.c_photo[0].cp_path+'/'+c.c_photo[0].cp_name+');">\
+       				<div class="rent-sale">\
+       					<span class="rent">등록일 '+c.c_regdate+'</span><br>\
+       					<span class="rent">'+c.c_loc+'</span>\
+       				</div>\
+       				<p title="태그" class="price"><span class="orig-price" style="color:black;">'+c.c_tag+'</span></p>\
+       			</a>\
+       			<div class="text">\
+       				<h3><a href="/detailCourse?c_no='+c.c_no+'" target="_blank">'+c.c_name+'</a></h3>\
+       				<span class="location">made by '+c.nickName+'</span>\
+       				<a  class="d-flex align-items-center justify-content-center btn-custom" id="linkMap" lat="'+c.c_s_latitude+'" lng="'+c.c_s_longitude+'">\
+       					<span class="fa fa-link" id="linkMap2" lat="'+c.c_s_latitude+'" lng="'+c.c_s_longitude+'"></span>\
+       				</a>\
+       				<ul class="property_list" style="font-weight: bold;" >\
+       					<li title="코스거리" ><span class="flaticon-bed"><img class="cInfoIcon" src="/searchCourseImg/distance.png"></span>'+c.c_distance+'km</li>\
+       					<li title="소요시간" ><span class="flaticon-bathtub"><img class="cInfoIcon" src="/searchCourseImg/time.png"></span>'+courseTime+'</li>\
+       					<li title="난이도" ><span class="flaticon-floor-plan"><img class="cInfoIcon" src="/searchCourseImg/difficulty.png"></span>'+diffContent+'</li>\
+       				</ul>\
+       				<div class="list-team d-flex align-items-center mt-2 pt-2 border-top">\
+       					<div class="d-flex align-items-center">'+courseViewContent+'</div>\
+           				<span class="text-right">풍경</span>\
+       				</div>\
+       			</div>\
+       		</div>'; 
+       		
+       	
+ 
            
            courseBox.innerHTML = courseContent;
            saveCourseList.append(courseBox);

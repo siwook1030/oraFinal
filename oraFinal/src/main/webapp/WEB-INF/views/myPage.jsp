@@ -5,12 +5,20 @@
 <head>
 <title>회원 정보 수정</title>
 <jsp:include page="my_header.jsp"/>
-    
+ <meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />   
      
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
    $(function(){
-      
+	   const token = $("meta[name='_csrf']").attr("content");
+	    const header = $("meta[name='_csrf_header']").attr("content");
+	    $(document).ajaxSend(function(e, xhr, options) {
+	        if(token && header) {
+	            xhr.setRequestHeader(header, token);
+	        }
+	    });
       const phone = document.getElementById("phone");
       const sendPhone = document.getElementById("sendPhone");
       const checkNum = document.getElementById("checkNum");

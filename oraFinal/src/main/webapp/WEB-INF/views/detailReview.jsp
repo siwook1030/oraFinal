@@ -7,6 +7,9 @@
 <meta charset="UTF-8">
 <title>오늘의 라이딩</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/resources/css/animate.css">    
@@ -72,6 +75,14 @@ var r_no = querystring.substring(n+1);	// 게시판번호 저장 변수 ex) 1
 let login_id = "${m.id}";				// 로그인 안했을 때는 'empty string'
 var $replyTextArea = $("<textarea></textarea>");	// 대댓글을 위한 textarea 전역변수
 $(document).ready(function(){
+	 const token = $("meta[name='_csrf']").attr("content");
+	    const header = $("meta[name='_csrf_header']").attr("content");
+	    $(document).ajaxSend(function(e, xhr, options) {
+	        if(token && header) {
+	            xhr.setRequestHeader(header, token);
+	        }
+	    });
+	
 	detailReviewReply();	// 댓글 목록 ajax으로 가져오는 함수	
 	// 본문 댓글을 위한 입력창 만들기
 	let $div1 = $("<div></div>").addClass("textareaContainer");		// 자식인 textarea 찾기위해 클래스 지정
@@ -214,6 +225,9 @@ function insertReviewReply(rr_ref, rr_content){		// 댓글 내용을 입력 ajax
 								<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
 								<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
 								<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+							<c:if test="${m.code_value == '00101' }">
+								<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
+							</c:if>
 							</c:when>
 						</c:choose>
 					</ul>

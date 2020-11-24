@@ -3,36 +3,41 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="course">
-
+	<!-- 코스 다음번호 -->
 	<select id="nextCno" resultType="int">
 		SELECT NVL(MAX(C_NO),0)+1 FROM COURSE
 	</select>
 	
+	<!-- 코스 인서트 -->
 	<insert id="insertCourse">
 		INSERT INTO COURSE(C_NO, CODE_VALUE, ID, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
-		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_TAG, C_VIEW, C_WORDS, C_LINE, C_TEMP)
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_TAG, C_REGDATE, C_VIEW, C_WORDS, C_LINE, C_TEMP)
 		VALUES (#{c_no}, #{code_value}, #{id}, #{c_name}, #{c_s_locname}, #{c_s_latitude}, #{c_s_longitude}, #{c_e_locname},
 		#{c_e_latitude}, #{c_e_longitude}, #{c_loc}, #{c_distance}, #{c_time}, #{c_difficulty}, 
-		#{c_tag}, #{c_view}, #{c_words}, #{c_line}, #{c_temp})
+		#{c_tag},SYSDATE,#{c_view}, #{c_words}, #{c_line}, #{c_temp})
 	</insert>
 	
+	<!-- 코스사진 등록 -->
 	<insert id="insertCphoto">
 		INSERT INTO COURSEPHOTO(CP_NO, C_NO, CP_NAME, CP_PATH, CP_LATITUDE, CP_LONGITUDE) 
 		VALUES(COURSEPHOTO_SEQ.NEXTVAL,#{c_no},#{cp_name},#{cp_path},#{cp_latitude},#{cp_longitude})
 	</insert>
 	
+	<!-- 코스 대중교통 등록 -->
 	<insert id="insertPT">
 		INSERT INTO PUBLICTRANSPORT(PT_NO, CODE_VALUE, C_NO, PT_LATITUDE, PT_LONGITUDE, PT_IMG, PT_STATION, PT_DISTANCE, PT_LINE)
 		VALUES (PT_SEQ.NEXTVAL, #{code_value},#{c_no},#{pt_latitude},#{pt_longitude},#{pt_img},#{pt_station},#{pt_distance},#{pt_line})
 	</insert>
-
+	
+	<!-- 코스 수정 -->
 	<update id="updateCourse">
 		UPDATE COURSE SET C_NAME=#{c_name}, C_S_LOCNAME=#{c_s_locname}, C_S_LATITUDE=#{c_s_latitude}, 
 		C_S_LONGITUDE=#{c_s_longitude}, C_E_LOCNAME=#{c_e_locname},C_E_LATITUDE=#{c_e_latitude}, C_E_LONGITUDE=#{c_e_longitude}, 
 		C_LOC=#{c_loc}, C_DISTANCE=#{c_distance}, C_TIME=#{c_time}, C_DIFFICULTY=#{c_difficulty}, C_TAG=#{c_tag},C_VIEW=#{c_view}, 
 		C_WORDS=#{c_words}, C_LINE=#{c_line}, C_TEMP=#{c_temp} WHERE C_NO = #{c_no}
 	</update>
-		
+	
+	<!-- 코스 대중교통 수정-->
 	<update id="updatePT">
 		UPDATE PUBLICTRANSPORT SET PT_LATITUDE=#{pt_latitude}, PT_LONGITUDE=#{pt_longitude}, PT_IMG=#{pt_img}, 
 		PT_STATION=#{pt_station}, PT_DISTANCE=#{pt_distance}, PT_LINE=#{pt_line} WHERE PT_NO = #{pt_no}
@@ -50,26 +55,32 @@
 		DELETE COURSEPHOTO WHERE C_NO = #{c_no}
 	</delete>
 
-
+	<!-- 뷰에따른 코스 셀렉하기 -->
 	<select id="selectByView" resultType="courseVo">
 		SELECT C_NO, C.CODE_VALUE, C.ID, M.NICKNAME,C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
-		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY,  C_TAG, C_VIEW, C_WORDS, C_LINE, C_TEMP 
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY,  C_TAG, TO_CHAR(C_REGDATE, 'YYYY-MM-DD HH24:MI') AS C_REGDATE,
+		C_VIEW, C_WORDS, C_LINE, C_TEMP 
 		FROM COURSE C, MEMBER M WHERE C.ID=M.ID AND C_TEMP ='N'  AND NOT C_NO IN (0)
 		 AND C_VIEW LIKE #{view} || '%' ORDER BY C_NAME
 	</select>
 	
+	<!-- 코스상세 셀렉하기 -->
 	<select id="selectByCno" resultType="courseVo">
 		SELECT C_NO, C.CODE_VALUE, C.ID, M.NICKNAME, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
-		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_TAG, C_VIEW, C_WORDS, C_LINE, C_TEMP 
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_TAG, TO_CHAR(C_REGDATE, 'YYYY-MM-DD HH24:MI') AS C_REGDATE,
+		C_VIEW, C_WORDS, C_LINE, C_TEMP 
 		FROM COURSE C, MEMBER M WHERE C.ID=M.ID AND C_NO = #{c_no}
 	</select>
 	
+	<!-- 게시판용 코스리스트 셀렉 -->
 	<select id="selectCourseList" resultType="courseVo">
 		SELECT C_NO, C.CODE_VALUE, C.ID, M.NICKNAME, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
-		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY,  C_TAG, C_VIEW, C_WORDS, C_LINE, C_TEMP 
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY,  C_TAG, TO_CHAR(C_REGDATE, 'YYYY-MM-DD HH24:MI') AS C_REGDATE,
+		C_VIEW, C_WORDS, C_LINE, C_TEMP 
 		FROM COURSE C, MEMBER M WHERE C.ID=M.ID AND C_TEMP ='N' ORDER BY C_NO
 	</select>
 	
+	<!-- 맞춤코스 코스리스트 번호셀렉 -->
 	<select id="selectSearchCourseNum" resultType="int" parameterType="map">
 		SELECT C_NO FROM (SELECT CALC_DISTANCE(#{latitude},#{longitude},C_S_LATITUDE,C_S_LONGITUDE) AS D, C_NO FROM COURSE
 		<where>
@@ -89,9 +100,11 @@
 		ORDER BY D)
 	</select>
 	
+	<!-- 코스 태그검색 셀렉 -->
 	<select id="selectTagSearchCourse" resultType="courseVo">
 			SELECT C_NO, C.CODE_VALUE, C.ID, M.NICKNAME, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
-			C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY,  C_TAG, C_VIEW, C_WORDS, C_LINE, C_TEMP 
+			C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY,  C_TAG, TO_CHAR(C_REGDATE, 'YYYY-MM-DD HH24:MI') AS C_REGDATE,
+			C_VIEW, C_WORDS, C_LINE, C_TEMP 
 			FROM COURSE C, MEMBER M WHERE C.ID=M.ID AND C_TEMP ='N' AND NOT C_NO IN (0) AND
 			(
 			REGEXP_LIKE(C_NAME, #{searchTag}) OR REGEXP_LIKE(C_S_LOCNAME, #{searchTag}) OR REGEXP_LIKE(C_E_LOCNAME, #{searchTag}) OR
@@ -99,17 +112,35 @@
 			) 
 	</select>
 	
+	<!-- 승인대기중인 코스리스트 셀렉 -->
+	<select id="selectCourseListByTemp" resultType="courseVo">
+			SELECT C_NO, C.CODE_VALUE, C.ID, M.NICKNAME, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
+			C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY,  C_TAG, TO_CHAR(C_REGDATE, 'YYYY-MM-DD HH24:MI') AS C_REGDATE,
+			C_VIEW, C_WORDS, C_LINE, C_TEMP 
+			FROM COURSE C, MEMBER M WHERE C.ID=M.ID AND C_TEMP ='Y' AND NOT C_NO IN (0) ORDER BY C_REGDATE
+	</select>
+	
+	<!-- 승인대기중인 코스 승인업데이트 -->
+	<update id="approveCourse">
+		UPDATE COURSE SET C_TEMP = 'N' WHERE C_NO = #{c_no}
+	</update>
+	
+	<!-- 사용자와 코스거리 계산해서 코스리스트 셀렉 -->
 	<select id="selectByCnoandUserDis" resultType="courseVo" parameterType="map">
 		SELECT C_NO, C.CODE_VALUE, C.ID, M.NICKNAME, C_NAME, CALC_DISTANCE(#{latitude},#{longitude},C_S_LATITUDE,C_S_LONGITUDE) AS userDis,
 		C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
-		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY,  C_TAG, C_VIEW, C_WORDS, C_LINE, C_TEMP 
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY,  C_TAG, TO_CHAR(C_REGDATE, 'YYYY-MM-DD HH24:MI') AS C_REGDATE,
+		C_VIEW, C_WORDS, C_LINE, C_TEMP 
 		FROM COURSE C, MEMBER M WHERE C.ID=M.ID AND C_TEMP ='N' AND C_NO = #{c_no} 
 	</select>
 	
+	
+	<!-- 코스명 중복체크 -->
 	<select id="cnameDupCheck" resultType="int">
 		SELECT count(*) FROM COURSE WHERE C_NAME = #{c_name}
 	</select>
-		
+	
+	<!-- 코스사진 셀렉트 -->
 	<select id="selectCoursePhoto" resultType="coursePhotoVo">
 		SELECT CP_NO, C_NO, CP_NAME, CP_PATH, CP_LATITUDE, CP_LONGITUDE FROM COURSEPHOTO WHERE C_NO = #{c_no}
 	</select>
@@ -135,16 +166,17 @@
 	
 	<!-- 찜코스 출력 -->
 	<select id="selectSaveCourse" resultType="courseVo">
-		SELECT C_NO, CODE_VALUE, ID, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
-		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP FROM COURSE
-		WHERE C_NO in (SELECT C_NO FROM SAVE_COURSE WHERE ID=#{id})
+		SELECT C_NO, C.CODE_VALUE, C.ID, NICKNAME, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP, C_TAG FROM COURSE C, MEMBER M
+		WHERE M.ID=C.ID  AND  C_TEMP ='N' AND C_NO in (SELECT C_NO FROM SAVE_COURSE WHERE ID=#{id}) 
 	</select>
 	
 	<!-- 내가만든코스 출력 -->
 	<select id="selectMyCourse" resultType="courseVo">
-		SELECT C_NO, CODE_VALUE, ID, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
-		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP
-		FROM COURSE WHERE ID=#{id}
+		SELECT C_NO, C.CODE_VALUE, C.ID, M.ID, NICKNAME, C_NAME, C_S_LOCNAME, C_S_LATITUDE, C_S_LONGITUDE, C_E_LOCNAME,
+		C_E_LATITUDE, C_E_LONGITUDE, C_LOC, C_DISTANCE, C_TIME, C_DIFFICULTY, C_VIEW, C_WORDS, C_LINE, C_TEMP, C_TAG,
+		TO_CHAR(C_REGDATE, 'YYYY-MM-DD HH24:MI') AS C_REGDATE
+		FROM COURSE C, MEMBER M WHERE M.ID=C.ID  AND  C_TEMP ='N' AND C.ID=#{id}
 	</select>
 	
 	<!-- 나의 찜코스 목록 코스번호로 뽑아오기 -->
@@ -165,4 +197,5 @@
 	<insert id="addSaveCourse" parameterType="map">
 		INSERT INTO SAVE_COURSE(ID,C_NO,REGDATE) VALUES(#{id},#{c_no},SYSDATE)
 	</insert>
+	
 </mapper>
