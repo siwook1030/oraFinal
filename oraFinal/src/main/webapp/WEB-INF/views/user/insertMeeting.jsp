@@ -367,6 +367,8 @@
 				beforeSend : function(xhr){
 		            xhr.setRequestHeader("uploadFolder", "meetingFile");		// 삭제할 파일위치 정보전달
 		        },
+		        method: "post",
+		        traditional: true,
 				data: {urls: urls},
 				success: function(data){
 
@@ -452,9 +454,12 @@
 				//console.log("주소:"+'${mtvo.m_locname}');
 				$("#m_locname").val('${mtvo.m_locname}');
 			}else {
-				let testu = checkImageUrls('${mtvo.m_content}');
-				console.log("URL들:"+testu);
-				alert("ㅇㅇ");
+				let urls = Array.from( new DOMParser().parseFromString( '${mtvo.m_content}', 'text/html' )
+						.querySelectorAll( 'img' ) )
+						.map( img => img.getAttribute( 'src' ) );
+				if(urls.length > 0) {
+					imageDelete(urls);
+				}
 			}
 		}
 		

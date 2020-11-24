@@ -498,7 +498,7 @@ public class ReviewController {
 							FileInputStream fis = new FileInputStream(temp_file);
 							byte[] data = fis.readAllBytes();
 							fis.close();
-							temp_file.delete();
+							temp_file.delete();		// 복사끝나면 임시파일 삭제
 							File file = new File(path+"/review/"+decodeResult);
 							FileOutputStream fos = new FileOutputStream(file);
 							fos.write(data);

@@ -76,17 +76,6 @@ window.onload = function(){
 		}
 	});
 
-/* 	$(document).ready(function(){
-		$('.mfPhotoDiv').slick({
-			dots: true,
-			infinite: true,
-			speed: 300,
-			slidesToShow: 1,
-			centerMode: true,
-			variableWidth: true
-		});
-	}); */
-
 ///////////////////////////////////////////////////
 	const checkM = checkLogin(); // 로그인이 되어있는 상태인지 체크한다
 	console.log(checkM);
@@ -797,14 +786,6 @@ window.onload = function(){
     courseBounds.extend(meetingLatLon);
     map.setBounds(courseBounds);
 	/////////////////////////////////////////////////////////////////////////////////// 맵표시 끝
-	const mf = ${mfJson};
-	console.log(mf);
-	let imgStr = '';
-	mf.forEach(function(mtPhoto, idx) {
-		imgStr += '<img class="mfPhoto" src="/'+mtPhoto.mf_path+'/'+mtPhoto.mf_savename+'" attr='+idx+'>';
-	})
-	console.log(imgStr);
-	document.getElementById('mfPhotoDiv').innerHTML = imgStr;
 
 };
 	</script>

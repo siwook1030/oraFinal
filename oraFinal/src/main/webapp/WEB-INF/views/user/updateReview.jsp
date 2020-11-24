@@ -185,7 +185,7 @@ $(document).ready(function(){
 		$("#image_urls").attr("value", current_urls);
 	});
 
-	$("#btnCancle").click(function(){
+	$("#btnCancle").click(function(event){
 		// input type submit이 아닌 그냥 button이어도 누르면 submit해버린다. 그래서 기본이벤트 삭제처리함.
 		event.preventDefault();
 		imageDelete(current_urls, false);

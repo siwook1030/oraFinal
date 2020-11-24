@@ -51,6 +51,13 @@ $(document).ready(function(){
 			$("#r_title").val('${rtvo.r_title}');
 			$("#c_no").val(${rtvo.c_no});
 			$("#editor").text('${rtvo.r_content}');
+		}else {				// 기존 작성글 불러오기 취소할 경우 기존 사진 삭제 
+			let urls = Array.from( new DOMParser().parseFromString( '${rtvo.r_content}', 'text/html' )
+				    .querySelectorAll( 'img' ) )
+				    .map( img => img.getAttribute( 'src' ) );
+			if(urls.length > 0) {
+				imageDelete(urls);
+			}
 		}
 	}
 	
@@ -226,6 +233,8 @@ function imageDelete(urls){
 		beforeSend : function(xhr){
             xhr.setRequestHeader("uploadFolder", "review");		// 삭제할 파일위치 정보전달
         },
+        method: "post",
+        traditional: true,
 		data: {urls: urls},
 		success: function(data){
 

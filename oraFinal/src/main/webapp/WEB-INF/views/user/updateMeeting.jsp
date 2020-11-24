@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>오늘의 라이딩</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="/ckeditor5/editor-styles.css">
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/resources/css/animate.css">    
@@ -74,12 +75,12 @@
 			margin: 20px 0;
 			font-size: 30px;
 		}
-		#m_content {
+		/*#m_content {
 			padding: 10px 0;
 			border-top: 1px solid gray;
 			border-bottom: 1px solid gray;
 			margin-bottom: 30px;
-		}
+		}*/
 	
 	   /*카카오 맵css*/
 	   .map_wrap {position:relative;width:100%;height:450px;font-size: 80%;}
@@ -95,20 +96,187 @@
 		.thumb > .close { position:absolute; background-color:red; cursor:pointer; }
 	   
 	</style>
+	
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script type="text/javascript" src="/js/loginCheck.js"></script>
+	<script type="text/javascript" src="/ckeditor5/build/ckeditor.js"></script>
 	<script type="text/javascript">
 		window.onload = function(){
+			let current_urls = [];		// 현재 editor에 있는 img src들의 배열을 담은 변수
+			$("#editor").text('${mt.m_content }');
+			
 			const checkM = checkLogin();
 			const memberId = checkM.item.id;
 			const m_title = document.getElementById('m_title');
 			const m_time = document.getElementById('m_time');
 			const m_numpeople= document.getElementById('m_numpeople');
 			const m_locname = document.getElementById('m_locname');
-			const m_content = document.getElementById('m_content');
-			
-			
+			const m_content = document.getElementById('editor');
+
+			ClassicEditor
+			.create( document.querySelector( '#editor' ), {
+				removePlugins: [ 'ImageCaption', 'Autosave' ],		// 불필요한 플러그인 삭제
+				toolbar: {			
+					items: [		// 툴바에 표시할 아이콘 정의
+						'heading',
+						'|',
+						'bold',
+						'italic',
+						'link',
+						'bulletedList',
+						'numberedList',
+						'|',
+						'alignment',
+						'indent',
+						'outdent',
+						'|',
+						'imageUpload',
+						'blockQuote',
+						'insertTable',
+						'mediaEmbed',
+						'undo',
+						'redo',
+						'|',
+						'fontBackgroundColor',
+						'fontColor',
+						'fontSize',
+						'fontFamily',
+						'specialCharacters',
+						'underline',
+						'|'
+					]
+				},
+				language: 'ko',
+				image: {
+					// Configure the available styles.
+		            styles: [
+		                'alignLeft', 'alignCenter', 'alignRight'
+		            ],
+
+		            // Configure the available image resize options.
+		            resizeOptions: [
+		                {
+		                    name: 'imageResize:original',
+		                    label: 'Original',
+		                    value: null
+		                },
+		                {
+		                    name: 'imageResize:50',
+		                    label: '50%',
+		                    value: '50'
+		                },
+		                {
+		                    name: 'imageResize:75',
+		                    label: '75%',
+		                    value: '75'
+		                }
+		            ],
+
+		            // You need to configure the image toolbar, too, so it shows the new style
+		            // buttons as well as the resize buttons.
+		            toolbar: [
+		                'imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight',
+		                '|',
+		                'imageResize'
+		                //'|',
+		                //'imageTextAlternative'
+		            ]
+				},
+				table: {
+					contentToolbar: [
+						'tableColumn',
+						'tableRow',
+						'mergeTableCells',
+						'tableCellProperties',
+						'tableProperties'
+					]
+				},
+				licenseKey: '',
+				//plugins: [ SimpleUploadAdapter ],
+		        simpleUpload: {
+		            // The URL that the images are uploaded to.
+		            uploadUrl: '/meetingImageInsert',
+
+		            // Enable the XMLHttpRequest.withCredentials property.
+		            withCredentials: true,		// 기본값
+
+		            // Headers sent along with the XMLHttpRequest to the upload server.
+		            headers: {
+		                'X-CSRF-TOKEN': 'CSRF-Token',				// 기본값
+		                Authorization: 'Bearer <JSON Web Token>',	// 기본값
+		                uploadFolder: 'meetingFile_temp'
+		            }
+		        },
+				mediaEmbed : {
+					previewsInData: true	// 이거 안하면 동영상 표시가 안됨. 
+				}
+				
+			} )
+			.then( editor => {
+				window.editor = editor;		// 기본값
+				//console.log( editor );	// 에디터 객체 전체 정보
+				current_urls = checkImageUrls(editor);
+				//console.log("현재imageURLs:"+current_urls);
+				// ***** 실시간 이미지 삭제 코드 시작 *****
+				editor.model.document.on( 'change:data', (eventInfo) => {
+					//console.log( eventInfo );
+					let after_urls = checkImageUrls(editor);
+				    let deleted_url;
+				    if(current_urls.length > after_urls.length) {
+					    console.log("이미지 삭제됨!");
+						for(let i = 0; i < current_urls.length; i++) {
+							let isChanged = true;
+							for(let j = 0; j < after_urls.length; j++) {
+								if(current_urls[i] === after_urls[j]) {
+									isChanged = false;
+									break;
+								}
+							}
+							if(isChanged) {
+								deleted_url = current_urls[i];
+								//console.log("삭제된URL:"+deleted_url);
+								imageDelete(deleted_url, true);
+								break;
+							}
+						}
+					}
+				    current_urls = after_urls;
+				});
+				// ***** 실시간 이미지 삭제 코드 끝 *****
+			} )
+			.catch( error => {
+				console.error( 'Oops, something went wrong!' );
+				console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
+				console.warn( 'Build id: b5mnviaze78m-31mkvnarb2x6' );
+				console.error( error );
+				
+			} );
+			function checkImageUrls(editor) {
+				return Array.from( new DOMParser().parseFromString( editor.getData(), 'text/html' )
+				.querySelectorAll( 'img' ) )
+				.map( img => img.getAttribute( 'src' ) );	// 현재 editor에 있는 img src들의 배열 저장
+			}
+			// 사용자가 insert한 이미지 삭제 시 비동기 삭제처리를 위한 함수
+			function imageDelete(urls, async){
+				$.ajax({
+					url: "/meetingImageDelete",
+					beforeSend : function(xhr){
+			            xhr.setRequestHeader("uploadFolder", "meetingFile_temp");	// 삭제할 파일위치 정보전달
+			        },
+			        method: "post",
+			    	// string배열 전송용도. default인 false로 보내면 urls[] 로 보내서 컨트롤러의 String[] urls에서 받지못해서 null이 뜬다.
+			        traditional: true,
+			        // 에디터에서 사용자가 직접삭제할때는 비동기방식, 취소버튼으로 나갈때는 동기방식
+			        // 취소버튼으로 나갈때 비동기방식으로 하면 파일이 삭제되기전에 페이지를 나가서 처리가 되지 않는다.		
+			        async: async,
+					data: {urls: urls},
+					success: function(res){
+						
+					}
+				});
+			}
+			/*
 			// 사진 여러장 등록 기능
 			const photoReg = /(.*?)\/(jpg|jpeg|png|bmp|gif)$/;
 				
@@ -186,7 +354,7 @@
 				})
 				return cPhotoCnt;
 			}
-	
+			*/
 		//-----------------------------------------------
 		   const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		    mapOption = {
@@ -434,7 +602,7 @@
 							optionArr[i].selected = true;
 						}
 					}
-					mfJson.forEach(function(mfFile, i) {
+					/*mfJson.forEach(function(mfFile, i) {
 						const imgUrl = "/"+mfFile.mf_path+"/"+mfFile.mf_savename;
 						const req = new XMLHttpRequest();
 						req.open('GET',imgUrl);
@@ -450,11 +618,12 @@
 							alert("에러발생");
 						})	
 					
-					});
+					});*/
 			// 등록 버튼 클릭
 			// 추가완료하기
 			$('#btnEdit').click(function(){
 				console.log('시작');
+				let real_content = editor.getData();
 				if(m_title.value.trim()==''){
 					alert('제목을 입력해주세요.');
 					m_title.focus();
@@ -475,7 +644,8 @@
 					m_locname.focus();
 					return;
 				}
-				if(m_content.value.trim()==''){
+				
+				if($.trim(real_content) == ''){
 					alert('글 내용을 입력해주세요.');
 					m_content.focus();
 					return;
@@ -483,12 +653,14 @@
 				const insertMtForm = document.getElementById('updateMt');
 				const mtFormData = new FormData(insertMtForm); // FormData : key, value값으로 mtFormData에 담아줌
 				mtFormData.set("id",memberId);
+				mtFormData.set("image_urls", current_urls);
+				mtFormData.set("real_content", real_content);
 				
-				uploadFiles.forEach(function(file, idx) {
+				/*uploadFiles.forEach(function(file, idx) {
 					if(file.upload != 'disable'){
 						mtFormData.append('uploadMtFiles',file);
 					}
-				});
+				});*/
 				
 				$.ajax({
 					url: '/user/updateMeeting',
@@ -500,7 +672,13 @@
 						window.location = "/detailMeeting?m_no="+m_no;
 					}
 				});
-			});		
+			});
+
+			$("#btnCancel").click(function(event){
+				event.preventDefault();
+				imageDelete(current_urls, false);
+				location.href = "/detailMeeting?m_no=${mt.m_no }";
+			});
 		}
 	</script>
 </head>
@@ -608,14 +786,17 @@
 				</div>
 				<br><br>
 		       
-				<textarea rows="30" cols="123" name="m_content" id="m_content">${mt.m_content }</textarea><br>		
-				<div id="drop" style="border: 1px solid gray; width: 870px; height: 300px; padding: 3px;">
+				<textarea name="m_content" id="editor"></textarea>
+				<br>		
+				<!--  <div id="drop" style="border: 1px solid gray; width: 870px; height: 300px; padding: 3px;">
 					<div id="thumbnails"></div>
 				</div>
-				<input type="file" name="uploadFile" id="photoInput" multiple="multiple"><br>
+				<input type="file" name="uploadFile" id="photoInput" multiple="multiple">
+				-->
+				<br>
 				<div id="btnDiv">
 					<button type="button" class="btn" id="btnEdit" style="background-color: #eccb6a">수정</button>
-					<button type="reset" class="btn" id="btnCancel" style="background-color: #d0a183">취소</button>
+					<button type="button" class="btn" id="btnCancel" style="background-color: #d0a183">취소</button>
 				</div>
 			</form>
 		</div>

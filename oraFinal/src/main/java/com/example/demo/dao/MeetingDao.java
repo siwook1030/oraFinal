@@ -147,4 +147,8 @@ public class MeetingDao {
 	public int deleteTemp(String id) {
 		return MeetingManager.deleteTemp(id);
 	}
+	
+	public int deleteMfOne(int mf_no) {
+		return MeetingManager.deleteMfOne(mf_no);
+	}
 }
