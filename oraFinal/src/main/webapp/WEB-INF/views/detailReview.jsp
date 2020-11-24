@@ -186,7 +186,6 @@
 								$(".replyContent").children("div").remove();		// 모든 댓글 수정창 제거
 							});
 							$btnMod.click(function(event){		// 댓글 수정
-								alert("수정!")
 								let rr_no = $(this).closest(".replyContent").attr("rr_no");
 								// text는 예전 데이터. val로 해야 현재 수정된 데이터를 가져옴.
 								let rr_content = $(this).siblings("textarea").val();
