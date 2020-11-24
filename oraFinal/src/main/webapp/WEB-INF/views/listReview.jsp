@@ -78,17 +78,17 @@
 		getCourseList();	// List<CourseVo> 받아오기. 코스명으로 게시글 검색용도
 		createInput("id");	// 처음엔 기본으로 id기반 검색으로 설정됨
 
+		$(document).on("click", "#btnSearch", function(){	// 검색버튼 눌렀을때 게시물 목록을 거기에 맞춰서 다시 가져온다.
+			searchType = $("#searchType").val();
+			searchValue = $("#searchValue").val();
+			if(searchType === "r_title" || searchType === "r_content") {
+				searchMethod = $("#searchMethod").val();
+			}
+			getJson();
+		});
+		
 		$("#searchType").change(function(){		// searchType이 바뀔때마다 동적으로 검색기능 생성
 			createInput($(this).val());
-	
-			$(document).on("click", "#btnSearch", function(){	// 검색버튼 눌렀을때 게시물 목록을 거기에 맞춰서 다시 가져온다.
-				searchType = $("#searchType").val();
-				searchValue = $("#searchValue").val();
-				if(searchType === "r_title" || searchType === "r_content") {
-					searchMethod = $("#searchMethod").val();
-				}
-				getJson();
-			});
 		});
 		function createInput(searchType){	// 검색기능 동적으로 생성
 			$("#searchInputWrap").empty();

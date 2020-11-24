@@ -209,4 +209,20 @@ public class ReviewManager {
 		session.close();
 		return re;
 	}
+	public static int deleteRepOne(int rr_no) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.delete("review.deleteRepOne", rr_no);
+		session.commit();
+		session.close();
+		return re;
+	}
+	public static int updateRep(Review_repVo rrvo) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.update("review.updateRep", rrvo);
+		session.commit();
+		session.close();
+		return re;
+	}
 }
