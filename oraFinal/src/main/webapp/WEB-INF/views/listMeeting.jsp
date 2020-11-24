@@ -16,44 +16,29 @@
 	<link rel="stylesheet" href="resources/css/flaticon.css">
 	<link rel="stylesheet" href="resources/css/style.css">
  	<style>
-		.btn {
-			color: white;
-			padding: 8px 12px;
-			background-color: #88BEA6;
-			float: right;
-			font-size: 15px;
-			border: none;
-			cursor: pointer;
-		}
+		.btn { color: white; padding: 8px 12px; background-color: #88BEA6; float: right; font-size: 15px; border: none; cursor: pointer; }
 		/* 글등록버튼 페이징버튼과 공간분리 */
-		.col.text-center * {
-			clear: both;
-			margin-bottom: 20px;
-		}
-		.emptyStr {
-			position: relative;
-			bottom: 130px;
-			left: 70px;
-			color: black;
-			opacity: 0.2;
-		}
+		.col.text-center * { clear: both; margin-bottom: 20px; }
+		.emptyStr { position: relative; bottom: 130px; left: 70px; color: black; opacity: 0.2; }
 		/* 썸네일사진 중앙기준 */
-		#listImg { 
-			position: absolute;
-			left: 50%;
-			top: 50%;
-			height: auto;
-			width: auto;
- 			-webkit-transform: translate(-50%,-50%);
-			-ms-transform: translate(-50%,-50%);
-			transform: translate(-50%,-50%);
-		}
-		.pageUl {
-			border: none;
-		}
-		.btnPrevNext {
-			border: none;
-		}
+		#listImg { position: absolute; left: 50%; top: 50%; height: auto; width: auto; width: 767px;
+		 	-webkit-transform: translate(-50%,-50%); /* 구글, 사파리 */
+			-ms-transform: translate(-50%,-50%); /* 익스플로러 */
+		 	transform: translate(-50%, -50%); }
+		/* 게시글 제목 */
+		.blog-entry .text { height: 500px; /* border: 1px solid orange; */ }
+		.meta.mb-3 { height: 95px; /* border: 1px solid purple */; }
+		.meta.mb-3 div { /* border: 1px solid pink; */ }
+		.metaDiv_1, .metaDiv_2 { width: 100%; }
+		.c_name { display: inline-block; }
+		.nickName { display: inline-block; }
+		.m_regdate { font-size: 13px; display: inline-block; vertical-align: top;  float: right; }
+		.meta-chat { font-size: 14px; display: inline-block; float: right;}
+		.m_timeImg, .m_time { display: inline-block; margin-right: 10px; vertical-align: bottom; font-size: 20px; }
+		.m_timeImg { margin-bottom: 4px; }
+		/* 페이징 */
+		.pageUl { border: none; }
+		.btnPrevNext { border: none; }
 	</style>
 
 	<script type="text/javascript">
@@ -77,7 +62,8 @@
 	               "id": id
 	            },
 	            success: function(map){
-	               //$('#rowDFlex').empty();
+		           console.log(map.list);
+	               $('#rowDFlex').empty();
 	               setPage(map.totRecord);
 	               setList(map.list);
 	               if(map.id !== '%'){
@@ -173,21 +159,21 @@
 				if(data.mf.length!=0) {
 					listImg = $('<img id="listImg"/>').attr('src',"/"+data.mf[0].mf_path+"/"+data.mf[0].mf_savename);
 				} else {
-					listImg = $('<img/>').attr('src',"/meetingImg/empty.png");
+					listImg = $('<img/>').attr('src',"/icons/empty.png");
 					emptyStr = $('<div></div>').html('').addClass('emptyStr'); // 빈화면에 글씨적을 수 있음
 				}
-/* 	            const contentImg = $('<a></a>').addClass('block-20 img').attr("href",'detailMeeting?m_no='+data.m_no).append(listImg, emptyStr);
- */	            const contentImg = $('<a></a>').addClass('block-20 img').attr("href",'detailMeeting?m_no='+data.m_no).append(listImg, emptyStr);
+	            const contentImg = $('<a></a>').addClass('block-20 img').attr("href",'detailMeeting?m_no='+data.m_no).append(listImg, emptyStr);
 
 		        // 게시글 내용
 	            // const m_no = $('<div></div>').html(data.m_no);
-	            const c_nameA = $('<a></a>').html(data.c_name);
-	            const c_name = $('<div></div>').append(c_nameA);
-	            const m_time = $('<div></div>').html(data.m_time);
-	            const nickName_icon = $('<img/>').attr({src : 'rank/'+data.rank_icon, height : '20px'});
-	            const nickNameA = $('<a href="/listMeeting?id='+data.id+'"></a>').html(data.nickName);
-	            const nickName = $('<div></div>').append(nickName_icon, nickNameA);
-	            const m_regdate = $('<div></div>').html(data.m_regdate);
+	            const c_nameA = $('<a href="/detailCourse?c_no='+data.c_no+'"></a>').html(data.c_name);
+	            const c_name = $('<div></div>').append(c_nameA).addClass('c_name');
+	            const m_timeImg = $('<img/>').attr({src : '/meetingImg/calendar.png', height : '30px'}).addClass('m_timeImg');
+	            const m_time = $('<div></div>').html(data.m_time).addClass('m_time');
+	            const nickNameImg = $('<img/>').attr({src : '/rank/'+data.rank_icon, height : '20px'});
+	            const nickNameA = $('<a href="/listMeeting?id='+data.id+'"></a>').html(' '+data.nickName);
+	            const nickName = $('<div></div>').append(nickNameImg, nickNameA).addClass('nickName');
+	            const m_regdate = $('<div></div>').html(data.date_diff_str).addClass('m_regdate');
 	            // const m_hit = $('<div></div>').html(data.m_hit);
 	            const speechImg = $('<span></span>').addClass('fa fa-comment'); // 말풍선
 	            const m_repCnt = $('<div></div>').addClass('meta-chat').append(speechImg, " "+data.m_repCnt); // 말풍선 + 댓글수
@@ -200,8 +186,11 @@
 	            const blog_entryDiv = $('<div></div>').addClass('blog-entry justify-content-end');
 	            const col = $('<div></div>').addClass('col-md-3 d-flex ftco-animate fadeInUp ftco-animated');
 
-	            metaDiv.append(c_name, m_time, nickName, m_regdate, /* m_hit, */ m_repCnt);
-	            textDiv.append(contentImg, metaDiv, m_title);
+	            const metaDiv_1 = $('<div></div>').append(c_name, m_repCnt).addClass('metaDiv_1');
+		        const metaDiv_2 = $('<div></div>').append(nickName, m_regdate /* , m_hit */).addClass('metaDiv_2');
+	            metaDiv.append(metaDiv_1, metaDiv_2);
+	            
+	            textDiv.append(contentImg, m_timeImg, m_time, metaDiv, m_title);
 	            blog_entryDiv.append(textDiv);
 	            col.append(blog_entryDiv);
 
@@ -228,60 +217,37 @@
 	</script>	    
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-      <div class="container">
-         <a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
-        <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
-        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-               <span class="oi oi-menu"></span> Menu
-            </button>
-         
-         <div class="collapse navbar-collapse" id="ftco-nav">
-              <ul class="navbar-nav ml-auto">
-               <c:choose>
-                  <c:when test="${m == null }">
-                     <li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
-                     <li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
-                  </c:when>
-                  <c:when test="${m != null }">
-                     <li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
-                     <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
-                     <li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
-                  </c:when>
-               </c:choose>
-            </ul>
-         </div> 
-
-
-
-
-<%-- 
 	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 		<div class="container">
-			<a class="navbar-brand" href="/mainPage">오늘의 라이딩</a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="oi oi-menu"></span> Menu
-				</button>
+			<a style="font-size: 30px;" class="navbar-brand" href="/mainPage">
+				<span style="font-weight: bold;">
+					<font color="#45A3F5">오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font> <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font>
+				</span>
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="oi oi-menu"></span> Menu
+			</button>
 			
-			<div class="collapse navbar-collapse" id="ftco-nav">
-		        <ul class="navbar-nav ml-auto">
-					<c:choose>
-						<c:when test="${m == null }">
-							<li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
-							<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
-						</c:when>
-						<c:when test="${m != null }">
-							<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
-							<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
-							<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
-						</c:when>
-					</c:choose>
-				</ul>
-			</div> --%>
-
+			<div style="display: block;">
+				<div class="collapse navbar-collapse" id="ftco-nav">
+			        <ul class="navbar-nav ml-auto">
+						<c:choose>
+							<c:when test="${m == null }">
+								<li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
+								<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
+							</c:when>
+							<c:when test="${m != null }">
+								<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
+								<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
+								<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+							</c:when>
+						</c:choose>
+					</ul>
+				</div>      
+	
 				<div class="collapse navbar-collapse" id="ftco-nav">
 					<ul class="navbar-nav ml-auto">
+						<li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
 						<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
 						<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
 						<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
@@ -290,42 +256,42 @@
 					</ul>
 				</div>
 			</div>
-     	</nav>
-    	<!-- END nav -->
+		</div>
+	</nav>
+	<!-- END nav -->	
     
     <section class="hero-wrap hero-wrap-2" style="background-image: url('resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
-          <div class="col-md-9 ftco-animate pb-0 text-center">
-          
-          	<div id="id1">
-	          <p class="breadcrumbs"><span class="mr-2"><a href="mainPage">Home <i class="fa fa-chevron-right"></i></a></span> <span>번개 라이딩 <i class="fa fa-chevron-right"></i></span></p>
-	          <h1 class="mb-3 bread">번개 라이딩</h1>
-            </div>
-            
-            <div id="id2">
-             <span >
-              <h1 class="mb-3 bread">마이페이지</h1>
-            </span>
-            <p class="breadcrumbs">
-              <span class="mr-2">
-                <a href="index.html">Home <i class="fa fa-chevron-right"></i></a>
-              </span>
-              <a href="/myPage">정보 수정 <i class="fa fa-chevron-right"></i></a>
-              <span>
-                <a href="/myPageSaveCourse">찜 목록 <i class="fa fa-chevron-right"></i></a>
-                <a href="/myPageMyCourse">내 작성 코스<i class="fa fa-chevron-right"></i></a>
-                <a href="/myPageListReview">내 작성 후기<i class="fa fa-chevron-right"></i></a>
-                <a href="listMeeting?id=${m.id}">내 작성 번개<i class="fa fa-chevron-right"></i></a>
-                <a href="/myPageMyRank">랭킹</a>
-              </span>
-              </div>
-              
-          </div>
-        </div>
-      </div>
-    </section>
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
+				<div class="col-md-9 ftco-animate pb-0 text-center">
+				
+				<div id="id1">
+					<p class="breadcrumbs"><span class="mr-2"><a href="mainPage">Home <i class="fa fa-chevron-right"></i></a></span> <span>번개 라이딩 <i class="fa fa-chevron-right"></i></span></p>
+					<h1 class="mb-3 bread">번개 라이딩</h1>
+				</div>
+	
+	            <div id="id2">
+					<span>
+						<h1 class="mb-3 bread">마이페이지</h1>
+		            </span>
+					<p class="breadcrumbs">
+						<span class="mr-2">
+		                	<a href="index.html">Home <i class="fa fa-chevron-right"></i></a>
+						</span>
+						<a href="/myPage">정보 수정 <i class="fa fa-chevron-right"></i></a>
+						<span>
+			                <a href="/myPageSaveCourse">찜 목록 <i class="fa fa-chevron-right"></i></a>
+			                <a href="/myPageMyCourse">내 작성 코스<i class="fa fa-chevron-right"></i></a>
+			                <a href="/myPageListReview">내 작성 후기<i class="fa fa-chevron-right"></i></a>
+			                <a href="listMeeting?id=${m.id}">내 작성 번개<i class="fa fa-chevron-right"></i></a>
+			                <a href="/myPageMyRank">랭킹</a>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 
 	<section class="ftco-section">
 		<div class="container">

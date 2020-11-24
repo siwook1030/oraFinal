@@ -36,7 +36,7 @@
   </select>
   
   <select id="detailNotice" resultType="noticeVo">
-    SELECT n_no,n.code_value,code_name,n_title,n_content,TO_CHAR(n_regdate,'yyyy.mm.dd hh:mi'),
+    SELECT n_no,n.code_value,code_name,n_title,n_content,TO_CHAR(n_regdate,'yyyy.mm.dd hh:mi') n_regdate,
     n_hit FROM NOTICE n, CODE c WHERE n.CODE_VALUE = c.CODE_VALUE AND N_NO=#{N_NO}
   </select>
   

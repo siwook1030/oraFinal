@@ -17,10 +17,6 @@
 	<link rel="stylesheet" href="/resources/css/style.css">
 <style type="text/css">
 	/*매인섹션 시작----------------  */
-	section {
-		margin: 0 auto; width: 1000px; text-align: left; padding: 50px;
-	}
-	
 	.bicycleInfo { 
 	margin: 0 0 0 8px;
 	padding: 10px; 
@@ -37,7 +33,9 @@
 	#courseForm {
 		width: 100%;
 	}
-	
+	#sPTStation, #ePTStation {
+		width: 300px;
+	}
 	/*매인섹션 끝 ------------------*/
 
 	/*float 초기화 아이디*/
@@ -67,7 +65,7 @@
 	/* 게시판 인덱스 제외 전체 */
 	#contents { border: 1px solid #D5D5D5; padding: 60px; margin: 50px 0 100px; width: 100%; }
 	/* 코스이름 만들기 */
-	#courseName { border: none; border-bottom: 1px solid gray; margin: 10px; width: 880px; height: 50px; margin: 20px 0 30px; font-size: 30px; }
+	#courseName { border: none; border-bottom: 1px solid gray; margin: 10px; width: 90%; height: 50px; margin: 20px 0 30px; font-size: 30px; }
 	/* 지도 3 */
 	#map, #mapPS, #mapPE { width: 100%; height: 470px; font-family: 'Malgun Gothic',dotum,'돋움',sans-serif; font-size: 12px; margin: 0 0 10px; }
 	/* 등록, 미리보기 버튼 */
@@ -81,15 +79,19 @@
  	#rankViewTitle { display: block; padding-bottom: 10px; }
  	.rankView { display: inline-block; width: 15%; text-align: center; padding: 20px 20px 10px;}
  	.rankView img { width: 35px; align: center; padding-bottom: 3px; }
- 	input { padding: 4px 0; margin-bottom: 3px; border: none; }
+ 	input {  padding: 4px 0; margin-bottom: 3px; border: none; }
  	/* 첨부파일버튼 */
  	.readFilebox label {position:relative; right:30px;  margin: 3px 0; padding: 5px 15px; color: white; font-size: 15px; vertical-align: middel; background-color: #88BEA6; cursor: pointer; text-align: center; }
 	.readFilebox input[type="file"] { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; border: 0; }
  	.filebox label { position:relative; bottom:25px; left:20px;  color: #747474; font-size: 15px; vertical-align: middel; background-color: white; cursor: pointer; text-align: center; }
 	.filebox input[type="file"] { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; border: 0; }
-	#courseNameCnt { position: relative; left: 820px; bottom: 55px; }
-	#wordsCnt { position: relative; left: 790px; bottom: 55px; font-size: 13px; }
 	#wordsDiv, #thumbnailsDiv { padding: 20px 3px; border: 1px solid gray; border-radius: 10px; text-align: center; margin-bottom: 30px; }
+	
+	.textFont{
+		font-size: 110%;
+		font-weight: bold;
+	}
+
 </style>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -105,6 +107,7 @@ window.onload = function(){
 	const elat =  document.getElementById("elat");
 	const elon =  document.getElementById("elon");
 	const eLoc =  document.getElementById("eLoc");
+	const tag = document.getElementById("tag");
 	const words = document.getElementById("words");
 	const firstView =  document.getElementById("firstView");
 	const secondView =  document.getElementById("secondView");
@@ -135,11 +138,13 @@ window.onload = function(){
 
 ////////////////////////////////////////////////////////////// 변수선언끝 	
 	const courseNameCnt = document.getElementById("courseNameCnt");  // 10자
+	const courseTagCnt = document.getElementById("courseTagCnt");  // 15자
 	const wordsCnt = document.getElementById("wordsCnt");  // 3000자
 	const sPTStationCnt = document.getElementById("sPTStationCnt"); // 14자
 	const ePTStationCnt = document.getElementById("ePTStationCnt"); // 14자
 
 	const courseNameMaxCnt = 10;
+	const courseTagMaxCnt = 15;
 	const wordsMaxCnt = 3000;
 	const stationMaxCnt = 14;
 	
@@ -148,6 +153,12 @@ window.onload = function(){
 	});
 	courseName.addEventListener("keyup", function(e) {
 		textCount(e.target, courseNameCnt, courseNameMaxCnt);
+	});
+	tag.addEventListener("keydown", function(e) {
+		textCount(e.target, courseTagCnt, courseTagMaxCnt);
+	});
+	tag.addEventListener("keyup", function(e) {
+		textCount(e.target, courseTagCnt, courseTagMaxCnt);
 	});
 	words.addEventListener("keydown", function(e) {
 		textCount(e.target, wordsCnt, wordsMaxCnt);
@@ -965,7 +976,7 @@ const mNickName = checkM.item.nickName;
 	    }
 	   
 	}
-	////////////-------------------------------바이크루트
+	////////////-------------------------------바이크루트 
 	const bike = document.getElementById("bike");
 	const bikeFile = document.getElementById("bikeFile");
 	bike.addEventListener("click", function(e) {
@@ -1031,6 +1042,11 @@ const mNickName = checkM.item.nickName;
 			reader.readAsText(file, "UTF-8");
 
 	})
+	
+	bikeFile.addEventListener("change", function(e) {  // 파일을 선택해서 로드할 시 경로만들기 자동로 눌러 경로를 만든다
+		bike.click();
+	});
+	
 	/////////----------------------------- 고도 차트 함수
 	google.charts.load('current', {'packages':['corechart']});
 	google.charts.setOnLoadCallback(drawAltitude);
@@ -1050,6 +1066,7 @@ const mNickName = checkM.item.nickName;
 
         const chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
         chart.draw(data, options);
+        window.addEventListener("resize",drawAltitude,false);
       }
 //////////////////////////////////////////////////////// 파일드랍기능 구현
 	const photoReg = /(.*?)\/(jpg|jpeg|png|bmp)$/;
@@ -1139,7 +1156,7 @@ const mNickName = checkM.item.nickName;
 	function mouseOut() {
 		gallery.src="../meetingImg/galleryOff.png";
 	}
-	//------------ 지하철역정보 셋팅
+	//------------ 지하철역정보 셋팅 실패함... 안됨
 	/*
 	$.ajax({
 		url: "/publictransport/sub.json",
@@ -1450,7 +1467,8 @@ const mNickName = checkM.item.nickName;
 		const cname = courseName.value.trim();
 		const fixCVal = fixC.getAttribute("val");
 		const fixPSVal = fixPS.getAttribute("val");
-		const fixPEVal = fixPE.getAttribute("val");		
+		const fixPEVal = fixPE.getAttribute("val");
+		const ctag = tag.value.trim();		
 		const fView = firstView.options[firstView.selectedIndex].value;	
 		const cDiff = diff.options[diff.selectedIndex].value;	
 		const cwords = words.value.trim();
@@ -1463,8 +1481,11 @@ const mNickName = checkM.item.nickName;
 		const cPhotoCnt = cPhotoNumCheck();
 		
 		const krengAvail = /^[가-힣a-zA-Z\s]{2,10}$/;
+		const krsharpAvail = /^[가-힣#\s]{2,15}$/;
 		const krengnumAvail = /^[가-힣a-zA-Z0-9\s]{2,14}$/;
+		
 		const cnameCheck = krengAvail.test(cname);
+		const tagCheck = krsharpAvail.test(ctag);
 		const sPTStCheck = krengnumAvail.test(sPTSt);
 		const ePTStCheck = krengnumAvail.test(ePTSt);
 
@@ -1487,46 +1508,93 @@ const mNickName = checkM.item.nickName;
 
 		if(cname == ''){
 			alert("페이지 상단의 코스명을 입력한 후 진행해주세요.");
+			courseName.focus();
 			return 1;
 		}
 		if(cnameCheck == false){
 			alert("코스명의 형식이 유효하지 않습니다(한글 또는 영문자 2~10자).");
+			courseName.focus();
 			return 1;
 		}
 		if(cnameDupCheck() == "1"){
 			alert("중복된 코스명입니다. 다른 코스명을 입력해주세요");
+			courseName.focus();
 			return 1;
 		}  
-		if(fixCVal != "n" || fixPSVal != "n" || fixPEVal != "n"){
+		if(fixCVal != "n"){
 			alert("코스만들기의 가져오기를 누른 후 진행해주세요.");
+			mapContainer.scrollIntoView();
+			return 1;
+		}
+		if(fixPSVal != "n"){
+			alert("출발점 대중교통 코스만들기의 가져오기를 누른 후 진행해주세요.");
+			mapContainerPS.scrollIntoView();
+			return 1;
+		}
+		if( fixPEVal != "n"){
+			alert("도착점 대중교통 코스만들기의 가져오기를 누른 후 진행해주세요.");
+			mapContainerPE.scrollIntoView();
+			return 1;
+		}
+		if(ctag == ""){
+			alert("코스 #태그를 입력해주세요.");
+			tag.focus();
+			return 1;
+		}
+		if(tagCheck == false){
+			alert("코스 #태그 형식히 유효하지 않습니다(한글,특수문자는#만 허용됩니다).");
+			tag.focus();
 			return 1;
 		}
 		if(fView == 0){
 			alert("코스풍경을 선택 후 진행해주세요.");
+			firstView.focus();
 			return 1;
 		}
 		if(cDiff == 0){
 			alert("코스난이도를 선택 후 진행해주세요.");
+			diff.focus();
 			return 1;
 		}
 		if(cwords == ''){
 			alert("코스상세설명을 입력 후 진행해주세요.");
+			words.focus();
 			return 1;
 		}
-		if(sPTVal ==0 || ePTVal==0 ){
-			alert("대중교통을 선택한 후 진행해주세요.");
+		if(sPTVal ==0){
+			alert("출발점 대중교통을 선택한 후 진행해주세요.");
+			sPT.focus();
 			return 1;
 		}
-		if(sPTSt =='' || ePTSt == '' ){
-			alert("대중교통역 이름을 입력 후 진행해주세요.");
+		if(sPTSt =='' ){
+			alert("출발점 대중교통역 이름을 입력 후 진행해주세요.");
+			sPTStation.focus();
 			return 1;
 		}
-		if(sPTStCheck == false || ePTStCheck == false ){
-			alert("대중교통역 이름의 형식이 유효하지 않습니다(한글,영문자,숫자 2~14자)");
+		if(sPTStCheck == false){
+			alert("출발점 대중교통역 이름의 형식이 유효하지 않습니다(한글,영문자,숫자 2~14자)");
+			sPTStation.focus();
+			return 1;
+		}
+		
+		if( ePTVal==0 ){
+			alert("도착점 대중교통을 선택한 후 진행해주세요.");
+			ePT.focus();
+			return 1;
+		}
+		if(ePTSt == '' ){
+			alert("도착점 대중교통역 이름을 입력 후 진행해주세요.");
+			ePTStation.focus();
+			return 1;
+		}
+		if(ePTStCheck == false ){
+			alert("도착점 대중교통역 이름의 형식이 유효하지 않습니다(한글,영문자,숫자 2~14자)");
+			ePTStation.focus();
 			return 1;
 		}
 		if(cPhotoCnt < 5){
 			alert("코스사진은 최소5장 이상 업로드해야 합니다");
+			photoInput.focus();
 			return 1;
 		}
 
@@ -1536,6 +1604,7 @@ const mNickName = checkM.item.nickName;
 	function getCourseData(){  // 미리보기,등록할때 데이터를 전달할 함수		
 
 		courseName.value = courseName.value.trim();
+		tag.value = tag.value.trim();
 		words.value =  words.value.trim();
 		sPTStation.value = sPTStation.value.trim();
 		ePTStation.value = ePTStation.value.trim();
@@ -1548,6 +1617,16 @@ const mNickName = checkM.item.nickName;
 		if(sLocName != eLocName){
 			c_loc += eLocName;
 		}
+
+		const c_tags = [];
+		const ttt = [];
+		const tagArr = tag.value.split("#");
+		tagArr.forEach(function(t, i) {
+			ttt.push(t);
+			if(t != ""){
+				c_tags.push(t);
+			}
+		});		
 
 		const c_views = [];
 		if(firstView.value != "0"){
@@ -1579,6 +1658,7 @@ const mNickName = checkM.item.nickName;
 		formData.set("id", mId);
 		formData.set("c_view", c_view);
 		formData.set("c_views", c_views);
+		formData.set("c_tags", c_tags);
 		formData.set("pt_stationPS", pt_stationPS);
 		formData.set("pt_stationPE", pt_stationPE);
 		formData.set("pt_imgPS", pt_imgPS);
@@ -1593,10 +1673,12 @@ const mNickName = checkM.item.nickName;
 		return formData;
 	}
 	
-	document.getElementById("previewMakingCourse").addEventListener("click", function(e) {
+	document.getElementById("previewMakingCourse").addEventListener("click", function(e) { // 미리보기 실행함수
 		const fixCVal = fixC.getAttribute("val");
+
 		if(fixCVal != "n"){
 			alert("상단 첫 코스 가져오기를 실행해야만 미리보기를 볼 수 있습니다.");
+			mapContainer.scrollIntoView(top);
 			return;
 		}
 	
@@ -1615,7 +1697,7 @@ const mNickName = checkM.item.nickName;
 		})
 	});
 
-	document.getElementById("regCourse").addEventListener("click", function(e) {
+	document.getElementById("regCourse").addEventListener("click", function(e) { // 코스등록 함수
 		const check = preCheck();
 		if(check == 1){
 			return;
@@ -1656,12 +1738,12 @@ const mNickName = checkM.item.nickName;
       <div class="container">
          <a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
         <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
-        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></a>
+        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font></span></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                <span class="oi oi-menu"></span> Menu
             </button>
-         
-         <div class="collapse navbar-collapse" id="ftco-nav">
+       <div style="display: block;">
+         <div class="collapse navbar-collapse" id="ftco-nav" style="height: 20px;">
               <ul class="navbar-nav ml-auto">
                <c:choose>
                   <c:when test="${m == null }">
@@ -1677,7 +1759,7 @@ const mNickName = checkM.item.nickName;
             </ul>
          </div>      
 
-         <div class="collapse navbar-collapse" id="ftco-nav">
+         <div class="collapse navbar-collapse" id="ftco-nav" style="height: 40px;">
            <ul class="navbar-nav ml-auto">
              <li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
              <li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
@@ -1689,6 +1771,7 @@ const mNickName = checkM.item.nickName;
            </ul>
          </div>
        </div>
+      </div>
    </nav>
     <!-- END nav -->
 	<section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
@@ -1696,7 +1779,7 @@ const mNickName = checkM.item.nickName;
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate pb-0 text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="#">오늘의 라이딩<i class="fa fa-chevron-right"></i></a></span> <span>메이킹 코스<i class="fa fa-chevron-right"></i></span></p>
+          	<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">오늘의 라이딩<i class="fa fa-chevron-right"></i></a></span> <span>메이킹 코스<i class="fa fa-chevron-right"></i></span></p>
             <h1 class="mb-3 bread">메이킹 코스</h1>
           </div>
         </div>
@@ -1710,8 +1793,10 @@ const mNickName = checkM.item.nickName;
 	
 	<div id="contents">
 		<form id="courseForm">
+		<div>		
 			<input type="text" name="c_name"  id="courseName" maxlength="10" placeholder="나만의 코스에 이름을 붙여주세요.">
 			<span id="courseNameCnt"></span>
+		</div>
 			
 			<div id="map"></div>
  			
@@ -1735,7 +1820,7 @@ const mNickName = checkM.item.nickName;
 	  		</div>
 	  		<!-- p지워도 되는지? -->
 			<p>
-				<div class="readFilebox" style="position: relative; left: 720px; z-index: 2;">
+				<div class="readFilebox" style="text-align:right;  position: relative; z-index: 2;">
 					<label for="bikeFile">경로파일 불러오기</label>
 					<input type="file" value="경로파일" id="bikeFile"><br>
 				</div>
@@ -1764,9 +1849,11 @@ const mNickName = checkM.item.nickName;
 			<!-- 경도 --> <input type="hidden" id="elon" name="c_e_longitude" value="0" readonly="readonly">
 			<!-- 도착지 --> <input type="text" id="eLoc" name="c_e_locname" readonly="readonly" size="50" placeholder="도착지 주소가 입력됩니다."><br>
 			
-			<!-- 거리 -->거리 <input type="text"  id="dis" name="c_distance" value="0" readonly="readonly">km<br>
-			<!-- 시간 -->시간 <input type="text" id="time" name="c_time" value="0" readonly="readonly">분<br>
+			<!-- 거리 --><span class="textFont">거리</span> <input type="text"  id="dis" name="c_distance" value="0" readonly="readonly"> km<br>
+			<!-- 시간 --><span class="textFont">시간</span> <input type="text" id="time" name="c_time" value="0" readonly="readonly"> 분<br>
 			<!-- 난이도 -->
+			<div>
+			<label for="diff" class="textFont">코스난이도 </label>
 			<select id="diff" name="c_difficulty">
 				<option value="0">--난이도 선택--</option>
 				<option value="1">쉬움</option>
@@ -1774,9 +1861,13 @@ const mNickName = checkM.item.nickName;
 				<option value="3">어려움</option>
 				<option value="4">매우 어려움</option>
 			</select>
-			<br>
+			</div>
+			<div>
+			<label for="tag" class="textFont">#태그 </label>
+			 <input type="text" name="c_tag" id="tag" maxlength="15" placeholder=" ex) #가을#축제#힐링" style="width: 300px;"> <span id="courseTagCnt"></span>
+			</div>
 			<div id="rankViewAll">
-				<div id="rankViewTitle">어울리는 풍경을 지정해주세요.</div>
+				<div id="rankViewTitle" class="textFont">어울리는 풍경을 지정해주세요.</div>
 				<div class="rankView">
 					<!-- 1순위 -->
 					<img src="../courseMaking/finger_1.png"><br>
@@ -1817,19 +1908,22 @@ const mNickName = checkM.item.nickName;
 			</div>
 			
 			<!-- 코스 설명 -->
-			<div id="wordsDiv">코스에 대해서 간단히 설명해주세요.
-				<textarea rows="20" cols="100" id="words" name="c_words" maxlength="3000" placeholder="ex) 시원한 강과함께 들판을 나란히 두고 라이딩하는..." style="border: none; width: 840px; padding: 10px 5px 0 5px;"></textarea>
+			<div id="wordsDiv" class="textFont">코스에 대해서 간단히 설명해주세요.
+				<textarea rows="20" cols="30" id="words" name="c_words" maxlength="3000" placeholder="ex) 시원한 강과함께 들판을 나란히 두고 라이딩하는..." style="resize:none; border: none; width:80%;  padding: 10px 5px 0 5px;"></textarea>
+				<div style="text-align: right; padding-right: 130px; height: 50px;">
+					<span id="wordsCnt"></span>
+				</div>
 			</div>
-			<span id="wordsCnt"></span>
+			
 			
 			<!-- 코스 사진 -->
 
-			<div id="thumbnailsDiv">사진을 등록해주세요.
+			<div id="thumbnailsDiv" class="textFont">사진을 등록해주세요.
 				<div id="drop" style="width: 865px; height: 300px; padding: 3px;">
 					<div id="thumbnails"></div>
 				</div>
 			</div><br>
-			<div class="filebox" style="position: relative; bottom: 90px; left: 770px;">
+			<div class="filebox" style="position: relative; bottom: 100px; text-align: right; margin: 0 40px 0 0;">
 				<label for="photoInput"><img src="../meetingImg/galleryOff.png" title="사진등록" id="gallery" width="50px"/></label>
 				<input type="file" id="photoInput" multiple="multiple">
 			</div>
@@ -1852,21 +1946,29 @@ const mNickName = checkM.item.nickName;
 			<!-- 대중교통위치 -->
 			<!-- 위도 --> <input type="hidden" id="latPS" name="pt_latitudePS" value="0" readonly="readonly">
 			<!-- 경도 --> <input type="hidden" id="lonPS" name="pt_longitudePS" value="0" readonly="readonly">
-			거리 <input type="text" id="disPS" name="pt_distancePS" value="0" readonly="readonly">km<br>
+			<div>
+			<label for="disPS" class="textFont">거리 </label>
+			<input type="text" id="disPS" name="pt_distancePS" value="0" readonly="readonly"> km
+			</div>
+			<div>
+			<label for="sPT" class="textFont">대중교통 </label>
 			<select id="sPT" name="pt_imgPS">
 				<option value="(입력안함)">--대중교통선택--</option>
 				<option value="지하철">지하철</option>
 				<option value="시내버스">시내버스</option>
 				<option value="고속버스">고속버스</option>
 				<option value="기차">기차</option>
-			</select><br>
-			역이름 <input type="text" id="sPTStation"  name="pt_stationPS" maxlength="14" placeholder="ex)신촌역,신촌오거리.."><span id="sPTStationCnt"></span>
-			<br>
+			</select>
+			</div>
+			<div>
+			<label for="sPTStation" class="textFont">역이름 </label>
+			 <input type="text" id="sPTStation"  name="pt_stationPS" maxlength="14" placeholder="ex)2호선 신촌역, 신촌오거리역.."> <span id="sPTStationCnt"></span>
+			</div>
 			<!-- 대중교통출발 선경로 -->
 			<div style="display: none;">
 				<textarea rows="10" cols="80" id="linePS" name="pt_linePS" readonly="readonly"></textarea>
 			</div>
-			<br><br><br>
+			<div style="margin-top: 50px;"></div>
 			
 			
 			
@@ -1887,16 +1989,24 @@ const mNickName = checkM.item.nickName;
 			<!-- 대중교통위치 --> 
 			<!-- 위도 --> <input type="hidden" id="latPE" name="pt_latitudePE" value="0" readonly="readonly">
 			<!-- 경도 --> <input type="hidden" id="lonPE" name="pt_longitudePE" value="0" readonly="readonly">
-			거리 <input type="text" id="disPE" name="pt_distancePE" value="0" readonly="readonly">km<br>
+			<div>
+			<label for="disPE" class="textFont">거리 </label>
+			 <input type="text" id="disPE" name="pt_distancePE" value="0" readonly="readonly"> km
+			</div>
+			<div>
+			<label for="ePT" class="textFont">대중교통 </label>
 			<select id="ePT" name="pt_imgPE">
 				<option value="(입력안함)">--대중교통선택--</option>
 				<option value="지하철">지하철</option>
 				<option value="시내버스">시내버스</option>
 				<option value="고속버스">고속버스</option>
 				<option value="기차">기차</option>
-			</select><br>
-			역이름 <input type="text" id="ePTStation" name="pt_stationPE" maxlength="14" placeholder="ex)신촌역,신촌오거리.."><span id="ePTStationCnt"></span>
-			<br>
+			</select>
+			</div>
+			<div>
+			<label for="ePTStation" class="textFont">역이름 </label>
+			 <input type="text" id="ePTStation" name="pt_stationPE" maxlength="14" placeholder="ex)2호선 신촌역, 신촌오거리역.."> <span id="ePTStationCnt"></span>
+			</div>
 			
 			<!-- 대중교통도착 선경로 -->
 			<div style="display: none;">
@@ -1910,6 +2020,7 @@ const mNickName = checkM.item.nickName;
 				<button type="button" class="btnAdd" id="regCourse" style="background-color: #d0a183">등록</button>
 			</div>
 			</div>
+		</div>
 		</section>
 		
 		<footer class="ftco-footer ftco-section">

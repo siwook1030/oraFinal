@@ -19,6 +19,16 @@
 <style type="text/css">
 
    /*매인섹션부분css------------ ----------------*/
+  .cInfoIcon {
+   	width: 20px;
+   }
+   
+    .cViewIcon {
+   	width: 34px;
+   }
+   .cPtIcon{
+   	width: 32px;
+   }
    
    #detailMap {
   	text-align: center;
@@ -73,9 +83,9 @@
    	
    	color : 00FFFF;
    	font-weight : bold;
-    border-top : 2px #bae4f0 solid;
+    border-top : 2px #d0a183 solid;
    	border-bottom: 1px #EBEBEB solid;
-   	background-color: #F5FFFF;
+   	background-color: #f4dfcf;
    }
     #course-summury-table tbody{
     	border-bottom: 1px #EBEBEB solid;
@@ -91,18 +101,21 @@
 		
 	}
 	#transportS{
-		border: solid 1px white;
 		margin-left:50px;
 		width : 80%;
 		height: 300px;
 	}
 	#transportE{
-		border: solid 1px white;
 		margin-left:50px;
 		width : 80%;
 		height: 300px;
 
 	}
+	
+	.pt-summury{
+		margin-top: 35px;
+	}
+	
 	#addInfo{
 		border: solid 1px white;
 		width: 70%;
@@ -118,7 +131,49 @@
 	.property-wrap .img {
 		height: 350px;
 	}
+	.nav-link active, .nav-link {
+		font-weight: bold;
+	}
 	
+	.nav-link:hover, .nav-link:focus{
+		background: #f4dfcf;
+   		 color: white; 
+	}
+	
+	.tagA {
+		margin-left: 5px;
+	}
+	
+   .tagA:hover, .tagA:focus {
+    background: #c8572d;
+    color: #fff; 
+    font-weight: bold;
+    }
+    
+    .search-place:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: '';
+    background: none;
+    opacity: 0;
+    z-index: -1;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    transition: all 0.3s ease; }
+    
+    #desc span{
+    	font-size: 20px;
+    }
+    
+     .search-place:hover .desc span {
+    background: #d8572d;
+    color: #fff; }
+
    /*메인섹션 끝css--------------------------*/
    /*float 초기화 아이디*/
    #clear{
@@ -1010,7 +1065,33 @@ document.addEventListener("DOMContentLoaded", function(){
       	<div class="row justify-content-center">
       		<div class="col-md-12">
       			<div class="property-details">
-		 			<div><a href="#" id="nSaveCoruse" title="코스 찜하기" ><img src="/detailCourseImg/nfavor.png" width="50px" height="50px"><i></i></a></div>	 			
+      			
+      			<c:if test="${not empty uploadFilesName}">
+      				<div class="ftco-animate">
+						<a class="search-place img" style="background-image: url(/previewPhoto/${uploadFilesName[0]});">	
+							<div class="desc" id="desc">
+								<span>${c.c_loc}</span> <span>${c.c_view}</span> <br><span>${c.c_tag}</span>		
+							</div>
+							<div class="desc" style="text-align: right;">
+								<img id="ySaveCoruse"  title="코스 찜하기" src="/detailCourseImg/yfavor.png" width="50px" height="50px" style="cursor: pointer;">
+							</div>
+						</a>
+					</div>
+				</c:if>
+				
+				<c:if test="${empty uploadFilesName }">
+      				<div class="ftco-animate">
+						<a class="search-place img" style="background-image: url(/coursePhoto/empty.png);">	
+							<div class="desc" id="desc">
+								<span>${c.c_loc}</span> <span>${c.c_view}</span> <br><span>${c.c_tag}</span>		
+							</div>
+							<div class="desc" style="text-align: right;">
+								<img id="ySaveCoruse"  title="코스 찜하기" src="/detailCourseImg/yfavor.png" width="50px" height="50px" style="cursor: pointer;">
+							</div>
+						</a>
+					</div>
+				</c:if>
+		
       	<div id="detailMap">
   		<div class="map_wrap">
   		<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
@@ -1067,6 +1148,11 @@ document.addEventListener("DOMContentLoaded", function(){
       				<div class="text" style="margin-top: 20px;">
       					<span class="subheading" style="margin-left: 10px;">made by ${c.nickName }</span>
       					<h2>${c.c_name}</h2>
+      				</div>
+      				<div>
+      					<c:forEach var="t" items="${c.c_tags }">
+      						<a class="tagA" href="#">#${t}</a>
+      					</c:forEach>
       				</div>
       			</div>
       		</div>
@@ -1125,7 +1211,7 @@ document.addEventListener("DOMContentLoaded", function(){
 							  					</td>
 							  					<td>
 							  					<c:forEach var="v" items="${c.c_views }">
-							  						<img src="/courseViewImg/${v}.png">&nbsp;
+							  						<img class="cViewIcon" src="/courseViewImg/${v}.png">&nbsp;
 							  					</c:forEach>		
 							  					</td>
 							  				</tr>
@@ -1145,7 +1231,7 @@ document.addEventListener("DOMContentLoaded", function(){
 									<div id="courseWordsTitle" style="margin-bottom: 20px; font-size: 110%;">
 										<span style="text-decoration: underline;">&nbsp;&nbsp;${c.c_name } 코스만의&nbsp;&nbsp;'<span style="color: #eccb6a;font-weight: bold;">갬</span><span style="color: #c8572d; font-weight: bold; ">성</span>' 포인트&nbsp;&nbsp;&nbsp;</span>
 									</div>
-									<div id="courseWordsContent" style="font-size: 90%; white-space:pre;">${c.c_words }</div>
+									<div id="courseWordsContent" style=" white-space: pre-wrap;">${c.c_words }</div>
 					  			</div>
 					  		 </div>
 						    </div>
@@ -1158,7 +1244,7 @@ document.addEventListener("DOMContentLoaded", function(){
 							     	 <div class="row ftco-animate">
 							     	  <div class="col-md-12">
 	           							 <div class="carousel-properties owl-carousel">
-								  		<c:if test="${uploadFilesName != null }">
+								  		<c:if test="${not empty uploadFilesName }">
 								  			<c:forEach var="p" items="${uploadFilesName }">
 									  			 <div class="item" style="height: 400px;">
 	               									 <div class="property-wrap ftco-animate" style="height: 400px;">
@@ -1182,19 +1268,19 @@ document.addEventListener("DOMContentLoaded", function(){
 						     <div  class="addInfoTitle">출발점</div>
 								<div id="transportS">
 						  			<div style="width: 100%; margin-top: 10px;">
-						  				<div style="float: left;  border: solid 1px gray;  height:300px; width: 30%; text-align: center;">
-						  				<div><strong>${c.c_s_locname }</strong></div>
+						  				<div style="float: left; height:300px; width: 30%; text-align: center;">
+						  				<div class="pt-summury"><strong>${c.c_s_locname }</strong></div>
 						  				<c:forEach var="t" items="${ptList }">
 						  					<c:if test="${t.code_value=='00201' }">
-						  						<div><img src="publictransport/${t.pt_img }">&nbsp;${t.pt_station } ▷▷ 출발점</div>
-						  						<div><img src="/detailCourseImg/disArrow.png"> ${t.pt_distance }km&nbsp;
-						  						<img src="/detailCourseImg/run.png"><fmt:formatNumber value="${t.pt_distance/5*60+1 }" pattern=".0" />분&nbsp;&nbsp;
-						  						<img src="/detailCourseImg/bicycle.png">&nbsp;<fmt:formatNumber value="${t.pt_distance/20*60+1 }" pattern=".0" />분
+						  						<div class="pt-summury"><img class="cPtIcon" src="publictransport/${t.pt_img }">&nbsp;${t.pt_station } ▷▷ 출발점</div>
+						  						<div class="pt-summury"><img class="cInfoIcon" src="/detailCourseImg/disArrow.png"> ${t.pt_distance }km&nbsp;
+						  						<img class="cInfoIcon" src="/detailCourseImg/run.png"><fmt:formatNumber value="${t.pt_distance/5*60+1 }" pattern=".0" />분&nbsp;&nbsp;
+						  						<img class="cInfoIcon" src="/detailCourseImg/bicycle.png">&nbsp;<fmt:formatNumber value="${t.pt_distance/20*60+1 }" pattern=".0" />분
 						  						</div>
 						  					</c:if>
 						  				</c:forEach>
 						  				</div>
-						  				<div id="PSmap" style=" border: solid 1px black; height:300px; width: 1px%;">
+						  				<div id="PSmap" style=" height:300px; width: 1px%;">
 						  				</div>
 						  			</div>
 						  		</div>
@@ -1204,19 +1290,19 @@ document.addEventListener("DOMContentLoaded", function(){
 						  		<div class="addInfoTitle">도착점</div>
 						  		<div id="transportE">
 						  			<div style="width: 100%; margin-top: 10px;">
-						  				<div style="float: left;  border: solid 1px gray;  height:300px; width: 30%; text-align: center;">
-						  				<div><strong>${c.c_e_locname }</strong></div>
+						  				<div style="float: left;   height:300px; width: 30%; text-align: center;">
+						  				<div class="pt-summury"><strong>${c.c_e_locname }</strong></div>
 						  				<c:forEach var="t" items="${ptList }">
 						  					<c:if test="${t.code_value=='00202' }">
-						  						<div><img src="publictransport/${t.pt_img }">&nbsp;${t.pt_station } ▷▷ 출발점</div>
-						  						<div><img src="/detailCourseImg/disArrow.png"> ${t.pt_distance }km&nbsp;
-						  						<img src="/detailCourseImg/run.png"><fmt:formatNumber value="${t.pt_distance/5*60+1 }" pattern=".0" />분&nbsp;&nbsp;
-						  						<img src="/detailCourseImg/bicycle.png">&nbsp;<fmt:formatNumber value="${t.pt_distance/20*60+1 }" pattern=".0" />분
+						  						<div class="pt-summury"><img class="cPtIcon" src="publictransport/${t.pt_img }">&nbsp;${t.pt_station } ▷▷ 출발점</div>
+						  						<div class="pt-summury"><img class="cInfoIcon" src="/detailCourseImg/disArrow.png"> ${t.pt_distance }km&nbsp;
+						  						<img class="cInfoIcon" src="/detailCourseImg/run.png"><fmt:formatNumber value="${t.pt_distance/5*60+1 }" pattern=".0" />분&nbsp;&nbsp;
+						  						<img class="cInfoIcon" src="/detailCourseImg/bicycle.png">&nbsp;<fmt:formatNumber value="${t.pt_distance/20*60+1 }" pattern=".0" />분
 						  						</div>
 						  					</c:if>
 						  				</c:forEach>
 						  				</div>
-						  				<div id="PEmap" style=" border: solid 1px black; height: 300px;width: 1px%;">
+						  				<div id="PEmap" style=" height: 300px;width: 1px%;">
 						  				</div>
 						  			</div>
 						  		</div>

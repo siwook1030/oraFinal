@@ -34,69 +34,7 @@
 	   	font-family: 'NEXON Lv1 Gothic Low OTF';
 	   	text-align: center;*/
    }
-   #recommendCourse{
-   		margin-top: 20px;
-   		text-align: center;
-   }
-    #rcTitle{
-	border-bottom : solid 1px gray;
-   	font-size : 110%;
-   	width : 40%;
-   	padding-bottom : 5px;
-   	color: gray;
-   	margin-left: auto; 
-   	margin-right: auto;
-   }
-   #rcList{
-   	width: 100%;
-   }
-	
-	#rcBox{
-		display: inline-table;
-		width: 20%;
-		height: 200px;
-		margin: 0 10px 0 10px;
-		word-break:break-all;
-	}
- 	
- 	#rcBoxName{
- 		background-color: black; 
- 		padding: 5px 0 5px 0;
-   		text-align : center;
-    	opacity: 0.5;
-    	margin-top: 80px;
-    	font-size: 130%;
- 	}
- 	#rcBoxName span{
- 		color: white;
- 		
- 	}
- 	
-    #helpDesk{
-   		margin-top: 100px;
-   		text-align: center;
-   }
-     #hdTitle{
-	border-bottom : solid 1px gray;
-   	font-size : 110%;
-   	width : 40%;
-   	padding-bottom : 5px;
-   	color: gray;
-   	margin-left: auto; 
-   	margin-right: auto;
-   }
-   #hdList{
-   	display: inline-block;
-   	width: 100%;
-   }
-  #hdBox{
- 	word-break:break-all;
-  	display: inline-table;
-  	width: 14%;
-  	height: 140px;
-  	margin: 0 10px 0 10px;
-  	background-size: cover;
-  }
+  
    메인섹션 끝css--------------------------*/
 
    /*float 초기화 아이디*/
@@ -121,21 +59,41 @@
 <script src="/js/shuffleArray.js"></script>
 <script type="text/javascript">
 window.onload = function(){
+	console.log("자스작동한다");
+	
 	const rcViewWord = document.getElementById("rcViewWord");
 	const rcList = document.getElementById("rcList");
 	let cListByView; //뷰를 구분으로 코스리스트를 담은 리스트 헤더에 사용할거임
+
+
+	const cBound = document.getElementById("cBound");
+	const mapCenter = new kakao.maps.LatLng(36.2683, 127.6358);
+	
 	const map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
-        center : new kakao.maps.LatLng(36.2683, 127.6358), // 지도의 중심좌표 
-        level : 14 // 지도의 확대 레벨 
+        center : mapCenter, // 지도의 중심좌표 
+        level : 13 // 지도의 확대 레벨 
     });
+	map.setMaxLevel(13);
+	const zoomControl = new kakao.maps.ZoomControl();
+	map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+	map.addControl(cBound, kakao.maps.ControlPosition.RIGHT);
+
+	cBound.addEventListener("click", function(e) {
+		map.setLevel(13);
+		map.setCenter(mapCenter);
+	});
+	
 	const placeOverlay = new kakao.maps.CustomOverlay({zIndex:1}), 
     contentNode = document.createElement('div'); // 커스텀 오버레이의 컨텐츠 엘리먼트 입니다 
+    
 	// 커스텀 오버레이의 컨텐츠 노드에 css class를 추가합니다 
 	contentNode.className = 'placeinfo_wrap';
+	
 	// 커스텀 오버레이의 컨텐츠 노드에 mousedown, touchstart 이벤트가 발생했을때
 	// 지도 객체에 이벤트가 전달되지 않도록 이벤트 핸들러로 kakao.maps.event.preventMap 메소드를 등록합니다 
 	addEventHandle(contentNode, 'mousedown', kakao.maps.event.preventMap);
 	addEventHandle(contentNode, 'touchstart', kakao.maps.event.preventMap);
+
 	// 엘리먼트에 이벤트 핸들러를 등록하는 함수입니다
 	function addEventHandle(target, type, callback) {
 	    if (target.addEventListener) {
@@ -181,14 +139,14 @@ window.onload = function(){
 		else if(diff == 4){
 			diffContent = '매우어려움';
 		}
-     let content = '<div class="placeinfo">' +
-     				'   <a class="title" href="/detailCourse?c_no='+c.c_no+'" target="_blank" title="' + c.c_name + '">' + c.c_name + '</a>';   
-	
-	    content += '    <span title="' + c.nickName + '">' + "made by "+c.nickName + '</span>';
-	             
-	    content += '    <span class="tel">'+ c.c_loc + " "+c.c_distance +"km "+courseTime+ " "+diffContent+'</span>' + 
-	                '</div>' + 
-	                '<div class="after"></div>';
+		let content = '<div class="placeinfo">' +
+						' <a class="title" href="/detailCourse?c_no='+c.c_no+'" target="_blank" title="' + c.c_name + '"><img width="22px" title="'+c.c_views[0]+'" src="/courseViewImg/'+c.c_views[0]+'.png"> ' + c.c_name + '</a>';   
+
+			content += '    <span title="' + c.nickName + '">' + "made by "+c.nickName + '</span>';
+     
+			content += '    <span class="tel">'+ c.c_loc + "〃"+c.c_distance +"km 〃 "+courseTime+ " 〃 "+diffContent+'</span>' + 
+				        '</div>' + 
+				        '<div class="after"></div>';
 	    contentNode.innerHTML = content;
 	    placeOverlay.setPosition(new kakao.maps.LatLng(c.c_s_latitude, c.c_s_longitude));
 	    placeOverlay.setMap(map);  
@@ -222,6 +180,8 @@ window.onload = function(){
 			alert("에러발생");
 		}
 	});
+
+	
 	function setClurseter(){
 		const markerArr = [];
 		const riverList = recomendList[0];
@@ -283,23 +243,41 @@ window.onload = function(){
 		const vList = recomendList[rNum];
 		vList.shuffle();
 		const subVlist = vList.slice(0, recomendNum);
-		console.log(subVlist);
-		let rcContent = "";
+		rcList.innerHTML="";
+		rcViewWord.innerHTML="";
+
+		const vNameSpan = document.createElement("span");
+		vNameSpan.className = "property-wrap ftco-animate fadeInUp ftco-animated";
+		vNameSpan.innerHTML = vName;
 		
 		subVlist.forEach(function(c, i) {
-			rcContent += '<a href="detailCourse?c_no='+c.c_no+'">';
-			if(c.c_photo.length == 0){
-				rcContent += '<div id="rcBox" style="background-image: url(/coursePhoto/nullcPhoto.png); background-size: cover;">';
-			}
-			else{
-				rcContent += '<div id="rcBox" style="background-image: url(/coursePhoto/course'+c.c_no+'/'+c.c_photo[0].cp_name+'); background-size: cover;">';
-			}
+			const courseBox = document.createElement("div");
+			courseBox.className="col-md-4";
 			
-			rcContent += '<div>made by '+c.nickName+'</div><div id="rcBoxName"><span>'+c.c_name+'</span></div></div></a>';			
+			let courseContent = '<div class="ftco-animate fadeInUp ftco-animated"><a href="/detailCourse?c_no='+c.c_no+'" class="search-place img" style="background-image: url('+c.c_photo[0].cp_path+'/'+c.c_photo[0].cp_name+');">';
+
+			courseContent += '<div class="desc"><h3><span>'+c.c_name+'</span></h3><span>'+c.c_loc+'</span> <span>'+c.c_view+'</span> <br><span>'+c.c_tag+'</span></div></a></div>';
+
+			courseBox.innerHTML = courseContent;
+			rcList.append(courseBox);
+
 		})
-		rcViewWord.innerHTML = vName;
-		rcList.innerHTML = rcContent;
+		rcViewWord.append(vNameSpan);
 	}
+
+	// 이달의 추천코스 자동 넘어가기 기능
+	const dotArr = document.querySelectorAll(".owl-dots button");
+	const maxDot = dotArr.length-1;
+	let dotNum = 0;
+	const clickDotInterval = setInterval(clickDot, 2000);
+	function clickDot(){
+		if(dotNum > maxDot){
+			dotNum = 0;
+		}
+		dotArr[dotNum].click();
+		dotNum++;
+	}
+
 	
 	
 }
@@ -307,26 +285,16 @@ window.onload = function(){
 </head>
 <body>
 
-<!--<jsp:include page="header.jsp"/>
-      <div id="clear"></div>
-  <section>
-  	<div id="mainPhoto" style="width: 100%; height: 500px; background-image: url('/mainPageImg/mainPhoto1.png');background-size: cover;"></div>
-  	<div id="map" style="width:50%;height:350px;"></div>
-  		<h4><span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
-  		<font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></font>과 함께 달려보세요!</h4>-->
-  	
- 	<!-- -------------------------------------------------------------- --> 	
-  	
 	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
 	      <a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
         <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
-        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></a>
+        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font></span></a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 	        <span class="oi oi-menu"></span> Menu
 	      </button>
-	      
-			<div class="collapse navbar-collapse" id="ftco-nav">
+	      <div style="display: block;">
+			<div class="collapse navbar-collapse" id="ftco-nav" style="height: 20px;">
 		        <ul class="navbar-nav ml-auto">
 					<c:choose>
 						<c:when test="${m == null }">
@@ -342,7 +310,7 @@ window.onload = function(){
 				</ul>
 			</div>      
 
-	      <div class="collapse navbar-collapse" id="ftco-nav">
+	      <div class="collapse navbar-collapse" id="ftco-nav" style="height: 40px;">
 	        <ul class="navbar-nav ml-auto">
 	          <li class="nav-item active"><a href="/mainPage" class="nav-link">Home</a></li>
 	          <li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
@@ -356,6 +324,7 @@ window.onload = function(){
 	        </ul>
 	      </div>
 	    </div>
+	  </div>
 	</nav>
     <!-- END nav -->
 
@@ -367,7 +336,9 @@ window.onload = function(){
           	<div class="text">
 	            <h1 class="mb-4">오늘도 <br>달려볼까요?</h1>
 	            <p style="font-size: 18px;">당신의 완벽한 라이딩을 위하여 근사한 곳으로 안내할게요!</p>
-	            <p><a href="#" class="btn btn-primary py-3 px-4">모든 코스 보기</a></p>
+	            <a href="#mapLink" class="btn btn-primary py-3 px-4">모든 코스 보기</a>
+	            <a href="/searchCourse" class="btn btn-primary py-3 px-4">맞춤 코스 검색</a>
+	            <a href="/tagSearchCourse" class="btn btn-primary py-3 px-4">태그 코스 검색</a>
             </div>
           </div>
         </div>
@@ -387,191 +358,69 @@ window.onload = function(){
         <div class="row ftco-animate">
           <div class="col-md-12">
             <div class="carousel-properties owl-carousel">
+            <c:forEach var="c" items="${thisMonthList }">       
               <div class="item">
                 <div class="property-wrap ftco-animate">
-		        			<a href="#" class="img" style="background-image: url(mainPageImg/scenery2.jpg);">
+		        			<a href="/detailCourse?c_no=${c.c_no}" class="img" style="background-image: url(${c.c_photo[0].cp_path}/${ c.c_photo[0].cp_name});">
 		        				<div class="rent-sale">
-		        					<span class="sale">Sale</span>
+		        					<span class="rent">${thisMonth}월</span>
 		        				</div>
-		        				<p class="price"><span class="orig-price">$300,000</span></p>
+		        				<p title="코스태그" class="price"><span class="orig-price">${c.c_loc}${c.c_tag }</span></p>
 		        			</a>
-		        			<div class="text">
-		        				<ul class="property_list">
-		        					<li><span class="flaticon-bed"></span>3</li>
-		        					<li><span class="flaticon-bathtub"></span>2</li>
-		        					<li><span class="flaticon-floor-plan"></span>1,878 sqft</li>
-		        				</ul>
-		        				<h3><a href="#">The Blue Sky Home</a></h3>
-		        				<span class="location">Oakland</span>
+		        			<div class="text">	
+		        				<h3><a href="#">${c.c_name }</a></h3>
+		        				<span class="location">made by ${c.nickName }</span>
 		        				<a href="#" class="d-flex align-items-center justify-content-center btn-custom">
 		        					<span class="fa fa-link"></span>
 		        				</a>
 		        				<div class="list-team d-flex align-items-center mt-2 pt-2 border-top">
 		        					<div class="d-flex align-items-center">
-			        					<div class="img" style="background-image: url(images/person_1.jpg);"></div>
-			        					<h3 class="ml-2">John Dorf</h3>
+			        				<c:forEach var="v" items="${c.c_views }">
+			        					<div class="img" title="${v }" style="background-image: url(/courseViewImg/${v}.png);"></div>
+			        				</c:forEach>
 			        				</div>
-			        				<span class="text-right">2 weeks ago</span>
+			        				<span class="text-right">풍경</span>
 		        				</div>
 		        			</div>
 		        		</div>
-              </div>
-              <div class="item">
-                <div class="property-wrap ftco-animate">
-		        			<a href="#" class="img" style="background-image: url(mainPageImg/scenery3.jpg);">
-		        				<div class="rent-sale">
-		        					<span class="rent">Rent</span>
-		        				</div>
-		        				<p class="price"><span class="old-price">800,000</span><span class="orig-price">$3,050<small> / mo</small></span></p>
-		        			</a>
-		        			<div class="text">
-		        				<ul class="property_list">
-		        					<li><span class="flaticon-bed"></span>3</li>
-		        					<li><span class="flaticon-bathtub"></span>2</li>
-		        					<li><span class="flaticon-floor-plan"></span>1,878 sqft</li>
-		        				</ul>
-		        				<h3><a href="#">The Blue Sky Home</a></h3>
-		        				<span class="location">Oakland</span>
-		        				<a href="#" class="d-flex align-items-center justify-content-center btn-custom">
-		        					<span class="fa fa-link"></span>
-		        				</a>
-		        				<div class="list-team d-flex align-items-center mt-2 pt-2 border-top">
-		        					<div class="d-flex align-items-center">
-			        					<div class="img" style="background-image: url(mainPageImg/person_1.jpg);"></div>
-			        					<h3 class="ml-2">John Dorf</h3>
-			        				</div>
-			        				<span class="text-right">2 weeks ago</span>
-		        				</div>
-		        			</div>
-		        		</div>
-              </div>
-              <div class="item">
-                <div class="property-wrap ftco-animate">
-		        			<a href="#" class="img" style="background-image: url(mainPageImg/scenery1.jpeg);">
-		        				<div class="rent-sale">
-		        					<span class="rent">Rent</span>
-		        				</div>
-		        				<p class="price"><span class="orig-price">$300<small> / mo</small></span></p>
-		        			</a>
-		        			<div class="text">
-		        				<ul class="property_list">
-		        					<li><span class="flaticon-bed"></span>3</li>
-		        					<li><span class="flaticon-bathtub"></span>2</li>
-		        					<li><span class="flaticon-floor-plan"></span>1,878 sqft</li>
-		        				</ul>
-		        				<h3><a href="#">The Blue Sky Home</a></h3>
-		        				<span class="location">Oakland</span>
-		        				<a href="#" class="d-flex align-items-center justify-content-center btn-custom">
-		        					<span class="fa fa-link"></span>
-		        				</a>
-		        				<div class="list-team d-flex align-items-center mt-2 pt-2 border-top">
-		        					<div class="d-flex align-items-center">
-			        					<div class="img" style="background-image: url(mainPageImg/person_1.jpg);"></div>
-			        					<h3 class="ml-2">John Dorf</h3>
-			        				</div>
-			        				<span class="text-right">2 weeks ago</span>
-		        				</div>
-		        			</div>
-		        		</div>
-              </div>
-              <div class="item">
-                <div class="property-wrap ftco-animate">
-		        			<a href="#" class="img" style="background-image: url(mainPageImg/scenery5.jpg);">
-		        				<div class="rent-sale">
-		        					<span class="rent">Rent</span>
-		        				</div>
-		        				<p class="price"><span class="orig-price">$300<small> / mo</small></span></p>
-		        			</a>
-		        			<div class="text">
-		        				<ul class="property_list">
-		        					<li><span class="flaticon-bed"></span>3</li>
-		        					<li><span class="flaticon-bathtub"></span>2</li>
-		        					<li><span class="flaticon-floor-plan"></span>1,878 sqft</li>
-		        				</ul>
-		        				<h3><a href="#">The Blue Sky Home</a></h3>
-		        				<span class="location">Oakland</span>
-		        				<a href="#" class="d-flex align-items-center justify-content-center btn-custom">
-		        					<span class="fa fa-link"></span>
-		        				</a>
-		        				<div class="list-team d-flex align-items-center mt-2 pt-2 border-top">
-		        					<div class="d-flex align-items-center">
-			        					<div class="img" style="background-image: url(mainPageImg/person_1.jpg);"></div>
-			        					<h3 class="ml-2">John Dorf</h3>
-			        				</div>
-			        				<span class="text-right">2 weeks ago</span>
-		        				</div>
-		        			</div>
-		        		</div>
-              </div>
-              <div class="item">
-                <div class="property-wrap ftco-animate">
-		        			<a href="#" class="img" style="background-image: url(mainPageImg/scenery1.jpeg);">
-		        				<div class="rent-sale">
-		        					<span class="rent">Rent</span>
-		        				</div>
-		        				<p class="price"><span class="orig-price">$300<small> / mo</small></span></p>
-		        			</a>
-		        			<div class="text">
-		        				<ul class="property_list">
-		        					<li><span class="flaticon-bed"></span>3</li>
-		        					<li><span class="flaticon-bathtub"></span>2</li>
-		        					<li><span class="flaticon-floor-plan"></span>1,878 sqft</li>
-		        				</ul>
-		        				<h3><a href="#">The Blue Sky Home</a></h3>
-		        				<span class="location">Oakland</span>
-		        				<a href="#" class="d-flex align-items-center justify-content-center btn-custom">
-		        					<span class="fa fa-link"></span>
-		        				</a>
-		        				<div class="list-team d-flex align-items-center mt-2 pt-2 border-top">
-		        					<div class="d-flex align-items-center">
-			        					<div class="img" style="background-image: url(mainPageImg/person_1.jpg);"></div>
-			        					<h3 class="ml-2">John Dorf</h3>
-			        				</div>
-			        				<span class="text-right">2 weeks ago</span>
-		        				</div>
-		        			</div>
-		        		</div>
-              </div>
+              		</div>
+              
+            </c:forEach>
             </div>
           </div>
         </div>
+        
+        <div class="row justify-content-center" style="margin-top: 100px;">
+          <div class="col-md-12 heading-section text-center ftco-animate mb-5">
+          	<span class="subheading">Today's Riding</span>
+            <h2 class="mb-2">풍경별 추천코스</h2>
+            <span style="font: italic bold 1.5em/1em Georgia,serif; font-size:15px; color: gray;">view is <span id="rcViewWord"></span></span>
+          </div>
+        </div>
+        
+        <div class="row" id="rcList">
+        
+        </div>
+        <div id="mapLink"></div>
+         <div  class="row justify-content-center" style="margin-top: 150px;">
+          <div class="col-md-12 heading-section text-center ftco-animate mb-5">
+          	<span class="subheading">Today's Riding</span>
+            <h2 class="mb-2">자전거 지도</h2>
+          </div>
+        </div>
+	        <div class="col-md-12" >
+	           <div id="map" style="width:100%;height:600px; text-align: center;"></div>
+	           <button id="cBound" title="한눈에 보기" style="margin-top:5px;
+				padding : 6px;
+				border : 1px solid white;
+				opacity: 0.9;
+				background-color: white;
+				border-radius: 3px;
+				cursor: pointer;"><img width="20px" src="/detailCourseImg/cBoundBtn.png"></button>
+	        </div>
       </div>
     </section>
-    
-  	
-  	
-	<!-- -------------------------------------------------------------- -->
-  	
-	<div id="recommendCourse">
-  		<div id="rcTitle">
-  		Today's&nbsp;Riding<span style="font: italic bold 1.5em/1em Georgia,serif; font-size:15px; color: gray;">&nbsp;&nbsp;&nbsp;view is <span id="rcViewWord">${view }</span></span>
-  		</div>
-  		<br>
-  		<div id="rcList">
-  		</div>
-  		</div>
-  		
- 	<div id="helpDesk">
-  		<div id="hdTitle">
-  			HELP DESK
-  		</div>
-  		<br>
-  		<div id="hdList">
-	  		<a><div id="hdBox" style="background-image: url('/mainPageImg/howToUse.png');"></div></a>
-	  		<a href="listNotice"><div id="hdBox" style="background-image: url('/mainPageImg/notice.png');"></div></a>
-	  		<a><div id="hdBox" style="background-image: url('/mainPageImg/event.png');"></div></a>
-	  		<a href="/user/makingCourse"><div id="hdBox" style="background-image: url('/mainPageImg/cs.png');"></div></a>
-	  	</div>
-  	</div>
-  </section>
-  <div id="clear"></div>
-
-
-
-  	
-  	
-  <!--<jsp:include page="footer.jsp"/>-->
-  
+ 
   <footer class="ftco-footer ftco-section">
       <div class="container">
         <div class="row mb-5">
@@ -648,7 +497,7 @@ window.onload = function(){
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
   
   
-  <script src="/resources/js/jquery.min.js"	></script>
+   <script src="/resources/js/jquery.min.js"></script>
   <script src="/resources/js/jquery-migrate-3.0.1.min.js"></script>
   <script src="/resources/js/popper.min.js"></script>
   <script src="/resources/js/bootstrap.min.js"></script>
@@ -659,8 +508,6 @@ window.onload = function(){
   <script src="/resources/js/jquery.magnific-popup.min.js"></script>
   <script src="/resources/js/jquery.animateNumber.min.js"></script>
   <script src="/resources/js/scrollax.min.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-  <script src="/resources/js/google-map.js"></script>
-  <script src="/resources/js/main.js"></script>
+  <script src="/resources/js/main.js"></script> 
 </body>
 </html>
