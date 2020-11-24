@@ -118,7 +118,7 @@ window.onload = function(){
 	        </div>
 	        <hr class="mb-6">
           	<p>
-              <img src="mainPageImg/main1.jpg" alt="" class="img-fluid">
+              <img src="/noticeImg/${n.n_file }" alt="" class="img-fluid">
             </p>
             <div id="n_content" style="white-space:pre;"><c:out value="${n.n_content}" /></div>
 			<br>

@@ -37,11 +37,16 @@ window.onload = function(){
 			alert("내용도 입력안하고 등록할거야~~?!");
 			return;
 		}
+
+		const form = document.getElementById("form");
+		const formData = new FormData(form);
 		
 		$.ajax({
 			url: "/admin/updateNotice",
 			type: "POST",
-			data: $("#form").serialize(),
+			data: formData,
+			contentType: false,
+			processData: false,
 			success: function(response){
 				if(response.code == "200"){
 					alert(response.message);
@@ -137,6 +142,8 @@ window.onload = function(){
 				<div class="form-group">
 					<textarea rows="20" cols="100" name="n_content" class="form-control" id="n_update_content">${n.n_content }</textarea>
 				</div>
+				<input class="mb-6" type="text" name="n_file" value="${n.n_file }">
+				<input class="mb-6" type="file" name="uploadFile">
 				<br>
 				<a href="/detailNotice?n_no=${n.n_no}"><button type="button" class="btn btn-warning" id="btnCancel">취소</button></a>
 				<button type="button" class="btn btn-success" id="btnUpdate">수정</button>	
@@ -148,6 +155,5 @@ window.onload = function(){
 	<br>
 	<jsp:include page="footer.jsp" />
     
-
 </body>
 </html>
