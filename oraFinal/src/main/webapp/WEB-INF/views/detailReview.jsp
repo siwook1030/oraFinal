@@ -40,21 +40,21 @@
 		.selectedCourse { width: 300px; border: 1px #D5D5D5 solid; border-radius: 10px; margin: 2px auto; padding: 25px; text-align: center; }
 		/* 게시글 수정삭제 버튼 */
 		.btn { color: white; padding: 8px 12px; margin: 20px 0; background-color: #88BEA6; display: inline-block; font-size: 15px; border: none; cursor: pointer; }
-		/* 댓글수량 */
-		#repImg { display: inline-block; width: 29px; padding-right: 5px; margin-bottom: 3px; }
+		/* 댓글수 */
+		#repImg { display: inline-block; width: 25px; padding-right: 5px; margin-bottom: 3px; }
 		#total_reply { display: inline-block; font-size: 18px; }
 		/* 댓글 */
-		.replyNicknameContainer { display: flex; }
-		.regdate { float: left; padding-left: 30px; font-size: 13px; display: inline-block; }
-		.replyContent { padding-left: 30px; margin-top: 2px; font-size: 14px; }
+		.replyNicknameContainer { display: flex; height: auto; }
+		.regdate { float: left; padding-left: 30px; font-size: 13px; /* display: inline-block; */ margin-bottom: 5px; }
+		.replyContent { padding-left: 30px; margin-top: 2px; font-size: 14px; height: auto; }
 		.replyNickname { /* margin-top: 3px;  */font-size: 14px; padding-left: 5px; width: auto; margin-top: 3px; }
 		.textareaContainer > textarea { width: 100%; height: 130px; padding: 10px 10px 10px 13px; font-size: 14px; }
 		.btnContainer img { width: 18px; margin-left: 5px; }
 		.btnReply { font-size: 13px; display: inline-block; vertical-align: top; padding-left: 10px; cursor: pointer; }
 		.modAndDel { display: inline; padding-right: 10px; width: auto; float: right; }
-		.replyOne { border: 1px solid gray; }
 		.myRep { display: inline-block; margin-left: 10px; padding: 2px 6px; border: 1px solid red; border-radius: 12px; font-size: 12px; }
 		.sendReply { margin: 0px; float: right; position: relative; bottom: 60px; right: 10px; }
+		/* .divRep { height: 80px; } */
 
 
 </style>
@@ -113,7 +113,7 @@
 				$("#replyArea").empty();	// 동적 댓글 생성 div비우기
 				$("#total_reply").html("댓글 "+data.total_reply);	// 댓글 수
 				$(data.rrlist).each(function(idx,item){		// 댓글 수 만큼 반복
-					let $div = $("<div></div>");
+					let $div = $("<div></div>").addClass('divRep');
 					if(item.rr_step > 0) {	// 대댓글일경우 들여쓰기
 						$div.css("margin-left", "25px");
 					}
@@ -132,6 +132,7 @@
 						
 					} else {
 						$div_c1_c2 = $("<div></div>").append(item.nickName).addClass("replyNickname");
+						$div.css("height", "75px");
 			 		}
 	/* 작성일자 */		let $div_c1_c3 = $("<div></div>").text(item.date_diff_str).addClass("regdate"); // css적용을 위한 클래스
 					$div_c1.append($div_c1_c1, $div_c1_c2/* , $div_c1_c3 */);
@@ -238,7 +239,6 @@
 		<div class="container">
 			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate pb-0 text-center">
-				
 					<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a></span> <span class="mr-2"><a href="/listReview">라이딩 후기 <i class="fa fa-chevron-right"></i></a></span> <span>라이딩 후기 상세 <i class="fa fa-chevron-right"></i></span></p>
 					<h1 class="mb-3 bread">후기 상세</h1>
 				</div>
@@ -249,19 +249,19 @@
 	<!-- 본문 section 시작 -->
 	<section class="ftco-section ftco-agent">
 		<div class="container">
-    	 	<!-- 글번호, 제목 -->
     		<div class="row justify-content-center pb-5">
+				<!-- 글번호, 제목 -->
           		<div class="col-md-12 heading-section text-center ftco-animate">
 		          	<span class="subheading">${rvo.r_no }</span>
 					<a href="detailReview?r_no=${rvo.r_no }"><h2 class="mb-4">${rvo.r_title }</h2></a>
           		</div>
-			<!-- 코스명 -->
-			<div class="selectedCourse">
-				<img src="/meetingImg/ridingRoute.png">
-				<a href="detailCourse?c_no=${rvo.c_no }"> ${rvo.c_name }</a>
-			</div>
-        	</div>
-        	
+				<!-- 코스명 -->
+				<div class="selectedCourse">
+					<img src="/meetingImg/ridingRoute.png">
+					<a href="detailCourse?c_no=${rvo.c_no }"> ${rvo.c_name }</a>
+				</div>
+	        </div>
+	        	
 			<!-- 닉네임, 등록일자, 조회수 -->
 			<div style="padding: 0 10px;">
 				<div class="nickNameInfo">
@@ -287,7 +287,7 @@
 				</div>
 			</c:if>
 			
-			<!-- 댓글 수량 -->
+			<!-- 댓글수 -->
 			<img id="repImg" src="/icons/speech.png">
 			<h3 id="total_reply"></h3>
 			<hr>

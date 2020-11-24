@@ -750,7 +750,7 @@
 						</div>
 						<!-- 미팅날짜 -->
 						<div class="selectMt">
-							<img src="../meetingImg/meetingDate.png" class="mtIcon"><br>
+							<img src="../meetingImg/calendar.png" class="mtIcon"><br>
 							<input type="date" name="m_time" id="m_time">
 						</div>
 						<!-- 모임인원 -->
