@@ -1,53 +1,47 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
-<meta name="_csrf_header" content="${_csrf.headerName}" />
-<meta name="_csrf" content="${_csrf.token}" />
-<title>Insert title here</title>
-	<style type="text/css">
-		/* 공통 */
-		section {
-			margin: 0 auto;
-			width: 1000px;
-			text-align: left;
-		}
-		
-		/* 개별 */
-		#error {
-			width: 400px;
-			height: 150px;
-			margin: 200px auto;
-			padding: 30px;
-			text-align: center;
-			color: white;
-			background-color: #88bea6;
-		}
-		#id {
-			margin-bottom: 5px;
-		}
-		p {
-			margin: 10px;
-		}
-		hr {
-			border: 1px solid white;
-			margin: 10px auto 40px;
-		}
+<title>오늘의 라이딩</title>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/resources/css/animate.css">
+    <link rel="stylesheet" href="/resources/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/resources/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/resources/css/magnific-popup.css">
+    <link rel="stylesheet" href="/resources/css/flaticon.css">
+    <link rel="stylesheet" href="/resources/css/style.css">
+	<style>
+		body { background-image: url('/icons/background.png'); }
 	</style>
 </head>
 <body>
-	<jsp:include page="header.jsp"/>
-	<section>
-		<div id="error">
-			<h3 id="title">* error *</h3>
-			<hr>
-			<p>이용에 불편을 드려 죄송합니다.</p>
-			<p>${msg }</p>
-		</div>
-	</section>
-	<jsp:include page="footer.jsp"/>
+	<section class="ftco-section">
+		<div class="container">
+			<img class="error" src="/icons/error.png" style="width: 100%;">
+			<a href="/mainPage">
+				<!-- <img class="homeBtn" src="/icons/homeButton.png" style="width: 13%; position: relative; left: 200px; bottom: 300px;"> -->
+			</a>
+		</div> <!-- container -->
+	</section>		
+	<script src="/resources/js/jquery.min.js"></script>
+	<script src="/resources/js/jquery-migrate-3.0.1.min.js"></script>
+	<script src="/resources/js/popper.min.js"></script>
+	<script src="/resources/js/bootstrap.min.js"></script>
+	<script src="/resources/js/jquery.easing.1.3.js"></script>
+	<script src="/resources/js/jquery.waypoints.min.js"></script>
+	<script src="/resources/js/jquery.stellar.min.js"></script>
+	<script src="/resources/js/owl.carousel.min.js"></script>
+	<script src="/resources/js/jquery.magnific-popup.min.js"></script>
+	<script src="/resources/js/jquery.animateNumber.min.js"></script>
+	<script src="/resources/js/scrollax.min.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+	<script src="/resources/js/google-map.js"></script>
+	<script src="/resources/js/main.js"></script>   
 </body>
 </html>
