@@ -8689,7 +8689,7 @@ h1, h2, h3, h4, h5,
   background: #d8572d !important; }
 
 .bg-darken {
-  background: #4f9424; }	/* #e5cab6 정재호 수정*/
+  background: #88bea6; }	/* #4f9424 정재호 수정*/
 
 .btn {
   cursor: pointer;
@@ -8894,7 +8894,7 @@ h1, h2, h3, h4, h5,
   font-weight: 600; }
 
 .property-details span.subheading {
-  font-size: 12px;
+  font-size: 13px;
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 2px;
@@ -9425,7 +9425,7 @@ textarea.form-control {
   display: inline-block;
   margin-bottom: 0;
   color: #d8572d;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -10235,16 +10235,16 @@ textarea.form-control {
 }
 
 
-#n_btnWrite,#n_btnDelete,#n_btnCancel{
+#btnWriteN,#btnDeleteN,#btnCancelN{
 	float: right;
 }
 
-#n_btnUpdate,#n_btnInsert{
+#btnUpdateN,#btnInsertN{
 	float: right;
 	margin-right: 5px;
 }
 
-#n_btnList{
+#btnListN{
 	float: left;
 }
 
