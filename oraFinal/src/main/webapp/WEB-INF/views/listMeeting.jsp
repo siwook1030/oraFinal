@@ -42,6 +42,91 @@
 		/* 페이징 */
 		.pageUl { border: none; }
 		.btnPrevNext { border: none; }
+		
+			<!--myPage CSS 시작-->
+		<style>
+		#login {
+			font-size: 14px;
+			text-align: right;
+		}
+		
+		.my{
+			padding: 5px;
+			margin: 2px;
+		
+			
+		}
+		
+		  .nav-link_2 {
+		    font-size: 12px;
+		    font-family: "나눔스퀘어라운드";
+		    padding-top: .1rem;
+		    padding-bottom: .1rem;
+		    padding-left: 1px;
+		    padding-right: 1px;
+		    color: #fff;
+		    font-weight: 400;
+		    opacity: 1 !important; }
+		
+		  .nav-link {
+		    font-size: 18px;
+		    font-family: "나눔스퀘어라운드";
+		    padding-top: .7rem;
+		    padding-bottom: .7rem;
+		    padding-left: 20px;
+		    padding-right: 20px;
+		    color: #fff;
+		    font-weight: 600;
+		    opacity: 1 !important; }
+		  .nav-link:hover {
+		      color: #c8572d; }
+		  .nav-link2:visited{
+		                color: red;
+		            }
+		
+		<!--화면 줄어들때 메뉴색-->
+		 @media (max-width: 991.98px) {
+		    .ftco-navbar-light {
+		      background: #000000 !important;
+		      position: relative;
+		      top: 0; } }
+		      
+		      
+		.my{
+			padding: 50px;
+			
+		}
+		 .my_ul{
+			list-style:none; 
+		 	text-align: center;
+		 }
+		 .my_li{
+		    display:inline-block;  
+			float:left;
+		 	padding: 50px;
+		 	border-left:1px solid #999;             /* 각 메뉴의 왼쪽에 "|" 표시(분류 표시) */
+		    font:bold 16px Dotum;                     /* 폰트 설정 - 12px의 돋움체 굵은 글씨로 표시 */
+		    padding:0 10px;  
+		 }
+		 
+		  .my_li2{
+		    display:inline-block;  
+			float:left;
+		 	padding: 50px;
+		    padding:0 10px;  
+		 }
+		   
+		 #my_a{
+		 color: #bbbbbb;
+		     font:bold 14px Dotum; 
+		 }
+		 #my_a:hover {
+		 color: #d0a183; 
+		 FONT-SIZE: 13pt; 
+		 FONT-WEIGHT: bolder}
+		 
+		<!--myPage 끝-->	
+		
 	</style>
 
 	<script type="text/javascript">
@@ -77,7 +162,7 @@
 	               $('#rowDFlex').empty();
 	               setPage(map.totRecord);
 	               setList(map.list);
-	               if(map.id !== '%'){
+	               if(map.id !== '%' && map.id == `${m.id}`){
 					$("#id1").css({"display": "none"});
 					$("#id2").css({"display": "inline-block"});
 			       }
@@ -228,33 +313,36 @@
 	</script>	    
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 		<div class="container">
 			<a style="font-size: 30px;" class="navbar-brand" href="/mainPage">
 				<span style="font-weight: bold;">
 					<font color="#45A3F5">오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font> <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font>
 				</span>
 			</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="oi oi-menu"></span> Menu
-			</button>
-			
-			<div style="display: block;">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="oi oi-menu"></span> Menu
+            </button>
+            
+         	<div style="display: block;">
 				<div class="collapse navbar-collapse" id="ftco-nav">
-			        <ul class="navbar-nav ml-auto">
+					<ul class="navbar-nav ml-auto">
 						<c:choose>
 							<c:when test="${m == null }">
 								<li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
 								<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
 							</c:when>
 							<c:when test="${m != null }">
-								<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
-								<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
-								<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+								<li class="nav-item"><a style="font-size: 15px; cursor:default;" class="nav-link">${m.nickName } 라이더님</a></li>
+								<li class="nav-item  active"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>&nbsp;&nbsp;
+								<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>
+							<c:if test="${m.code_value == '00101' }">
+								<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
+							</c:if>
 							</c:when>
 						</c:choose>
 					</ul>
-				</div>      
+				</div> 
 	
 				<div class="collapse navbar-collapse" id="ftco-nav">
 					<ul class="navbar-nav ml-auto">
@@ -262,7 +350,7 @@
 						<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
 						<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
 						<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
-						<li class="nav-item active"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+						<li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
 						<li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
 					</ul>
 				</div>
@@ -272,8 +360,8 @@
 	</nav>
 	<!-- END nav -->	
 
-    <section class="hero-wrap hero-wrap-2" style="background-image: url('resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
-		<div class="overlay"></div>
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('https://media.istockphoto.com/photos/bike-and-friends-picture-id1175357560?b=1&k=6&m=1175357560&s=170667a&w=0&h=CxB5fZzHPzq8xSGeavVU3UUHlPiutKW3hUMNT0VAzYk=');background-size:100% 600px;" data-stellar-background-ratio="0.5">
+		<div class="overlay" style="background-color: #4e5169"></div>
 		<div class="container">
 			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate pb-0 text-center">
@@ -284,22 +372,21 @@
 				</div>
 	
 	            <div id="id2">
-					<span>
-						<h1 class="mb-3 bread">마이페이지</h1>
-		            </span>
-					<p class="breadcrumbs">
-						<span class="mr-2">
-		                	<a href="index.html">Home <i class="fa fa-chevron-right"></i></a>
-						</span>
-						<a href="/myPage">정보 수정 <i class="fa fa-chevron-right"></i></a>
-						<span>
-			                <a href="/myPageSaveCourse">찜 목록 <i class="fa fa-chevron-right"></i></a>
-			                <a href="/myPageMyCourse">내 작성 코스<i class="fa fa-chevron-right"></i></a>
-			                <a href="/myPageListReview">내 작성 후기<i class="fa fa-chevron-right"></i></a>
-			                <a href="listMeeting?id=${m.id}">내 작성 번개<i class="fa fa-chevron-right"></i></a>
-			                <a href="/myPageMyRank">랭킹</a>
-						</span>
+					<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
+				<div class="ftco-animate pb-0 text-center">
+     				 <span>
+						<h1 class="mb-3 bread" style="padding-top: 170px;">내 작성 번개</h1>
+		           		 </span>
+			           <ul class="my" style="font-size: 10px">
+					 		<li class="my_li2" ><a id="my_a" class="nav-link_2" href="/myPage" >정보 수정</a></li>
+					 		<li class="my_li" ><a id="my_a" class="nav-link_2" href="/myPageSaveCourse" >찜목록</a></li>
+							<li class="my_li" ><a id="my_a" class="nav-link_2" href="/myPageMyCourse" >내 코스</a></li>
+			                <li class="my_li"><a id="my_a" class="nav-link_2" href="/listReview?searchType=id&searchValue=${m.id }">내 후기</a></li>
+			      <!--      <li class="my_li"><a id="my_a" class="nav-link_2" href="/listMeeting?id=${m.id}">내 번개</a></li>  -->
+			                <li class="my_li"><a id="my_a" class="nav-link_2" href="/myPageMyRank">랭킹</a></li>
+			              </ul>
 					</div>
+				</div>
 				</div>
 			</div>
 		</div>

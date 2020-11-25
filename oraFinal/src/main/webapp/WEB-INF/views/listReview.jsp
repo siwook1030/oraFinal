@@ -66,12 +66,14 @@
 		$("#myPage2").css({"display": "none"});
 		if(URLSearch.has("searchType")) {
 			searchType = URLSearch.get("searchType");
-			$("#myPage1").css({"display": "none"});
-			$("#myPage2").css({"display": "inline-block"});
 		}
 
 		if(URLSearch.has("searchValue")) {
 			searchValue = URLSearch.get("searchValue");
+			if(searchValue == `${m.id}`){
+		         $("#myPage1").css({"display": "none"});
+		         $("#myPage2").css({"display": "inline-block"});
+		      }
 		}
 		if(URLSearch.has("searchMethod")) {
 			searchMethod = URLSearch.get("searchMethod");
@@ -264,6 +266,90 @@
 		}
 	});
 	</script>
+<!--myPage CSS 시작-->
+<style>
+#login {
+	font-size: 14px;
+	text-align: right;
+}
+
+.my{
+	padding: 5px;
+	margin: 2px;
+
+	
+}
+
+  .nav-link_2 {
+    font-size: 12px;
+    font-family: "나눔스퀘어라운드";
+    padding-top: .1rem;
+    padding-bottom: .1rem;
+    padding-left: 1px;
+    padding-right: 1px;
+    color: #fff;
+    font-weight: 400;
+    opacity: 1 !important; }
+
+  .nav-link {
+    font-size: 18px;
+    font-family: "나눔스퀘어라운드";
+    padding-top: .7rem;
+    padding-bottom: .7rem;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: #fff;
+    font-weight: 600;
+    opacity: 1 !important; }
+  .nav-link:hover {
+      color: #c8572d; }
+  .nav-link2:visited{
+                color: red;
+            }
+
+<!--화면 줄어들때 메뉴색-->
+ @media (max-width: 991.98px) {
+    .ftco-navbar-light {
+      background: #000000 !important;
+      position: relative;
+      top: 0; } }
+      
+      
+.my{
+	padding: 50px;
+	
+}
+ .my_ul{
+	list-style:none; 
+ 	text-align: center;
+ }
+ .my_li{
+    display:inline-block;  
+	float:left;
+ 	padding: 50px;
+ 	border-left:1px solid #999;             /* 각 메뉴의 왼쪽에 "|" 표시(분류 표시) */
+    font:bold 16px Dotum;                     /* 폰트 설정 - 12px의 돋움체 굵은 글씨로 표시 */
+    padding:0 10px;  
+ }
+ 
+  .my_li2{
+    display:inline-block;  
+	float:left;
+ 	padding: 50px;
+    padding:0 10px;  
+ }
+   
+ #my_a{
+ color: #bbbbbb;
+     font:bold 14px Dotum; 
+ }
+ #my_a:hover {
+ color: #d0a183; 
+ FONT-SIZE: 13pt; 
+ FONT-WEIGHT: bolder}
+ 
+<!--myPage 끝-->
+</style>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
@@ -286,9 +372,9 @@
 								<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
 							</c:when>
 							<c:when test="${m != null }">
-								<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
-								<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
-								<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+								<li class="nav-item"><a style="font-size: 15px; cursor:default;" class="nav-link">${m.nickName } 라이더님</a></li>
+								<li class="nav-item  active"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>&nbsp;&nbsp;
+								<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>
 							<c:if test="${m.code_value == '00101' }">
 								<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
 							</c:if>
@@ -302,7 +388,7 @@
 						<li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
 						<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
 						<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
-						<li class="nav-item active"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
+						<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
 						<li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
 						<li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
 					</ul>
@@ -312,8 +398,10 @@
     </nav>
     <!-- END nav -->	
     
+
     <section class="hero-wrap hero-wrap-2" style="background-image: url('resources/images/pexels-nextvoyage-490466.jpg');" data-stellar-background-ratio="0.5">
 		<div class="overlay"></div>
+
 		<div class="container">
 			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate pb-0 text-center">
@@ -323,18 +411,19 @@
 					</div>
 				
 					<div id="myPage2">	
-			            <span><h1 class="mb-3 bread">마이페이지</h1></span>
-			            <p class="breadcrumbs">
-							<span class="mr-2"><a href="index.html">Home <i class="fa fa-chevron-right"></i></a></span>
-			              	<a href="/myPage">정보 수정 <i class="fa fa-chevron-right"></i></a>
-							<span>
-				                <a href="/myPageSaveCourse">찜 목록 <i class="fa fa-chevron-right"></i></a>
-				                <a href="/myPageMyCourse">내 작성 코스<i class="fa fa-chevron-right"></i></a>
-				                <a href="/listReview?searchType=id&searchValue=${m.id }">내 작성 후기<i class="fa fa-chevron-right"></i></a>
-				                <a href="listMeeting?id=${m.id}">내 작성 번개<i class="fa fa-chevron-right"></i></a>
-				                <a href="/myPageMyRank">랭킹</a>
-							</span>
-						</p> 
+					<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
+				<div class="ftco-animate pb-0 text-center">
+     				 <span>
+						<h1 class="mb-3 bread" style="padding-top: 170px;">내 작성 후기</h1>
+		           		 </span>
+			           <ul class="my" style="font-size: 10px">
+							<li class="my_li2" ><a id="my_a" class="nav-link_2" href="/myPage" >정보 수정</a></li>
+					 		<li class="my_li" ><a id="my_a" class="nav-link_2" href="/myPageSaveCourse" >찜목록</a></li>
+							<li class="my_li" ><a id="my_a" class="nav-link_2" href="/myPageMyCourse" >내 코스</a></li>
+			          <!--  <li class="my_li"><a id="my_a" class="nav-link_2" href="/listReview?searchType=id&searchValue=${m.id }">내 후기</a></li>-->
+			            	<li class="my_li"><a id="my_a" class="nav-link_2" href="/listMeeting?id=${m.id}">내 번개</a></li>  
+			                <li class="my_li"><a id="my_a" class="nav-link_2" href="/myPageMyRank">랭킹</a></li>
+			              </ul>
 					</div>
 				</div>
 			</div>
@@ -368,92 +457,7 @@
 		
 	
 	<!-- 푸터시작 -->
-    <footer class="ftco-footer ftco-section">
-      <div class="container">
-        <div class="row mb-5">
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Ecoverde</h2>
-              <p>Far far away, behind the word mountains, far from the countries.</p>
-              <ul class="ftco-footer-social list-unstyled mt-5">
-                <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
-                <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
-                <li class="ftco-animate"><a href="#"><span class="fa fa-instagram"></span></a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4 ml-md-4">
-              <h2 class="ftco-heading-2">Community</h2>
-              <ul class="list-unstyled">
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Search Properties</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>For Agents</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Reviews</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>FAQs</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4 ml-md-4">
-              <h2 class="ftco-heading-2">About Us</h2>
-              <ul class="list-unstyled">
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Our Story</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Meet the team</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md">
-             <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Company</h2>
-              <ul class="list-unstyled">
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>About Us</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Press</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Contact</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4">
-            	<h2 class="ftco-heading-2">Have a Questions?</h2>
-            	<div class="block-23 mb-3">
-	              <ul>
-	                <li><span class="icon fa fa-map"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
-	                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929 210</span></a></li>
-	                <li><a href="#"><span class="icon fa fa-envelope pr-4"></span><span class="text">info@yourdomain.com</span></a></li>
-	              </ul>
-	            </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12 text-center">
-	
-            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-          </div>
-        </div>
-      </div>
-    </footer>
-    
-  
-
-  <!-- loader -->
-  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
-
-  <script src="/resources/js/jquery.min.js"></script>
-  <script src="/resources/js/jquery-migrate-3.0.1.min.js"></script>
-  <script src="/resources/js/popper.min.js"></script>
-  <script src="/resources/js/bootstrap.min.js"></script>
-  <script src="/resources/js/jquery.easing.1.3.js"></script>
-  <script src="/resources/js/jquery.waypoints.min.js"></script>
-  <script src="/resources/js/jquery.stellar.min.js"></script>
-  <script src="/resources/js/owl.carousel.min.js"></script>
-  <script src="/resources/js/jquery.magnific-popup.min.js"></script>
-  <script src="/resources/js/jquery.animateNumber.min.js"></script>
-  <script src="/resources/js/scrollax.min.js"></script>
-  <script src="/resources/js/main.js"></script>
+    <jsp:include page="footer.jsp" />
+      
   </body>
 </html>

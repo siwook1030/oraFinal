@@ -1,50 +1,53 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
+<title>회원 정보 수정</title>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
+<script type="text/javascript" src="/js/myPage.js"></script>
 
 <style>
-#login {
-	font-size: 14px;
-	text-align: right;
-}
 
-.my{
-	padding: 5px;
-	margin: 2px;
-}
+    /* 개별 */
+    #change {
+      padding: 10px;
+      text-align: center;
+      color: black;
+    }
 
-  .my-link_2 {
-    font-size: 12px;
-    font-family: "나눔스퀘어라운드";
-    padding-top: .1rem;
-    padding-bottom: .1rem;
-    padding-left: 1px;
-    padding-right: 1px;
-    color: #fff;
-    font-weight: 400;
-    opacity: 1 !important; }
+    #modify {
+      font-size: 20px;
+      margin: 10px auto;
+      text-align: left;
+    }
 
-  .my-link {
-    font-size: 18px;
-    font-family: "나눔스퀘어라운드";
-    padding-top: .7rem;
-    padding-bottom: .7rem;
-    padding-left: 20px;
-    padding-right: 20px;
-    color: #fff;
-    font-weight: 600;
-    opacity: 1 !important; }
-  .my-link:hover {
-      color: #c8572d; }
-  .my-link2:visited{
-                color: red;
-            }
-            
-            
-<!-- 메뉴 탭조절 	-->
+
+    .send {
+      < !--인증번호 받기버튼-->background: #24A148 !important;
+      border: 1px solid #24A148 !important;
+      color: #fff !important;
+    }
+
+    . new_input {
+      display: block;
+      width: 100%;
+      height: calc(1.5em + 0.75rem + 2px);
+      padding: 0.375rem 0.75rem;
+      padding-top: 0.375rem;
+      padding-right: 0.75rem;
+      padding-bottom: 0.375rem;
+      padding-left: 0.75rem;
+    }
+
+    .phone_input {
+      < !--새전화번호입력-->padding-right: 50px;
+      font-size: 14px;
+    }
+
+<!-- 탭조절 	-->
 .my-wrap {
   width: 100%;
   height: 850px;
@@ -56,21 +59,71 @@
   @media (max-width: 991.98px) {
     .my-wrap {
       background-position: top center !important; } }
+  .my-wrap .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: '';
+    opacity: .5;
+    background: #21243d;
+    height: 100px; }
   .my-wrap.my-wrap-2 {
-    height: 170px !important;
+    height: 10px !important;
     position: relative; }
+    .my-wrap.my-wrap-2 .overlay {
+      width: 100%;
+      opacity: .8;
+      height: 190px; }
     .my-wrap.my-wrap-2 .slider-text {
       height: 190px !important; }
       
-         /*회색부분 크기*/
-    .colmd7 { 
+           /*회색부분 크기*/
+    .colmd8 { 
     -webkit-box-flex: 0;
-    -ms-flex: 0 0 66.66667%;
-    flex: 0 0 66.66667%;
-    max-width: 40%; }   /*여기*/
-      
-      
-    
+    -ms-flex: 0 0 70%%;
+    flex: 0 0 70%%;
+    max-width: 70%; }   /*여기*/
+ 
+#login {
+	font-size: 14px;
+	text-align: right;
+}
+
+.my{
+	padding: 5px;
+	margin: 2px;
+
+	
+}
+
+  .nav-link_2 {
+    font-size: 12px;
+    font-family: "나눔스퀘어라운드";
+    padding-top: .1rem;
+    padding-bottom: .1rem;
+    padding-left: 1px;
+    padding-right: 1px;
+    color: #fff;
+    font-weight: 400;
+    opacity: 1 !important; }
+
+  .nav-link {
+    font-size: 18px;
+    font-family: "나눔스퀘어라운드";
+    padding-top: .7rem;
+    padding-bottom: .7rem;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: #fff;
+    font-weight: 600;
+    opacity: 1 !important; }
+  .nav-link:hover {
+      color: #c8572d; }
+  .nav-link2:visited{
+                color: red;
+            }
 
 <!--화면 줄어들때 메뉴색-->
  @media (max-width: 991.98px) {
@@ -78,37 +131,55 @@
       background: #000000 !important;
       position: relative;
       top: 0; } }
+      
+      
+.my{
+	padding: 50px;
+	
+}
+ .my_ul{
+	list-style:none; 
+ 	text-align: center;
+ }
+ .my_li{
+    display:inline-block;  
+	float:left;
+ 	padding: 50px;
+ 	border-left:1px solid #999;             /* 각 메뉴의 왼쪽에 "|" 표시(분류 표시) */
+    font:bold 16px Dotum;                     /* 폰트 설정 - 12px의 돋움체 굵은 글씨로 표시 */
+    padding:0 10px;  
+ }
+ 
+  .my_li2{
+    display:inline-block;  
+	float:left;
+ 	padding: 50px;
+    padding:0 10px;  
+ }
    
-   
-   
-    #change {
-         margin: 50px auto;
-         padding: 30px;
-         text-align: center;
-         color: black;
-      }
-   </style>
-</style>
-   <meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="resources/css/animate.css">
-    <link rel="stylesheet" href="resources/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="resources/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="resources/css/magnific-popup.css">
-    <link rel="stylesheet" href="resources/css/flaticon.css">
-    <link rel="stylesheet" href="resources/css/style.css">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="resources/css/animate.css">
-    <link rel="stylesheet" href="resources/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="resources/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="resources/css/magnific-popup.css">
-    <link rel="stylesheet" href="resources/css/flaticon.css">
-    <link rel="stylesheet" href="resources/css/style.css">
+ #my_a{
+ color: #bbbbbb;
+     font:bold 14px Dotum; 
+ }
+ #my_a:hover {
+ color: #d0a183; 
+ FONT-SIZE: 13pt; 
+ FONT-WEIGHT: bolder}
+ 
 
+</style>
+</head>   
+
+ <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="resources/css/animate.css">
+    <link rel="stylesheet" href="resources/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="resources/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="resources/css/magnific-popup.css">
+    <link rel="stylesheet" href="resources/css/flaticon.css">
+    <link rel="stylesheet" href="resources/css/style.css">
 
   <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
       <div class="container" ">
@@ -119,70 +190,68 @@
                <span class="oi oi-menu"></span> Menu
             </button>
          
-         <div class="collapse navbar-collapse" id="ftco-nav" style="display: block; ">
+           <div class="collapse navbar-collapse" id="ftco-nav" style="display: block; ">
               <ul class="navbar-nav ml-auto">
-               <c:choose>
-                  <c:when test="${m == null }">
-                     <li class="nav-item"><a style="font-size: 15px; " href="/login" class="my-link">로그인</a></li>
-                     <li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="my-link">회원가입</a></li>
-                  </c:when>
-                  <c:when test="${m != null }">
-                     <li class="nav-item"><a style="font-size: 15px; color: #fff">${m.nickName } 라이더님</a></li>
-                     <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="my-link">로그아웃</a></li>&nbsp;&nbsp;
-                     <li class="nav-item active"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="my-link">마이페이지</a></li>
+      
+                     <li class="nav-item"><a style="font-size: 15px; color: #fff; cursor:default;" class="nav-link" href="/myPage?id=${m.id}">${m.nickName } 라이더님</a></li>
+                     <li class="nav-item active"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+                     <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>
             </ul>
-         </div>
-		<div  class="collapse navbar-collapse" style="display: block; font-size: 12px;">
-              <ul class="navbar-nav ml-auto" style="list-style:none float:right">
-				<li class="my"><a href="/myPage" class="my-link_2" >정보 수정</a></li>
-				<li class="my"><a class="my-link_2" href="/myPageSaveCourse">찜 목록</a></li>
-                <li class="my"><a class="my-link_2" href="/myPageMyCourse">내 코스</a></li>
-                <li class="my"><a class="my-link_2" href="myPageListReview?id=${m.id}">내 후기</a></li>
-                <li class="my"><a class="my-link_2"href="/listReview?searchType=id&searchValue=${m.id }">내 번개</a></li>
-                <li class="my"><a class="my-link_2" href="/myPageMyRank"  style="color:#d0a183;">랭킹</a></li>
-                
-              
-                  </c:when>
-               </c:choose>
-
-              </ul>
-         </div>      
-
+         </div>   
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
-	          <li class="nav-item"><a href="/mainPage" class="my-link">Home</a></li>
-	          <li class="nav-item"><a href="/listNotice" class="my-link">오늘의 라이딩</a></li>
-	          <li class="nav-item"><a href="/searchCourse" class="my-link">라이딩 코스</a></li>
-	          <li class="nav-item"><a href="/listReview" class="my-link">라이딩 후기</a></li>
-	          <li class="nav-item"><a href="/listMeeting" class="my-link">번개 라이딩</a></li>
-	          <li class="nav-item"><a href="/user/makingCourse" class="my-link">메이킹 코스</a></li>
+	          <li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
+	          <li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
+	          <li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
+	          <li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
+	          <li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+	          <li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
 	        </ul>
 	      </div>
-        
        </div>
  </nav>
    
     <!-- END nav -->
 
-<section class="hero-wrap hero-wrap-2" style="background-image: url('https://cdn.pixabay.com/photo/2019/10/27/21/29/girls-4582899_1280.jpg'); background-size:100% 550px; data-stellar-background-ratio="0.5">
-<div class="overlay"></div>
+<body>
+   <section class="hero-wrap hero-wrap-2" style="background-image: url('https://cdn.pixabay.com/photo/2017/11/22/17/00/afternoon-2970935__340.jpg');
+    data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
       <div class="container">
-        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
+      			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
+				<div class="ftco-animate pb-0 text-center">
+     				 <span>
+						<h1 class="mb-3 bread" style="padding-top: 170px;">My 랭킹</h1>
+		           		 </span>
+			              <ul class="my" style="font-size: 10px">
+							<li class="my_li2" ><a id="my_a" class="nav-link_2" href="/myPage" >정보 수정</a></li>
+					 		<li class="my_li" ><a id="my_a" class="nav-link_2" href="/myPageSaveCourse" >찜 목록</a></li>
+							<li class="my_li" ><a id="my_a" class="nav-link_2" href="/myPageMyCourse" >내 코스</a></li>
+			                <li class="my_li"><a id="my_a" class="nav-link_2" href="/listReview?searchType=id&searchValue=${m.id }">내 후기</a></li>
+			                <li class="my_li"><a id="my_a" class="nav-link_2" href="/listMeeting?id=${m.id}">내 번개</a></li>
+			        <!--    <li class="my_li"><a id="my_a" class="nav-link_2" href="/myPageMyRank">랭킹</a></li> -->
+			              </ul>
+			         </div>
+			      </div>
         </div>
-      </div>
-      
-      <section class="ftco-section ftco-no-pb ftco-no-pt">
-    <div class="container">   
-           
-
+    </section>
+    
+<section class="my-wrap my-wrap-2" style="background-color: #fff;"  id=top>
+    </section>
+    <section class="ftco-section contact-section">
+      <div class="container" >
       <div id="change">
 
          ${m.nickName }님의 랭크는 현재 ${m.rank_name } 입니다<br>
          <img src="rank/${r.rank_icon }" height='150px' width="150px"">
   
       </div>
-    </div>
-    </section> 
-      
-</body>
-</html>
+        </div>
+      </div>
+
+    </section>
+    <jsp:include page="footer.jsp" />
+
+    </body>
+
+    </html>
