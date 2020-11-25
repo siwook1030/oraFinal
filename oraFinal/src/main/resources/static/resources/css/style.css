@@ -2064,7 +2064,6 @@ textarea.form-control {
   .btn:hover {
     border: none;
     background-color: #ffffff;
-    color: #c8572d;
     text-decoration: none; }
   .btn:focus, .btn.focus {
     outline: 0;
@@ -10235,16 +10234,16 @@ textarea.form-control {
 	display: none;
 }
 
-#btn_write,#btnDelete,#btnCancel{
+#n_btnWrite,#n_btnDelete,#n_btnCancel{
 	float: right;
 }
 
-#btnUpdate,#btnInsert{
+#n_btnUpdate,#n_btnInsert{
 	float: right;
 	margin-right: 5px;
 }
 
-#btnList{
+#n_btnList{
 	float: left;
 }
 
