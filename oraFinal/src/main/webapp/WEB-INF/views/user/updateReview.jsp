@@ -281,8 +281,8 @@ function checkImageUrls(editor) {
 		<div class="container">
 			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate pb-0 text-center">
-					<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a></span><span class="mr-2"><a href="/listReview">라이딩 후기 <i class="fa fa-chevron-right"></i></a></span> <span>라이딩 후기 수 <i class="fa fa-chevron-right"></i></span></p>
-					<h1 class="mb-3 bread">라이딩 후기 수정</h1>
+					<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a></span><span class="mr-2"><a href="/listReview">라이딩 후기 <i class="fa fa-chevron-right"></i></a></span> <span>후기 수정 <i class="fa fa-chevron-right"></i></span></p>
+					<h1 class="mb-3 bread">후기 수정</h1>
 				</div>
 			</div>
 		</div>
