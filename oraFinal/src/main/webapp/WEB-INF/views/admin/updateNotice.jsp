@@ -41,9 +41,9 @@ window.onload = function(){
 	const nTitle = document.getElementById("title");
 	const nContent = document.getElementById("content");
 
-	const btnInsert = document.getElementById("btnInsertN");
+	const btnInsert = document.getElementById("btnUpdateN");
 	
-	btnInsertN.addEventListener("click", function(e) {
+	btnUpdateN.addEventListener("click", function(e) {
 		if(nTitle.value.trim() === ""){
 			alert("제목을 입력해야 될 거 아니야~!");
 			return;

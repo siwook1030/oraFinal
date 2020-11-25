@@ -25,8 +25,8 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
 window.onload = function(){
-	 const token = $("meta[name='_csrf']").attr("content");
-	    const header = $("meta[name='_csrf_header']").attr("content");
+	 const token = $("meta[name='_csrf']").attr("n_insert_content");
+	    const header = $("meta[name='_csrf_header']").attr("n_insert_content");
 	    $(document).ajaxSend(function(e, xhr, options) {
 	        if(token && header) {
 	            xhr.setRequestHeader(header, token);
@@ -34,8 +34,8 @@ window.onload = function(){
 	    });
 
 	
-	const nTitle = document.getElementById("title");
-	const nContent = document.getElementById("content");
+	const nTitle = document.getElementById("n_insert_title");
+	const nContent = document.getElementById("n_insert_content");
 
 
 	const btnInsert = document.getElementById("btnInsertN");

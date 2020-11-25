@@ -112,16 +112,17 @@ window.onload = function(){
 		console.log(list);
 		$('#rowDFlex').empty();
 		$.each(list, function(i, n) {
-			let listImg;
+			/*let listImg;
 			console.log(n);
 			if(n.n_file != null){
 				listImg = $('<img id="listImg"/>').attr('src',"/noticeImg/"+n.n_file);
 			} else {
 				listImg = $('<img/>').attr('src',"/icons/empty.png");
 			}
-			const contentImg = $('<a></a>').addClass('block-20 img').attr("href",'detailNotice?n_no='+n.n_no).append(listImg);
+			const contentImg = $('<a></a>').addClass('block-20 img').attr("href",'detailNotice?n_no='+n.n_no).append(listImg);*/
 			// 목록 사진
 			
+			const listImg = $('<div></div>').addClass('list_n_file');
 			const code_name = $('<div></div>').addClass('list_code_name').html(n.code_name);
 			const n_regdate = $('<div></div>').addClass('list_n_regdate').html(n.n_regdate);
 			const n_bar = $('<div></div>').addClass('list_n_bar').html("|");
@@ -133,6 +134,7 @@ window.onload = function(){
             const metaDiv = $('<div></div>').addClass('meta mb2-3');
             const metaDiv2 = $('<div></div>').addClass('meta mb-3');
             const textDiv = $('<div></div>').addClass('text');
+            const contentImg = $('<a></a>').addClass('block-20 img').attr("style",'background-image: url(/noticeImg/'+n.n_file+')').attr("href",'detailNotice?n_no='+n.n_no).append(listImg);
             const blog_entryDiv = $('<div></div>').addClass('blog-entry justify-content-end');
             const col = $('<div></div>').addClass('col-md-3 d-flex ftco-animate fadeInUp ftco-animated');
 
@@ -224,7 +226,7 @@ window.onload = function(){
 
 	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 		<div class="container">
-			<a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
+			<a style="font-size: 30px;" class="navbar-brand" href="/mainPage">
 		        <span style="font-weight: bold;">
 			        <font color="#45A3F5">오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
 			        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font></span></a>
