@@ -120,11 +120,12 @@
 window.onload = function(){
 	 const token = $("meta[name='_csrf']").attr("content");
 	    const header = $("meta[name='_csrf_header']").attr("content");
-	    $(document).ajaxSend(function(e, xhr, options) {
+	    const parameter = $("meta[name='_csrf_parameter']").attr("content");
+	  /*  $(document).ajaxSend(function(e, xhr, options) {
 	        if(token && header) {
 	            xhr.setRequestHeader(header, token);
 	        }
-	    });
+	    });*/
 	
 	const oldCourseName = document.getElementById("oldCourseName");
 	
@@ -1069,6 +1070,11 @@ window.onload = function(){
 			reader.readAsText(file, "UTF-8");
 
 	})
+	
+	bikeFile.addEventListener("change", function(e) {  // 파일을 선택해서 로드할 시 경로만들기 자동로 눌러 경로를 만든다
+		bike.click();
+	});
+	
 	/////////----------------------------- 고도 차트 함수
 	google.charts.load('current', {'packages':['corechart']});
 	google.charts.setOnLoadCallback(drawAltitude);
@@ -1478,7 +1484,7 @@ window.onload = function(){
 		const tagCheck = krsharpAvail.test(ctag);
 		const sPTStCheck = krengnumAvail.test(sPTSt);
 		const ePTStCheck = krengnumAvail.test(ePTSt);
-
+	console.log(sPTVal);
 		function cnameDupCheck(){  // 코스명 중복검사 함수
 			let check = "1";
 			if(oldCourseName.value == cname){  // 수정전 코스명과 수정 후 코스명이 같을경우 대비
@@ -1486,7 +1492,7 @@ window.onload = function(){
 			}
 			
 			$.ajax({
-				url: "/user/cnameDupCheck",
+				url: "/user/cnameDupCheck?"+parameter+'='+token,
 				type: "POST",
 				async: false,
 				data:{"c_name" : cname},
@@ -1555,7 +1561,7 @@ window.onload = function(){
 			words.focus();
 			return 1;
 		}
-		if(sPTVal ==0){
+		if(sPTVal == '(입력안함)'){
 			alert("출발점 대중교통을 선택한 후 진행해주세요.");
 			sPT.focus();
 			return 1;
@@ -1571,7 +1577,7 @@ window.onload = function(){
 			return 1;
 		}
 		
-		if( ePTVal==0 ){
+		if( ePTVal=='(입력안함)' ){
 			alert("도착점 대중교통을 선택한 후 진행해주세요.");
 			ePT.focus();
 			return 1;
@@ -1673,7 +1679,7 @@ window.onload = function(){
 		}
 
 		$.ajax({
-			url:"/user/previewMakingCourse",
+			url:"/user/previewMakingCourse?"+parameter+"="+token,
 			type: "POST",
 			data: getCourseData(),
 			contentType: false,
@@ -1699,7 +1705,7 @@ window.onload = function(){
 		}
 
 		$.ajax({
-			url:"/admin/updateCourse",
+			url:"/admin/updateCourse?"+parameter+"="+token,
 			type: "POST",
 			data: getCourseData(),
 			contentType: false,
@@ -2074,7 +2080,7 @@ window.onload = function(){
 				<input type="file" id="photoInput" multiple="multiple">
 			</div>
 				
-			[출발점 대중교통]
+			<strong>[출발점 대중교통]</strong>
 			<div id="mapPS"></div>
 			<div id="bicycleInfoPS" class="bicycleInfo">
 				<input type="checkbox" id="chkBicyclePS"/> 자전거도로 정보 보기
@@ -2117,7 +2123,7 @@ window.onload = function(){
 			
 			
 			
-			[도착점 대중교통]
+			<strong>[도착점 대중교통]</strong>
 			<div id="mapPE"></div>
 			<div id="bicycleInfoPE" class="bicycleInfo">
 				<input type="checkbox" id="chkBicyclePE"/> 자전거도로 정보 보기
@@ -2250,7 +2256,6 @@ window.onload = function(){
   <script src="/resources/js/jquery.magnific-popup.min.js"></script>
   <script src="/resources/js/jquery.animateNumber.min.js"></script>
   <script src="/resources/js/scrollax.min.js"></script>
-  <script src="/resources/js/google-map.js"></script>
   <script src="/resources/js/main.js"></script>   
 
 </body>

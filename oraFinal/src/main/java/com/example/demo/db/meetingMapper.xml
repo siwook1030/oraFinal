@@ -163,4 +163,8 @@
 		DELETE FROM meeting_file WHERE mf_no=#{mf_no}
 	</delete>
 	
+	<select id="selectMeetingRepOne" resultType="meeting_repVo">
+		SELECT ID FROM MEETING_REP WHERE MR_NO = #{mr_no}
+	</select>
+	
 </mapper>	

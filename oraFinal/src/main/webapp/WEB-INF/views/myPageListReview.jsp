@@ -6,13 +6,14 @@
   <jsp:include page="my_header.jsp"/>
   
     <title>내 작성 후기</title>
-        <meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />
 <meta name="_csrf" content="${_csrf.token}" />
 <script type="text/javascript">
 window.onload = function(){
 	const token = $("meta[name='_csrf']").attr("content");
     const header = $("meta[name='_csrf_header']").attr("content");
+    const parameter = $("meta[name='_csrf_parameter']").attr("content");
     $(document).ajaxSend(function(e, xhr, options) {
         if(token && header) {
             xhr.setRequestHeader(header, token);

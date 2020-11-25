@@ -106,13 +106,14 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=drawing,services"></script>
 <script>
 window.onload = function(){
-	 const token = $("meta[name='_csrf']").attr("content");
-	    const header = $("meta[name='_csrf_header']").attr("content");
-	    $(document).ajaxSend(function(e, xhr, options) {
+	const token = $("meta[name='_csrf']").attr("content");
+    const header = $("meta[name='_csrf_header']").attr("content");
+    const parameter = $("meta[name='_csrf_parameter']").attr("content");
+	   /* $(document).ajaxSend(function(e, xhr, options) {
 	        if(token && header) {
 	            xhr.setRequestHeader(header, token);
 	        }
-	    });
+	    });*/
 	
 	const courseName =  document.getElementById("courseName");
 	const slat =  document.getElementById("slat");
@@ -1503,11 +1504,12 @@ const mNickName = checkM.item.nickName;
 		const tagCheck = krsharpAvail.test(ctag);
 		const sPTStCheck = krengnumAvail.test(sPTSt);
 		const ePTStCheck = krengnumAvail.test(ePTSt);
-
+	console.log(sPTVal);
+	console.log(ePTVal);
 		function cnameDupCheck(){  // 코스명 중복검사 함수
 			let check = "1";
 			$.ajax({
-				url: "/user/cnameDupCheck",
+				url: "/user/cnameDupCheck?"+parameter+"="+token,
 				type: "POST",
 				async: false,
 				data:{"c_name" : cname},
@@ -1576,7 +1578,7 @@ const mNickName = checkM.item.nickName;
 			words.focus();
 			return 1;
 		}
-		if(sPTVal ==0){
+		if(sPTVal =='(입력안함)'){
 			alert("출발점 대중교통을 선택한 후 진행해주세요.");
 			sPT.focus();
 			return 1;
@@ -1592,7 +1594,7 @@ const mNickName = checkM.item.nickName;
 			return 1;
 		}
 		
-		if( ePTVal==0 ){
+		if( ePTVal=='(입력안함)' ){
 			alert("도착점 대중교통을 선택한 후 진행해주세요.");
 			ePT.focus();
 			return 1;
@@ -1666,6 +1668,7 @@ const mNickName = checkM.item.nickName;
 		
 		const courseForm = document.getElementById("courseForm");
 		const formData = new FormData(courseForm);
+		
 		formData.set("c_name", c_name);
 		formData.set("nickName", mNickName);
 		formData.set("c_loc", c_loc);
@@ -1698,7 +1701,7 @@ const mNickName = checkM.item.nickName;
 		}
 	
 		$.ajax({
-			url:"/user/previewMakingCourse",
+			url:"/user/previewMakingCourse?"+parameter+"="+token,
 			type: "POST",
 			data: getCourseData(),
 			contentType: false,
@@ -1724,7 +1727,7 @@ const mNickName = checkM.item.nickName;
 		}
 
 		$.ajax({
-			url:"/user/regCourse",
+			url:"/user/regCourse?"+parameter+"="+token,
 			type: "POST",
 			data: getCourseData(),
 			contentType: false,
@@ -1947,7 +1950,7 @@ const mNickName = checkM.item.nickName;
 			</div>
 
 				
-			[출발점 대중교통]
+			<strong>[출발점 대중교통]</strong>
 			<div id="mapPS"></div>
 			<div id="bicycleInfoPS" class="bicycleInfo">
 				<input type="checkbox" id="chkBicyclePS"/> 자전거도로 정보 보기
@@ -1990,7 +1993,7 @@ const mNickName = checkM.item.nickName;
 			
 			
 			
-			[도착점 대중교통]
+			<strong>[도착점 대중교통]</strong>
 			<div id="mapPE"></div>
 			<div id="bicycleInfoPE" class="bicycleInfo">
 				<input type="checkbox" id="chkBicyclePE"/> 자전거도로 정보 보기
@@ -2125,7 +2128,6 @@ const mNickName = checkM.item.nickName;
   <script src="/resources/js/jquery.magnific-popup.min.js"></script>
   <script src="/resources/js/jquery.animateNumber.min.js"></script>
   <script src="/resources/js/scrollax.min.js"></script>
-  <script src="/resources/js/google-map.js"></script>
   <script src="/resources/js/main.js"></script>   
 </body>
 </html>

@@ -4,6 +4,9 @@
 <html>
 <head>
 <meta charset="utf-8">
+<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
 
 <title>회원가입</title>
 <jsp:include page="my_header.jsp"/>

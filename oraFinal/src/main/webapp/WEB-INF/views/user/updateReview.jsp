@@ -41,8 +41,9 @@ let current_urls = [];		// 현재 editor에 있는 img src들의 배열을 담�
 $(document).ready(function(){
 	// let pluginList = ClassicEditor.builtinPlugins.map( plugin => plugin.pluginName );
 	// console.log(pluginList);	// 사용가능한 플러그인 리스트
-		 const token = $("meta[name='_csrf']").attr("content");
+			 const token = $("meta[name='_csrf']").attr("content");
 		    const header = $("meta[name='_csrf_header']").attr("content");
+		    const parameter = $("meta[name='_csrf_parameter']").attr("content");
 		    $(document).ajaxSend(function(e, xhr, options) {
 		        if(token && header) {
 		            xhr.setRequestHeader(header, token);
@@ -135,14 +136,14 @@ $(document).ready(function(){
 		//plugins: [ SimpleUploadAdapter ],
         simpleUpload: {
             // The URL that the images are uploaded to.
-            uploadUrl: '/reviewImageInsert',
+            uploadUrl: "/reviewImageInsert?"+parameter+"="+token,
 
             // Enable the XMLHttpRequest.withCredentials property.
             withCredentials: true,		// 기본값
 
             // Headers sent along with the XMLHttpRequest to the upload server.
             headers: {
-                'X-CSRF-TOKEN': 'CSRF-Token',				// 기본값
+
                 Authorization: 'Bearer <JSON Web Token>',	// 기본값
                 uploadFolder: 'review_temp'
             }
@@ -208,7 +209,7 @@ $(document).ready(function(){
 // 사용자가 insert한 이미지 삭제 시 비동기 삭제처리를 위한 함수
 function imageDelete(urls, async){
 	$.ajax({
-		url: "/reviewImageDelete",
+		url: "/reviewImageDelete?"+parameter+"="+token,
 		beforeSend : function(xhr){
             xhr.setRequestHeader("uploadFolder", "review_temp");	// 삭제할 파일위치 정보전달
         },
@@ -291,7 +292,7 @@ function checkImageUrls(editor) {
 	<section class="ftco-section ftco-agent">
 		<div class="container">
 			<!-- 글등록 -->
-			<form action="/user/updateReview" method="post">
+			<form action="/user/updateReview?${_csrf.parameterName}=${_csrf.token}" method="post">
 				<div class="row justify-content-center pb-5">
 					<div class="col-md-12 heading-section text-center ftco-animate">
 						<span class="subheading">${rvo.r_no }</span>

@@ -1,5 +1,14 @@
 
   $(function(){
+  			const token = $("meta[name='_csrf']").attr("content");
+		    const header = $("meta[name='_csrf_header']").attr("content");
+		    const parameter = $("meta[name='_csrf_parameter']").attr("content");
+		    $(document).ajaxSend(function(e, xhr, options) {
+		        if(token && header) {
+		            xhr.setRequestHeader(header, token);
+		        }
+		    });
+  
 	  const nickName = document.getElementById("nickName");      
       const phone = document.getElementById("phone");
       const sendPhone = document.getElementById("sendPhone");
@@ -16,7 +25,7 @@
       function checkNick(){
           let nickCheck = 1;
              $.ajax({
-                url: "/nickCheck",
+                url: "/nickCheck?"+parameter+"="+token,
                 type: "POST",
                 async: false,
                 data:{
@@ -106,7 +115,7 @@
                }
                      
                $.ajax({
-                  url: "/smsSend",
+                  url: "/smsSend?"+parameter+"="+token,
                   type: "POST",
                   data:{
                      "num":inputNum.value.trim()
@@ -136,7 +145,7 @@
          const phoneNum = phone.value.trim();
          
          $.ajax({
-            url:"/phoneNumCheck",
+            url:"/phoneNumCheck?"+parameter+"="+token,
             type:"POST",
             async: false,
             data:{"phone":phoneNum},
@@ -222,7 +231,7 @@
                 }
             }
             var data =$("#update").serialize();
-            $.ajax("/update", {data:data,type: "POST",success:function(re){         
+            $.ajax("/update?"+parameter+"="+token, {data:data,type: "POST",success:function(re){         
                alert("회원 정보가 수정되었습니다");         
                window.location.reload();
             }});      

@@ -242,11 +242,12 @@ input, button, select, textarea {
 window.onload = function(){
 	const token = $("meta[name='_csrf']").attr("content");
     const header = $("meta[name='_csrf_header']").attr("content");
-    $(document).ajaxSend(function(e, xhr, options) {
+    const parameter = $("meta[name='_csrf_parameter']").attr("content");
+   /* $(document).ajaxSend(function(e, xhr, options) {
         if(token && header) {
             xhr.setRequestHeader(header, token);
         }
-    });
+    });*/
 
 	const myLat = document.getElementById("lat");
 	const myLon  = document.getElementById("lon");
@@ -774,7 +775,7 @@ function MarkerTracker(map, target) {
 		console.log( "풍경 : "+view);
 
 		$.ajax({
-			url:"/searchCourse",
+			url:"/searchCourse?"+parameter+"="+token,
 			type:"POST",
 			data:{
 				"latitude":latitude,

@@ -64,6 +64,7 @@
    .search-place:after,	 .col-md-4, .img, .search-place img {
    	border-radius: 10px;
    }
+
    
    
 .placeinfo_wrap {position:absolute;bottom:28px;left:-150px;width:300px;}
@@ -84,8 +85,9 @@
 <script src="/js/shuffleArray.js"></script>
 <script type="text/javascript">
 window.onload = function(){
-	 const token = $("meta[name='_csrf']").attr("content");
+		const token = $("meta[name='_csrf']").attr("content");
 	    const header = $("meta[name='_csrf_header']").attr("content");
+	    const parameter = $("meta[name='_csrf_parameter']").attr("content");
 	    $(document).ajaxSend(function(e, xhr, options) {
 	        if(token && header) {
 	            xhr.setRequestHeader(header, token);
@@ -327,7 +329,7 @@ window.onload = function(){
 	        <span class="oi oi-menu"></span> Menu
 	      </button>
 	      <div style="display: block;">
-			<div class="collapse navbar-collapse" id="ftco-nav" style="height: 20px;">
+			<div class="collapse navbar-collapse" id="ftco-nav">
 		        <ul class="navbar-nav ml-auto">
 					<c:choose>
 						<c:when test="${m == null }">
@@ -347,14 +349,13 @@ window.onload = function(){
 				</ul>
 			</div>      
 
-	      <div class="collapse navbar-collapse" id="ftco-nav" style="height: 40px;">
-	        <ul class="navbar-nav ml-auto">
-	          <li class="nav-item active"><a href="/mainPage" class="nav-link">Home</a></li>
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto" >
+	          <li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
 	          <li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
-	          <li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
+	          <li id="courseDropPoint"  class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a>
 	          <li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
 	          <li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
-
 	          <li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
 	          <!-- <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>-->
 

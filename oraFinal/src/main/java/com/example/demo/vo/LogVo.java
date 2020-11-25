@@ -14,5 +14,6 @@ public class LogVo {
 	private String log_content;
 	private String log_regdate;
 	private int log_count;
+	private String c_name;
 
 }

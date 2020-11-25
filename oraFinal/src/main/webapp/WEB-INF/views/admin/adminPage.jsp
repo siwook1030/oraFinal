@@ -53,6 +53,12 @@
 		width: 80px;
 		margin-right: 15px;
 	}
+	 .testimony-wrap {
+    box-shadow: 10px 5px 21px -14px rgba(14, 14, 14, 0.8);
+    width: 100%;
+    height: 200px;
+    background-color: #F7F7F7;
+}
 	
 </style>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -61,71 +67,197 @@
 	window.onload = function(){
 		 	const token = $("meta[name='_csrf']").attr("content");
 		    const header = $("meta[name='_csrf_header']").attr("content");
+		    const parameter = $("meta[name='_csrf_parameter']").attr("content");
 		    $(document).ajaxSend(function(e, xhr, options) {
 		        if(token && header) {
 		            xhr.setRequestHeader(header, token);
 		        }
 		    });
 
+			const cBtn = document.getElementById("course-chart-tab");
+			const bBtn = document.getElementById("board-chart-tab");		    
+		  
 		// 차트 구성하는 구간
-		google.charts.load("current", {packages:["corechart"]});
-		google.charts.setOnLoadCallback(drawChart);
+		
+			let dis;
+			let time;
+			let view;
+			let tag;
+			let cno;
+			
+			let reviewC;
+			let meetingC;
+			
+			const lReq = new XMLHttpRequest();
+			lReq.addEventListener("load", function(e) {
+				
+				const logMap = lReq.response;
+				
+				 dis = logMap.dis;
+				 time = logMap.time;
+				 view = logMap.view;
+				 tag = logMap.tag;
+				 cno = logMap.cno;
+				 
+				 reviewC = logMap.reviewC;
+				 meetingC = logMap.meetingC;
+	
+			});
+			lReq.addEventListener("error", function(e) {
+				
+			});
+			lReq.open("GET", "/admin/courseSearchLog",true);
+			lReq.responseType="json";
+			lReq.send(null);
 
 		 function drawChart() {
-		        const cDistance = google.visualization.arrayToDataTable([
-		          ['DISTANCE', 'COUNT'],
-		          ['Work',    11],
-		          ['Eat',      2],
-		          ['Commute',  2],
-		          ['Watch TV', 2],
-		          ['Sleep',    7]
-		        ]);
-
+		        const cDistance = new google.visualization.DataTable();
+		        cDistance.addColumn('string','거리');
+		        cDistance.addColumn('number','COUNT');
+		        dis.forEach(function(d, i) {
+		        	cDistance.addRow([d.log_content,d.log_count]); 
+		        });
+		        
 		        const cDistanceOptions = {
-		          title: '<코스검색 거리 선택>',
+		          title: '<거리 선택>',
 		          titleTextStyle: {color: 'black', fontSize: 16},
 		          pieHole: 0.4,
 		          forceIFrame:true,
+		          is3D: true,
 		          width:'100%',
 		          height: 400
 		        };    
 
-		        const cTime = google.visualization.arrayToDataTable([
-			          ['TIME', 'COUNT'],
-			          ['Work',     11],
-			          ['Eat',      2],
-			          ['Commute',  2],
-			          ['Watch TV', 2],
-			          ['Sleep',    7]
-			        ]);
-
+		        const cTime = new google.visualization.DataTable();
+		        cTime.addColumn('string','시간');
+		        cTime.addColumn('number','COUNT');
+		        time.forEach(function(t, i) {
+		        	cTime.addRow([t.log_content, t.log_count]);
+		        });
+			     
 		        const cTimeOptions = {
-		          title: '<코스검색 시간 선택>',
+		          title: '<시간 선택>',
 		          titleTextStyle: {color: 'black', fontSize: 16},
 		          pieHole: 0.4,
 		          forceIFrame:true,
+		          is3D: true,
 		          width:'100%',
 		          height:400
 		        };
 
-		        const cView = google.visualization.arrayToDataTable([
-			          ['VIEW', 'COUNT'],
-			          ['SD',      2],
-			          ['Commute',  2],
-			          ['Watch TV', 2],
-			          ['Sleep',    7]
-			        ]);
+		        const cView = new google.visualization.DataTable();
+		        cView.addColumn('string','풍경');
+		        cView.addColumn('number','COUNT');
+		       	view.forEach(function(v, i) {
+		       		cView.addRow([v.log_content, v.log_count]);
+		        });
 
 		        const cViewOptions = {
-		          title: '<코스검색 시간 선택>',
+		          title: '<풍경 선택>',
 		          titleTextStyle: {color: 'black', fontSize: 16},
 		          pieHole: 0.4,
 		          forceIFrame:true,
+		          is3D: true,
 		          width:'100%',
 		          height:400
 		        };
 
-		     
+		        const cTag = new google.visualization.DataTable();
+		        cTag.addColumn('string','태그');
+		        cTag.addColumn('number','COUNT');
+		       	tag.forEach(function(t, i) {
+		       		cTag.addRow([t.log_content, t.log_count]);
+		        });
+
+		        const cTagOptions = {
+		          title: '<태그 검색 상위 10개>',
+		          titleTextStyle: {color: 'black', fontSize: 16},
+		          pieHole: 0.4,
+		          forceIFrame:true,
+		          is3D: true,
+		          width:'100%',
+		          height:400
+		        };
+
+		        const courseNo = new google.visualization.DataTable();
+		        courseNo.addColumn('string','코스명');
+		        courseNo.addColumn('number','조회수');
+		       	cno.forEach(function(c, i) {
+		       		courseNo.addRow([c.c_name, c.log_count]);
+		        });
+
+		        const courseNoOptions = {
+				        chart : {
+			                title: '<코스별 조회수 상위 10개>',
+				        },
+				        titleTextStyle: {color: 'black',fontSize: 20},
+		                chartArea: {width: '60%'},
+		                animation:{duration:3000,easing:'out',startup:true},
+		                hAxis: {
+		                  title: '조회수',
+		                  minValue: 0,titleTextStyle: {color: '#333',fontSize: 15}
+		                },
+		                vAxis: {
+		                  title: '코스명',titleTextStyle: {color: '#333',fontSize: 15}
+		                },
+		                colors : ['#c8572d'],
+				        bars: 'horizontal'
+		              };
+
+
+		        const reviewCno = new google.visualization.DataTable();
+		        reviewCno.addColumn('string','코스명');
+		        reviewCno.addColumn('number','게시글 수');
+		       	reviewC.forEach(function(r, i) {
+		       		reviewCno.addRow([r.c_name, r.log_count]);
+		        });
+
+		        const reviewCnoOptions = {
+		        		chart : {
+			                title: '<후기게시판 코스별 상위 10개>',
+			                subtitle:'후기게시판'
+				        },
+				        titleTextStyle: {color: 'black',fontSize: 20},
+		                chartArea: {width: '60%'},
+		                animation:{duration:3000,easing:'out',startup:true},
+		                hAxis: {
+		                  title: '게시글 수',
+		                  minValue: 0,titleTextStyle: {color: '#333',fontSize: 15}
+		                },
+		                vAxis: {
+		                  title: '코스명',titleTextStyle: {color: '#333',fontSize: 15}
+		                },
+				        bars: 'horizontal'
+		              };
+
+		        const meetingCno = new google.visualization.DataTable();
+		        meetingCno.addColumn('string','코스명');
+		        meetingCno.addColumn('number','게시글 수');
+		       	meetingC.forEach(function(m, i) {
+		       		meetingCno.addRow([m.c_name, m.log_count]);
+		        });
+
+		        const meetingCnoOptions = {
+		        		chart : {
+			                title: '<번개게시판 코스별 상위 10개>',
+			                subtitle : '번개게시판'
+				        },
+				        titleTextStyle: {color: 'black',fontSize: 20},
+		                chartArea: {width: '60%'},
+		                animation:{duration:3000,easing:'out',startup:true},
+		                hAxis: {
+		                  title: '게시글 수',
+		                  minValue: 0,titleTextStyle: {color: '#333',fontSize: 15}
+		                },
+		                vAxis: {
+		                  title: '코스명',titleTextStyle: {color: '#333',fontSize: 15}
+		                },
+
+		                colors : ['#eccb6a'],
+				        bars: 'horizontal'
+		              };
+
+		              
 
 		        const cDistanceChart = new google.visualization.PieChart(document.getElementById('cDistanceChart'));
 		        cDistanceChart.draw(cDistance, cDistanceOptions);
@@ -136,11 +268,35 @@
 		        const cViewChart = new google.visualization.PieChart(document.getElementById('cViewChart'));
 		        cViewChart.draw(cView, cViewOptions);
 		        
+		        const tagChart = new google.visualization.PieChart(document.getElementById('tagChart'));
+		        tagChart.draw(cTag, cTagOptions);
+
+		        const courseNochart = new google.charts.Bar(document.getElementById('courseNochart'));
+		        courseNochart.draw(courseNo, google.charts.Bar.convertOptions(courseNoOptions));
+
+		        const reviewCchart = new google.charts.Bar(document.getElementById('reviewCchart'));
+		        reviewCchart.draw(reviewCno, google.charts.Bar.convertOptions(reviewCnoOptions));
+
+		        const meetingCchart = new google.charts.Bar(document.getElementById('meetingCchart'));
+		        meetingCchart.draw(meetingCno, google.charts.Bar.convertOptions(meetingCnoOptions));
+		        
 		        window.addEventListener("resize",drawChart,false);  
  
 		      }
 
+		 google.charts.load("current", {packages:["corechart","bar"]});
+		// google.charts.load("current", {packages:["bar"]});
+		  google.charts.setOnLoadCallback(drawChart);
+
+		cBtn.addEventListener("click", function(e) {
+			setTimeout(drawChart, 200);
+		});
+		bBtn.addEventListener("click", function(e) {
+			setTimeout(drawChart, 200);
+		});
 		
+		
+
 		//--------------------
 
 		// 승인대기코스 갖고오는 구간 시작
@@ -152,15 +308,38 @@
 			cReq.addEventListener("load", function(e) {
 					const cList = cReq.response;
 					let cTempCntStr = "("+cList.length+")";
-					 
+					 console.log(cList.length);
 					if(cList.length > 0){
 						cTempCntStr += '<img src="/adminImg/new.png" width="40px">';
 					}
 					cTempCnt.innerHTML =cTempCntStr;
 					searchList.innerHTML = "";
-					cList.forEach(function(c, i) {
-						setCourseBox(c);
-					});		
+					if(cList.length > 0 ){
+						cList.forEach(function(c, i) {
+							setCourseBox(c);
+						});
+					}
+					else{
+						console.log(cList.length);
+						let approveEmpty = 
+							'<div class="col-md-12 heading-section text-center ftco-animate fadeInUp ftco-animated">\
+							<div class="ftco-animate fadeInUp ftco-animated" >\
+		    				  <div class="item" style="display: inline-block; text-align: center;">\
+				                <div class="testimony-wrap">\
+				                  	<span class="fa fa-quote-left"></span>\
+				                    	<div class="user-img"></div>\
+				                    	<div class="pl-3">\
+				                    		<h3>승인대기중인 코스가 없습니다</h3>\
+						                    <span class="position"><img src="/adminImg/courseCnt.png" width="30px">\
+						                    <a href="#">Waiting for approval Course not exist</a>\
+						                    </span>\
+						                  </div>\
+				                </div>\
+				              </div>\
+				              </div>\
+		    				</div>';
+	    				searchList.innerHTML = approveEmpty;
+					}	
 			});
 			cReq.addEventListener("error", function(e){
 				alert("에러발생");
@@ -266,6 +445,7 @@
 			data.set("c_no", c_no);
 			data.set("c_name", c_name);
 			data.set("id", id);
+
 			const aReq = new XMLHttpRequest();
 			aReq.addEventListener("load", function(e) {
 				const re = aReq.responseText;
@@ -275,7 +455,7 @@
 			aReq.addEventListener("error", function(e) {
 				alert("에러발생");
 			});
-			aReq.open("POST", "/admin/approveCourse");
+			aReq.open("POST", "/admin/approveCourse?"+parameter+'='+token);
 			aReq.send(data);
 		}
 		
@@ -295,7 +475,7 @@
                <span class="oi oi-menu"></span> Menu
             </button>
         <div style="display: block;"> 
-         <div class="collapse navbar-collapse" id="ftco-nav" style="height: 20px;">
+         <div class="collapse navbar-collapse" id="ftco-nav">
               <ul class="navbar-nav ml-auto">
                <c:choose>
                   <c:when test="${m == null }" >
@@ -314,7 +494,7 @@
             </ul>
          </div>      
 
-         <div class="collapse navbar-collapse" id="ftco-nav" style="height: 40px;">
+         <div class="collapse navbar-collapse" id="ftco-nav">
            <ul class="navbar-nav ml-auto">
              <li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
              <li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
@@ -446,10 +626,10 @@
 							  <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
 
 							    <li class="nav-item">
-							      <a class="nav-link active" id="course-chart-tab" data-toggle="pill" href="#course-chart" role="tab" aria-controls="course-chart" aria-expanded="true">코스관련</a>
+							      <a class="nav-link active" id="course-chart-tab" data-toggle="pill" href="#course-chart" role="tab" aria-controls="course-chart" aria-expanded="true">코스검색</a>
 							    </li>
 							    <li class="nav-item">
-							      <a class="nav-link" id="pills-manufacturer-tab" data-toggle="pill" href="#pills-manufacturer" role="tab" aria-controls="pills-manufacturer" aria-expanded="true">검색관련</a>
+							      <a class="nav-link" id="board-chart-tab" data-toggle="pill" href="#board-chart" role="tab" aria-controls="board-chart" aria-expanded="true">게시판</a>
 							    </li>
 							    <li class="nav-item">
 							      <a class="nav-link" id="course-temp-tab" data-toggle="pill" href="#course-temp" role="tab" aria-controls="course-temp" aria-expanded="true">승인대기 코스 <span id="course-temp-cnt"></span></a>
@@ -466,19 +646,32 @@
 										<div id="cDistanceChart" style="width: 50%; height: 400px;" class="float-left"></div>
 						    			<div id="cTimeChart" style="width: 50%; height: 400px;" class="float-right" ></div>
 						    			<div id="cViewChart" style="width: 50%; height: 400px;" class="float-left" ></div>
+						    			<div id="tagChart" style="width: 50%; height: 400px;" class="float-right" ></div>
+						    			<div id="courseNochart" style="width: 100%; height: 400px;" class="float-left" ></div>
 						    	</div>
 						    	</div>
 						    </div>
 
-						    <div class="tab-pane fade" id="pills-manufacturer" role="tabpanel" aria-labelledby="pills-manufacturer-tab">
-						    
+						    <div class="tab-pane fade" id="board-chart" role="tabpanel" aria-labelledby="board-chart-tab">
+						    	<div class="row">
+						    	<div class="col-md-12 heading-section text-center ftco-animate">
+						    		<span class="subheading">게시판 관련 현황</span>
+						        	  <div style="margin: 20px 0 20px 0;"></div>
+						    			<div id="reviewCchart" style="width: 100%; height: 400px;" class="float-left" ></div>
+						    			<div class="float-left" style="width: 100%; height: 50px;"></div>
+						    			<div id="meetingCchart" style="width: 100%; height: 400px;" class="float-left" ></div>
+						    	</div>
+						    	</div>
 						    </div>
 
 						    <div class="tab-pane fade" id="course-temp" role="tabpanel" aria-labelledby="course-temp-tab">
+						      <div class="col-md-12 heading-section text-center ftco-animate">
+						      	<span class="subheading">승인대기 코스</span>
+						      </div>
+						      <div style="margin: 20px 0 20px 0;"></div>
 						      <div class="row" id="searchList">
-							   	
-							   	
-							   	</div>
+						      
+						      </div>
 						    </div>
 						  </div>
 						</div>

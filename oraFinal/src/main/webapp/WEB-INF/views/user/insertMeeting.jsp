@@ -61,7 +61,15 @@
 <script type="text/javascript" src="/ckeditor5/build/ckeditor.js"></script>
 <script type="text/javascript">
 	window.onload = function(){
-
+		const token = $("meta[name='_csrf']").attr("content");
+	    const header = $("meta[name='_csrf_header']").attr("content");
+	    const parameter = $("meta[name='_csrf_parameter']").attr("content");
+	    $(document).ajaxSend(function(e, xhr, options) {
+	        if(token && header) {
+	            xhr.setRequestHeader(header, token);
+	        }
+	    });
+		
 		let current_urls = [];		// 현재 editor에 있는 img src들의 배열을 담은 변수. url저장형식 => /meeting/46076431.jpg
 
 		const checkM = checkLogin();
@@ -133,11 +141,10 @@
 		
 		
 		////////////////////////////////////////////////////////////////////////////
-		const nowLocSrc = '/mainPageImg/nowLoc.png', // 현위치 마커이미지의 주소입니다    
-		nowLocSize = new kakao.maps.Size(40, 40), // 현위치 마커이미지의 크기입니다
-		nowLocOption = {offset: new kakao.maps.Point(27, 69)}; // 현위치 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+		const nowLocSrc = '/mainPageImg/nowLoc.gif', // 현위치 마커이미지의 주소입니다    
+		nowLocSize = new kakao.maps.Size(15, 15); // 현위치 마커이미지의 크기입니다
 		//현위치 마커의 이미지정보를 가지고 있는 현위치 마커이미지를 생성합니다
-		const nowLocImage = new kakao.maps.MarkerImage(nowLocSrc, nowLocSize, nowLocOption);
+		const nowLocImage = new kakao.maps.MarkerImage(nowLocSrc, nowLocSize);
 		const nowLocMarker = new kakao.maps.Marker({image:nowLocImage}),
 		   nowLocInfowindow = new kakao.maps.InfoWindow({zindex:1,removable:true});
 		
@@ -153,11 +160,11 @@
 		               document.getElementById("m_latitude").value = lat; 
 		               document.getElementById("m_longitude").value = lon;
 		               
-		           const locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-		               message = '<div style="padding:2px 0 0 25px;">라이더 현위치</div>'; // 인포윈도우에 표시될 내용입니다
+		           const locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+		              // message = '<div style="padding:2px 0 0 25px;">라이더 현위치</div>'; // 인포윈도우에 표시될 내용입니다
 		           
 		           // 마커와 인포윈도우를 표시합니다
-		           displayMarker(locPosition, message);
+		           displayMarker(locPosition);
 		               
 		         });
 		       
@@ -166,25 +173,25 @@
 		     const locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
 		           message = '현위치를 찾을 수 없습니다'
 		           
-		       displayMarker(locPosition, message);
+		       displayMarker(locPosition);
 		   }
 		   
 		}
 		nowLocDisplay();  // 추가적으로 현위치표시를 사용해야하므로 함수로 만들어놓고 첫실행때 시작되게끔 만듬
 		//지도에 마커와 인포윈도우를 표시하는 함수입니다
-		function displayMarker(locPosition, message) {
+		function displayMarker(locPosition) {
 		
 		    // 마커를 생성합니다
 		        nowLocMarker.setPosition(locPosition);
 		        nowLocMarker.setMap(map);
 		    
-		    const iwContent = message; // 인포윈도우에 표시할 내용
+		  //  const iwContent = message; // 인포윈도우에 표시할 내용
 		
 		    // 인포윈도우를 생성합니다
-		       nowLocInfowindow.setContent(iwContent);
+		     //  nowLocInfowindow.setContent(iwContent);
 		   
 		    // 인포윈도우를 마커위에 표시합니다 
-		    nowLocInfowindow.open(map, nowLocMarker);
+		  //  nowLocInfowindow.open(map, nowLocMarker);
 		    
 		    // 지도 중심좌표를 접속위치로 변경합니다
 		    map.setCenter(locPosition);      
@@ -364,7 +371,7 @@
 		// 사용자가 insert한 이미지 삭제 시 비동기 삭제처리를 위한 함수
 		function imageDelete(urls){
 			$.ajax({
-				url: "/meetingImageDelete",
+				url: "/meetingImageDelete?"+parameter+"="+token,
 				beforeSend : function(xhr){
 		            xhr.setRequestHeader("uploadFolder", "meetingFile");		// 삭제할 파일위치 정보전달
 		        },
@@ -390,7 +397,7 @@
 				m_numpeople = 0;
 			}
 		    $.ajax({
-				url: "/meetingAutoSave",
+				url: "/meetingAutoSave?"+parameter+"="+token,
 				method: "post",
 				data: {
 					c_no: c_no,
@@ -546,14 +553,13 @@
 			//plugins: [ SimpleUploadAdapter ],
 	        simpleUpload: {
 	            // The URL that the images are uploaded to.
-	            uploadUrl: '/meetingImageInsert',
+	            uploadUrl: "/meetingImageInsert?"+parameter+"="+token,
 
 	            // Enable the XMLHttpRequest.withCredentials property.
 	            withCredentials: true,		// 기본값
 
 	            // Headers sent along with the XMLHttpRequest to the upload server.
 	            headers: {
-	                'X-CSRF-TOKEN': 'CSRF-Token',				// 기본값
 	                Authorization: 'Bearer <JSON Web Token>',	// 기본값
 	                uploadFolder: 'meetingFile'
 	            }
@@ -647,7 +653,7 @@
 			mtFormData.set("image_urls", current_urls);
 			mtFormData.set("real_content", real_content);
 			$.ajax({
-				url: '/user/insertMeeting',
+				url: '/user/insertMeeting?'+parameter+'='+token,
 				type: 'post',
 				contentType: false,
 				processData: false,

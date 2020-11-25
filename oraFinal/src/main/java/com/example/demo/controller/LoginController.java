@@ -51,7 +51,7 @@ public class LoginController {
 		return "login";
 	}
 	
-	@PostMapping(value = "/checkLogin", produces = "application/json;charset=utf-8")
+	@GetMapping(value = "/checkLogin", produces = "application/json;charset=utf-8")
 	@ResponseBody
 	public String checkLogin(HttpSession session) {
 		HashMap map = new HashMap();

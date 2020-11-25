@@ -46,7 +46,8 @@
 let current_urls = [];		// 현재 editor에 있는 img src들의 배열을 담은 변수. url저장형식 => /review/46076431.jpg
 $(document).ready(function(){
 	 const token = $("meta[name='_csrf']").attr("content");
-	    const header = $("meta[name='_csrf_header']").attr("content");
+	 const header = $("meta[name='_csrf_header']").attr("content");
+	 const parameter = $("meta[name='_csrf_parameter']").attr("content");
 	    $(document).ajaxSend(function(e, xhr, options) {
 	        if(token && header) {
 	            xhr.setRequestHeader(header, token);
@@ -156,14 +157,13 @@ $(document).ready(function(){
 		//plugins: [ SimpleUploadAdapter ],
         simpleUpload: {
             // The URL that the images are uploaded to.
-            uploadUrl: '/reviewImageInsert',
+            uploadUrl: '/reviewImageInsert?'+parameter+'='+token,
 
             // Enable the XMLHttpRequest.withCredentials property.
             withCredentials: true,		// 기본값
 
             // Headers sent along with the XMLHttpRequest to the upload server.
             headers: {
-                'X-CSRF-TOKEN': 'CSRF-Token',				// 기본값
                 Authorization: 'Bearer <JSON Web Token>',	// 기본값
                 uploadFolder: 'review'
             }
@@ -241,12 +241,12 @@ $(document).ready(function(){
 		location.href = "/listReview";
 	});
 
-});
+
 
 // 사용자가 insert한 이미지 삭제 시 비동기 삭제처리를 위한 함수
 function imageDelete(urls){
 	$.ajax({
-		url: "/reviewImageDelete",
+		url: "/reviewImageDelete?"+parameter+"="+token,
 		beforeSend : function(xhr){
             xhr.setRequestHeader("uploadFolder", "review");		// 삭제할 파일위치 정보전달
         },
@@ -272,7 +272,7 @@ function saveData( data ) {
 	let r_title = $("#r_title").val();
 	let c_no = $("#c_no").val();
     $.ajax({
-		url: "/reviewAutoSave",
+		url: "/reviewAutoSave?"+parameter+"="+token,
 		method: "post",
 		data: {
 			r_title: r_title,
@@ -298,6 +298,8 @@ function displayStatus( editor ) {
         }
     } );
 }
+
+});
 </script>
 </head>
 <body>
@@ -358,7 +360,7 @@ function displayStatus( editor ) {
 		<section class="ftco-section ftco-agent">
 			<div class="container">
     			<!-- 글등록 form 시작 -->
-				<form action="/user/insertReview" method="post">
+				<form action="/user/insertReview?${_csrf.parameterName}=${_csrf.token}" method="post">
 			    	<div class="row justify-content-center pb-5">
 						<div class="col-md-12 heading-section text-center ftco-animate">
 				          	<span class="subheading">Today's Riding</span>
@@ -390,7 +392,7 @@ function displayStatus( editor ) {
 					</div>
 					<div id="submitWrap">
 						<input type="submit" value="등록" class="btn" id="inputInsert" style="background-color: #eccb6a">
-						<button class="btn" id="btnCancle" style="background-color: #d0a183">취소</button>
+						<button type="button" class="btn" id="btnCancle" style="background-color: #d0a183">취소</button>
 	 				</div>
 				</form>
 			</div>
