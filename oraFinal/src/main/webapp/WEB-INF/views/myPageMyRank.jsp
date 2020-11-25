@@ -127,7 +127,7 @@
                      <li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="my-link">회원가입</a></li>
                   </c:when>
                   <c:when test="${m != null }">
-                     <li class="nav-item"><a style="font-size: 15px; color: #000000">${m.nickName } 라이더님</a></li>
+                     <li class="nav-item"><a style="font-size: 15px; color: #fff">${m.nickName } 라이더님</a></li>
                      <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="my-link">로그아웃</a></li>&nbsp;&nbsp;
                      <li class="nav-item active"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="my-link">마이페이지</a></li>
             </ul>
@@ -137,8 +137,8 @@
 				<li class="my"><a href="/myPage" class="my-link_2" >정보 수정</a></li>
 				<li class="my"><a class="my-link_2" href="/myPageSaveCourse">찜 목록</a></li>
                 <li class="my"><a class="my-link_2" href="/myPageMyCourse">내 코스</a></li>
-                <li class="my"><a class="my-link_2" href="/listReview?searchType=id&searchValue=${m.id }">내 작성 후기</a></li>
-                <li class="my"><a class="my-link_2" href="listMeeting?id=${m.id}">내 번개</a></li>
+                <li class="my"><a class="my-link_2" href="myPageListReview?id=${m.id}">내 후기</a></li>
+                <li class="my"><a class="my-link_2"href="/listReview?searchType=id&searchValue=${m.id }">내 번개</a></li>
                 <li class="my"><a class="my-link_2" href="/myPageMyRank"  style="color:#d0a183;">랭킹</a></li>
                 
               

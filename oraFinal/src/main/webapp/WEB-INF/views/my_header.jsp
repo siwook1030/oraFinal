@@ -34,7 +34,7 @@ window.onload = function(){
     padding-bottom: .1rem;
     padding-left: 1px;
     padding-right: 1px;
-    color: #fff;
+    color: #000000;
     font-weight: 400;
     opacity: 1 !important; }
 
@@ -45,7 +45,7 @@ window.onload = function(){
     padding-bottom: .7rem;
     padding-left: 20px;
     padding-right: 20px;
-    color: #fff;
+    color: #000000;
     font-weight: 600;
     opacity: 1 !important; }
   .my-link:hover {
@@ -114,7 +114,7 @@ window.onload = function(){
 				<li class="my"><a class="my-link_2" href="/myPageSaveCourse">찜 목록</a></li>
                 <li class="my"><a class="my-link_2" href="/myPageMyCourse">내 코스</a></li>
                 <li class="my"><a class="my-link_2" href="myPageListReview?id=${m.id}">내 후기</a></li>
-                <li class="my"><a class="my-link_2"href="listMeeting?id=${m.id}">내 번개</a></li>
+                <li class="my"><a class="my-link_2"href="/listReview?searchType=id&searchValue=${m.id }">내 번개</a></li>
                 <li class="my"><a class="my-link_2"href="/myPageMyRank">랭킹</a></li>
                 
               

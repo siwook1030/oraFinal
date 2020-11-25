@@ -103,8 +103,8 @@
 				<li class="my"><a class="my-link_2" href="/myPageSaveCourse" >찜 목록</a></li>
                 <li class="my"><a class="my-link_2" href="/myPageMyCourse"  style="color:#d0a183;font-weight: bold;">내 코스</a></li>
                 <li class="my"><a class="my-link_2" href="myPageListReview?id=${m.id}">내 후기</a></li>
-                <li class="my"><a class="my-link_2"href="listMeeting?id=${m.id}">내 번개</a></li>
-                <li class="my"><a class="my-link_2"href="/myPageMyRank">랭킹</a></li>
+                <li class="my"><a class="my-link_2" href="/listReview?searchType=id&searchValue=${m.id }">내 번개</a></li>
+                <li class="my"><a class="my-link_2" href="/myPageMyRank">랭킹</a></li>
               </ul>
          </div>      
 
@@ -138,7 +138,6 @@
 
  <section class="ftco-section ftco-no-pb ftco-no-pt">
     <div class="container_my" style="padding-left: 150px; padding-right: 150px; padding-top: 50px;">   
-           <h1>내가 만든 코스 목록</h1>
            
       <div class="row" id="saveCourseList"></div>
         <div class="row mt-5">

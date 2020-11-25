@@ -25,8 +25,8 @@
 		input, select { border: none; background-color: transparent; width: auto; text-align: center; }
 		input:focus { outline: none; }
 		/* 등록, 취소 버튼 */
-	 	.btn { color: white; padding: 7px 17px; margin: 3px 1px; font-size: 19px; border: none; cursor: pointer; width: auto; }
-		#btnDiv { text-align: center; }
+		.btn { color: white; padding: 8px 12px; background-color: #88BEA6; display: inline-block; font-size: 15px; border: none; cursor: pointer; }
+		#btnDiv { text-align: center; padding-top: 50px; }
 		.mtIcon {
 			width: 40px;
 			margin: 10px;
@@ -40,9 +40,9 @@
 			padding: 10px; 
 			text-align: center;
 		}
-		textarea {
+/* 		textarea {
 			border: none;
-		}
+		} */
 		/*#m_content {
 			padding: 10px 0;
 			border-top: 1px solid gray;
@@ -58,10 +58,10 @@
 	   .bAddr {padding:5px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
 	   
 	   /*파일업로드관련 css*/
-	    .drag-over { background-color: #CFF768; outline-style: dotted; outline-offset:-20px; }
+/* 	    .drag-over { background-color: #CFF768; outline-style: dotted; outline-offset:-20px; }
 		.thumb { width:100px; height:100px; padding:5px; float:left; }
 		.thumb > img { width:100%; height: 100%; }
-		.thumb > .close { position:absolute; background-color:red; cursor:pointer; }
+		.thumb > .close { position:absolute; background-color:red; cursor:pointer; } */
 	   
 	</style>
 	
@@ -722,47 +722,42 @@
 							</div>
 						</div>
 					</div>
-				</section> 
+				</section>
 				
-				
-				
-				
-				<!-- 기존수정 -->
-			
-				<div>
-					
-					<div class="selectMtAll">
-						<!-- 코스 지도 & 만날 위치 -->
-						<div class="selectMt">
-							<img src="../meetingImg/ridingRoute.png" class="mtIcon"><br>
-							<select id="selectCourse" name="c_no">
-								<c:forEach var="c" items="${cList }">
-									<c:if test="${c.c_no == 0 }">
-										<option cNum="${c.c_no }" value="${c.c_no }">${c.c_name }</option>
-									</c:if>
-									<c:if test="${c.c_no != 0}">
-										<option cNum="${c.c_no }" value="${c.c_no }">${c.c_no }.${c.c_name }/${c.c_loc }/${c.c_view }</option>
-									</c:if>   
-								</c:forEach>
-							</select>
-						</div>
-						<div class="selectMt">
-							<img src="../meetingImg/meetingDate.png" class="mtIcon"><br>
-							<input type="date" name="m_time" id="m_time" value="${mt.m_time }">
-						</div>
-						<div class="selectMt">
-							<img src="../meetingImg/meetingMember.png" class="mtIcon"><br>
-							<input type="number" name="m_numpeople" id="m_numpeople" value="${mt.m_numpeople }" min="1" style="width: 12em">
-						</div>
+				<!-- 코스, 날짜, 인원 -->
+				<div class="selectMtAll">
+					<div class="selectMt">
+						<img src="../meetingImg/ridingRoute.png" class="mtIcon"><br>
+						<select id="selectCourse" name="c_no">
+							<c:forEach var="c" items="${cList }">
+								<c:if test="${c.c_no == 0 }">
+									<option cNum="${c.c_no }" value="${c.c_no }">${c.c_name }</option>
+								</c:if>
+								<c:if test="${c.c_no != 0}">
+									<option cNum="${c.c_no }" value="${c.c_no }">${c.c_no }.${c.c_name }/${c.c_loc }/${c.c_view }</option>
+								</c:if>   
+							</c:forEach>
+						</select>
+					</div>
+					<div class="selectMt">
+						<img src="../meetingImg/meetingDate.png" class="mtIcon"><br>
+						<input type="date" name="m_time" id="m_time" value="${mt.m_time }">
+					</div>
+					<div class="selectMt">
+						<img src="../meetingImg/meetingMember.png" class="mtIcon"><br>
+						<input type="number" name="m_numpeople" id="m_numpeople" value="${mt.m_numpeople }" min="1" style="width: 12em">
 					</div>
 				</div>
 				
+				<!-- 모임위치 -->
 				<div id="selectLoc">
 					<strong style="font-size: 20px;">지도를 클릭하여 미팅장소를 정하세요!</strong><br><br>
 					<!-- 위도 --> <input type="hidden" name="m_latitude" id="m_latitude" value="${mt.m_latitude }">
 					<!-- 경도 --> <input type="hidden" name="m_longitude" id="m_longitude" value="${mt.m_longitude }">
 					<input type="text" name="m_locname" id="m_locname" value="${mt.m_locname }" size="60" style="text-align: center">
 		        </div>
+		        
+		        <!-- 지도 -->
 				<div class="map_wrap">
 					<div id="map" style="width:100%; height:100%; position:relative; overflow:hidden;"></div>
 					<div class="hAddr">
@@ -770,16 +765,11 @@
 						<span id="centerAddr"></span>
 					</div>
 				</div>
-				<br><br>
-		       
+				
+				<!-- 글내용 -->
 				<textarea name="m_content" id="editor"></textarea>
-				<br>		
-				<!--  <div id="drop" style="border: 1px solid gray; width: 870px; height: 300px; padding: 3px;">
-					<div id="thumbnails"></div>
-				</div>
-				<input type="file" name="uploadFile" id="photoInput" multiple="multiple">
-				-->
-				<br>
+				
+				<!-- 수정, 취소 버튼 -->
 				<div id="btnDiv">
 					<button type="button" class="btn" id="btnEdit" style="background-color: #eccb6a">수정</button>
 					<button type="button" class="btn" id="btnCancel" style="background-color: #d0a183">취소</button>

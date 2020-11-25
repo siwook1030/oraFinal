@@ -43,7 +43,7 @@
 		.selectedCourse a { font-size: 18px; display: inline-block; vertical-align: bottom; }
 		.selectedCourse { width: 300px; border: 1px #D5D5D5 solid; border-radius: 10px; margin: 2px auto; padding: 25px; text-align: center; }
 		/* 게시글 수정삭제 버튼 */
-		.btn { color: white; padding: 8px 12px; margin: 20px 2px; background-color: #88BEA6; display: inline-block; font-size: 15px; border: none; cursor: pointer; }
+		.btn { color: white; padding: 8px 12px; margin: 20px 0; background-color: #88BEA6; display: inline-block; font-size: 15px; border: none; cursor: pointer; }
 		/* 댓글수 */
 		#repImg { display: inline-block; width: 25px; padding-right: 5px; margin-bottom: 3px; }
 		#total_reply { display: inline-block; font-size: 18px; }
@@ -74,6 +74,8 @@
 
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script type="text/javascript">
+	// 답글달기버튼 btnIdx속성 기본값. 각 버튼마다 rr_no값을 넣어주고 눌러서 열면 rr_no를 닫으면 -1을 넣어줘서 여닫기능구현.
+	let btnIdx = -1;
 	var querystring = location.search;		// querystring 가져오기 ex) r_no=1
 	var n = querystring.indexOf("=");		// value를 가져오기위한 =의 index알아오기 ex) 4
 	var r_no = querystring.substring(n+1);	// 게시판번호 저장 변수 ex) 1
@@ -94,20 +96,29 @@
 		
 		$(document).on("click", ".btnReply", function(event){	// 댓글 아이콘 입력시 댓글 입력창 동적생성 이벤트
 			$(".div_c3_c2").empty();		// 모든 대댓글 입력창,등록버튼 비우기
-			let $div1 = $("<div></div>").css("margin-left", "25px").addClass("textareaContainer").append($replyTextArea);	// 자식인 textarea 찾기위해 클래스 지정
-			let $div2 = $("<div></div>").addClass("btnContainer");
-			let $btn = $("<button></button>").addClass("sendReply btn").text("등록");		// 클릭 이벤트 적용을 위한 클래스
-	
-			$div2.append($btn);
-			$div1.append($div2)
-			$(this).parent().siblings(".div_c3_c2").append($div1);
+			if($(this).attr("btnIdx") !== btnIdx) {
+				btnIdx = $(this).attr("btnIdx");	// 한번더 누르면 닫힘
+				// 자식인 textarea 찾기위해 클래스 지정
+				let $div1 = $("<div></div>").css("margin-left", "25px").addClass("textareaContainer").append($replyTextArea);
+				let $div2 = $("<div></div>").addClass("btnContainer");
+				let $btn = $("<button></button>").addClass("sendReply btn").text("등록");		// 클릭 이벤트 적용을 위한 클래스
+		
+				$div2.append($btn);
+				$div1.append($div2)
+				$(this).parent().siblings(".div_c3_c2").append($div1);
+			}else {
+				btnIdx = -1;	// 한번더 누르면 무조건 열림
+			}
 		});
 		
 		$(document).on("click", ".sendReply", function(event){		// 댓글 내용을 추출하여 insert ajax함수 호출
 			// 본문 댓글과 대댓글을 하나의 이벤트로 처리하기 위해 클래스명과 노드구조 동일하게 맞춤
+			
 			let rr_ref = $(this).closest(".replyToReplyArea").attr("rr_ref");	// closest함수로 조상노드까지 검색가능
-			let rr_content = $(this).parent().siblings(".textareaContainer").children("textarea").val();	// siblings은 형제노드를 찾는다
 			//$(this).parent().siblings(".textareaContainer").children("textarea").val("");	// 댓글 내용 추출후에 비워주기
+			let rr_content = $(this).parent().siblings("textarea").val();	// siblings은 형제노드를 찾는다
+			//alert("rr_ref:"+rr_ref);
+			//alert("rr_content:"+rr_content);
 			if(rr_content === "") {		
 				alert("댓글내용을 입력하세요!");	// 댓글내용없는데 등록버튼 누를 경우
 			}else {
@@ -167,7 +178,7 @@
 					if(login_id !== "") {		// 현재 로그인한 사용자일 경우 댓글아이콘 보이기
 						/* let $img_rep = $("<img>").attr("src", "icons/reply.png");
 						let $btn_rep = $("<div></div>").attr("title", "댓글").append($img_rep).addClass("btnReply"); */
-						$btn_rep = $("<div></div>").html("답글달기").addClass("btnReply");
+						$btn_rep = $("<div></div>").html("답글달기").addClass("btnReply").attr("btnIdx", item.rr_no);	// 버튼여닫기능용도 attr
 						/* $div_c3_c1.append($btn_rep); */
 					}
 					if(login_id === rr_id) {	// 로그인id와 댓글작성id가 일치할 경우 수정,삭제 아이콘 보이기
