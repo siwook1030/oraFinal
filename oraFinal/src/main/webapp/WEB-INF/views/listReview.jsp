@@ -291,7 +291,6 @@
 
   .nav-link_2 {
     font-size: 12px;
-    font-family: "나눔스퀘어라운드";
     padding-top: .1rem;
     padding-bottom: .1rem;
     padding-left: 1px;
@@ -302,7 +301,6 @@
 
   .nav-link {
     font-size: 18px;
-    font-family: "나눔스퀘어라운드";
     padding-top: .7rem;
     padding-bottom: .7rem;
     padding-left: 20px;
@@ -316,7 +314,7 @@
                 color: red;
             }
 
-<!--화면 줄어들때 메뉴색-->
+/* 화면 줄어들때 메뉴색 */
  @media (max-width: 991.98px) {
     .ftco-navbar-light {
       background: #000000 !important;

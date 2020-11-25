@@ -5,11 +5,6 @@
 <head>
 <title>회원 정보 수정</title>
 
-<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
-<meta name="_csrf_header" content="${_csrf.headerName}" />
-<meta name="_csrf" content="${_csrf.token}" />
-<jsp:include page="my_header2.jsp"/>
-
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
 <script type="text/javascript" src="/js/myPage.js"></script>
@@ -48,11 +43,12 @@
     }
 
     .phone_input {
-      < !--새전화번호입력-->padding-right: 50px;
+      /* 새전화번호입력 */
+      padding-right: 50px;
       font-size: 14px;
     }
 
-<!-- 탭조절 	-->
+/* 탭조절 */
 .my-wrap {
   width: 100%;
   height: 850px;
@@ -105,7 +101,6 @@
 
   .nav-link_2 {
     font-size: 12px;
-    font-family: "나눔스퀘어라운드";
     padding-top: .1rem;
     padding-bottom: .1rem;
     padding-left: 1px;
@@ -116,7 +111,6 @@
 
   .nav-link {
     font-size: 18px;
-    font-family: "나눔스퀘어라운드";
     padding-top: .7rem;
     padding-bottom: .7rem;
     padding-left: 20px;
@@ -187,8 +181,8 @@
     <link rel="stylesheet" href="resources/css/style.css">
 
   <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-      <div class="container" ">
-         			 <a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
+      <div class="container">
+         			 <a style="font-size: 30px;" class="navbar-brand" href="/mainPage">
         <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
         <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
@@ -197,7 +191,6 @@
          
            <div class="collapse navbar-collapse" id="ftco-nav" style="display: block; ">
               <ul class="navbar-nav ml-auto">
-      
                      <li class="nav-item"><a style="font-size: 15px; color: #fff; cursor:default;" class="nav-link" href="/myPage?id=${m.id}">${m.nickName } 라이더님</a></li>
                      <li class="nav-item active"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
                      <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>

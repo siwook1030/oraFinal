@@ -725,7 +725,7 @@
 					<div class="container">
 						<div class="row justify-content-center pb-5">
 							<div class="col-md-12 heading-section text-center ftco-animate">
-								<span class="subheading">${mt.m_no }</span>
+								<span class="subheading"><input type="hidden" name="m_no" value="${mt.m_no }">${mt.m_no }</span>
 								<!-- 제목 -->
 								<h2 class="mb-4"><input type="text" name="m_title" id="m_title" value="${mt.m_title }"></h2>
 							</div>
