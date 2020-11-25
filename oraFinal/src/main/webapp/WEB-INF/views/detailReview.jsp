@@ -47,12 +47,12 @@
 		.regdate { padding-left: 30px; font-size: 13px; display: inline-block; margin-bottom: 5px; }
 		.replyContent { padding-left: 30px; margin-top: 2px; font-size: 14px; height: auto; }
 		.replyNickname { margin-top: 3px; font-size: 14px; padding-left: 5px; width: auto; margin-top: 3px; }
-		.textareaContainer > textarea { width: 100%; height: 110px; padding: 10px 10px 10px 13px; font-size: 14px; border: none; }
+		.textareaContainer > textarea { width: 100%; height: 110px; padding: 10px 10px 10px 13px; font-size: 14px; border: none;}
 		.btnContainer { height: auto; margin-left: 25px; text-align: right;}
 		.btnContainer img { width: 20px; margin-left: 5px; } /* 댓글 수정삭제 이미지 */
-		.modAndDel { display: inline-block; padding-right: 10px; width: auto; text-align: right; vertical-align: top; } /* 댓글수정삭제 div */
+		.modAndDel { display: inline-block; padding-right: 10px; width: auto; text-align: right; vertical-align: top;} /* 댓글수정삭제 div */
 		.btnReply { font-size: 13px; display: inline-block; vertical-align: top; padding-left: 5px; cursor: pointer; text-decoration: underline; }
-		.div_c3 { display: inline-block; }
+		.div_c3 { display: inline-block; width: 85%}
 		.myRep { display: inline-block; margin-left: 10px; padding: 2px 6px; border: 1px solid red; border-radius: 12px; font-size: 12px; } /* 내댓글 표시 */
 		.sendReply { margin: 0 7px 7px 0; }
 		.textareaContainer { border: 1px solid gray; text-align: right; }
@@ -91,7 +91,7 @@
 		$("#replyToBoardArea").append($div1).attr("rr_ref", 0);	// rr_ref가 0이면 본문 댓글
 		
 		$(document).on("click", ".btnReply", function(event){	// 댓글 아이콘 입력시 댓글 입력창 동적생성 이벤트
-			$(".div_c3_c2").empty();		// 모든 대댓글 입력창,등록버튼 비우기
+			$(".div_c5").empty();		// 모든 대댓글 입력창,등록버튼 비우기
 			if($(this).attr("btnIdx") !== btnIdx) {
 				btnIdx = $(this).attr("btnIdx");	// 한번더 누르면 닫힘
 				// 자식인 textarea 찾기위해 클래스 지정
@@ -101,7 +101,8 @@
 		
 				$div2.append($btn);
 				$div1.append($div2)
-				$(this).parent().siblings(".div_c3_c2").append($div1);
+				$(this).parent().siblings(".div_c5").append($div1);
+				
 			}else {
 				btnIdx = -1;	// 한번더 누르면 무조건 열림
 			}
@@ -159,8 +160,8 @@
 						/* $div.css("height", "auto"); */
 			 		}
 					$div_c1.append($div_c1_c1, $div_c1_c2);
-	/* 작성일자 */		let $div_c1_c3 = $("<div></div>").text(item.date_diff_str);
-					let $div_c4 = $("<div></div>").append($div_c1_c3).addClass("regdate"); // css적용을 위한 클래스
+	/* 작성일자 */		//let $div_c1_c3 = $("<div></div>").text(item.date_diff_str);
+					let $div_c4 = $("<div></div>").addClass("regdate").text(item.date_diff_str+" "); // css적용을 위한 클래스
 
 					let $span = $("<span></span>").text(item.rr_content);
 					// 댓글내용. 수정을 위해 rr_no값 속성에 추가
@@ -177,6 +178,7 @@
 						let $btn_rep = $("<div></div>").attr("title", "댓글").append($img_rep).addClass("btnReply"); */
 						$btn_rep = $("<div></div>").html("답글달기").addClass("btnReply").attr("btnIdx", item.rr_no);	// 버튼여닫기능용도 attr
 						/* $div_c3_c1.append($btn_rep); */
+						$div_c4.append($btn_rep);
 					}
 					if(login_id === rr_id) {	// 로그인id와 댓글작성id가 일치할 경우 수정,삭제 아이콘 보이기
 						$img_mod = $("<img>").attr({src: "icons/eraser.png", title: "수정", class: "img_mod"});
@@ -218,13 +220,14 @@
 						
 						$btn_modDel = $("<div></div>").addClass('modAndDel').append($a_mod, $a_del);
 					}
-					$div_c3_c1.append($btn_rep, $btn_modDel);
-					let $div_c3_c2 = $("<div></div>").addClass("div_c3_c2").addClass("replyToReplyArea").attr("rr_ref", item.rr_ref);
+					$div_c3_c1.append($btn_modDel);
+					// let $div_c3_c2 = $("<div></div>").addClass("div_c3_c2").addClass("replyToReplyArea").attr("rr_ref", item.rr_ref);
+					let $div_c5 = $("<div></div>").addClass("div_c5").addClass("replyToReplyArea").attr("rr_ref", item.rr_ref);
 					// $div_c3_c2 노드에 이벤트로 동적으로 댓글입력창,등록버튼 생성됨. 이를 위한 클래스 'div_c3_c2' 
 					// 'replyToReplyArea'클래스는 본문댓글,대댓글 공통클래스이며 댓글내용을 추출하여 ajax통신하기 위한 클래스
-					$div_c3.append($div_c3_c1, $div_c3_c2);
+					$div_c3.append($div_c3_c1);
 					
-					$div.append($div_c1, $div_c2, $div_c4, $div_c3,/*  $div1, */ "<hr>");
+					$div.append($div_c1, $div_c2, $div_c4, $div_c3, $div_c5, "<hr>");
 					
 					$("#replyArea").append($div);
 				})
