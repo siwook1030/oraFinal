@@ -26,8 +26,9 @@
 <script src="/js/loginCheck.js"></script>
 <script type="text/javascript">
 window.onload = function(){
-	 const token = $("meta[name='_csrf']").attr("content");
+	 	const token = $("meta[name='_csrf']").attr("content");
 	    const header = $("meta[name='_csrf_header']").attr("content");
+	    const parameter = $("meta[name='_csrf_parameter']").attr("content");
 	    $(document).ajaxSend(function(e, xhr, options) {
 	        if(token && header) {
 	            xhr.setRequestHeader(header, token);

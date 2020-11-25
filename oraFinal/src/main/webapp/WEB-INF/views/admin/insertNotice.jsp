@@ -25,8 +25,9 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
 window.onload = function(){
-	 const token = $("meta[name='_csrf']").attr("n_insert_content");
-	    const header = $("meta[name='_csrf_header']").attr("n_insert_content");
+	 	const token = $("meta[name='_csrf']").attr("content");
+	    const header = $("meta[name='_csrf_header']").attr("content");
+	    const parameter = $("meta[name='_csrf_parameter']").attr("content");
 	    $(document).ajaxSend(function(e, xhr, options) {
 	        if(token && header) {
 	            xhr.setRequestHeader(header, token);
@@ -54,7 +55,7 @@ window.onload = function(){
 		const formData = new FormData(form);
 		
 		$.ajax({
-			url: "/admin/insertNotice",
+			url: "/admin/insertNotice?"+parameter+"="+token,
 			type: "POST",
 			data: formData,
 			contentType: false,

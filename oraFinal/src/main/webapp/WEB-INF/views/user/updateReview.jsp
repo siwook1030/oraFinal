@@ -204,7 +204,7 @@ $(document).ready(function(){
 		location.href = "/detailReview?r_no=${rvo.r_no }";
 	});
 	
-});
+
 
 // 사용자가 insert한 이미지 삭제 시 비동기 삭제처리를 위한 함수
 function imageDelete(urls, async){
@@ -231,6 +231,8 @@ function checkImageUrls(editor) {
 	.querySelectorAll( 'img' ) )
 	.map( img => img.getAttribute( 'src' ) );	// 현재 editor에 있는 img src들의 배열 저장
 }
+
+});
 
 </script>
 </head>

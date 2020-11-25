@@ -377,11 +377,11 @@ public class CourseManager {
 	//내가만든 코스 가져오기
 	public static List<CourseVo> getMyCourseById(HttpSession httpSession) {
 		MemberVo m = (MemberVo)httpSession.getAttribute("m");
-		List<CourseVo> SaveCourseList;
+		List<CourseVo> makingCourseList;
 		SqlSession session = sqlSessionFactory.openSession();
-		SaveCourseList = session.selectList("course.selectMyCourse", m.getId());
+		makingCourseList = session.selectList("course.selectMyCourse", m.getId());
 		List<CoursePhotoVo> cpList = null;
-		for (CourseVo c : SaveCourseList) {
+		for (CourseVo c : makingCourseList) {
 			c.setC_views(c.getC_view().split("-"));
 			cpList=session.selectList("course.selectCoursePhoto", c.getC_no());
 			Collections.shuffle(cpList);
@@ -389,7 +389,7 @@ public class CourseManager {
 		}
 		
 		session.close();
-		return SaveCourseList;
+		return makingCourseList;
 	}
 	//찜코스 삭제
 	public static int deleteSaveCourse(HashMap map) {
