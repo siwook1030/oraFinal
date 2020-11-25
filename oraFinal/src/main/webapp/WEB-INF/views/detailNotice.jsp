@@ -131,9 +131,9 @@ window.onload = function(){
 	            </div>
 	        </div>
 	        <hr class="mb-6">
-          	<p>
+          	<div class="text-center mb-6">
               <img src="/noticeImg/${n.n_file }" alt="" class="img-fluid">
-            </p>
+            </div>
             <div id="n_content" style="white-space:pre;"><c:out value="${n.n_content}" /></div>
 			<br>
 			<a href="listNotice"><button type="button" class="btn btn-primary" id="btnListN">목록</button></a>
