@@ -109,15 +109,11 @@ public class CourseController {
       System.out.println("세이브 컨트롤러 작동!!!!");
       Gson gson = new Gson();
       List<CourseVo> courseList = cdao.getSaveCourse(httpSession);
-      List<CoursePhotoVo> photovo =null;
-      for (CourseVo c : courseList) {
-         photovo =(c.getC_photo());
-      }
+
       //model.addAttribute("courseList",courseList);
       //model.addAttribute("photovo",photovo);
       System.out.println(courseList);
       System.out.println("코스리스트");
-      System.out.println(photovo);
       
       return gson.toJson(courseList);
    }
@@ -129,13 +125,9 @@ public class CourseController {
       System.out.println("세이브 컨트롤러 작동!!!!");
       Gson gson = new Gson();
       List<CourseVo> courseList = cdao.getMyCourseById(httpSession);
-      List<CoursePhotoVo> photovo =null;
-      for (CourseVo c : courseList) {
-         photovo =(c.getC_photo());
-      }
+
       System.out.println(courseList);
       System.out.println("코스리스트");
-      System.out.println(photovo);
       
       return gson.toJson(courseList);
    }

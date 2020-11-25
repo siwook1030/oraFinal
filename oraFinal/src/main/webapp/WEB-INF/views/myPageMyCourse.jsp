@@ -58,6 +58,25 @@
       background: #000000 !important;
       position: relative;
       top: 0; } }
+      
+     .cViewIcon {
+   	width: 34px;
+   }
+      .viewImg {
+   	margin-right: 10px;
+   }
+   
+   .owl-carousel .owl-item img{
+   		display: inline;
+   		width: 25px;
+   }
+   
+     .cInfoIcon {
+		width: 25px;
+   }
+   .search-place:after,	 .col-md-4, .img, .search-place img {
+   	border-radius: 10px;
+   }
 
 </style>
 </head>   
@@ -72,26 +91,18 @@
     <link rel="stylesheet" href="resources/css/magnific-popup.css">
     <link rel="stylesheet" href="resources/css/flaticon.css">
     <link rel="stylesheet" href="resources/css/style.css">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="resources/css/animate.css">
-    <link rel="stylesheet" href="resources/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="resources/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="resources/css/magnific-popup.css">
-    <link rel="stylesheet" href="resources/css/flaticon.css">
-    <link rel="stylesheet" href="resources/css/style.css">
-
 
   <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
       <div class="container">
+
          			 <a style="ffont-size: 30px;" class="navbar-brand" href="/mainPage">
+
         <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
-        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></a>
+        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font></span></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                <span class="oi oi-menu"></span> Menu
             </button>
-         
+         <div style="display: block;">
            <div class="collapse navbar-collapse" id="ftco-nav" style="display: block; ">
               <ul class="navbar-nav ml-auto">
                      <li class="nav-item"><a style="font-size: 15px; color: #fff; cursor:default;" class="nav-link" href="/myPage?id=${m.id}">${m.nickName } 라이더님</a></li>
@@ -111,7 +122,7 @@
 	          <li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
 	        </ul>
 	      </div>
-        
+        </div>
        </div>
  </nav>
    
@@ -146,8 +157,11 @@
 
 
  <section class="ftco-section ftco-no-pb ftco-no-pt">
-    <div class="container_my" style="padding-left: 150px; padding-right: 150px; padding-top: 50px;">   
-           
+    <div class="container">   
+    	<div class="mb-5"></div>
+           <div class="col-md-12 heading-section text-center ftco-animate mb-5">
+	          			<span class="subheading">내가 만든 코스</span>	
+	          		</div>
       <div class="row" id="saveCourseList"></div>
         <div class="row mt-5">
           <div class="col text-center">
