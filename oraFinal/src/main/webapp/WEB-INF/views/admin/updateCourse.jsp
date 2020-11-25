@@ -1908,12 +1908,12 @@ window.onload = function(){
      </div>
    </nav>
     <!-- END nav -->
-	<section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+	<section class="hero-wrap hero-wrap-2" style="background-image: url('/headerImg/makingCourseMain.jpg');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate pb-0 text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="#">라이딩 코스<i class="fa fa-chevron-right"></i></a></span> <span>코스 상세<i class="fa fa-chevron-right"></i></span></p>
+          	<p class="breadcrumbs"><span class="mr-2"><a href="#">HOME <i class="fa fa-chevron-right"></i></a></span> <span>코스 상세 <i class="fa fa-chevron-right"></i></span></p>
             <h1 class="mb-3 bread">코스 수정</h1>
           </div>
         </div>

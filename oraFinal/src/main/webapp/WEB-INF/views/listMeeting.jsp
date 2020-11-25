@@ -360,8 +360,8 @@
 	</nav>
 	<!-- END nav -->	
 
-    <section class="hero-wrap hero-wrap-2" style="background-image: url('https://media.istockphoto.com/photos/bike-and-friends-picture-id1175357560?b=1&k=6&m=1175357560&s=170667a&w=0&h=CxB5fZzHPzq8xSGeavVU3UUHlPiutKW3hUMNT0VAzYk=');background-size:100% 600px;" data-stellar-background-ratio="0.5">
-		<div class="overlay" style="background-color: #4e5169"></div>
+   <section class="hero-wrap hero-wrap-2" style="background-image: url('headerImg/meetingMain.jpg');" data-stellar-background-ratio="0.5">
+		<div class="overlay"></div>
 		<div class="container">
 			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate pb-0 text-center">
