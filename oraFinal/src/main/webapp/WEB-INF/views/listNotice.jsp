@@ -112,16 +112,17 @@ window.onload = function(){
 		console.log(list);
 		$('#rowDFlex').empty();
 		$.each(list, function(i, n) {
-			let listImg;
+			/*let listImg;
 			console.log(n);
 			if(n.n_file != null){
 				listImg = $('<img id="listImg"/>').attr('src',"/noticeImg/"+n.n_file);
 			} else {
 				listImg = $('<img/>').attr('src',"/icons/empty.png");
 			}
-			const contentImg = $('<a></a>').addClass('block-20 img').attr("href",'detailNotice?n_no='+n.n_no).append(listImg);
+			const contentImg = $('<a></a>').addClass('block-20 img').attr("href",'detailNotice?n_no='+n.n_no).append(listImg);*/
 			// 목록 사진
 			
+			const listImg = $('<div></div>').addClass('list_n_file');
 			const code_name = $('<div></div>').addClass('list_code_name').html(n.code_name);
 			const n_regdate = $('<div></div>').addClass('list_n_regdate').html(n.n_regdate);
 			const n_bar = $('<div></div>').addClass('list_n_bar').html("|");
@@ -133,6 +134,7 @@ window.onload = function(){
             const metaDiv = $('<div></div>').addClass('meta mb2-3');
             const metaDiv2 = $('<div></div>').addClass('meta mb-3');
             const textDiv = $('<div></div>').addClass('text');
+            const contentImg = $('<a></a>').addClass('block-20 img').attr("style",'background-image: url(/noticeImg/'+n.n_file+')').attr("href",'detailNotice?n_no='+n.n_no).append(listImg);
             const blog_entryDiv = $('<div></div>').addClass('blog-entry justify-content-end');
             const col = $('<div></div>').addClass('col-md-3 d-flex ftco-animate fadeInUp ftco-animated');
 
@@ -224,7 +226,7 @@ window.onload = function(){
 
 	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 		<div class="container">
-			<a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
+			<a style="font-size: 30px;" class="navbar-brand" href="/mainPage">
 		        <span style="font-weight: bold;">
 			        <font color="#45A3F5">오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
 			        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font></span></a>
@@ -241,9 +243,9 @@ window.onload = function(){
 							<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
 						</c:when>
 						<c:when test="${m != null }">
-							<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
-							<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
-							<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+							<li class="nav-item"><a style="font-size: 15px; color: #fff; cursor:default;" class="nav-link">${m.nickName } 라이더님</a></li>
+							<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>&nbsp;&nbsp;
+							<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>
 						<c:if test="${m.code_value == '00101' }">
 								<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
 							</c:if>
@@ -267,7 +269,7 @@ window.onload = function(){
 	</nav>
     <!-- END nav -->
     
-	<section class="hero-wrap hero-wrap-2" style="background-image: url('resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+	<section class="hero-wrap hero-wrap-2" style="background-image: url('headerImg/noticeMain.jpg');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
@@ -300,7 +302,7 @@ window.onload = function(){
         
 		<div class="row mt-5">
 			<div class="col text-center">
-				<div id="insertNotice"><a href="/admin/insertNotice" class="btn btn-success" id="btn_write">글쓰기</a></div>                    
+				<div id="insertNotice"><a href="/admin/insertNotice" class="btn btn-success" id="btnWriteN">글쓰기</a></div>                    
 				<div class="block-27">
 					<ul class="pageUl" id="pageUl"><!-- 페이징처리 --></ul>
 				</div>

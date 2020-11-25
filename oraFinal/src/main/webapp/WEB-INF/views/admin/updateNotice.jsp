@@ -41,9 +41,9 @@ window.onload = function(){
 	const nTitle = document.getElementById("title");
 	const nContent = document.getElementById("content");
 
-	const btnInsert = document.getElementById("btnUpdate");
+	const btnInsert = document.getElementById("btnUpdateN");
 	
-	btnInsert.addEventListener("click", function(e) {
+	btnUpdateN.addEventListener("click", function(e) {
 		if(nTitle.value.trim() === ""){
 			alert("제목을 입력해야 될 거 아니야~!");
 			return;
@@ -124,7 +124,7 @@ window.onload = function(){
 	</nav>
     <!-- END nav -->
     
-	<section class="hero-wrap hero-wrap-2" style="background-image: url('resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+	<section class="hero-wrap hero-wrap-2" style="background-image: url('/headerImg/noticeMain.jpg');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
@@ -149,19 +149,19 @@ window.onload = function(){
 		        </select>
 		        <br>
 				<div class="form-group">
-					<input type="hidden" name="n_no" value="${n_no }">
+					<input type="hidden" name="n_no" value="${n.n_no }">
 				</div>
 				<div class="form-group">
-					<input type="text" name="n_title" class="form-control" id="n_update_title" value="${n.n_title }">
+					<input type="text" name="n_title" class="form-control" id="title" value="${n.n_title }">
 				</div>
 				<div class="form-group">
-					<textarea rows="20" cols="100" name="n_content" class="form-control" id="n_update_content">${n.n_content }</textarea>
+					<textarea rows="20" cols="100" name="n_content" class="form-control" id="content">${n.n_content }</textarea>
 				</div>
-				<input class="mb-6" type="text" name="n_file" value="${n.n_file }">
-				<input class="mb-6" type="file" name="uploadFile">
+				<input class="mb-2" type="file" name="uploadFile"><br>
+				<img class="mb-6" src="/noticeImg/${n.n_file }" width="300px">
 				<br>
-				<a href="/detailNotice?n_no=${n.n_no}"><button type="button" class="btn btn-warning" id="btnCancel">취소</button></a>
-				<button type="button" class="btn btn-success" id="btnUpdate">수정</button>	
+				<a href="/detailNotice?n_no=${n.n_no}"><button type="button" class="btn btn-warning" id="btnCancelN">취소</button></a>
+				<button type="button" class="btn btn-success" id="btnUpdateN">수정</button>	
 			</form>
 	      </div>
 	    </div>

@@ -1352,9 +1352,9 @@ function MarkerTracker(map, target) {
                      <li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
                   </c:when>
                   <c:when test="${m != null }">
-                     <li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
-                     <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
-                     <li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+                     <li class="nav-item"><a style="font-size: 15px; color: #fff; cursor:default;" class="nav-link">${m.nickName } 라이더님</a></li>
+                     <li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>&nbsp;&nbsp;
+                     <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>
                  <c:if test="${m.code_value == '00101' }">
 								<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
 							</c:if>
@@ -1378,12 +1378,12 @@ function MarkerTracker(map, target) {
       </div>
    </nav>
     <!-- END nav -->
-	<section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+	<section class="hero-wrap hero-wrap-2" style="background-image: url('/headerImg/searchCourseMain.jpg');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate pb-0 text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">오늘의 라이딩 <i class="fa fa-chevron-right"></i></a></span> <span>라이딩 코스 <i class="fa fa-chevron-right"></i></span></p>
+          	<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">HOME <i class="fa fa-chevron-right"></i></a></span> <span>라이딩 코스 <i class="fa fa-chevron-right"></i></span></p>
             <h1 class="mb-3 bread">코스 지도검색</h1>
           </div>
         </div>

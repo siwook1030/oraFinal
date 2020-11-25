@@ -25,7 +25,7 @@
 		input, select { border: none; background-color: transparent; width: auto; text-align: center; }
 		input:focus { outline: none; }
 		/* 등록, 취소 버튼 */
-	 	.btn { color: white; padding: 7px 17px; margin: 3px 1px; font-size: 19px; border: none; cursor: pointer; width: auto; }
+		.btn { color: white; padding: 8px 12px; background-color: #88BEA6; display: inline-block; font-size: 15px; border: none; cursor: pointer; }
 	 	/* 등록, 취소버튼 div */
 		#submitWrap { text-align: center; padding-top: 50px; }
 		/* 코스선택 */
@@ -277,13 +277,13 @@ function checkImageUrls(editor) {
     </nav>
     <!-- END nav -->
     
-    <section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('/headerImg/reviewMain.jpg');" data-stellar-background-ratio="0.5">
 		<div class="overlay"></div>
 		<div class="container">
 			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate pb-0 text-center">
-					<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a></span><span class="mr-2"><a href="/listReview">라이딩 후기 <i class="fa fa-chevron-right"></i></a></span> <span>라이딩 후기 수 <i class="fa fa-chevron-right"></i></span></p>
-					<h1 class="mb-3 bread">라이딩 후기 수정</h1>
+					<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a></span><span class="mr-2"><a href="/listReview">라이딩 후기 <i class="fa fa-chevron-right"></i></a></span> <span>후기 수정 <i class="fa fa-chevron-right"></i></span></p>
+					<h1 class="mb-3 bread">후기 수정</h1>
 				</div>
 			</div>
 		</div>

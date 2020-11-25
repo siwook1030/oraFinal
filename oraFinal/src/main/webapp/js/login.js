@@ -2,6 +2,32 @@
 
 /*** 로그인(시욱씨) 시작 */
 window.onload = function(){
+
+      document.getElementById("phone").onkeypress=enterkeysendPhoneReq;
+        function enterkeysendPhoneReq(){
+         if(window.event.keyCode == 13){
+            sendPhoneReq();
+         }
+      }
+        document.getElementById("inputNum").onkeypress=enterkeycheckNumReq;
+        function enterkeycheckNumReq(){
+         if(window.event.keyCode == 13){
+            checkNumReq();
+         }
+      }
+        document.getElementById("phonePwd").onkeypress=enterkeysendPhoneReqPwd;
+        document.getElementById("IdPwd").onkeypress=enterkeysendPhoneReqPwd;
+        function enterkeysendPhoneReqPwd(){
+         if(window.event.keyCode == 13){
+            sendPhoneReqPwd();
+         }
+      }
+        document.getElementById("inputNumPwd").onkeypress=enterkeycheckNumReqPwd;
+        function enterkeycheckNumReqPwd(){
+         if(window.event.keyCode == 13){
+            checkNumReqPwd();
+         }
+      }
 		 const token = $("meta[name='_csrf']").attr("content");
 		 const header = $("meta[name='_csrf_header']").attr("content");
 		 const parameter = $("meta[name='_csrf_parameter']").attr("content");
@@ -71,7 +97,10 @@ function login(){
 	
 }
 
+
 }
+
+
 
 /*** 로그인(시욱씨) 끝 */
 

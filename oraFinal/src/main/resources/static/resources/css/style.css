@@ -2064,7 +2064,6 @@ textarea.form-control {
   .btn:hover {
     border: none;
     background-color: #ffffff;
-    color: #c8572d;
     text-decoration: none; }
   .btn:focus, .btn.focus {
     outline: 0;
@@ -8690,7 +8689,7 @@ h1, h2, h3, h4, h5,
   background: #d8572d !important; }
 
 .bg-darken {
-  background: #e5cab6; }
+  background: #88bea6; }	/* #4f9424 ¡§¿Á»£ ºˆ¡§*/
 
 .btn {
   cursor: pointer;
@@ -8895,7 +8894,7 @@ h1, h2, h3, h4, h5,
   font-weight: 600; }
 
 .property-details span.subheading {
-  font-size: 12px;
+  font-size: 13px;
   text-transform: uppercase;
   font-weight: 600;
   letter-spacing: 2px;
@@ -9426,7 +9425,7 @@ textarea.form-control {
   display: inline-block;
   margin-bottom: 0;
   color: #d8572d;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -9442,7 +9441,7 @@ textarea.form-control {
     width: 50px;
     height: 1px;
     margin-top: -1px;
-    background: #d8572d; }
+    background: white;	/* #d8572d ¡§¿Á»£ ºˆ¡§ */}
   .heading-section .subheading:before {
     position: absolute;
     top: 50%;
@@ -9454,7 +9453,7 @@ textarea.form-control {
     width: 50px;
     height: 1px;
     margin-top: -1px;
-    background: #d8572d; }
+    background: white;	/* #d8572d ¡§¿Á»£ ºˆ¡§ */ }
 
 .heading-section h2 {
   font-size: 40px;
@@ -10189,7 +10188,7 @@ textarea.form-control {
 
     
 
-/* ----------- ¬∞√∏√Å√∂¬ª√ß√á√ó ------------ */
+/* ----------- ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ------------ */
 
 
 
@@ -10235,16 +10234,17 @@ textarea.form-control {
 	display: none;
 }
 
-#btn_write,#btnDelete,#btnCancel{
+
+#btnWriteN,#btnDeleteN,#btnCancelN{
 	float: right;
 }
 
-#btnUpdate,#btnInsert{
+#btnUpdateN,#btnInsertN{
 	float: right;
 	margin-right: 5px;
 }
 
-#btnList{
+#btnListN{
 	float: left;
 }
 

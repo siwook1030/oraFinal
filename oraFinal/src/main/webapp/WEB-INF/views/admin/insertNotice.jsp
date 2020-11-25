@@ -25,8 +25,8 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
 window.onload = function(){
-	 const token = $("meta[name='_csrf']").attr("content");
-	    const header = $("meta[name='_csrf_header']").attr("content");
+	 const token = $("meta[name='_csrf']").attr("n_insert_content");
+	    const header = $("meta[name='_csrf_header']").attr("n_insert_content");
 	    $(document).ajaxSend(function(e, xhr, options) {
 	        if(token && header) {
 	            xhr.setRequestHeader(header, token);
@@ -34,13 +34,13 @@ window.onload = function(){
 	    });
 
 	
-	const nTitle = document.getElementById("title");
-	const nContent = document.getElementById("content");
+	const nTitle = document.getElementById("n_insert_title");
+	const nContent = document.getElementById("n_insert_content");
 
 
-	const btnInsert = document.getElementById("btnInsert");
+	const btnInsert = document.getElementById("btnInsertN");
 	
-	btnInsert.addEventListener("click", function(e) {
+	btnInsertN.addEventListener("click", function(e) {
 		if(nTitle.value.trim() === ""){
 			alert("제목을 입력해야 될 거 아니야~!");
 			return;
@@ -125,7 +125,7 @@ window.onload = function(){
 	</nav>
     <!-- END nav -->
     
-	<section class="hero-wrap hero-wrap-2" style="background-image: url('resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+	<section class="hero-wrap hero-wrap-2" style="background-image: url('/headerImg/noticeMain.jpg');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
@@ -160,8 +160,8 @@ window.onload = function(){
 				</div>
 				<input class="mb-6" type="file" name="uploadFile">
 				<br>
-				<a href="/listNotice"><button type="button" class="btn btn-warning" id="btnCancel">취소</button></a>
-				<button type="button" class="btn btn-success" id="btnInsert">등록</button>	
+				<a href="/listNotice"><button type="button" class="btn btn-warning" id="btnCancelN">취소</button></a>
+				<button type="button" class="btn btn-success" id="btnInsertN">등록</button>	
 			</form>
 	      </div>
 	    </div>

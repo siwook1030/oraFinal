@@ -33,18 +33,37 @@
 		#mtInfoAll .mtInfo { width: 40%; border: 1px #D5D5D5 solid; border-radius: 10px; margin: 20px; padding: 10px; text-align: center; }
 		/* 글출력창 */
 		#m_content { width: 100%; height: 400px; border: none; margin: 30px 0 0; padding: 10px; }
-		/* 댓글등록 */
-		.mr_content { height: 130px; padding: 10px 10px 10px 13px; font-size: 14px; }
-		/* 댓글출력 */
-		#reply { padding-bottom: 3px; }
-		#comment { display: block; position:relative; width: 100%; }
-		.repInfo { margin-left: 25px; font-size: 13px; }
-		.repPageNum{ margin: 0 5px 0 5px; cursor: pointer; }
+		#commentDiv { border: 1px solid gray; width: auto; }
+		#mr_content { width: 100%; height: 110px; padding: 10px 10px 10px 13px; font-size: 14px; border: none; }
+		#btnRepDiv { text-align: right; margin: 0 7px 7px 0; }
+		#mr_contentSpan { display: inline-block; font-size: 13px; vertical-align: bottom; margin-right: 10px; }
+		#btnInsertReply { background-color: #c8572d; }
 		/* 댓글수 */
 		#repImg, #repStr, #repCnt { display: inline-block; font-size: 18px; }
 		#repImg { display: inline-block; width: 25px; padding-right: 5px; margin-bottom: 3px; }
-		/* 대댓글 등록수정삭제 버튼 */
-		.btnRepSpan { cursor: pointer; margin-left: 3px; font-size: 13px; }
+		
+		/* 댓글출력 */
+		#reply { padding-bottom: 3px; /* border: 1px solid red; */ }
+		#comment { display: block; position:relative; width: 100%; }
+		.repInfo { margin-left: 25px; font-size: 13px; /* border: 1px solid pink; */ height: auto; vertical-align: bottom; }
+		.repPageNum{ margin: 0 5px 0 5px; cursor: pointer; }
+		.buttonDiv { display: inline-block; padding-right: 10px; float: right; /* border: 1px solid orange; */ }
+		.buttonDiv btnRepSpan { border: 1px solid orange; }
+		.buttonDiv img { width: 20px; /* border: 1px solid blue; */  }
+		.content { margin-left: 30px; font-size: 14px; }
+		.content span { font-weight: bold; }
+		.nickName { font-size: 14px; display: inline-block; margin-left: 5px; }
+		.myRep { display: inline-block; margin-left: 7px; padding: 2px 6px; border: 1px solid red; border-radius: 12px; font-size: 12px; } /* 내댓글 표시 */
+		ul{ padding: 0; }
+		/* 대댓글 */
+		.repTa { width: 100%; height: 110px; padding: 10px 10px 10px 13px; font-size: 14px; border: none; }
+		.btnRepSpan { cursor: pointer; text-decoration: underline; margin-left: 7px; font-size: 13px; /* border: 1px solid green; */ height: auto; /* padding: 4px 0 5px 0; */ padding-top: 4px; vertical-align: top;}
+		.repDiv { border: 1px solid gray; }
+		.btnRepAdd { background-color: #eccb6a; }
+		.btnRepCancel { background-color: #88BEA6; margin-left: 3px; }
+		.txtDiv { /* border: 1px solid purple; */ text-align: right; margin: 0 7px 7px 0; }
+		.txtMaxCntSpan { /* border: 1px solid red; */ font-size: 13px; display: inline-block; vertical-align: bottom; }
+		.btnRepComDiv { /* border: 1px solid blue; */ display: inline-block; margin-left: 10px; }
 		/* 지도 */
 		.map_wrap { position: relative; width: 100%; height: 450px; font-size: 80%; }
 		/* 번개참여 */
@@ -54,7 +73,7 @@
 		.mPeopleNum { font-size: 14px; }
 		.attendToggle { cursor: pointer; display: inline-block; font-size: 14px; }
 		#attendRiding { display: inline-block; cursor: pointer; }
-		.btnCancel { display: inline-block; cursor: pointer;  }
+		.btnCancel { display: inline-block; cursor: pointer; }
 		.btnCancel img { width: 30px; padding: 5px; }
 		#mPeople { position: relative; left: 79%; margin-bottom: 2px; }
 		#mPeople li { padding-bottom: 5px; }
@@ -62,7 +81,7 @@
 		/* 글내용 */
 		.ck-content { padding: 20px; margin-bottom: 100px; width: auto; }
 		/* 게시글 수정삭제 버튼 */
-		.btn { color: white; padding: 8px 12px; background-color: #88BEA6; display: inline-block; font-size: 15px; border: none; cursor: pointer; }
+		.btn { color: white; padding: 8px 12px; display: inline-block; font-size: 15px; border: none; cursor: pointer; }
 		#btnDiv { text-align: right; }
 		/* nava 로그인 */
 		.nav-item .nav-link { font-size: 15px; }
@@ -189,13 +208,13 @@ window.onload = function(){
 			let li1Content="";
 			if(mr.mr_step > 0){
 				mrDiv.style.paddingLeft="30px";
-				mrDiv.style.backgroundColor="#EFEFEF";
+				/* mrDiv.style.backgroundColor="#EFEFEF"; */
 			}
-			li1Content += '<img src="rank/'+mr.rank_icon+'" height="25">'+' '+mr.nickName;
-	//		if(userId == mr.id){ // 내가쓴 댓글이면 내댓글이라 표현  // 이건 추후에 디자인다시할때 if문 하나로 밑에있는 if문이랑 합쳐서 처리할거임
-	//			li1Content +=' (내 댓글)';
-	//		}
-			li1Content += '<br><div style="margin-left: 25px;"><span style="font-weight: bold;">'+toName+'&nbsp;</span>'+content+'</div>';
+			li1Content += '<img src="rank/'+mr.rank_icon+'" height="25">'+'<div class="nickName">'+mr.nickName+'</div>';
+			if(userId == mr.id){ // 내가쓴 댓글이면 내댓글이라 표현  // 이건 추후에 디자인다시할때 if문 하나로 밑에있는 if문이랑 합쳐서 처리할거임
+				li1Content +=' <div class="myRep">내댓글</div>';
+			}
+			li1Content += '<br><div class="content"><span>'+toName+' '+'</span>'+content+'</div>';
 			if(mr.mr_file1 != "0"){  // 사진이없으면 0으로 db에 0으로 저장할예정
 				li1Content += '<p style="margin-left: 25px;"><img src="meetingFile/'+mr.mr_file1+'" height="100"></p>';
 			}
@@ -204,33 +223,50 @@ window.onload = function(){
 			repSpan.innerHTML="답글달기";
 			repSpan.className="btnRepSpan";
 			const updateSpan = document.createElement("span");
-			updateSpan.innerHTML="수정";
+			updateSpan.innerHTML="<img src='/icons/eraser.png'>";
+/* 			updateSpan.innerHTML="수정"; */
 			updateSpan.className="btnRepSpan";
 			const deleteSpan = document.createElement("span");
-			deleteSpan.innerHTML="삭제";
+			deleteSpan.innerHTML="<img src='/icons/remove.png'>";
+/* 			deleteSpan.innerHTML="삭제"; */
 			deleteSpan.className="btnRepSpan";
+			
+			const buttonDiv = document.createElement("div");
+			buttonDiv.className = 'buttonDiv';
+			buttonDiv.append(updateSpan, deleteSpan);
 
 			li1.innerHTML=li1Content;
 			li1.append(repSpan);
 			if(userId == mr.id){ // 로그인이되어있고 로그인되어있는 아이디랑 댓글의 아이디랑 동일하면 수정삭제버튼을 어펜드해준다
-				li1.append(updateSpan,deleteSpan);
+				li1.append(buttonDiv);
 			}
 			const repDiv = document.createElement("div");
+			repDiv.className="repDiv";
 			const rep_input = document.createElement("textarea");
-			rep_input.setAttribute("rows", "10");
-			rep_input.setAttribute("cols", "80");
+/* 			rep_input.setAttribute("rows", "10");
+			rep_input.setAttribute("cols", "80"); */
 			rep_input.setAttribute("maxlength", repMaxCnt);
+			rep_input.setAttribute("placeholder", "답글을 입력하세요.")
 			rep_input.className="repTa";
 			
 			const txtMaxCntSpan = document.createElement("span");
+			txtMaxCntSpan.className = "txtMaxCntSpan";
 			const txtDiv = document.createElement("div");
+			txtDiv.className = "txtDiv";
+			const btnRepComDiv = document.createElement("div");
+			btnRepComDiv.className = "btnRepComDiv";
+
+			
 			const btn_insert = document.createElement("button");
+			btn_insert .className="btn btnRepAdd";
 			btn_insert.innerHTML="등록";
 			const btn_insertCancel = document.createElement("button");
-			btn_insertCancel.className="btnCancel";
+			btn_insertCancel.className="btnCancel btn btnRepCancel";
 			btn_insertCancel.innerHTML="취소";
-			txtDiv.append(txtMaxCntSpan);
-			repDiv.append(rep_input,txtDiv,btn_insertCancel,btn_insert);
+
+			btnRepComDiv.append(btn_insert, btn_insertCancel);
+			txtDiv.append(txtMaxCntSpan,btnRepComDiv);
+			repDiv.append(rep_input,txtDiv);
 			li2.append(repDiv);
 
 			const updateDiv = document.createElement("div");
@@ -311,7 +347,7 @@ window.onload = function(){
 	});
 	mr_content.addEventListener("click", function(e) {
 		if(checkM.code != "200"){
-			const cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
+			const cfm = confirm("로그인이 필요합니다. 이동하시겠습니까?");
 			if(cfm){
 				window.location = "/login";
 				return;
@@ -321,7 +357,7 @@ window.onload = function(){
 	});
 	btnInsertReply.addEventListener("click", function(e) {
 		if(checkM.code != "200"){
-			const cfm = confirm("로그인이 필요합니다 이동하시겠습니까?");
+			const cfm = confirm("로그인이 필요합니다. 이동하시겠습니까?");
 			if(cfm){
 				window.location = "/login";
 				return;
@@ -868,12 +904,12 @@ window.onload = function(){
     </nav>
     <!-- END nav -->	
     
-    <section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('/headerImg/meetingMain.jpg');" data-stellar-background-ratio="0.5">
 		<div class="overlay"></div>
 		<div class="container">
 			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate pb-0 text-center">
-					<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a></span><span class="mr-2"><a href="/listMeeting">번개 라이딩 <i class="fa fa-chevron-right"></i></a></span> <span>번개 라이딩 상세 <i class="fa fa-chevron-right"></i></span></p>
+					<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a></span><span class="mr-2"><a href="/listMeeting">번개 라이딩 <i class="fa fa-chevron-right"></i></a></span> <span>번개 상세 <i class="fa fa-chevron-right"></i></span></p>
 					<h1 class="mb-3 bread">번개 상세</h1>
 				</div>
 			</div>
@@ -948,14 +984,17 @@ window.onload = function(){
 			<!-- 댓글출력 -->
 			<div id="reply"></div>
 			<div id="replyPgaeNum" style="text-align: center;"></div>
+			
 			<!-- 댓글작성 -->
 			<div>
 				<form id="comment">
-					<div style="border: 1px solid gray; width: auto;">
-						<textarea name="mr_content" id="mr_content" maxlength="300" placeholder="댓글을 입력해주세요." style="width: 100%; height: 110px; padding: 10px 10px 10px 13px; font-size: 14px; border: none;"></textarea>
-						<div style="text-align: right; margin: 0 7px 7px 0;">
-							<span id="mr_contentSpan" style="display: inline-block; font-size: 13px; vertical-align: bottom; margin-right: 10px;"></span>
-							<button id="btnInsertReply" class="btn" type="button" style="background-color: #c8572d">등록</button>
+					<div id="commentDiv">
+						<textarea name="mr_content" id="mr_content" maxlength="300" placeholder="댓글을 입력하세요."></textarea>
+						<div id="btnRepDiv">
+							<!-- 댓글글자수 -->
+							<span id="mr_contentSpan"></span>
+							<button id="btnInsertReply" class="btn" type="button">등록</button>
+					
 						</div>
 					</div>
 					<!-- <div style="display: none;"><input type="file" name="mr_file1" id="mr_file1"></div> -->

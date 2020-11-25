@@ -87,10 +87,10 @@
         width: 400px;
         height: 270px;
         position: absolute;
-        top:100%;
-        left: 50%;
+        top:50%;
+        left: 38%;
         padding:20px;
-        margin: -420px 0 0 -210px; /*위치*/
+        margin: -90px 0 0 -20px; /*위치*/
         background:#ffffff;
         z-index: 3;
         font-family: sans-serif;
@@ -114,10 +114,10 @@
         width: 400px;
         height: 350px;
         position: absolute;
-        top:100%;
-        left: 50%;
+        top:50%;
+        left: 38%;
         padding:20px;
-        margin: -420% 0 0 -210%; /*위치*/
+        margin: -90px 0 0 -20px; /*위치*/
         background:#ffffff;
         z-index: 3;
         font-family: sans-serif;
