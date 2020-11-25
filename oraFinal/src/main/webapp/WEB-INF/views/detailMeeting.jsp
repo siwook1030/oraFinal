@@ -928,7 +928,12 @@ window.onload = function(){
 	        	<!-- 코스 -->			
 				<div class="selectedCourse">
 					<img src="/meetingImg/ridingRoute.png">
-					<a href="detailCourse?c_no=${mt.c_no }"> ${mt.c_name }</a>
+					<c:if test="${mt.c_no==0 }">
+						<a href="#"> ${mt.c_name }</a>
+					</c:if>
+					<c:if test="${mt.c_no!=0 }">
+						<a href="detailCourse?c_no=${mt.c_no }"> ${mt.c_name }</a>
+					</c:if>
 				</div>
         	</div>
         	

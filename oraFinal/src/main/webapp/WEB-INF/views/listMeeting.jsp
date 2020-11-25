@@ -256,7 +256,12 @@
 
 				// 게시글 내용
 				// const m_no = $('<div></div>').html(data.m_no);
-				const c_nameA = $('<a href="/detailCourse?c_no='+data.c_no+'"></a>').html(data.c_name);
+				let c_nameA;
+				if(data.c_no == 0) {
+					c_nameA = $('<a href="#"></a>').html(data.c_name);
+				} else {
+					c_nameA = $('<a href="/detailCourse?c_no='+data.c_no+'"></a>').html(data.c_name);
+				}
 				const c_name = $('<div></div>').append(c_nameA).addClass('c_name');
 				const m_timeImg = $('<img/>').attr({src : '/meetingImg/calendar.png', height : '30px'}).addClass('m_timeImg');
 				const m_time = $('<div></div>').html(data.m_time).addClass('m_time');

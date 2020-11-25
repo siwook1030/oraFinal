@@ -354,7 +354,12 @@
 				<!-- 코스명 -->
 				<div class="selectedCourse">
 					<img src="/meetingImg/ridingRoute.png">
-					<a href="detailCourse?c_no=${rvo.c_no }"> ${rvo.c_name }</a>
+					<c:if test="${rvo.c_no==0 }">
+						<a href="#"> ${rvo.c_name }</a>
+					</c:if>
+					<c:if test="${rvo.c_no!=0 }">
+						<a href="detailCourse?c_no=${rvo.c_no }"> ${rvo.c_name }</a>
+					</c:if>
 				</div>
 	        </div>
 	        	

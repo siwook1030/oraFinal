@@ -173,7 +173,12 @@
 		
 						// 게시글 정보
 			            const r_no = $('<div><div>').html(item.r_no);
-			            const c_nameA = $("<a href='/detailCourse?c_no="+item.c_no+"'></a>").html(item.c_name);
+			            let c_nameA;
+			            if(item.c_no==0) {
+				            c_nameA = $("<a href='#'></a>").html(item.c_name);
+				        } else {
+				            c_nameA = $("<a href='/detailCourse?c_no="+item.c_no+"'></a>").html(item.c_name);
+					    }
 			            const c_name = $('<div></div>').append(c_nameA).addClass('c_name');
 			            const nickName_icon = $('<img/>').attr({src : 'rank/'+item.rank_icon, height : '20px'});
 			            const nickNameA = $('<a href="/listReview?searchType=id&searchValue='+item.id+'"></a>').html(' '+item.nickName);
