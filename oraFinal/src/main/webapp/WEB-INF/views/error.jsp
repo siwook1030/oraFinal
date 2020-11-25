@@ -21,12 +21,12 @@
 	</style>
 </head>
 <body>
+	<a href="/mainPage">
+		<img class="homeBtn" src="/icons/home.png" style="width: 40px; margin: 50px 0 0 50px;">
+	</a>
 	<section class="ftco-section">
 		<div class="container">
 			<img class="error" src="/icons/error.png" style="width: 100%;">
-			<a href="/mainPage">
-				<!-- <img class="homeBtn" src="/icons/homeButton.png" style="width: 13%; position: relative; left: 200px; bottom: 300px;"> -->
-			</a>
 		</div> <!-- container -->
 	</section>		
 	<script src="/resources/js/jquery.min.js"></script>
