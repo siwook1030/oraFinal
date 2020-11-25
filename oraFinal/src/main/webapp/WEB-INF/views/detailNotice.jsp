@@ -38,7 +38,7 @@ window.onload = function(){
 	console.log(checkM);
 //
 	const btnUD = document.getElementById("btnUD");
-	const btnUpdate = document.getElementById("btnUpdate");
+	const btnUpdate = document.getElementById("btnUpdateN");
 	
 	if(checkM.item.code_value != null && checkM.item.code_value == "00101"){
 		btnUD.style.display = "inline";
@@ -136,11 +136,11 @@ window.onload = function(){
             </p>
             <div id="n_content" style="white-space:pre;"><c:out value="${n.n_content}" /></div>
 			<br>
-			<a href="listNotice"><button type="button" class="btn btn-primary" id="btnList">목록</button></a>
+			<a href="listNotice"><button type="button" class="btn btn-primary" id="btnListN">목록</button></a>
 			<div id="btnUD">
-				<a href="/deleteNotice?n_no=${n.n_no }"><button type="button" class="btn btn-warning" id="btnDelete">삭제</button></a>
+				<a href="/deleteNotice?n_no=${n.n_no }"><button type="button" class="btn btn-warning" id="btnDeleteN">삭제</button></a>
 				<!-- <button type="button" id="btnUpdate" value="${n.n_no }">수정</button> -->
-			 	<a href="/admin/updateNotice?n_no=${n.n_no}"><button type="button" class="btn btn-success" id="btnUpdate" value="${n.n_no }">수정</button></a> 
+			 	<a href="/admin/updateNotice?n_no=${n.n_no}"><button type="button" class="btn btn-success" id="btnUpdateN" value="${n.n_no }">수정</button></a> 
 			</div>
           </div>
         </div> 

@@ -241,9 +241,9 @@ window.onload = function(){
 							<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
 						</c:when>
 						<c:when test="${m != null }">
-							<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
-							<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
-							<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+							<li class="nav-item"><a style="font-size: 15px; color: #fff; cursor:default;" class="nav-link">${m.nickName } 라이더님</a></li>
+							<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>&nbsp;&nbsp;
+							<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>
 						<c:if test="${m.code_value == '00101' }">
 								<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
 							</c:if>
@@ -300,7 +300,7 @@ window.onload = function(){
         
 		<div class="row mt-5">
 			<div class="col text-center">
-				<div id="insertNotice"><a href="/admin/insertNotice" class="btn btn-success" id="btn_write">글쓰기</a></div>                    
+				<div id="insertNotice"><a href="/admin/insertNotice" class="btn btn-success" id="btnWriteN">글쓰기</a></div>                    
 				<div class="block-27">
 					<ul class="pageUl" id="pageUl"><!-- 페이징처리 --></ul>
 				</div>

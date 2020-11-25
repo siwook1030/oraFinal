@@ -5,7 +5,6 @@
 <head>
 <title>회원 정보 수정</title>
 
-<jsp:include page="my_header2.jsp"/>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
 <script type="text/javascript" src="/js/myPage.js"></script>
@@ -30,13 +29,6 @@
       < !--인증번호 받기버튼-->background: #24A148 !important;
       border: 1px solid #24A148 !important;
       color: #fff !important;
-    }
-
-    margin-bottom: 20px;
-
-    text-align: left;
-    width:440px;
-    height:40px;
     }
 
     . new_input {
@@ -78,7 +70,7 @@
     background: #21243d;
     height: 100px; }
   .my-wrap.my-wrap-2 {
-    height: 170px !important;
+    height: 10px !important;
     position: relative; }
     .my-wrap.my-wrap-2 .overlay {
       width: 100%;
@@ -90,22 +82,165 @@
            /*회색부분 크기*/
     .colmd8 { 
     -webkit-box-flex: 0;
-    -ms-flex: 0 0 66.66667%;
-    flex: 0 0 66.66667%;
-    max-width: 50%; }   /*여기*/
+    -ms-flex: 0 0 70%%;
+    flex: 0 0 70%%;
+    max-width: 70%; }   /*여기*/
+ 
+#login {
+	font-size: 14px;
+	text-align: right;
+}
+
+.my{
+	padding: 5px;
+	margin: 2px;
+
+	
+}
+
+  .nav-link_2 {
+    font-size: 12px;
+    font-family: "나눔스퀘어라운드";
+    padding-top: .1rem;
+    padding-bottom: .1rem;
+    padding-left: 1px;
+    padding-right: 1px;
+    color: #fff;
+    font-weight: 400;
+    opacity: 1 !important; }
+
+  .nav-link {
+    font-size: 18px;
+    font-family: "나눔스퀘어라운드";
+    padding-top: .7rem;
+    padding-bottom: .7rem;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: #fff;
+    font-weight: 600;
+    opacity: 1 !important; }
+  .nav-link:hover {
+      color: #c8572d; }
+  .nav-link2:visited{
+                color: red;
+            }
+
+<!--화면 줄어들때 메뉴색-->
+ @media (max-width: 991.98px) {
+    .ftco-navbar-light {
+      background: #000000 !important;
+      position: relative;
+      top: 0; } }
       
+      
+.my{
+	padding: 50px;
+	
+}
+ .my_ul{
+	list-style:none; 
+ 	text-align: center;
+ }
+ .my_li{
+    display:inline-block;  
+	float:left;
+ 	padding: 50px;
+ 	border-left:1px solid #999;             /* 각 메뉴의 왼쪽에 "|" 표시(분류 표시) */
+    font:bold 16px Dotum;                     /* 폰트 설정 - 12px의 돋움체 굵은 글씨로 표시 */
+    padding:0 10px;  
+ }
+ 
+  .my_li2{
+    display:inline-block;  
+	float:left;
+ 	padding: 50px;
+    padding:0 10px;  
+ }
+   
+ #my_a{
+ color: #bbbbbb;
+     font:bold 14px Dotum; 
+ }
+ #my_a:hover {
+ color: #d0a183; 
+ FONT-SIZE: 13pt; 
+ FONT-WEIGHT: bolder}
+ 
+
 </style>
-</head>
+</head>   
+
+ <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="resources/css/animate.css">
+    <link rel="stylesheet" href="resources/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="resources/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="resources/css/magnific-popup.css">
+    <link rel="stylesheet" href="resources/css/flaticon.css">
+    <link rel="stylesheet" href="resources/css/style.css">
+
+  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+      <div class="container" ">
+         			 <a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
+        <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
+        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="oi oi-menu"></span> Menu
+            </button>
+         
+           <div class="collapse navbar-collapse" id="ftco-nav" style="display: block; ">
+              <ul class="navbar-nav ml-auto">
+      
+                     <li class="nav-item"><a style="font-size: 15px; color: #fff; cursor:default;" class="nav-link" href="/myPage?id=${m.id}">${m.nickName } 라이더님</a></li>
+                     <li class="nav-item active"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+                     <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>
+            </ul>
+         </div>   
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	          <li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
+	          <li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
+	          <li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
+	          <li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
+	          <li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+	          <li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
+	        </ul>
+	      </div>
+       </div>
+ </nav>
+   
+    <!-- END nav -->
+
 <body>
-    
-  
+   <section class="hero-wrap hero-wrap-2" style="background-image: url('https://cdn.pixabay.com/photo/2015/03/26/09/57/cyclists-690644__340.jpg');
+   background-size:100% 600px;" data-stellar-background-ratio="0.5">
+      <div class="overlay" style="background-color: #5e6071"></div>
+      <div class="container">
+      			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
+				<div class="ftco-animate pb-0 text-center">
+     				 <span>
+						<h1 class="mb-3 bread" style="padding-top: 170px;">정보수정</h1>
+		           		 </span>
+			              <ul class="my" style="font-size: 10px">
+					<!-- 		<li class="my_li" ><a id="my_a" class="nav-link_2" href="/myPage" >정보 수정</a></li> -->
+					 		<li class="my_li2" ><a id="my_a" class="nav-link_2" href="/myPageSaveCourse" >찜목록</a></li>
+							<li class="my_li" ><a id="my_a" class="nav-link_2" href="/myPageMyCourse" >내 코스</a></li>
+			                <li class="my_li"><a id="my_a" class="nav-link_2" href="/listReview?searchType=id&searchValue=${m.id }">내 후기</a></li>
+			                <li class="my_li"><a id="my_a" class="nav-link_2" href="/listMeeting?id=${m.id}">내 번개</a></li>
+			                <li class="my_li"><a id="my_a" class="nav-link_2" href="/myPageMyRank">랭킹</a></li>
+			              </ul>
+			         </div>
+			      </div>
+        </div>
+    </section>
     
 <section class="my-wrap my-wrap-2" style="background-color: #fff;"  id=top>
     </section>
     <section class="ftco-section contact-section">
       <div class="container" >
         <div class="row block-9 justify-content-center mb-5">
-
           <div class="colmd8 mb-md-5 bg-light p-5 contact-form">
             <form action="#" id="update">
               <h2 class="text-center" >회원정보수정</h2>
@@ -122,7 +257,7 @@
               <div id=modify class="hidden">전화번호</div>
               <div class="form-group">
               <input type="tel" id="phone" name="phone" class="updateMember form-control form-group hidden" maxlength="11"
-                placeholder="새 전화번호를 입력하세요 ex)01012345678">
+                placeholder="휴대폰 번호 '-'없이 입력하세요">
               </div>
 
               <div id="clickForm">
@@ -137,7 +272,7 @@
               <div id=modify class="hidden">비밀번호</div>
               <div></div>
               <input type="password" id="password1" class="modify updateMember form-control form-group hidden" style="visibility: hidden ;"
-                placeholder="새 비밀번호를 입력하세요 영문+숫자+특수문자(8~12자리)조합" name="password" />
+                placeholder="새 비밀번호를 입력하세요" name="password" /> 
               <input type="password" id="password2" class="updateMember form-control form-group hidden" style="visibility: hidden ;"
                 placeholder="새 비밀번호를 다시 입력하세요" name="password2" />
               <input type="password" id="pwd" class="updateMember form-control form-group " placeholder="회원정보 수정을 위해서는 비밀번호 입력하세요" name="pwd"
