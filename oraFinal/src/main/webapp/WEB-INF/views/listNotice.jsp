@@ -300,7 +300,7 @@ window.onload = function(){
         
 		<div class="row mt-5">
 			<div class="col text-center">
-				<div id="insertNotice"><a href="/admin/insertNotice" class="btn btn-success" id="btn_write">글쓰기</a></div>                    
+				<div id="insertNotice"><a href="/admin/insertNotice" class="btn btn-success" id="n_btnWrite">글쓰기</a></div>                    
 				<div class="block-27">
 					<ul class="pageUl" id="pageUl"><!-- 페이징처리 --></ul>
 				</div>

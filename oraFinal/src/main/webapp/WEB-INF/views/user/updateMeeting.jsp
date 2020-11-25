@@ -700,8 +700,8 @@
 		<div class="container">
 			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate pb-0 text-center">
-					<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a></span><span class="mr-2"><a href="/listMeeting">번개 라이딩 <i class="fa fa-chevron-right"></i></a></span> <span>번개 라이딩 등록 <i class="fa fa-chevron-right"></i></span></p>
-					<h1 class="mb-3 bread">번개 등록</h1>
+					<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a></span><span class="mr-2"><a href="/listMeeting">번개 라이딩 <i class="fa fa-chevron-right"></i></a></span> <span>번개 수정 <i class="fa fa-chevron-right"></i></span></p>
+					<h1 class="mb-3 bread">번개 수정</h1>
 				</div>
 			</div>
 		</div>

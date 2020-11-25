@@ -478,6 +478,61 @@ window.onload = function(){
 	        </div>
       </div>
     </section>
+ 	
+ 	<!-- 정재호 수정중 -->
+ 	<section class="ftco-section services-section bg-darken">
+    	<div class="container">
+    		<div class="row justify-content-center">
+          <div class="col-md-12 text-center heading-section heading-section-white ftco-animate">
+          	<span class="subheading">사용자 가이드</span>
+            <h2 class="mb-3">오늘의 라이딩 100% 활용방법!</h2>
+          </div>
+        </div>
+    		<div class="row">
+    			<div class="col-md-3 d-flex align-self-stretch ftco-animate">
+            <div class="media block-6 services services-2">
+              <div class="media-body py-md-4 text-center">
+              	<div class="icon mb-1 d-flex align-items-center justify-content-center"><!-- <span>01</span> -->
+              	<img src="/resources/images/guide01.png" alt="" width="128px">
+              	</div>
+                <h3>라이딩 코스를 검색하세요!</h3>
+                <p>거리, 소요시간, 풍경을 설정하여 코스를 검색해보세요. 최적의 코스를 추천해줍니다.</p>
+              </div>
+            </div>      
+          </div>
+          <div class="col-md-3 d-flex align-self-stretch ftco-animate">
+            <div class="media block-6 services services-2">
+              <div class="media-body py-md-4 text-center">
+              	<div class="icon mb-1 d-flex align-items-center justify-content-center"><!-- <span>02</span> -->
+              	<img src="/resources/images/guide02.png" alt="" width="128px"></div>
+                <h3>검색한 결과중에 맘에드는 코스를 찜하세요!</h3>
+                <p>회원가입하면 원하는 코스를 찜해두고 볼 수 있습니다. 열심히 활동하여 랭킹을 올려서 혜택을 받아보세요. </p>
+              </div>
+            </div>      
+          </div>
+          <div class="col-md-3 d-flex align-self-stretch ftco-animate">
+            <div class="media block-6 services services-2">
+              <div class="media-body py-md-4 text-center">
+              	<div class="icon mb-1 d-flex align-items-center justify-content-center"><!-- <span>03</span> -->
+              	<img src="/resources/images/guide03.png" alt="" width="128px"></div>
+                <h3>게시판을 통해 다른사람들과 교류하세요!</h3>
+                <p>후기게시판에서 코스후기를 다른사람과 공유할 수 있어요. 혼자 라이딩하는게 외롭다면 번개게시판을 통해 약속을 잡아보세요.</p>
+              </div>
+            </div>      
+          </div>
+          <div class="col-md-3 d-flex align-self-stretch ftco-animate">
+            <div class="media block-6 services services-2">
+              <div class="media-body py-md-4 text-center">
+              	<div class="icon mb-1 d-flex align-items-center justify-content-center"><!-- <span>04</span> -->
+              	<img src="/resources/images/guide04.png" alt="" width="128px"></div>
+                <h3>나만의 코스를 만들어보세요!</h3>
+                <p>나만알고있기 아까운 코스를 다른사람과 공유해보세요.</p>
+              </div>
+            </div>      
+          </div>
+    		</div>
+    	</div>
+    </section>
  
   <footer class="ftco-footer ftco-section">
       <div class="container">

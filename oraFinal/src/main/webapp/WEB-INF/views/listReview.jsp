@@ -398,8 +398,10 @@
     </nav>
     <!-- END nav -->	
     
-    <section class="hero-wrap hero-wrap-2" style="background-image: url('https://cdn.pixabay.com/photo/2018/08/20/11/07/friends-3618662__340.jpg');background-size:100% 600px;" data-stellar-background-ratio="0.5">
-		<div class="overlay" style="background-color: #4e5169"></div>
+
+    <section class="hero-wrap hero-wrap-2" style="background-image: url('resources/images/pexels-nextvoyage-490466.jpg');" data-stellar-background-ratio="0.5">
+		<div class="overlay"></div>
+
 		<div class="container">
 			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate pb-0 text-center">

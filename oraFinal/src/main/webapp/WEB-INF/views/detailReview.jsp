@@ -22,11 +22,6 @@
 	<link rel="stylesheet" type="text/css" href="/ckeditor5/content-styles.css">
 	<style type="text/css">
 		input:focus, textarea:focus { outline: none; }
-		.btnContainer {
-			/* display: flex; */
-			/* flex-direction: row; */
-			/* justify-content: flex-end; */
-		}
 		/* ck-content안의 이미지에 좌/우 정렬 줄경우 ck-content의 height이 0이되는 현상해결 */
 		.ck-content::after {
 			content: "";
@@ -49,18 +44,19 @@
 		#total_reply { display: inline-block; font-size: 18px; }
 		/* 댓글 */
 		.replyNicknameContainer { display: flex; /* height: auto; */ }
-		.regdate { float: left; padding-left: 30px; font-size: 13px; /* display: inline-block; */ margin-bottom: 5px; }
+		.regdate { padding-left: 30px; font-size: 13px; display: inline-block; margin-bottom: 5px; }
 		.replyContent { padding-left: 30px; margin-top: 2px; font-size: 14px; height: auto; }
 		.replyNickname { margin-top: 3px; font-size: 14px; padding-left: 5px; width: auto; margin-top: 3px; }
 		.textareaContainer > textarea { width: 100%; height: 110px; padding: 10px 10px 10px 13px; font-size: 14px; border: none; }
-		.btnContainer { height: auto; }
+		.btnContainer { height: auto; margin-left: 25px; text-align: right;}
 		.btnContainer img { width: 20px; margin-left: 5px; } /* 댓글 수정삭제 이미지 */
-		.modAndDel { display: inline; padding-right: 10px; width: auto; float: right; } /* 댓글수정삭제 div */
-		.btnReply { font-size: 13px; display: inline-block; vertical-align: top; padding-left: 10px; cursor: pointer; }
+		.modAndDel { display: inline-block; padding-right: 10px; width: auto; text-align: right; vertical-align: top; } /* 댓글수정삭제 div */
+		.btnReply { font-size: 13px; display: inline-block; vertical-align: top; padding-left: 5px; cursor: pointer; text-decoration: underline; }
+		.div_c3 { display: inline-block; }
 		.myRep { display: inline-block; margin-left: 10px; padding: 2px 6px; border: 1px solid red; border-radius: 12px; font-size: 12px; } /* 내댓글 표시 */
 		.sendReply { margin: 0 7px 7px 0; }
 		.textareaContainer { border: 1px solid gray; text-align: right; }
-		.divRep { padding-bottom: 14px; }
+		.divRep { height: auto; }
 
 		.modReplyWrap {
 			display: flex;
@@ -74,6 +70,8 @@
 
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script type="text/javascript">
+	// 답글달기버튼 btnIdx속성 기본값. 각 버튼마다 rr_no값을 넣어주고 눌러서 열면 rr_no를 닫으면 -1을 넣어줘서 여닫기능구현.
+	let btnIdx = -1;
 	var querystring = location.search;		// querystring 가져오기 ex) r_no=1
 	var n = querystring.indexOf("=");		// value를 가져오기위한 =의 index알아오기 ex) 4
 	var r_no = querystring.substring(n+1);	// 게시판번호 저장 변수 ex) 1
@@ -94,20 +92,29 @@
 		
 		$(document).on("click", ".btnReply", function(event){	// 댓글 아이콘 입력시 댓글 입력창 동적생성 이벤트
 			$(".div_c3_c2").empty();		// 모든 대댓글 입력창,등록버튼 비우기
-			let $div1 = $("<div></div>").css("margin-left", "25px").addClass("textareaContainer").append($replyTextArea);	// 자식인 textarea 찾기위해 클래스 지정
-			let $div2 = $("<div></div>").addClass("btnContainer");
-			let $btn = $("<button></button>").addClass("sendReply btn").text("등록");		// 클릭 이벤트 적용을 위한 클래스
-	
-			$div2.append($btn);
-			$div1.append($div2)
-			$(this).parent().siblings(".div_c3_c2").append($div1);
+			if($(this).attr("btnIdx") !== btnIdx) {
+				btnIdx = $(this).attr("btnIdx");	// 한번더 누르면 닫힘
+				// 자식인 textarea 찾기위해 클래스 지정
+				let $div1 = $("<div></div>").css("margin-left", "25px").addClass("textareaContainer").append($replyTextArea);
+				let $div2 = $("<div></div>").addClass("btnContainer");
+				let $btn = $("<button></button>").addClass("sendReply btn").text("등록");		// 클릭 이벤트 적용을 위한 클래스
+		
+				$div2.append($btn);
+				$div1.append($div2)
+				$(this).parent().siblings(".div_c3_c2").append($div1);
+			}else {
+				btnIdx = -1;	// 한번더 누르면 무조건 열림
+			}
 		});
 		
 		$(document).on("click", ".sendReply", function(event){		// 댓글 내용을 추출하여 insert ajax함수 호출
 			// 본문 댓글과 대댓글을 하나의 이벤트로 처리하기 위해 클래스명과 노드구조 동일하게 맞춤
+			
 			let rr_ref = $(this).closest(".replyToReplyArea").attr("rr_ref");	// closest함수로 조상노드까지 검색가능
-			let rr_content = $(this).parent().siblings(".textareaContainer").children("textarea").val();	// siblings은 형제노드를 찾는다
 			//$(this).parent().siblings(".textareaContainer").children("textarea").val("");	// 댓글 내용 추출후에 비워주기
+			let rr_content = $(this).parent().siblings("textarea").val();	// siblings은 형제노드를 찾는다
+			//alert("rr_ref:"+rr_ref);
+			//alert("rr_content:"+rr_content);
 			if(rr_content === "") {		
 				alert("댓글내용을 입력하세요!");	// 댓글내용없는데 등록버튼 누를 경우
 			}else {
@@ -149,10 +156,11 @@
 						
 					} else {
 						$div_c1_c2 = $("<div></div>").append(item.nickName).addClass("replyNickname");
-						$div.css("height", "auto");
+						/* $div.css("height", "auto"); */
 			 		}
-	/* 작성일자 */		let $div_c1_c3 = $("<div></div>").text(item.date_diff_str).addClass("regdate"); // css적용을 위한 클래스
-					$div_c1.append($div_c1_c1, $div_c1_c2/* , $div_c1_c3 */);
+					$div_c1.append($div_c1_c1, $div_c1_c2);
+	/* 작성일자 */		let $div_c1_c3 = $("<div></div>").text(item.date_diff_str);
+					let $div_c4 = $("<div></div>").append($div_c1_c3).addClass("regdate"); // css적용을 위한 클래스
 
 					let $span = $("<span></span>").text(item.rr_content);
 					// 댓글내용. 수정을 위해 rr_no값 속성에 추가
@@ -167,7 +175,7 @@
 					if(login_id !== "") {		// 현재 로그인한 사용자일 경우 댓글아이콘 보이기
 						/* let $img_rep = $("<img>").attr("src", "icons/reply.png");
 						let $btn_rep = $("<div></div>").attr("title", "댓글").append($img_rep).addClass("btnReply"); */
-						$btn_rep = $("<div></div>").html("답글달기").addClass("btnReply");
+						$btn_rep = $("<div></div>").html("답글달기").addClass("btnReply").attr("btnIdx", item.rr_no);	// 버튼여닫기능용도 attr
 						/* $div_c3_c1.append($btn_rep); */
 					}
 					if(login_id === rr_id) {	// 로그인id와 댓글작성id가 일치할 경우 수정,삭제 아이콘 보이기
@@ -210,15 +218,15 @@
 						
 						$btn_modDel = $("<div></div>").addClass('modAndDel').append($a_mod, $a_del);
 					}
-					$div_c3_c1.append($div_c1_c3, $btn_rep, $btn_modDel);
+					$div_c3_c1.append($btn_rep, $btn_modDel);
 					let $div_c3_c2 = $("<div></div>").addClass("div_c3_c2").addClass("replyToReplyArea").attr("rr_ref", item.rr_ref);
 					// $div_c3_c2 노드에 이벤트로 동적으로 댓글입력창,등록버튼 생성됨. 이를 위한 클래스 'div_c3_c2' 
 					// 'replyToReplyArea'클래스는 본문댓글,대댓글 공통클래스이며 댓글내용을 추출하여 ajax통신하기 위한 클래스
 					$div_c3.append($div_c3_c1, $div_c3_c2);
 					
-					$div.append($div_c1, $div_c2, $div_c3);
+					$div.append($div_c1, $div_c2, $div_c4, $div_c3,/*  $div1, */ "<hr>");
 					
-					$("#replyArea").append($div, "<hr>");
+					$("#replyArea").append($div);
 				})
 			}
 		})
@@ -314,7 +322,7 @@
 		<div class="container">
 			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate pb-0 text-center">
-					<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a></span> <span class="mr-2"><a href="/listReview">라이딩 후기 <i class="fa fa-chevron-right"></i></a></span> <span>라이딩 후기 상세 <i class="fa fa-chevron-right"></i></span></p>
+					<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">Home <i class="fa fa-chevron-right"></i></a></span> <span class="mr-2"><a href="/listReview">라이딩 후기 <i class="fa fa-chevron-right"></i></a></span> <span>후기 상세 <i class="fa fa-chevron-right"></i></span></p>
 					<h1 class="mb-3 bread">후기 상세</h1>
 				</div>
 			</div>
