@@ -105,7 +105,6 @@
 
   .nav-link_2 {
     font-size: 12px;
-    font-family: "나눔스퀘어라운드";
     padding-top: .1rem;
     padding-bottom: .1rem;
     padding-left: 1px;
@@ -116,7 +115,6 @@
 
   .nav-link {
     font-size: 18px;
-    font-family: "나눔스퀘어라운드";
     padding-top: .7rem;
     padding-bottom: .7rem;
     padding-left: 20px;
@@ -130,7 +128,7 @@
                 color: red;
             }
 
-<!--화면 줄어들때 메뉴색-->
+/* 화면 줄어들때 메뉴색 */
  @media (max-width: 991.98px) {
     .ftco-navbar-light {
       background: #000000 !important;
@@ -187,8 +185,8 @@
     <link rel="stylesheet" href="resources/css/style.css">
 
   <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-      <div class="container" ">
-         			 <a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
+      <div class="container">
+         			 <a style="font-size: 30px;" class="navbar-brand" href="/mainPage">
         <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
         <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
