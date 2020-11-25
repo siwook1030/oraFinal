@@ -38,9 +38,9 @@ window.onload = function(){
 	const nContent = document.getElementById("content");
 
 
-	const btnInsert = document.getElementById("btnInsert");
+	const btnInsert = document.getElementById("n_btnInsert");
 	
-	btnInsert.addEventListener("click", function(e) {
+	n_btnInsert.addEventListener("click", function(e) {
 		if(nTitle.value.trim() === ""){
 			alert("제목을 입력해야 될 거 아니야~!");
 			return;
@@ -160,8 +160,8 @@ window.onload = function(){
 				</div>
 				<input class="mb-6" type="file" name="uploadFile">
 				<br>
-				<a href="/listNotice"><button type="button" class="btn btn-warning" id="btnCancel">취소</button></a>
-				<button type="button" class="btn btn-success" id="btnInsert">등록</button>	
+				<a href="/listNotice"><button type="button" class="btn btn-warning" id="n_btnCancel">취소</button></a>
+				<button type="button" class="btn btn-success" id="n_btnInsert">등록</button>	
 			</form>
 	      </div>
 	    </div>
