@@ -14,6 +14,7 @@ import com.example.demo.vo.Meeting_fileVo;
 import com.example.demo.vo.Meeting_peopleVo;
 import com.example.demo.vo.Meeting_repVo;
 import com.example.demo.vo.Meeting_tempVo;
+import com.example.demo.vo.Review_repVo;
 import com.example.demo.vo.MeetingVo;
 
 public class MeetingManager {
@@ -349,5 +350,15 @@ public class MeetingManager {
 		session.commit();
 		session.close();
 		return re;
+	}
+	
+	// 로그기록중 댓글삭제전 아이디 가져오기위해
+	public static Meeting_repVo getMeetingRepOne(int mr_no) {
+		
+		SqlSession session = sqlSessionFactory.openSession();
+		Meeting_repVo mrvo = session.selectOne("meeting.selectMeetingRepOne", mr_no);
+		session.close();
+		
+		return mrvo;
 	}
 }

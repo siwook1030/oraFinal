@@ -151,4 +151,9 @@ public class MeetingDao {
 	public int deleteMfOne(int mf_no) {
 		return MeetingManager.deleteMfOne(mf_no);
 	}
+	
+	// 로그기록중 댓글삭제전 아이디 가져오기위헤
+	public Meeting_repVo getMeetingRepOne(int mr_no) {
+		return MeetingManager.getMeetingRepOne(mr_no);
+	}
 }

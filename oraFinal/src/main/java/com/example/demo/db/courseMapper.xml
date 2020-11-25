@@ -34,7 +34,7 @@
 		UPDATE COURSE SET C_NAME=#{c_name}, C_S_LOCNAME=#{c_s_locname}, C_S_LATITUDE=#{c_s_latitude}, 
 		C_S_LONGITUDE=#{c_s_longitude}, C_E_LOCNAME=#{c_e_locname},C_E_LATITUDE=#{c_e_latitude}, C_E_LONGITUDE=#{c_e_longitude}, 
 		C_LOC=#{c_loc}, C_DISTANCE=#{c_distance}, C_TIME=#{c_time}, C_DIFFICULTY=#{c_difficulty}, C_TAG=#{c_tag},C_VIEW=#{c_view}, 
-		C_WORDS=#{c_words}, C_LINE=#{c_line}, C_TEMP=#{c_temp} WHERE C_NO = #{c_no}
+		C_WORDS=#{c_words}, C_LINE=#{c_line} WHERE C_NO = #{c_no}
 	</update>
 	
 	<!-- 코스 대중교통 수정-->

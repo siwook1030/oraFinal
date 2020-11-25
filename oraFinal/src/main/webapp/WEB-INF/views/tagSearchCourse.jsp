@@ -48,6 +48,7 @@ window.onload = function(){
 
 	const token = $("meta[name='_csrf']").attr("content");
     const header = $("meta[name='_csrf_header']").attr("content");
+    const parameter = $("meta[name='_csrf_parameter']").attr("content");
     $(document).ajaxSend(function(e, xhr, options) {
         if(token && header) {
             xhr.setRequestHeader(header, token);
@@ -111,7 +112,7 @@ window.onload = function(){
 		}
 
 		$.ajax({
-			url:"/tagSearchCourse",
+			url:"/tagSearchCourse?"+parameter+"="+token,
 			type:"POST",
 			data:{"searchTag":searchTag},
 			success:function(data){

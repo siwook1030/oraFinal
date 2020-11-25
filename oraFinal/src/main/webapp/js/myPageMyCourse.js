@@ -1,4 +1,13 @@
 window.onload = function(){
+			const token = $("meta[name='_csrf']").attr("content");
+		    const header = $("meta[name='_csrf_header']").attr("content");
+		     const parameter = $("meta[name='_csrf_parameter']").attr("content");
+		    $(document).ajaxSend(function(e, xhr, options) {
+		        if(token && header) {
+		            xhr.setRequestHeader(header, token);
+		        }
+		    });
+
     let addIndex = 0;
     let lastIndex = 0;
 
@@ -6,7 +15,7 @@ window.onload = function(){
     
     function getCourseList(index){   
        $.ajax({
-         url: "/myPageMyCourse",
+         url: "/myPageMyCourse?"+parameter+"="+token,
          method:"POST",
          success: function(courseVo){
             $(courseVo).each(function(i, c) {

@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import com.example.demo.dao.LogDao;
 import com.example.demo.dao.MemberDao;
 import com.example.demo.util.BitSms;
 import com.example.demo.vo.CourseVo;
+import com.example.demo.vo.LogVo;
 import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.ResponseDataVo;
 import com.google.gson.Gson;
@@ -61,6 +63,32 @@ public class AdminController {
 		model.addAttribute("meetingChangeCnt", meetingAllCnt-meetingAllCntYester);
 		
 
+	}
+	
+	@GetMapping(value = "/admin/courseSearchLog",produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String courseSearchLog() {
+		HashMap map = new HashMap();
+//		List<LogVo> dis = ldao.getLogList("00702");
+//		List<LogVo> time = ldao.getLogList("00703");
+//		List<LogVo> view = ldao.getLogList("00704");
+//		List<LogVo> tag = ldao.getLogList("00705");
+//		
+//		System.out.println(dis);
+//		System.out.println(time);
+//		System.out.println(view);
+//		System.out.println(tag);
+//		System.out.println(ldao.getLogList("00701"));
+		
+		map.put("reviewC", ldao.getLogList("004"));
+		map.put("meetingC", ldao.getLogList("005"));
+		map.put("cno", ldao.getLogList("00701"));
+		map.put("dis", ldao.getLogList("00702"));
+		map.put("time", ldao.getLogList("00703"));
+		map.put("view", ldao.getLogList("00704"));
+		map.put("tag", ldao.getLogList("00705"));
+		
+		return new Gson().toJson(map);
 	}
 	
 	@GetMapping(value = "/admin/getCourseListByTemp", produces = "application/json; charset=utf-8" )

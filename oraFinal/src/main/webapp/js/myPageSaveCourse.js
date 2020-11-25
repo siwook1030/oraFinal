@@ -1,4 +1,13 @@
 window.onload = function(){
+			const token = $("meta[name='_csrf']").attr("content");
+		    const header = $("meta[name='_csrf_header']").attr("content");
+		     const parameter = $("meta[name='_csrf_parameter']").attr("content");
+		    $(document).ajaxSend(function(e, xhr, options) {
+		        if(token && header) {
+		            xhr.setRequestHeader(header, token);
+		        }
+		    });
+
     let addIndex = 0;
     let lastIndex = 0;
 
@@ -6,7 +15,7 @@ window.onload = function(){
     
     function getCourseList(index){   
        $.ajax({
-         url: "/myPageSaveCourse",
+         url: "/myPageSaveCourse?"+parameter+"="+token,
          method:"POST",
          success: function(courseVo){
             $(courseVo).each(function(i, c) {
@@ -63,7 +72,7 @@ window.onload = function(){
           var data=$(this).attr("value");
              console.log(data);
              $.ajax({
-                url:"/deleteSaveCourse",
+                url:"/deleteSaveCourse?"+parameter+"="+token,
                 method:"POST",
                 data:{"cno":data},
                 success: function(re){

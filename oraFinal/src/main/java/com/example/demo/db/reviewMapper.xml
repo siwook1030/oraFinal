@@ -113,12 +113,21 @@
   	UPDATE review_rep SET rr_content=#{rr_content},rr_regdate=SYSDATE WHERE rr_no=#{rr_no}
   </update>
   
-  <select id="selectOrderByHit"> <!-- 코스상세-코스후기 조회수 상위3개 -->
-  	SELECT * FROM (SELECT ROW_NUMBER() OVER (ORDER BY r_hit DESC) row_num, r.* FROM review r WHERE c_no=#{c_no} ORDER BY r_hit DESC) WHERE row_num &lt; 4
+  <select id="selectOrderByHit" resultType="reviewVo"> <!-- 코스상세-코스후기 조회수 상위3개 -->
+  	SELECT ROWNUM,R_NO, C_NO, ID, R_TITLE, R_CONTENT, R_REGDATE, R_HIT, C_NAME, NICKNAME, RANK_ICON  
+  	FROM  (SELECT ROWNUM,
+  	R_NO, r.C_NO, r.ID, R_TITLE, R_CONTENT, R_REGDATE, R_HIT, C_NAME, NICKNAME, RANK_ICON  
+  	FROM review r, member m, rank k, course c WHERE r.c_no=#{c_no} AND c.c_no=r.c_no  AND r.ID=m.ID AND m.RANK_NAME=k.RANK_NAME
+  	ORDER BY r_hit DESC) WHERE ROWNUM &lt; 4
   </select>
   
   
   <update id="updateRasDelCourse"> <!--코스삭제로 인해 해당코스로 등록되어있던 게시물은 0번(선택안함)으로 변경 -->
 		UPDATE REVIEW SET C_NO = 0 WHERE C_NO = #{c_no}
 	</update>
+	
+	<!-- 로그기록중 댓글삭제 전 아이디 가져오기 -->
+	<select id="selectReviewRep" resultType="review_repVo">
+		SELECT ID FROM REVIEW_REP WHERE RR_NO = #{rr_no}
+	</select>
 </mapper>

@@ -2,7 +2,7 @@ function checkLogin(){
 	let check;
 		$.ajax({
 			url: "/checkLogin",
-			type: "POST",
+			type: "GET",
 			async: false,
 			success: function(response){
 				check =  response;

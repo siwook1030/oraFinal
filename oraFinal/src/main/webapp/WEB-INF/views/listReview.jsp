@@ -63,6 +63,15 @@
 
 
 	$(document).ready(function(){
+		const token = $("meta[name='_csrf']").attr("content");
+	    const header = $("meta[name='_csrf_header']").attr("content");
+	    const parameter = $("meta[name='_csrf_parameter']").attr("content");
+	    $(document).ajaxSend(function(e, xhr, options) {
+	        if(token && header) {
+	            xhr.setRequestHeader(header, token);
+	        }
+	    });
+		
 		$("#myPage2").css({"display": "none"});
 		if(URLSearch.has("searchType")) {
 			searchType = URLSearch.get("searchType");
@@ -131,7 +140,7 @@
 		
 		function getJson(){
 			$.ajax({
-				url: "/listReviewJson",
+				url: "/listReviewJson?"+parameter+"="+token,
 				dataType: "json",
 				method: "post",
 				data: {

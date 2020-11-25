@@ -78,6 +78,15 @@
 	let login_id = "${m.id}";				// 로그인 안했을 때는 'empty string'
 	var $replyTextArea = $("<textarea></textarea>").attr("placeholder", "답글을 입력하세요.");	// 대댓글을 위한 textarea 전역변수
 	$(document).ready(function(){
+		const token = $("meta[name='_csrf']").attr("content");
+	    const header = $("meta[name='_csrf_header']").attr("content");
+	    const parameter = $("meta[name='_csrf_parameter']").attr("content");
+	    $(document).ajaxSend(function(e, xhr, options) {
+	        if(token && header) {
+	            xhr.setRequestHeader(header, token);
+	        }
+	    });
+		
 		detailReviewReply();	// 댓글 목록 ajax으로 가져오는 함수	
 		// 본문 댓글을 위한 입력창 만들기
 		let $div1 = $("<div></div>").addClass("textareaContainer");		// 자식인 textarea 찾기위해 클래스 지정
@@ -129,7 +138,7 @@
 				event.preventDefault();
 			}
 		});
-	});
+
 	function detailReviewReply(){	// 댓글 목록 ajax으로 가져오는 함수
 		$.ajax({
 			url: "/detailReviewReply",
@@ -251,7 +260,7 @@
 	}
 	function deleteRepOne(rr_no){
 		$.ajax({
-			url: "/deleteRepOne",
+			url: "/deleteRepOne?"+parameter+"="+token,
 			data: {rr_no: rr_no},
 			method: "post",
 			async: false,				// 동기방식으로해서 처리결과 확인 후 select ajax함수 재호출
@@ -262,7 +271,7 @@
 	}
 	function updateRep(rr_no, rr_content){
 		$.ajax({
-			url: "/updateRep",
+			url: "/updateRep?"+parameter+"="+token,
 			data: {rr_no: rr_no, rr_content: rr_content},
 			method: "post",
 			async: false,				// 동기방식으로해서 처리결과 확인 후 select ajax함수 재호출
@@ -271,6 +280,7 @@
 			}
 		});
 	}
+});
 	</script>
 </head>
 <body>

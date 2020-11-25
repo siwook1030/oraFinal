@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.dao.CourseDao;
+import com.example.demo.dao.ReviewDao;
 import com.example.demo.db.CourseManager;
 
 import com.example.demo.vo.CoursePhotoVo;
@@ -41,6 +42,9 @@ public class CourseController {
 	@Autowired
 	private CourseDao cdao;	
 	
+	@Autowired
+	private ReviewDao rdao;
+	
 	@RequestMapping(value = "/detailCourse", produces = "application/json; charset=utf-8")
 	public void detailCourse(HttpServletRequest request,Model model, int c_no) {
 		String path = request.getRealPath("/courseLine")+"/";
@@ -52,6 +56,7 @@ public class CourseController {
 		model.addAttribute("cJson", gson.toJson(c));
 		model.addAttribute("ptList", ptList);
 		model.addAttribute("ptJson", gson.toJson(ptList));
+		model.addAttribute("review", rdao.getReviewByCno(c_no));
 	//	model.addAttribute("fList", fList);
 	//	model.addAttribute("fJson", gson.toJson(fList));
 	}

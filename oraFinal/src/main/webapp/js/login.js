@@ -29,7 +29,8 @@ window.onload = function(){
          }
       }
 		 const token = $("meta[name='_csrf']").attr("content");
-		    const header = $("meta[name='_csrf_header']").attr("content");
+		 const header = $("meta[name='_csrf_header']").attr("content");
+		 const parameter = $("meta[name='_csrf_parameter']").attr("content");
 		    $(document).ajaxSend(function(e, xhr, options) {
 		        if(token && header) {
 		            xhr.setRequestHeader(header, token);
@@ -65,7 +66,7 @@ function login(){
 			}
 	
 	$.ajax({
-		url:"/login",
+		url:"/login?"+parameter+"="+token,
 		type :  "POST",
 		dataType : "json",
 		data : {
@@ -176,7 +177,7 @@ function login(){
 	                     return;
 	                 }//if
 	             }//if
-	             $.ajax("/updatePwd", {
+	             $.ajax("/updatePwd?"+parameter+"="+token, {
 		             data:{"password" : pwd1 , "id" : id.value},
 		             type: "POST",
 		             success:function(re){
@@ -217,7 +218,7 @@ function login(){
 	                  return;
 	               }
 	               $.ajax({
-	   	                  url: "/selectMemberId",
+	   	                  url: "/selectMemberId?"+parameter+"="+token,
 	   	                  type: "POST",
 	   	               	  async: false,
 	   	                  data:{
@@ -325,7 +326,7 @@ function login(){
 	               }
 	               let idR = 0;      
 	               $.ajax({
-	                  url: "/smsSend",
+	                  url: "/smsSend?"+parameter+"="+token,
 	                  type: "POST",
 	                  data:{
 	                     "num":inputNumPwd.value.trim()
@@ -375,7 +376,7 @@ function login(){
 	               }
 	               let idR = 0;      
 	               $.ajax({
-	                  url: "/smsSend",
+	                  url: "/smsSend?"+parameter+"="+token,
 	                  type: "POST",
 	                  data:{
 	                     "num":inputNum.value.trim()
@@ -416,7 +417,7 @@ function login(){
 	          const phoneNum = phonePwd.value.trim();
 	          
 	          $.ajax({
-	             url:"/phoneNumCheck",
+	             url:"/phoneNumCheck?"+parameter+"="+token,
 	             type:"POST",
 	             async: false,
 	             data:{"phone":phoneNum},
@@ -438,7 +439,7 @@ function login(){
 	          const phoneNum = phone.value.trim();
 	          
 	          $.ajax({
-	             url:"/phoneNumCheck",
+	             url:"/phoneNumCheck?"+parameter+"="+token,
 	             type:"POST",
 	             async: false,
 	             data:{"phone":phoneNum},

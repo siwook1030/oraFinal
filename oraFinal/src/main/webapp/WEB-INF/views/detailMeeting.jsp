@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>오늘의 라이딩</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />
 <meta name="_csrf" content="${_csrf.token}" />
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
@@ -95,8 +95,9 @@
 	<script src="/js/loginCheck.js"></script>
 	<script type="text/javascript">
 window.onload = function(){
-	 const token = $("meta[name='_csrf']").attr("content");
+	 	const token = $("meta[name='_csrf']").attr("content");
 	    const header = $("meta[name='_csrf_header']").attr("content");
+	    const parameter = $("meta[name='_csrf_parameter']").attr("content");
 	    $(document).ajaxSend(function(e, xhr, options) {
 	        if(token && header) {
 	            xhr.setRequestHeader(header, token);
@@ -532,7 +533,7 @@ window.onload = function(){
 		}
 		
 		$.ajax({
-			url:"/user/insertMeetingRep",
+			url:"/user/insertMeetingRep?"+parameter+"="+token,
 			type:"post",
 			data: {
 				"m_no":m_no,
@@ -577,7 +578,7 @@ window.onload = function(){
 		console.log("콘텐트"+content);
 		console.log(""+toName);
 		$.ajax({
-			url:"/user/updateMeetingRep",
+			url:"/user/updateMeetingRep?"+parameter+"="+token,
 			type:"post",
 			data: {
 				"mr_no":mr_no,
@@ -618,7 +619,7 @@ window.onload = function(){
 			}
 
 		$.ajax({
-			url:"/user/deleteMeetingRep",
+			url:"/user/deleteMeetingRep?"+parameter+"="+token,
 			type:"post",
 			data: {
 				"m_no":m_no,
@@ -679,7 +680,7 @@ window.onload = function(){
 		}
 		
 		$.ajax({
-			url: "/user/attendMpeople",
+			url: "/user/attendMpeople?"+parameter+"="+token,
 			type: "POST",
 			data: {"m_no":m_no,"id":mId},
 			success: function(re){
@@ -705,7 +706,7 @@ window.onload = function(){
 		}
 		
 		$.ajax({
-			url:"/user/deleteMpeople",
+			url:"/user/deleteMpeople?"+parameter+"="+token,
 			type: "POST",
 			data: {"m_no":m_no,"id":id},
 			success: function(re){
