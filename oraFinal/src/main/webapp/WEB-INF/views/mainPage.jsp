@@ -400,7 +400,7 @@ window.onload = function(){
                 <div class="property-wrap ftco-animate">
 		        			<a href="/detailCourse?c_no=${c.c_no}" class="img" style="background-image: url(${c.c_photo[0].cp_path}/${ c.c_photo[0].cp_name});">
 		        				<div class="rent-sale">
-		        					<span class="rent" style="font-size: 120%;">${thisMonth}월</span><br>
+		        					<span class="rent">${thisMonth}월</span><br>
 		        					<span class="rent">${c.c_loc}</span>
 		        				</div>
 		        				<p title="코스태그" class="price"><span class="orig-price">${c.c_tag }</span></p>
