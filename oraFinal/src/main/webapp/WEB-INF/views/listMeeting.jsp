@@ -8,8 +8,8 @@
 <title>오늘의 라이딩</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
-<meta name="_csrf_header" content="${_csrf.headerName}" />
-<meta name="_csrf" content="${_csrf.token}" />
+	<meta name="_csrf_header" content="${_csrf.headerName}" />
+	<meta name="_csrf" content="${_csrf.token}" />
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="resources/css/animate.css">
@@ -43,90 +43,84 @@
 		.pageUl { border: none; }
 		.btnPrevNext { border: none; }
 		
-			<!--myPage CSS 시작-->
-		<style>
+		/* myPage CSS 시작 */
 		#login {
 			font-size: 14px;
 			text-align: right;
 		}
-		
 		.my{
 			padding: 5px;
 			margin: 2px;
-		
-			
 		}
 		
-		  .nav-link_2 {
-		    font-size: 12px;
-		    font-family: "나눔스퀘어라운드";
+		.nav-link_2 {
+			font-size: 12px;
 		    padding-top: .1rem;
 		    padding-bottom: .1rem;
 		    padding-left: 1px;
 		    padding-right: 1px;
 		    color: #fff;
 		    font-weight: 400;
-		    opacity: 1 !important; }
+		    opacity: 1 !important;
+		}
 		
-		  .nav-link {
+		.nav-link {
 		    font-size: 18px;
-		    font-family: "나눔스퀘어라운드";
 		    padding-top: .7rem;
 		    padding-bottom: .7rem;
 		    padding-left: 20px;
 		    padding-right: 20px;
 		    color: #fff;
 		    font-weight: 600;
-		    opacity: 1 !important; }
-		  .nav-link:hover {
-		      color: #c8572d; }
-		  .nav-link2:visited{
-		                color: red;
-		            }
+		    opacity: 1 !important;
+		}
+		.nav-link:hover {
+			color: #c8572d;
+		}
+		.nav-link2:visited {
+			color: red;
+		}
 		
-		<!--화면 줄어들때 메뉴색-->
-		 @media (max-width: 991.98px) {
-		    .ftco-navbar-light {
-		      background: #000000 !important;
-		      position: relative;
-		      top: 0; } }
-		      
-		      
+		/* 화면 줄어들때 메뉴색 */
+		@media (max-width: 991.98px) {
+			.ftco-navbar-light {
+				background: #000000 !important;
+				position: relative;
+				top: 0; }
+		}    
 		.my{
 			padding: 50px;
-			
 		}
-		 .my_ul{
+		.my_ul{
 			list-style:none; 
 		 	text-align: center;
-		 }
-		 .my_li{
+		}
+		.my_li{
 		    display:inline-block;  
 			float:left;
 		 	padding: 50px;
 		 	border-left:1px solid #999;             /* 각 메뉴의 왼쪽에 "|" 표시(분류 표시) */
 		    font:bold 16px Dotum;                     /* 폰트 설정 - 12px의 돋움체 굵은 글씨로 표시 */
 		    padding:0 10px;  
-		 }
+		}
 		 
-		  .my_li2{
+		.my_li2{
 		    display:inline-block;  
 			float:left;
 		 	padding: 50px;
 		    padding:0 10px;  
-		 }
+		}
 		   
-		 #my_a{
-		 color: #bbbbbb;
-		     font:bold 14px Dotum; 
-		 }
-		 #my_a:hover {
-		 color: #d0a183; 
-		 FONT-SIZE: 13pt; 
-		 FONT-WEIGHT: bolder}
-		 
-		<!--myPage 끝-->	
-		
+		#my_a{
+			color: #bbbbbb;
+			font:bold 14px Dotum; 
+		}
+		#my_a:hover {
+			color: #d0a183; 
+			FONT-SIZE: 13pt; 
+			FONT-WEIGHT: bolder;
+		}
+		/* myPage 끝 */	
 	</style>
 
 	<script type="text/javascript">
@@ -249,7 +243,6 @@
 				// console.log('*** arr length : '+arr.length);
 				// console.log(data.mf[0]);
 
-				// 사진출력
 				let listImg;
 				let emptyStr;
 				if(data.mf.length!=0) {
@@ -258,37 +251,37 @@
 					listImg = $('<img/>').attr('src',"/icons/empty.png");
 					emptyStr = $('<div></div>').html('').addClass('emptyStr'); // 빈화면에 글씨적을 수 있음
 				}
-	            const contentImg = $('<a></a>').addClass('block-20 img').attr("href",'detailMeeting?m_no='+data.m_no).append(listImg, emptyStr);
+				const contentImg = $('<a></a>').addClass('block-20 img').attr("href",'detailMeeting?m_no='+data.m_no).append(listImg, emptyStr);
 
-		        // 게시글 내용
-	            // const m_no = $('<div></div>').html(data.m_no);
-	            const c_nameA = $('<a href="/detailCourse?c_no='+data.c_no+'"></a>').html(data.c_name);
-	            const c_name = $('<div></div>').append(c_nameA).addClass('c_name');
-	            const m_timeImg = $('<img/>').attr({src : '/meetingImg/calendar.png', height : '30px'}).addClass('m_timeImg');
-	            const m_time = $('<div></div>').html(data.m_time).addClass('m_time');
-	            const nickNameImg = $('<img/>').attr({src : '/rank/'+data.rank_icon, height : '20px'});
-	            const nickNameA = $('<a href="/listMeeting?id='+data.id+'"></a>').html(' '+data.nickName);
-	            const nickName = $('<div></div>').append(nickNameImg, nickNameA).addClass('nickName');
-	            const m_regdate = $('<div></div>').html(data.date_diff_str).addClass('m_regdate');
-	            // const m_hit = $('<div></div>').html(data.m_hit);
-	            const speechImg = $('<span></span>').addClass('fa fa-comment'); // 말풍선
-	            const m_repCnt = $('<div></div>').addClass('meta-chat').append(speechImg, " "+data.m_repCnt); // 말풍선 + 댓글수
-	            const m_titleA = $('<a></a>').attr('href','detailMeeting?m_no='+data.m_no).html(data.m_title);
-	            const m_title = $('<h3></h3>').addClass('heading').append(m_titleA);
+				// 게시글 내용
+				// const m_no = $('<div></div>').html(data.m_no);
+				const c_nameA = $('<a href="/detailCourse?c_no='+data.c_no+'"></a>').html(data.c_name);
+				const c_name = $('<div></div>').append(c_nameA).addClass('c_name');
+				const m_timeImg = $('<img/>').attr({src : '/meetingImg/calendar.png', height : '30px'}).addClass('m_timeImg');
+				const m_time = $('<div></div>').html(data.m_time).addClass('m_time');
+				const nickNameImg = $('<img/>').attr({src : '/rank/'+data.rank_icon, height : '20px'});
+				const nickNameA = $('<a href="/listMeeting?id='+data.id+'"></a>').html(' '+data.nickName);
+				const nickName = $('<div></div>').append(nickNameImg, nickNameA).addClass('nickName');
+				const m_regdate = $('<div></div>').html(data.date_diff_str).addClass('m_regdate');
+				// const m_hit = $('<div></div>').html(data.m_hit);
+				const speechImg = $('<span></span>').addClass('fa fa-comment'); // 말풍선
+				const m_repCnt = $('<div></div>').addClass('meta-chat').append(speechImg, " "+data.m_repCnt); // 말풍선 + 댓글수
+				const m_titleA = $('<a></a>').attr('href','detailMeeting?m_no='+data.m_no).html(data.m_title);
+				const m_title = $('<h3></h3>').addClass('heading').append(m_titleA);
 
-	            // div에 내용담기
-	            const metaDiv = $('<div></div>').addClass('meta mb-3');
-	            const textDiv = $('<div></div>').addClass('text');
-	            const blog_entryDiv = $('<div></div>').addClass('blog-entry justify-content-end');
-	            const col = $('<div></div>').addClass('col-md-3 d-flex ftco-animate fadeInUp ftco-animated');
+				// div에 내용담기
+				const metaDiv = $('<div></div>').addClass('meta mb-3');
+				const textDiv = $('<div></div>').addClass('text');
+				const blog_entryDiv = $('<div></div>').addClass('blog-entry justify-content-end');
+				const col = $('<div></div>').addClass('col-md-3 d-flex ftco-animate fadeInUp ftco-animated');
 
-	            const metaDiv_1 = $('<div></div>').append(c_name, m_repCnt).addClass('metaDiv_1');
-		        const metaDiv_2 = $('<div></div>').append(nickName, m_regdate /* , m_hit */).addClass('metaDiv_2');
-	            metaDiv.append(metaDiv_1, metaDiv_2);
-	            
-	            textDiv.append(contentImg, m_timeImg, m_time, metaDiv, m_title);
-	            blog_entryDiv.append(textDiv);
-	            col.append(blog_entryDiv);
+				const metaDiv_1 = $('<div></div>').append(c_name, m_repCnt).addClass('metaDiv_1');
+				const metaDiv_2 = $('<div></div>').append(nickName, m_regdate /* , m_hit */).addClass('metaDiv_2');
+				metaDiv.append(metaDiv_1, metaDiv_2);
+               
+				textDiv.append(contentImg, m_timeImg, m_time, metaDiv, m_title);
+				blog_entryDiv.append(textDiv);
+				col.append(blog_entryDiv);
 
 				$('#rowDFlex').append(col);   
 			});
