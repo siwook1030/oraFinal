@@ -8690,7 +8690,7 @@ h1, h2, h3, h4, h5,
   background: #d8572d !important; }
 
 .bg-darken {
-  background: #e5cab6; }
+  background: #4f9424; }	/* #e5cab6 정재호 수정*/
 
 .btn {
   cursor: pointer;
@@ -9442,7 +9442,7 @@ textarea.form-control {
     width: 50px;
     height: 1px;
     margin-top: -1px;
-    background: #d8572d; }
+    background: white;	/* #d8572d 정재호 수정 */}
   .heading-section .subheading:before {
     position: absolute;
     top: 50%;
@@ -9454,7 +9454,7 @@ textarea.form-control {
     width: 50px;
     height: 1px;
     margin-top: -1px;
-    background: #d8572d; }
+    background: white;	/* #d8572d 정재호 수정 */ }
 
 .heading-section h2 {
   font-size: 40px;
