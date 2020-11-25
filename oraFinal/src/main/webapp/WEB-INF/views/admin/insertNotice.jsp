@@ -38,9 +38,9 @@ window.onload = function(){
 	const nContent = document.getElementById("content");
 
 
-	const btnInsert = document.getElementById("n_btnInsert");
+	const btnInsert = document.getElementById("btnInsertN");
 	
-	n_btnInsert.addEventListener("click", function(e) {
+	btnInsertN.addEventListener("click", function(e) {
 		if(nTitle.value.trim() === ""){
 			alert("제목을 입력해야 될 거 아니야~!");
 			return;
@@ -125,7 +125,7 @@ window.onload = function(){
 	</nav>
     <!-- END nav -->
     
-	<section class="hero-wrap hero-wrap-2" style="background-image: url('resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+	<section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
@@ -160,8 +160,8 @@ window.onload = function(){
 				</div>
 				<input class="mb-6" type="file" name="uploadFile">
 				<br>
-				<a href="/listNotice"><button type="button" class="btn btn-warning" id="n_btnCancel">취소</button></a>
-				<button type="button" class="btn btn-success" id="n_btnInsert">등록</button>	
+				<a href="/listNotice"><button type="button" class="btn btn-warning" id="btnCancelN">취소</button></a>
+				<button type="button" class="btn btn-success" id="btnInsertN">등록</button>	
 			</form>
 	      </div>
 	    </div>

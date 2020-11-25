@@ -484,7 +484,7 @@ window.onload = function(){
     	<div class="container">
     		<div class="row justify-content-center">
           <div class="col-md-12 text-center heading-section heading-section-white ftco-animate">
-          	<span class="subheading">사용자 가이드</span>
+          	<span class="subheading">사용자 가이드</span><br>
             <h2 class="mb-3">오늘의 라이딩 100% 활용방법!</h2>
           </div>
         </div>
@@ -493,7 +493,7 @@ window.onload = function(){
             <div class="media block-6 services services-2">
               <div class="media-body py-md-4 text-center">
               	<div class="icon mb-1 d-flex align-items-center justify-content-center"><!-- <span>01</span> -->
-              	<img src="/resources/images/guide01.png" alt="" width="128px">
+              	<img src="/resources/images/guide06.png" alt="" width="128px">
               	</div>
                 <h3>라이딩 코스를 검색하세요!</h3>
                 <p>거리, 소요시간, 풍경을 설정하여 코스를 검색해보세요. 최적의 코스를 추천해줍니다.</p>
@@ -504,9 +504,9 @@ window.onload = function(){
             <div class="media block-6 services services-2">
               <div class="media-body py-md-4 text-center">
               	<div class="icon mb-1 d-flex align-items-center justify-content-center"><!-- <span>02</span> -->
-              	<img src="/resources/images/guide02.png" alt="" width="128px"></div>
-                <h3>검색한 결과중에 맘에드는 코스를 찜하세요!</h3>
-                <p>회원가입하면 원하는 코스를 찜해두고 볼 수 있습니다. 열심히 활동하여 랭킹을 올려서 혜택을 받아보세요. </p>
+              	<img src="/resources/images/guide05.png" alt="" width="128px"></div>
+                <h3>검색한 결과 중에 마음에 드는 코스를 찜하세요!</h3>
+                <p>회원가입을 하면 원하는 코스를 "찜" 해두고 볼 수 있습니다. 열심히 활동하여 랭킹을 올려서 혜택을 받아보세요.</p>
               </div>
             </div>      
           </div>
@@ -526,9 +526,8 @@ window.onload = function(){
               	<div class="icon mb-1 d-flex align-items-center justify-content-center"><!-- <span>04</span> -->
               	<img src="/resources/images/guide04.png" alt="" width="128px"></div>
                 <h3>나만의 코스를 만들어보세요!</h3>
-                <p>나만알고있기 아까운 코스를 다른사람과 공유해보세요.</p>
-              </div>
-            </div>      
+                <p>나만 알고 있기 아까운 코스를 다른사람과 공유해보세요.</p>
+              </div> 
           </div>
     		</div>
     	</div>
