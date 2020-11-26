@@ -37,6 +37,7 @@
 			transform: translate(-50%, -50%);
 		}
 		/* 게시글 제목 */
+		.heading a { height: 60px; padding-bottom: 30px; display: inline-block; }
 		.blog-entry .text { height: 450px; }
 		.meta.mb-3 { height: 90px; }
 		
@@ -200,7 +201,7 @@
 				        const metaDiv_2 = $('<div></div>').append(nickName, date_diff_str, /* r_hit, */).addClass('metaDiv_2');
 			            /* metaDiv.append(c_name, nickName, date_diff_str, total_reply); */
 			            metaDiv.append(metaDiv_1, metaDiv_2);
-			            textDiv.append(contentImg, metaDiv, r_title);
+			            textDiv.append(contentImg, r_title, metaDiv);
 			            blog_entryDiv.append(textDiv);
 			            col.append(blog_entryDiv);
 		
