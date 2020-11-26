@@ -29,7 +29,6 @@
                 <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>코스 찾기</a></li>
                 <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>라이딩 후기</a></li>
                 <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>번개 라이딩</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>FAQs</a></li>
               </ul>
             </div>
           </div>
@@ -39,7 +38,6 @@
               <ul class="list-unstyled">
                 <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>오늘의 라이딩</a></li>
                 <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>공지사항</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>QnA</a></li>
               </ul>
             </div>
           </div>
@@ -85,8 +83,6 @@
   <script src="/resources/js/jquery.magnific-popup.min.js"></script>
   <script src="/resources/js/jquery.animateNumber.min.js"></script>
   <script src="/resources/js/scrollax.min.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-  <script src="/resources/js/google-map.js"></script>
   <script src="/resources/js/main.js"></script>
   
 </body>
