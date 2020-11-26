@@ -7,9 +7,9 @@
 <meta charset="UTF-8">
 <title>오늘의 라이딩</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
-<meta name="_csrf_header" content="${_csrf.headerName}" />
-<meta name="_csrf" content="${_csrf.token}" />
+	<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+	<meta name="_csrf_header" content="${_csrf.headerName}" />
+	<meta name="_csrf" content="${_csrf.token}" />
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/resources/css/animate.css">
@@ -59,8 +59,6 @@
 		.repTa { width: 100%; height: 110px; padding: 10px 10px 10px 13px; font-size: 14px; border: none; }
 		.btnRepSpan { cursor: pointer; text-decoration: underline; margin-left: 7px; font-size: 13px; /* border: 1px solid green; */ height: auto; /* padding: 4px 0 5px 0; */ padding-top: 4px; vertical-align: top;}
 		.repDiv { border: 1px solid gray; }
-		.btnRepAdd { background-color: #eccb6a; }
-		.btnRepCancel { background-color: #88BEA6; margin-left: 3px; }
 		.txtDiv { /* border: 1px solid purple; */ text-align: right; margin: 0 7px 7px 0; }
 		.txtMaxCntSpan { /* border: 1px solid red; */ font-size: 13px; display: inline-block; vertical-align: bottom; }
 		.btnRepComDiv { /* border: 1px solid blue; */ display: inline-block; margin-left: 10px; }
@@ -81,7 +79,10 @@
 		/* 글내용 */
 		.ck-content { padding: 20px; margin-bottom: 100px; width: auto; }
 		/* 게시글 수정삭제 버튼 */
-		.btn { color: white; padding: 8px 12px; display: inline-block; font-size: 15px; border: none; cursor: pointer; }
+		.btn { color: white; background-color: #bae4f0; padding: 8px 12px; display: inline-block; font-size: 15px; border: none; cursor: pointer; }
+		.btn:hover {
+			color: black;
+		}
 		#btnDiv { text-align: right; }
 		/* nava 로그인 */
 		.nav-item .nav-link { font-size: 15px; }
@@ -976,7 +977,7 @@ window.onload = function(){
 			<!-- 수정,삭제 버튼 -->
 			<c:if test="${m.id==mt.id }">
 				<div id="btnDiv">
-					<a href="/user/updateMeeting?m_no=${mt.m_no }&c_no=${mt.c_no}" class="btn" id="btnEdit">수정</a>
+					<a href="/user/updateMeeting?m_no=${mt.m_no }&c_no=${mt.c_no}" class="btn">수정</a>
 					<a href="deleteMeeting?m_no=${mt.m_no }" class="btn" id="btnDel" style="background-color: #ECCB6A">삭제</a>
 				</div>
 			</c:if>
