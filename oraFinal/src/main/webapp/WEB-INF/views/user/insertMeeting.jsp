@@ -745,7 +745,7 @@
 						<!-- 코스 -->
 						<div class="selectMt">
 							<img src="../meetingImg/ridingRoute.png" class="mtIcon"><br>
-							<select id="selectCourse" name="c_no">
+							<select id="selectCourse" name="c_no" style="width: 100%;">
 								<c:forEach var="c" items="${cList }">
 									<c:if test="${c.c_no == 0 }">
 										<option value="${c.c_no }">${c.c_name }</option>
