@@ -98,7 +98,7 @@ function login(){
 }
 
 
-}
+
 
 
 
@@ -459,5 +459,6 @@ function login(){
 	      // $(".hidden").css({display: "none"});
 	       $(".hiddenPhone").css({display: "none"});
 	});
+}
 
 /*** 로그인(길모) 시작 */
