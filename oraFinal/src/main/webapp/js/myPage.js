@@ -168,7 +168,7 @@
           let data = $("#pwd").val();
           console.log(data);
           $.ajax({
-         url:"/passwordConfirm",
+         url:"/passwordConfirm?"+parameter+"="+token,
          method:"POST",
          data:{password:data},
          success: function(c){
