@@ -304,6 +304,8 @@ window.onload = function(){
 	};
 
 // --------------------------------------------------------- 풍경 셀렉트 노드생성 끝
+	const infoC = document.getElementById("infoC");
+	
 	document.getElementById("startC").addEventListener("click", function(e) {
 		selectOverlay('MARKER');
 	});
@@ -319,7 +321,7 @@ window.onload = function(){
 	document.getElementById("frontPolyC").addEventListener("click", function(e) {
 		front();
 	});
-	document.getElementById("infoC").addEventListener("click", function(e) {
+	infoC.addEventListener("click", function(e) {
 		getInfo();
 	});
 	document.getElementById("chkBicycle").addEventListener("click", function(e) {
@@ -327,6 +329,8 @@ window.onload = function(){
 	});
 
 //////////////////////////////////////// 코스끝
+	const infoPS = document.getElementById("infoPS");
+
 	document.getElementById("publicTranportPS").addEventListener("click", function(e) {
 		selectOverlayPS('MARKER');
 	});
@@ -339,7 +343,7 @@ window.onload = function(){
 	document.getElementById("frontPolyPS").addEventListener("click", function(e) {
 		frontPS();
 	});
-	document.getElementById("infoPS").addEventListener("click", function(e) {
+	infoPS.addEventListener("click", function(e) {
 		getInfoPS();
 	});
 	document.getElementById("chkBicyclePS").addEventListener("click", function(e) {
@@ -347,6 +351,8 @@ window.onload = function(){
 	});
 
 //////////////////////////////////////////// 대중교통 출발점 끝
+	const infoPE = document.getElementById("infoPE");
+
 	document.getElementById("publicTranportPE").addEventListener("click", function(e) {
 		selectOverlayPE('MARKER');
 	});
@@ -359,7 +365,7 @@ window.onload = function(){
 	document.getElementById("frontPolyPE").addEventListener("click", function(e) {
 		frontPE();
 	});
-	document.getElementById("infoPE").addEventListener("click", function(e) {
+	infoPE.addEventListener("click", function(e) {
 		getInfoPE();
 	});
 	document.getElementById("chkBicyclePE").addEventListener("click", function(e) {
@@ -487,6 +493,11 @@ window.onload = function(){
 	const manager3 = new kakao.maps.drawing.DrawingManager(options3);
 
 	function setFixC(){
+		infoC.disabled = false;
+		infoPS.disabled = false;
+		infoPE.disabled = false;
+		
+		
 		fixC.innerHTML="가져오기를 눌러주세요";
 		fixC.setAttribute("val", "y");
 		fixPS.innerHTML="가져오기를 눌러주세요";
@@ -651,17 +662,15 @@ window.onload = function(){
 		arriveMarker.setMap(mapPE);
 		mapPE.setCenter(eMarkerLatLon);
 		/////////////// 대중교통 도착점 표시 끝   
-	    let cnt=0;
+
 	    let pathStr="[";
 	        for(let i=0; i<latlonArr.length; i++){
-	            cnt++;
-	            let str = " new kakao.maps.LatLng("+latlonArr[i].y+","+latlonArr[i].x+")";
+
+	            pathStr += " new kakao.maps.LatLng("+latlonArr[i].y+","+latlonArr[i].x+"),";
 	            latlonArr[i] = new kakao.maps.LatLng(latlonArr[i].y,latlonArr[i].x);
-	            if(cnt < latlonArr.length)
-	           		 pathStr += str+",";
-	            else
-	                pathStr += str;
+
 	        }
+	   pathStr = pathStr.substring(0, pathStr.length-1);
 	   pathStr += "]";
 	   
 	   
@@ -686,6 +695,8 @@ window.onload = function(){
 		//line.value = '{"courseLine":'+pathStr+',"altitudeData":'+JSON.stringify(altitudeData)+'}';
 	    dis.value = distance;
 	    time.value = (distance/20*60).toFixed(0);
+
+	    infoC.disabled = true;
 	  }
 	}
 
@@ -753,6 +764,7 @@ window.onload = function(){
 		}
 		fixPS.innerHTML="가져오기를 눌러주세요!";
 		fixPS.setAttribute("val", "y");
+		infoPS.disabled = false;
 	});
 	 
 	function selectOverlayPS(type) {
@@ -815,17 +827,14 @@ window.onload = function(){
 		  	latPS.value = psMarkerLatLon.getLat();
 		    lonPS.value = psMarkerLatLon.getLng();
 	  
-		    let cnt=0;
 		    let pathStr="[";
 		        for(let i=0; i<latlonArr.length; i++){
-		            cnt++;
-		            let str = " new kakao.maps.LatLng("+latlonArr[i].y+","+latlonArr[i].x+")";
+
+		            pathStr += " new kakao.maps.LatLng("+latlonArr[i].y+","+latlonArr[i].x+"),";
 		            latlonArr[i] = new kakao.maps.LatLng(latlonArr[i].y,latlonArr[i].x);
-		            if(cnt < latlonArr.length)
-		           		 pathStr += str+",\r\n";
-		            else
-		                pathStr += str;
+
 		        }
+		   pathStr = pathStr.substring(0, pathStr.length-1);
 		   pathStr += "]";
 	
 		    managerPS.remove(managerPS.getOverlays().polyline[0]);
@@ -837,6 +846,8 @@ window.onload = function(){
 	
 			linePS.value = pathStr;
 		   	disPS.value = distance;
+
+		   	infoPS.disabled = true;
 		}
 	}
 /////////////////////////////////////////////////// 출발점 교통편 끝
@@ -904,6 +915,7 @@ window.onload = function(){
 			}
 			fixPE.innerHTML="가져오기를 눌러주세요!";
 			fixPE.setAttribute("val", "y");
+			infoPE.disabled = false;
 	});
 	    
 	function selectOverlayPE(type) {
@@ -966,17 +978,15 @@ window.onload = function(){
 		  	latPE.value = peMarkerLatLon.getLat();
 		    lonPE.value = peMarkerLatLon.getLng();
 	  
-		    let cnt=0;
+
 		    let pathStr="[";
 		        for(let i=0; i<latlonArr.length; i++){
-		            cnt++;
-		            let str = " new kakao.maps.LatLng("+latlonArr[i].y+","+latlonArr[i].x+")";
+
+		            pathStr += " new kakao.maps.LatLng("+latlonArr[i].y+","+latlonArr[i].x+"),";
 		            latlonArr[i] = new kakao.maps.LatLng(latlonArr[i].y,latlonArr[i].x);
-		            if(cnt < latlonArr.length)
-		           		 pathStr += str+",\r\n";
-		            else
-		                pathStr += str;
+
 		        }
+		   pathStr = pathStr.substring(0, pathStr.length-1);
 		   pathStr += "]";
 	
 		    managerPE.remove(managerPE.getOverlays().polyline[0]);
@@ -988,6 +998,7 @@ window.onload = function(){
 	
 			linePE.value = pathStr;
 		   	disPE.value = distance;
+		   	infoPE.disabled = true;
 		}
 	}
 
@@ -1013,9 +1024,9 @@ window.onload = function(){
 	   
 	}
 	////////////-------------------------------바이크루트
-	const bike = document.getElementById("bike");
+//	const bike = document.getElementById("bike");
 	const bikeFile = document.getElementById("bikeFile");
-	bike.addEventListener("click", function(e) {
+	bikeFile.addEventListener("change", function(e) {
 		let reader = new FileReader();
 		const file = bikeFile.files[0];
 		if(file == undefined){
@@ -1028,28 +1039,35 @@ window.onload = function(){
 			return;
 		}
 		reader.onload = function () {
-
+		
 			const courseBounds = new kakao.maps.LatLngBounds();
 			altitudeData = [['거리','고도'],['데이터없음',0]];   // 고도 초기화
 			const eleArr = $(reader.result).find("trkseg ele");
 			const  trkptArr = $(reader.result).find("trkseg trkpt");
-			
+
+			let pathStr="[";
 			const latlonArr = new Array();
 			for(let i=0; i<trkptArr.length; i++){
 				const lat = trkptArr[i].getAttribute("lat");
 				const lon = trkptArr[i].getAttribute("lon");
+
+				pathStr += " new kakao.maps.LatLng("+lat+","+lon+"),";
+				
 				latlonArr[i] = new kakao.maps.LatLng(lat,lon);
 				courseBounds.extend(latlonArr[i]);
 				
 			}
+			pathStr = pathStr.substring(0, pathStr.length-1);
+			pathStr += "]";
+			
 			polyObj.setPath(latlonArr);
 			const distancePerLine = (((polyObj.getLength()/1000).toFixed(1))/(eleArr.length-1)).toFixed(10);
-			console.log(distancePerLine);
+
 			for(let i=0; i<eleArr.length; i++){
 				const elData = [distancePerLine*i,Number(Number((eleArr[i].innerHTML)).toFixed(1))];
 				altitudeData[i+1] = elData;
 			}
-			console.log(altitudeData);
+
 			if(manager.getOverlays().marker[0]){
 				manager.remove(manager.getOverlays().marker[0]);
 			}	
@@ -1066,15 +1084,52 @@ window.onload = function(){
 			manager3.put(kakao.maps.drawing.OverlayType.POLYLINE, latlonArr);
 			map.setBounds(courseBounds);
 			google.charts.setOnLoadCallback(drawAltitude);
+
+			const sMarkerLatLon = latlonArr[0];
+			const eMarkerLatLon = latlonArr[latlonArr.length-1];
+		
+			slat.value = sMarkerLatLon.getLat();
+	   		slon.value = sMarkerLatLon.getLng();
+	   		geocoder.coord2Address(sMarkerLatLon.getLng(), sMarkerLatLon.getLat(), function(result, status) {
+			    if(status === kakao.maps.services.Status.OK) {
+			       sLoc.value = result[0].address.address_name;
+			    }
+			});
+			//////////////// 대중교통 출발점 위치표시
+			startMarker.setPosition(sMarkerLatLon);
+			startMarker.setMap(mapPS);
+			mapPS.setCenter(sMarkerLatLon);
+			///////////// 대중교통 출발점표시 끝	
+			
+			elat.value = eMarkerLatLon.getLat();
+	   		elon.value = eMarkerLatLon.getLng();
+		    geocoder.coord2Address(eMarkerLatLon.getLng(), eMarkerLatLon.getLat(), function(result, status) {
+			    if(status === kakao.maps.services.Status.OK) {
+			       eLoc.value = result[0].address.address_name;
+			    }
+			});
+			///////////// 대중교통 도착점 표시
+			arriveMarker.setPosition(eMarkerLatLon);
+			arriveMarker.setMap(mapPE);
+			mapPE.setCenter(eMarkerLatLon);
+			/////////////// 대중교통 도착점 표시 끝  
+	
+		   const distance = (polyObj.getLength()/1000).toFixed(1);
+	
+	    	fixC.innerHTML=""; // 새로 라인을 그리기 후 가져오기눌러주세요 글을 없앤다
+	    	fixC.setAttribute("val", "n");
+	    	line.value = JSON.stringify({"courseLine":pathStr,"altitudeData":altitudeData});
+		    dis.value = distance;
+		    time.value = (distance/20*60).toFixed(0);
+
+		    infoC.disabled = true;
+//--------------------------------------------------
 		};
 			reader.readAsText(file, "UTF-8");
-
-	})
-	
-	bikeFile.addEventListener("change", function(e) {  // 파일을 선택해서 로드할 시 경로만들기 자동로 눌러 경로를 만든다
-		bike.click();
+			this.value=null;
 	});
 	
+
 	/////////----------------------------- 고도 차트 함수
 	google.charts.load('current', {'packages':['corechart']});
 	google.charts.setOnLoadCallback(drawAltitude);
@@ -1729,7 +1784,7 @@ window.onload = function(){
 	//const  url = document.location.href;
 	//const courseNumber = url.substring(url.indexOf("=")+1);
 	const courseNumber = ${c_no};
-	console.log(courseNumber);
+
 	const req = new XMLHttpRequest();
 	req.open("GET", "/admin/getUpdateCourse?c_no="+courseNumber);
 	req.send(null);
@@ -1973,13 +2028,13 @@ window.onload = function(){
 					<input type="file" value="경로파일" id="bikeFile"><br>
 				</div>
 				<div class="btnDiv">
-					<button type="button" class="btnOption" id="bike">경로만들기</button>
+					<!--  <button type="button" class="btnOption" id="bike">경로만들기</button>-->
 				    <button type="button" class="btnOption" id="startC">출발</button>
 				    <button type="button" class="btnOption" id="arriveC">도착</button>
 				    <button type="button" class="btnOption" id="polyC" >선</button>
 				    <button type="button" class="btnOption" id="backPolyC" class="disabled" disabled>선 되돌리기</button>
 				    <button type="button" class="btnOption" id="frontPolyC"  class="disabled" disabled>선 앞돌리기</button>
-				    <button type="button" class="btnOption" id="infoC" >가져오기</button><br>
+				    <button type="button" class="btnOption" id="infoC" disabled="disabled">가져오기</button><br>
 				     <span id="fixC" val="y" style="color: #d0a183; font-weight: bold;"></span>
 				</div>
 			</p>
@@ -2090,7 +2145,7 @@ window.onload = function(){
 				<button type="button" class="btnOption" id="polyPS" >선</button>
 				<button type="button" class="btnOption" id="backPolyPS" class="disabled" disabled>선 되돌리기</button>
 				<button type="button" class="btnOption" id="frontPolyPS" class="disabled" disabled>선 앞돌리기</button>
-				<button type="button" class="btnOption" id="infoPS" >가져오기</button><br>
+				<button type="button" class="btnOption" id="infoPS" disabled="disabled">가져오기</button><br>
 				<span id="fixPS" val="y" style="color: #d0a183;; font-weight: bold;"></span>
 			</div>
 			<input type="hidden" id="pt_noPS" name="pt_noPS">
@@ -2133,7 +2188,7 @@ window.onload = function(){
 			    <button type="button" class="btnOption" id="polyPE" >선</button>
 			    <button type="button" class="btnOption" id="backPolyPE" class="disabled" disabled>선 되돌리기</button> <!-- disabled -->
 				<button type="button" class="btnOption" id="frontPolyPE" class="disabled" disabled>선 앞돌리기</button>
-				<button type="button" class="btnOption" id="infoPE" >가져오기</button><br>
+				<button type="button" class="btnOption" id="infoPE" disabled="disabled">가져오기</button><br>
 				<span id="fixPE" val="y" style="color: #d0a183;; font-weight: bold;"></span>
 			</div>
 			<input type="hidden" id="pt_noPE" name="pt_noPE">

@@ -180,8 +180,8 @@ window.onload = function(){
 			<div class="text">\
 				<h3><a href="/detailCourse?c_no='+c.c_no+'" target="_blank">'+c.c_name+'</a></h3>\
 				<span class="location">made by '+c.nickName+'</span>\
-				<a href="#tagTitle"  title="검색창" class="d-flex align-items-center justify-content-center btn-custom" id="linkMap" lat="'+c.c_s_latitude+'" lng="'+c.c_s_longitude+'">\
-					<span class="fa fa-link" id="linkMap2" lat="'+c.c_s_latitude+'" lng="'+c.c_s_longitude+'"></span>\
+				<a href="#tagTitle"  title="태그검색" class="d-flex align-items-center justify-content-center btn-custom" id="linkMap" lat="'+c.c_s_latitude+'" lng="'+c.c_s_longitude+'">\
+					<span id="linkMap2" lat="'+c.c_s_latitude+'" lng="'+c.c_s_longitude+'"><img src="/searchCourseImg/loupe.png" width="32px"  lat="'+c.c_s_latitude+'" lng="'+c.c_s_longitude+'"></span>\
 				</a>\
 				<ul class="property_list" style="font-weight: bold;" >\
 					<li title="코스거리" ><span class="flaticon-bed"><img class="cInfoIcon" src="/searchCourseImg/distance.png"></span>'+c.c_distance+'km</li>\

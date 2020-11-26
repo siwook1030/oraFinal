@@ -66,7 +66,7 @@
   <!-- 전체코스갯수 갖고오기 day변수에 따라 다름-->
   <select id="courseAllCnt" resultType="int">
     
-  	SELECT COUNT(*) FROM COURSE WHERE C_TEMP = 'N'
+  	SELECT COUNT(*) FROM COURSE WHERE C_TEMP = 'N' AND NOT C_NO IN (0)
   	<if test="day != 0">
   		<![CDATA[
   			AND	 TO_DATE(C_REGDATE, 'YYYY-MM-DD') < TO_DATE(SYSDATE, 'YYYY-MM-DD')

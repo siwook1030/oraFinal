@@ -98,6 +98,7 @@
 		font-size: 110%;
 		font-weight: bold;
 	}
+	
 
 </style>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -114,7 +115,49 @@ window.onload = function(){
 	            xhr.setRequestHeader(header, token);
 	        }
 	    });*/
-	
+	//------
+function LoadingWithMask() {
+	    	console.log("로딩이미지 표시됨!!");
+    //화면의 높이와 너비를 구합니다.
+    var maskHeight = $(document).height();
+    var maskWidth  = window.document.body.clientWidth;
+     
+    //화면에 출력할 마스크를 설정해줍니다.
+    var mask       ="<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'></div>";
+    var loadingImg ='';
+      
+    loadingImg +="<div id='loadingImg'>";
+    loadingImg +=" <img src='/searchCourseImg/myLoc.gif' style='position: relative; display: block; margin: 0px auto;'/>";
+    loadingImg +="</div>"; 
+  
+    //화면에 레이어 추가
+    $('body')
+        .append(mask)
+        .append(loadingImg)
+        
+    //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채웁니다.
+    $('#mask').css({
+            'width' : maskWidth
+            ,'height': maskHeight
+            ,'opacity' :'0.3'
+    });
+  
+    //마스크 표시
+    $('#mask').show();  
+  
+    //로딩중 이미지 표시
+    $('#loadingImg').show();
+    console.log("로딩이미지끝!!");
+}
+
+ 
+function closeLoadingWithMask() {
+    $('#mask, #loadingImg').hide();
+    $('#mask, #loadingImg').empty(); 
+}
+
+
+	//---
 	const courseName =  document.getElementById("courseName");
 	const slat =  document.getElementById("slat");
 	const slon =  document.getElementById("slon");
@@ -283,6 +326,8 @@ const mNickName = checkM.item.nickName;
 	};
 
 // --------------------------------------------------------- 풍경 셀렉트 노드생성 끝
+	const infoC = document.getElementById("infoC");
+
 	document.getElementById("startC").addEventListener("click", function(e) {
 		selectOverlay('MARKER');
 	});
@@ -298,7 +343,7 @@ const mNickName = checkM.item.nickName;
 	document.getElementById("frontPolyC").addEventListener("click", function(e) {
 		front();
 	});
-	document.getElementById("infoC").addEventListener("click", function(e) {
+	infoC.addEventListener("click", function(e) {
 		getInfo();
 	});
 	document.getElementById("chkBicycle").addEventListener("click", function(e) {
@@ -306,6 +351,8 @@ const mNickName = checkM.item.nickName;
 	});
 
 //////////////////////////////////////// 코스끝
+	const infoPS = document.getElementById("infoPS");
+
 	document.getElementById("publicTranportPS").addEventListener("click", function(e) {
 		selectOverlayPS('MARKER');
 	});
@@ -318,7 +365,7 @@ const mNickName = checkM.item.nickName;
 	document.getElementById("frontPolyPS").addEventListener("click", function(e) {
 		frontPS();
 	});
-	document.getElementById("infoPS").addEventListener("click", function(e) {
+	infoPS.addEventListener("click", function(e) {
 		getInfoPS();
 	});
 	document.getElementById("chkBicyclePS").addEventListener("click", function(e) {
@@ -326,6 +373,8 @@ const mNickName = checkM.item.nickName;
 	});
 
 //////////////////////////////////////////// 대중교통 출발점 끝
+	const infoPE = document.getElementById("infoPE");
+
 	document.getElementById("publicTranportPE").addEventListener("click", function(e) {
 		selectOverlayPE('MARKER');
 	});
@@ -338,7 +387,7 @@ const mNickName = checkM.item.nickName;
 	document.getElementById("frontPolyPE").addEventListener("click", function(e) {
 		frontPE();
 	});
-	document.getElementById("infoPE").addEventListener("click", function(e) {
+	infoPE.addEventListener("click", function(e) {
 		getInfoPE();
 	});
 	document.getElementById("chkBicyclePE").addEventListener("click", function(e) {
@@ -465,6 +514,10 @@ const mNickName = checkM.item.nickName;
 	const manager3 = new kakao.maps.drawing.DrawingManager(options3);
 
 	function setFixC(){
+		infoC.disabled = false;
+		infoPS.disabled = false;
+		infoPE.disabled = false;
+		
 		fixC.innerHTML="가져오기를 눌러주세요";
 		fixC.setAttribute("val", "y");
 		fixPS.innerHTML="가져오기를 눌러주세요";
@@ -502,7 +555,7 @@ const mNickName = checkM.item.nickName;
 		setFixC();
 	});
 	
-	
+	 
 	// 버튼 클릭 시 호출되는 핸들러 입니다
 	function selectOverlay(type) {
 		const data = manager.getData();
@@ -581,7 +634,7 @@ const mNickName = checkM.item.nickName;
 	let altitudeData = [['거리','고도'],['데이터없음',0]];  // 고도데이타를 담을 배열
 	const polyObj = new kakao.maps.Polyline(); // 라인의 길이를 담기위한 폴리라인객체
 	function getInfo() {
-	
+		
 	    if(!manager.getOverlays().marker[0]){
 	    	alert("출발점마커를 그려주세요");
 	    }
@@ -592,7 +645,6 @@ const mNickName = checkM.item.nickName;
 	    	alert("출발점과 도착점의 경로를 그려주세요");
 		}
 	    else{ 
-
 			const sMarkerLatLon = manager.getOverlays().marker[0].getPosition();
 			const eMarkerLatLon = manager2.getOverlays().marker[0].getPosition();
 			
@@ -629,17 +681,15 @@ const mNickName = checkM.item.nickName;
 		arriveMarker.setMap(mapPE);
 		mapPE.setCenter(eMarkerLatLon);
 		/////////////// 대중교통 도착점 표시 끝   
-	    let cnt=0;
+
 	    let pathStr="[";
 	        for(let i=0; i<latlonArr.length; i++){
-	            cnt++;
-	            let str = " new kakao.maps.LatLng("+latlonArr[i].y+","+latlonArr[i].x+")";
+
+	        	pathStr += " new kakao.maps.LatLng("+latlonArr[i].y+","+latlonArr[i].x+"),";
 	            latlonArr[i] = new kakao.maps.LatLng(latlonArr[i].y,latlonArr[i].x);
-	            if(cnt < latlonArr.length)
-	           		 pathStr += str+",";
-	            else
-	                pathStr += str;
+
 	        }
+	   pathStr = pathStr.substring(0, pathStr.length-1);
 	   pathStr += "]";
 	   
 	   
@@ -664,6 +714,8 @@ const mNickName = checkM.item.nickName;
 		//line.value = '{"courseLine":'+pathStr+',"altitudeData":'+JSON.stringify(altitudeData)+'}';
 	    dis.value = distance;
 	    time.value = (distance/20*60).toFixed(0);
+
+	    infoC.disabled = true;
 	  }
 	}
 
@@ -732,6 +784,7 @@ const mNickName = checkM.item.nickName;
 		}
 		fixPS.innerHTML="가져오기를 눌러주세요!";
 		fixPS.setAttribute("val", "y");
+		infoPS.disabled = false;
 	});
 	 
 	function selectOverlayPS(type) {
@@ -794,17 +847,15 @@ const mNickName = checkM.item.nickName;
 		  	latPS.value = psMarkerLatLon.getLat();
 		    lonPS.value = psMarkerLatLon.getLng();
 	  
-		    let cnt=0;
+
 		    let pathStr="[";
 		        for(let i=0; i<latlonArr.length; i++){
-		            cnt++;
-		            let str = " new kakao.maps.LatLng("+latlonArr[i].y+","+latlonArr[i].x+")";
+
+		        	pathStr += " new kakao.maps.LatLng("+latlonArr[i].y+","+latlonArr[i].x+"),";
 		            latlonArr[i] = new kakao.maps.LatLng(latlonArr[i].y,latlonArr[i].x);
-		            if(cnt < latlonArr.length)
-		           		 pathStr += str+",\r\n";
-		            else
-		                pathStr += str;
+
 		        }
+		   pathStr = pathStr.substring(0, pathStr.length-1);
 		   pathStr += "]";
 	
 		    managerPS.remove(managerPS.getOverlays().polyline[0]);
@@ -816,6 +867,8 @@ const mNickName = checkM.item.nickName;
 	
 			linePS.value = pathStr;
 		   	disPS.value = distance;
+
+		   	infoPS.disabled = true;
 		}
 	}
 /////////////////////////////////////////////////// 출발점 교통편 끝
@@ -884,6 +937,7 @@ const mNickName = checkM.item.nickName;
 			}
 			fixPE.innerHTML="가져오기를 눌러주세요!";
 			fixPE.setAttribute("val", "y");
+			infoPE.disabled = false;
 	});
 	    
 	function selectOverlayPE(type) {
@@ -946,17 +1000,15 @@ const mNickName = checkM.item.nickName;
 		  	latPE.value = peMarkerLatLon.getLat();
 		    lonPE.value = peMarkerLatLon.getLng();
 	  
-		    let cnt=0;
+
 		    let pathStr="[";
 		        for(let i=0; i<latlonArr.length; i++){
-		            cnt++;
-		            let str = " new kakao.maps.LatLng("+latlonArr[i].y+","+latlonArr[i].x+")";
+
+		        	pathStr += " new kakao.maps.LatLng("+latlonArr[i].y+","+latlonArr[i].x+"),";
 		            latlonArr[i] = new kakao.maps.LatLng(latlonArr[i].y,latlonArr[i].x);
-		            if(cnt < latlonArr.length)
-		           		 pathStr += str+",\r\n";
-		            else
-		                pathStr += str;
+
 		        }
+		   pathStr = pathStr.substring(0, pathStr.length-1);
 		   pathStr += "]";
 	
 		    managerPE.remove(managerPE.getOverlays().polyline[0]);
@@ -968,6 +1020,7 @@ const mNickName = checkM.item.nickName;
 	
 			linePE.value = pathStr;
 		   	disPE.value = distance;
+		   	infoPE.disabled = true;
 		}
 	}
 
@@ -993,9 +1046,9 @@ const mNickName = checkM.item.nickName;
 	   
 	}
 	////////////-------------------------------바이크루트 
-	const bike = document.getElementById("bike");
+//	const bike = document.getElementById("bike");
 	const bikeFile = document.getElementById("bikeFile");
-	bike.addEventListener("click", function(e) {
+	bikeFile.addEventListener("change", function(e) {
 		let reader = new FileReader();
 		const file = bikeFile.files[0];
 		if(file == undefined){
@@ -1008,36 +1061,35 @@ const mNickName = checkM.item.nickName;
 			return;
 		}
 		reader.onload = function () {
-
-//			const parser = new DOMParser();
-//			const xmlTrk = parser.parseFromString(reader.result, "text/xml");
-//			console.log(xmlTrk);
-//			const trkpaaa = xmlTrk.getElementsByTagName("trkpt");
-//			console.log(trkpaaa[0]);
-//			for(let i=0; i<trkpaaa.length; i++){
-//				console.log(trkpaaa[i]);
-//			}
+			
 			const courseBounds = new kakao.maps.LatLngBounds();
 			altitudeData = [['거리','고도'],['데이터없음',0]];   // 고도 초기화
 			const eleArr = $(reader.result).find("trkseg ele");
 			const  trkptArr = $(reader.result).find("trkseg trkpt");
-			
+
+			 let pathStr="[";
 			const latlonArr = new Array();
 			for(let i=0; i<trkptArr.length; i++){
 				const lat = trkptArr[i].getAttribute("lat");
 				const lon = trkptArr[i].getAttribute("lon");
+
+				pathStr += " new kakao.maps.LatLng("+lat+","+lon+"),";
+				
 				latlonArr[i] = new kakao.maps.LatLng(lat,lon);
 				courseBounds.extend(latlonArr[i]);
 				
 			}
+			pathStr = pathStr.substring(0, pathStr.length-1);
+			pathStr += "]";
+			
 			polyObj.setPath(latlonArr);
 			const distancePerLine = (((polyObj.getLength()/1000).toFixed(1))/(eleArr.length-1)).toFixed(10);
-			console.log(distancePerLine);
+
 			for(let i=0; i<eleArr.length; i++){
 				const elData = [distancePerLine*i,Number(Number((eleArr[i].innerHTML)).toFixed(1))];
 				altitudeData[i+1] = elData;
 			}
-			console.log(altitudeData);
+
 			if(manager.getOverlays().marker[0]){
 				manager.remove(manager.getOverlays().marker[0]);
 			}	
@@ -1054,14 +1106,53 @@ const mNickName = checkM.item.nickName;
 			manager3.put(kakao.maps.drawing.OverlayType.POLYLINE, latlonArr);
 			map.setBounds(courseBounds);
 			google.charts.setOnLoadCallback(drawAltitude);
+
+			const sMarkerLatLon = latlonArr[0];
+			const eMarkerLatLon = latlonArr[latlonArr.length-1];
+		
+			slat.value = sMarkerLatLon.getLat();
+	   		slon.value = sMarkerLatLon.getLng();
+	   		geocoder.coord2Address(sMarkerLatLon.getLng(), sMarkerLatLon.getLat(), function(result, status) {
+			    if(status === kakao.maps.services.Status.OK) {
+			       sLoc.value = result[0].address.address_name;
+			    }
+			});
+			//////////////// 대중교통 출발점 위치표시
+			startMarker.setPosition(sMarkerLatLon);
+			startMarker.setMap(mapPS);
+			mapPS.setCenter(sMarkerLatLon);
+			///////////// 대중교통 출발점표시 끝	
+			
+			elat.value = eMarkerLatLon.getLat();
+	   		elon.value = eMarkerLatLon.getLng();
+		    geocoder.coord2Address(eMarkerLatLon.getLng(), eMarkerLatLon.getLat(), function(result, status) {
+			    if(status === kakao.maps.services.Status.OK) {
+			       eLoc.value = result[0].address.address_name;
+			    }
+			});
+			///////////// 대중교통 도착점 표시
+			arriveMarker.setPosition(eMarkerLatLon);
+			arriveMarker.setMap(mapPE);
+			mapPE.setCenter(eMarkerLatLon);
+			/////////////// 대중교통 도착점 표시 끝  
+	
+		   const distance = (polyObj.getLength()/1000).toFixed(1);
+	
+	    	fixC.innerHTML=""; // 새로 라인을 그리기 후 가져오기눌러주세요 글을 없앤다
+	    	fixC.setAttribute("val", "n");
+	    	line.value = JSON.stringify({"courseLine":pathStr,"altitudeData":altitudeData});
+		    dis.value = distance;
+		    time.value = (distance/20*60).toFixed(0);
+		    
+		    infoC.disabled = true;
+//--------------------------------------------------
+ 
+
 		};
 			reader.readAsText(file, "UTF-8");
-
-	})
-	
-	bikeFile.addEventListener("change", function(e) {  // 파일을 선택해서 로드할 시 경로만들기 자동로 눌러 경로를 만든다
-		bike.click();
+		this.value = null;
 	});
+	
 	
 	/////////----------------------------- 고도 차트 함수
 	google.charts.load('current', {'packages':['corechart']});
@@ -1807,6 +1898,7 @@ const mNickName = checkM.item.nickName;
       </div>
     </section>
     <section class="ftco-section ftco-property-details">
+    <div id="siwook"></div>
       <div class="container">
 			<div class="col-md-12 heading-section text-center ftco-animate">
      			<span class="subheading">나만의 코스를 만들어 공유해보세요.</span>
@@ -1846,13 +1938,13 @@ const mNickName = checkM.item.nickName;
 					<input type="file" value="경로파일" id="bikeFile"><br>
 				</div>
 				<div class="btnDiv">
-					<button type="button" class="btnOption" id="bike">경로만들기</button>
+					<!--  <button type="button" class="btnOption" id="bike">경로만들기</button>-->
 				    <button type="button" class="btnOption" id="startC">출발</button>
 				    <button type="button" class="btnOption" id="arriveC">도착</button>
 				    <button type="button" class="btnOption" id="polyC" >선</button>
 				    <button type="button" class="btnOption" id="backPolyC" class="disabled" disabled>선 되돌리기</button>
 				    <button type="button" class="btnOption" id="frontPolyC"  class="disabled" disabled>선 앞돌리기</button>
-				    <button type="button" class="btnOption" id="infoC" >가져오기</button><br>
+				    <button type="button" class="btnOption" id="infoC" disabled="disabled" >가져오기</button><br>
 				    <span id="fixC" val="y" style="color: #d0a183; font-weight: bold;"></span>
 				</div>
 			</p>
@@ -1924,13 +2016,13 @@ const mNickName = checkM.item.nickName;
 			</div>
 			
 			<!-- 선경로 숨겨도 되는지 물어보기 -->
-			<div style="display: none;">
+			<div>
 				<textarea rows="10" cols="80" id="line" name="c_line" readonly="readonly" style="border: none;"></textarea>
 			</div>
 			
 			<!-- 코스 설명 -->
 			<div id="wordsDiv" class="textFont">코스에 대해서 간단히 설명해주세요.
-				<textarea rows="20" cols="30" id="words" name="c_words" maxlength="3000" placeholder="ex) 시원한 강과함께 들판을 나란히 두고 라이딩하는..." style="resize:none; border: none; width:80%;  padding: 10px 5px 0 5px;"></textarea>
+				<textarea rows="15" cols="30" id="words" name="c_words" maxlength="3000" placeholder="ex) 시원한 강과함께 들판을 나란히 두고 라이딩하는..." style="resize:none; border: none; width:80%;  padding: 10px 5px 0 5px;"></textarea>
 				<div style="text-align: right; padding-right: 130px; height: 50px;">
 					<span id="wordsCnt"></span>
 				</div>
@@ -1960,7 +2052,7 @@ const mNickName = checkM.item.nickName;
 				<button type="button" class="btnOption" id="polyPS" >선</button>
 				<button type="button" class="btnOption" id="backPolyPS" class="disabled" disabled>선 되돌리기</button>
 				<button type="button" class="btnOption" id="frontPolyPS" class="disabled" disabled>선 앞돌리기</button>
-				<button type="button" class="btnOption" id="infoPS" >가져오기</button><br>
+				<button type="button" class="btnOption" id="infoPS" disabled="disabled">가져오기</button><br>
 				<span id="fixPS" val="y" style="color: #d0a183;; font-weight: bold;"></span>
 			</div>
 			
@@ -2003,7 +2095,7 @@ const mNickName = checkM.item.nickName;
 			    <button type="button" class="btnOption" id="polyPE" >선</button>
 			    <button type="button" class="btnOption" id="backPolyPE" class="disabled" disabled>선 되돌리기</button> <!-- disabled -->
 				<button type="button" class="btnOption" id="frontPolyPE" class="disabled" disabled>선 앞돌리기</button>
-				<button type="button" class="btnOption" id="infoPE" >가져오기</button><br>
+				<button type="button" class="btnOption" id="infoPE" disabled="disabled">가져오기</button><br>
 				<span id="fixPE" val="y" style="color: #d0a183;; font-weight: bold;"></span>
 			</div>
 			
