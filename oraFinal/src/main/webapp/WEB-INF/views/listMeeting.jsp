@@ -41,6 +41,7 @@
 		.m_timeImg { margin-bottom: 4px; }
 		/* 페이징 */
 		.pageUl { border: none; }
+		.block-27 ul li a, .block-27 ul li span { color: black; }
 		.btnPrevNext { border: none; }
 		
 		/* myPage CSS 시작 */

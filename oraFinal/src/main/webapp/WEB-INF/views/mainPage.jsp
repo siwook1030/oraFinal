@@ -64,6 +64,29 @@
    .search-place:after,	 .col-md-4, .img, .search-place img {
    	border-radius: 10px;
    }
+   	
+   	/* 버튼세개 */
+	.hero-wrap .overlay {
+		opacity: 1;
+	 }
+	.btn-light {
+		margin-top: 3px; 
+/* 		color: #212529;
+		background-color: #f8f9fa;
+		border-color: #f8f9fa; */
+		/* border-color: #f8f9fa; */
+		color: white;
+		background-color: transparent;
+		border: 2px solid white;
+		font-size: 15px;
+		font-weight: bold;
+	}
+	.btn:hover {
+		background-color: white;
+	}
+	.text .mb-4 p {
+		font-size: 19px;
+	}
 
 	.heading-section .subheading:before,.heading-section .subheading:after{
 		background: white;
@@ -369,17 +392,21 @@ window.onload = function(){
 	</nav>
     <!-- END nav -->
 
-    <section class="hero-wrap" style="background-image: url('mainPageImg/main1.jpg');" data-stellar-background-ratio="0.5">
-      <div class="overlay"></div>
+	<!-- 메인 이미지 -->
+    <section class="hero-wrap" data-stellar-background-ratio="0.5">
+      <div class="overlay" style="overflow: hidden;"><video autoplay muted loop src="/resources/images/mainPageVideo.mov"></video></div>
       <div class="container">
         <div class="row no-gutters slider-text align-items-center">
           <div class="col-lg-7 col-md-6 ftco-animate d-flex align-items-end">
           	<div class="text">
 	            <h1 class="mb-4">오늘도 <br>달려볼까요?</h1>
-	            <p style="font-size: 18px;">당신의 완벽한 라이딩을 위하여 근사한 곳으로 안내할게요!</p>
-	            <a href="#mapLink" class="btn btn-primary py-3 px-4">모든 코스 보기</a>
-	            <a href="/searchCourse" class="btn btn-primary py-3 px-4">맞춤 코스 검색</a>
-	            <a href="/tagSearchCourse" class="btn btn-primary py-3 px-4">태그 코스 검색</a>
+	            <p style="font-size: 19px; font-weight: bold;">당신의 완벽한 라이딩을 위하여 근사한 곳으로 안내할게요!</p>
+	            <a href="#mapLink" class="btn btn-light py-3 px-4">모든 코스 보기</a>
+	            <a href="/searchCourse" class="btn btn-light py-3 px-4">맞춤 코스 검색</a>
+	            <a href="/tagSearchCourse" class="btn btn-light py-3 px-4">태그 코스 검색</a>
+<!-- 	            <a href="#mapLink" class="btn btn-primary py-3 px-4 btn-light">모든 코스 보기</a>
+	            <a href="/searchCourse" class="btn btn-primary py-3 px-4 btn-light">맞춤 코스 검색</a>
+	            <a href="/tagSearchCourse" class="btn btn-primary py-3 px-4 btn-light">태그 코스 검색</a> -->
             </div>
           </div>
         </div>
