@@ -102,7 +102,7 @@ window.onload = function(){
 
 
 	const cBound = document.getElementById("cBound");
-	const mapCenter = new kakao.maps.LatLng(36.2683, 127.6358);
+	const mapCenter = new kakao.maps.LatLng(35.84079054000633, 127.8426863007031);
 	
 	const map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
         center : mapCenter, // 지도의 중심좌표 
@@ -401,7 +401,6 @@ window.onload = function(){
                 <div class="property-wrap ftco-animate">
 		        			<a href="/detailCourse?c_no=${c.c_no}" class="img" style="background-image: url(${c.c_photo[0].cp_path}/${ c.c_photo[0].cp_name});">
 		        				<div class="rent-sale">
-		        					<span class="rent">${thisMonth}월</span><br>
 		        					<span class="rent">${c.c_loc}</span>
 		        				</div>
 		        				<p title="코스태그" class="price"><span class="orig-price">${c.c_tag }</span></p>
@@ -409,8 +408,8 @@ window.onload = function(){
 		        			<div class="text">	
 		        				<h3><a href="#">${c.c_name }</a></h3>
 		        				<span class="location">made by ${c.nickName }</span>
-		        				<a href="#" class="d-flex align-items-center justify-content-center btn-custom">
-		        					<span class="fa fa-link"></span>
+		        				<a href="#" title="${thisMonth }월 추천코스" class="d-flex align-items-center justify-content-center btn-custom">
+		        					<span><img src="/mainPageImg/dec.png" width="40px"></span>
 		        				</a>
 		        				
 		        				<ul class="property_list" style="font-weight: bold;" > 

@@ -1195,6 +1195,7 @@ window.onload = function(){
 	cst.addEventListener("click", function(e) {
 		setTimeout(drawAltitude, 200);
 	});
+
 	
 }
  </script>

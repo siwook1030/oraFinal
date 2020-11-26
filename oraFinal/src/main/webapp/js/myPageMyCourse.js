@@ -76,7 +76,7 @@ window.onload = function(){
 				<h3><a href="/detailCourse?c_no='+c.c_no+'" target="_blank">'+c.c_name+'</a></h3>\
 				<span class="location">made by '+c.nickName+'</span>\
 				<a href="#"  title="내가만든코스" class="d-flex align-items-center justify-content-center btn-custom" id="linkMap" lat="'+c.c_s_latitude+'" lng="'+c.c_s_longitude+'">\
-					<span class="fa fa-link" id="linkMap2" lat="'+c.c_s_latitude+'" lng="'+c.c_s_longitude+'"></span>\
+					<span><img src="/searchCourseImg/certificate.png" width="32px"></span>\
 				</a>\
 				<ul class="property_list" style="font-weight: bold;" >\
 					<li title="코스거리" ><span class="flaticon-bed"><img class="cInfoIcon" src="/searchCourseImg/distance.png"></span>'+c.c_distance+'km</li>\

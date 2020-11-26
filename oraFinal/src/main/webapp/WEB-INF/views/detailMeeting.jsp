@@ -66,6 +66,18 @@
 		.btnRepComDiv { /* border: 1px solid blue; */ display: inline-block; margin-left: 10px; }
 		/* 지도 */
 		.map_wrap { position: relative; width: 100%; height: 450px; font-size: 80%; }
+		#meetingLocBtn{
+			margin-top:5px;
+			padding : 6px;
+			border : none;
+			opacity: 0.9;
+			background-color: white;
+			border-radius: 3px;
+			cursor: pointer;
+		}
+		#meetingLocBtn img{
+			width: 20px;
+		}
 		/* 번개참여 */
 		li { list-style: none; }
 		.attendPerson { width: 30px; }
@@ -767,6 +779,8 @@ window.onload = function(){
 //----------------------------------------------미팅피플 끝
 
 /////////////////////////////////////////////////////////////////////////////////// 맵표시
+	
+	const meetingLocBtn = document.getElementById("meetingLocBtn");
 	const mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = {
         center: new kakao.maps.LatLng(37.53814589110931, 126.98135334065803), // 지도의 중심좌표
@@ -779,6 +793,7 @@ window.onload = function(){
 	const zoomControl = new kakao.maps.ZoomControl();
 	map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
 	map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+	map.addControl(meetingLocBtn, kakao.maps.ControlPosition.RIGHT);
 
 	const startSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/red_b.png', // 출발 마커이미지의 주소입니다    
     startSize = new kakao.maps.Size(50, 45), // 출발 마커이미지의 크기입니다 
@@ -840,6 +855,14 @@ window.onload = function(){
 
     courseBounds.extend(meetingLatLon);
     map.setBounds(courseBounds);
+
+    meetingLocBtn.addEventListener("click", function(e) {
+    	map.setBounds(courseBounds);
+    	setTimeout(function() {
+    		map.setCenter(meetingLatLon);
+    		map.setLevel(5);
+    	}, 1000);
+    });
 	/////////////////////////////////////////////////////////////////////////////////// 맵표시 끝
 	/* const mf = ${mfJson};
 	console.log(mf);
@@ -949,7 +972,7 @@ window.onload = function(){
 			<div class="map_wrap">
 				<div id="map" style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
 			</div>
-			
+			<button id="meetingLocBtn" title="미팅장소"><img src="/searchCourseImg/mtLoc.png"></button>
 			<div id="mtInfoAll">
 				<div class="mtInfo"><img src="meetingImg/meetingLoc.png"><br>${mt.m_locname }</div>
 				<div class="mtInfo"><img src="meetingImg/calendar.png"><br>${mt.m_time }</div>
