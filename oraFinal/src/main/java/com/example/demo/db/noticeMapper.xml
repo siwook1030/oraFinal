@@ -41,7 +41,15 @@
   </select>
   
   <insert id="insertNotice">
-    insert into notice values(#{n_no},#{code_value},#{n_title},#{n_content},sysdate,#{n_hit},#{n_file})
+    insert into notice(n_no,code_value,n_title,n_content,n_regdate,
+    n_hit,n_file) values(#{n_no},#{code_value},#{n_title},#{n_content},sysdate,#{n_hit}
+    <if test="n_file != null">
+    ,#{n_file}
+    </if>
+    <if test="n_file == null">
+    ,null
+    </if>
+    )
   </insert>
   
   <update id="updateHit">
@@ -49,7 +57,11 @@
   </update>
   
   <update id="updateNotice">
-  	UPDATE NOTICE SET N_TITLE=#{n_title},N_CONTENT=#{n_content},N_FILE=#{n_file} WHERE N_NO=#{n_no}
+  	UPDATE NOTICE SET N_TITLE=#{n_title},N_CONTENT=#{n_content}
+  	<if test="n_file != null">
+  	,N_FILE=#{n_file} 
+  	</if>
+  	WHERE N_NO=#{n_no}
   </update>
   
   <delete id="deleteNotice">
