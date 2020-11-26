@@ -51,7 +51,7 @@ public class UpdateNoticeController {
 				String realPath = request.getRealPath("/noticeImg");
 				String path = realPath + "/" + n.getN_file();
 				FileUtilCollection.saveImage(n.getUploadFile(), path);
-				if (!oldFname.equals("") && oldFname != null) {
+				if (oldFname != null && !oldFname.equals("")) {
 					FileUtilCollection.deleteFile(realPath + "/" + oldFname);
 				}
 			}

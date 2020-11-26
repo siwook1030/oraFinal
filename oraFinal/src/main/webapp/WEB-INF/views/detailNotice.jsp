@@ -139,7 +139,7 @@ window.onload = function(){
 			<br>
 			<a href="listNotice"><button type="button" class="btn btn-primary" id="btnListN">목록</button></a>
 			<div id="btnUD">
-				<a href="/deleteNotice?n_no=${n.n_no }"><button type="button" class="btn btn-warning" id="btnDeleteN">삭제</button></a>
+				<a href="/admin/deleteNotice?n_no=${n.n_no }"><button type="button" class="btn btn-warning" id="btnDeleteN">삭제</button></a>
 				<!-- <button type="button" id="btnUpdate" value="${n.n_no }">수정</button> -->
 			 	<a href="/admin/updateNotice?n_no=${n.n_no}"><button type="button" class="btn btn-success" id="btnUpdateN" value="${n.n_no }">수정</button></a> 
 			</div>

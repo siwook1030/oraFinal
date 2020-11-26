@@ -65,6 +65,9 @@
    	border-radius: 10px;
    }
 
+	.heading-section .subheading:before,.heading-section .subheading:after{
+		background: white;
+	}
    
    
 .placeinfo_wrap {position:absolute;bottom:28px;left:-150px;width:300px;}
@@ -322,7 +325,7 @@ window.onload = function(){
 
 	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
-	      <a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
+	      <a style="font-size: 30px;" class="navbar-brand" href="/mainPage">
         <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
         <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font></span></a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
@@ -351,7 +354,7 @@ window.onload = function(){
 
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto" >
-	          <li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
+	          <li class="nav-item active"><a href="/mainPage" class="nav-link">Home</a></li>
 	          <li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
 	          <li id="courseDropPoint"  class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a>
 	          <li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
@@ -382,8 +385,7 @@ window.onload = function(){
         </div>
       </div>
     </section>	
-    
-    
+
         
 	<section class="ftco-section">
       <div class="container">
@@ -442,44 +444,15 @@ window.onload = function(){
 		        		</div>
               		</div>
               
-            </c:forEach>
+            	  </c:forEach>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
         
-	        <div class="row justify-content-center" style="margin-top: 100px;">
-	          <div class="col-md-12 heading-section text-center ftco-animate mb-5">
-	          	<span class="subheading">Today's Riding</span>
-	            <h2 class="mb-2">풍경별 추천코스</h2>
-	            <span style="font: italic bold 1.5em/1em Georgia,serif; font-size:15px; color: gray;">view is <span id="rcViewWord"></span></span>
-	          </div>
-	        </div>
-	        
-	        <div class="row" id="rcList">
-	        
-	        </div>
-        
-        <div id="mapLink"></div>
-         <div  class="row justify-content-center" style="margin-top: 150px;">
-          <div class="col-md-12 heading-section text-center ftco-animate mb-5">
-          	<span class="subheading">Today's Riding</span>
-            <h2 class="mb-2">자전거 지도</h2>
-          </div>
-        </div>
-	        <div class="col-md-12" >
-	           <div id="map" style="width:100%;height:600px; text-align: center; border-radius: 20px;"></div>
-	           <button id="cBound" title="한눈에 보기" style="margin-top:5px;
-				padding : 6px;
-				border : 1px solid white;
-				opacity: 0.9;
-				background-color: white;
-				border-radius: 3px;
-				cursor: pointer;"><img width="20px" src="/detailCourseImg/cBoundBtn.png"></button>
-	        </div>
-      </div>
-    </section>
- 	
- 	<!-- 정재호 수정중 -->
+            
+    <!-- 정재호 수정중 -->
  	<section class="ftco-section services-section bg-darken">
     	<div class="container">
     		<div class="row justify-content-center">
@@ -532,94 +505,45 @@ window.onload = function(){
     		</div>
     	</div>
     </section>
- 
-  <footer class="ftco-footer ftco-section">
-      <div class="container">
-        <div class="row mb-5">
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">오늘의 라이딩</h2>
-              <p>당신의 멋진 라이딩을 위하여</p>
-              <ul class="ftco-footer-social list-unstyled mt-5">
-                <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
-                <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
-                <li class="ftco-animate"><a href="#"><span class="fa fa-instagram"></span></a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4 ml-md-4">
-              <h2 class="ftco-heading-2">Community</h2>
-              <ul class="list-unstyled">
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Search Properties</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>For Agents</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Reviews</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>FAQs</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4 ml-md-4">
-              <h2 class="ftco-heading-2">About Us</h2>
-              <ul class="list-unstyled">
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Our Story</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Meet the team</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md">
-             <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Company</h2>
-              <ul class="list-unstyled">
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>About Us</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Press</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Contact</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4">
-            	<h2 class="ftco-heading-2">Have a Questions?</h2>
-            	<div class="block-23 mb-3">
-	              <ul>
-	                <li><span class="icon fa fa-map"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
-	                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929 210</span></a></li>
-	                <li><a href="#"><span class="icon fa fa-envelope pr-4"></span><span class="text">info@yourdomain.com</span></a></li>
-	              </ul>
-	            </div>
-            </div>
+        
+        <section class="ftco-section">
+     	 <div class="container">
+	        <div class="row justify-content-center" style="margin-top: 100px;">
+	          <div class="col-md-12 heading-section text-center ftco-animate mb-5">
+	          	<span class="subheading">Today's Riding</span>
+	            <h2 class="mb-2">풍경별 추천코스</h2>
+	            <span style="font: italic bold 1.5em/1em Georgia,serif; font-size:15px; color: gray;">view is <span id="rcViewWord"></span></span>
+	          </div>
+	        </div>
+	        
+	        <div class="row" id="rcList">
+	        
+	        </div>
+        
+        <div id="mapLink"></div>
+         <div  class="row justify-content-center" style="margin-top: 150px;">
+          <div class="col-md-12 heading-section text-center ftco-animate mb-5">
+          	<span class="subheading">Today's Riding</span>
+            <h2 class="mb-2">자전거 지도</h2>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-12 text-center">
-
-            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-          </div>
-        </div>
+	        <div class="col-md-12" >
+	           <div id="map" style="width:100%;height:600px; text-align: center; border-radius: 20px;"></div>
+	           <button id="cBound" title="한눈에 보기" style="margin-top:5px;
+				padding : 6px;
+				border : 1px solid white;
+				opacity: 0.9;
+				background-color: white;
+				border-radius: 3px;
+				cursor: pointer;"><img width="20px" src="/detailCourseImg/cBoundBtn.png"></button>
+	        </div>
       </div>
-    </footer>
+    </section>
+ 	
+ 	
+ 
+  <jsp:include page="footer.jsp" />
 
 
-
-  <!-- loader -->
-  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
-  
-  
-   <script src="/resources/js/jquery.min.js"></script>
-  <script src="/resources/js/jquery-migrate-3.0.1.min.js"></script>
-  <script src="/resources/js/popper.min.js"></script>
-  <script src="/resources/js/bootstrap.min.js"></script>
-  <script src="/resources/js/jquery.easing.1.3.js"></script>
-  <script src="/resources/js/jquery.waypoints.min.js"></script>
-  <script src="/resources/js/jquery.stellar.min.js"></script>
-  <script src="/resources/js/owl.carousel.min.js"></script>
-  <script src="/resources/js/jquery.magnific-popup.min.js"></script>
-  <script src="/resources/js/jquery.animateNumber.min.js"></script>
-  <script src="/resources/js/scrollax.min.js"></script>
-  <script src="/resources/js/main.js"></script> 
 </body>
 </html>

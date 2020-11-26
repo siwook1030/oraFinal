@@ -2063,7 +2063,7 @@ textarea.form-control {
       transition: none; } }
   .btn:hover {
     border: none;
-    background-color: #ffffff;
+    /*background-color: #ffffff;*/
     text-decoration: none; }
   .btn:focus, .btn.focus {
     outline: 0;
@@ -2131,7 +2131,7 @@ fieldset:disabled a.btn {
   background-color: #88bea6;
   border-color: #88bea6; }
   .btn-success:hover {
-    color: #fff;
+    color: black;
     background-color: #88bea6;
     border-color: #88bea6; }
   .btn-success:focus, .btn-success.focus {
@@ -9075,7 +9075,7 @@ h1, h2, h3, h4, h5,
 
 .services-section {
   position: relative;
-  padding-bottom: 10em !important; }
+  padding-bottom: 6em !important; }
   .services-section .overlay {
     position: absolute;
     width: 50%;
@@ -9293,7 +9293,7 @@ textarea.form-control {
 
 .ftco-footer {
   font-size: 16px;
-  padding: 7em 0;
+  padding: 3em 0;
   background: #0f101c; }
   .ftco-footer .ftco-footer-logo {
     text-transform: uppercase;
@@ -9301,7 +9301,7 @@ textarea.form-control {
   .ftco-footer .ftco-footer-widget h2 {
     font-weight: normal;
     color: #fff;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     font-size: 18px;
     font-weight: 700; }
   .ftco-footer .ftco-footer-widget ul li {
@@ -9441,7 +9441,7 @@ textarea.form-control {
     width: 50px;
     height: 1px;
     margin-top: -1px;
-    background: white;	/* #d8572d 정재호 수정 */}
+    background: #d8572d;	/* #d8572d 정재호 수정 */}
   .heading-section .subheading:before {
     position: absolute;
     top: 50%;
@@ -9453,7 +9453,7 @@ textarea.form-control {
     width: 50px;
     height: 1px;
     margin-top: -1px;
-    background: white;	/* #d8572d 정재호 수정 */ }
+    background: #d8572d;	/* #d8572d 정재호 수정 */ }
 
 .heading-section h2 {
   font-size: 40px;
