@@ -1,5 +1,6 @@
 package com.example.demo.security;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -78,8 +79,12 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         
     	response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().print(mapper.writeValueAsString(responseDataVo));
-        response.getWriter().flush();
+        
+        PrintWriter out =response.getWriter();
+        out.print(mapper.writeValueAsString(responseDataVo));
+        out.flush();
+        out.close();
+        
         System.out.println("마지막성공핸들러작동");
         
     }

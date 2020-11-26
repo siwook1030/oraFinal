@@ -47,8 +47,7 @@ public class UpdateCourseController {
 		map.put("cJson", cdao.getCourseByCno(c_no, path));
 		map.put("ptJson",cdao.getPublicTransportByCno(c_no));
 		return gson.toJson(map);
-	//	model.addAttribute("cJson", gson.toJson(cdao.getCourseByCno(c_no, path)));
-	//	model.addAttribute("ptJson", gson.toJson(cdao.getPublicTransportByCno(c_no)));
+
 	}
 	
 
@@ -81,7 +80,7 @@ public class UpdateCourseController {
 		 double userDis = 0; //코스와 유저의현재위치와의  거리
 		 
 		 String cLinepath = request.getRealPath(MakingCourseController.courseLinePath);
-		 String c_line=c_no+"_c_line.dat";
+		 String c_line=c_no+"_"+c_name + MakingCourseController.courseLineName;
 		 String c_lineDat = (String)map.get("c_line");
 		 	 	 
 		 List<CoursePhotoVo> c_photo = new ArrayList<CoursePhotoVo>();

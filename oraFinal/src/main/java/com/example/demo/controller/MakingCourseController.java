@@ -41,7 +41,7 @@ import lombok.Setter;
 public class MakingCourseController {
 	
 	public static String courseLinePath = "/courseLine";    // 코스라인 경로
-	public static String courseLineName = "_c_line.dat";    // 코스라인파일 이름 (앞에는 기본키 코스번호 붙임)
+	public static String courseLineName = "_CycleCourse.gpx";    // 코스라인파일 이름 (앞에는 기본키 코스번호 붙임)
 	public static String coursePhotoPath = "/coursePhoto";  // 코스포토 경로
 	public static String coursePhotoPathSub = "/course";    // 각 코스번호마다 공통 폴더명 (뒤에는 기본키 코스번호 붙임)
 	
@@ -205,7 +205,7 @@ public class MakingCourseController {
 		 double userDis = 0; //코스와 유저의현재위치와의  거리
 		 
 		 String cLinepath = request.getRealPath(courseLinePath);
-		 String c_line=c_no+courseLineName;
+		 String c_line=c_no+"_"+c_name + courseLineName;
 		 String c_lineDat = (String)map.get("c_line");
 		 	 	 
 		 List<CoursePhotoVo> c_photo = new ArrayList<CoursePhotoVo>();
