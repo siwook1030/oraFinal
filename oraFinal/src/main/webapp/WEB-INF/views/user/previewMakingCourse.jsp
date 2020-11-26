@@ -488,35 +488,70 @@ window.onload = function(){
 	const preStartLatLng = new kakao.maps.LatLng(cJson.c_s_latitude, cJson.c_s_longitude);
 	const preArriveLatLng = new kakao.maps.LatLng(cJson.c_e_latitude, cJson.c_e_longitude);
 	
-	const cLineObj = JSON.parse(cJson.c_line);
-	const courseLine = eval(cLineObj.courseLine);
-	const altitudeData = eval(cLineObj.altitudeData);
+	const courseLine = cJson.c_line;
+	let altitudeData = [];
+
+	const eleArr = $(courseLine).find("trkseg ele");
+	const trkptArr = $(courseLine).find("trkseg trkpt");
+	const mnBound = $(courseLine).find("bounds")[0];
+
+	const latArr = new Array();
+	const lonArr = new Array();
+	const latlonArr = new Array();
+
+	const courseDistacne = cJson.c_distance;
+	const distancePerLine = Number(courseDistacne/(eleArr.length-1)).toFixed(10);
+
+	for(let i=0; i<trkptArr.length; i++){
+		const lat = trkptArr[i].getAttribute("lat");
+		const lon = trkptArr[i].getAttribute("lon");
+
+		altitudeData.push([distancePerLine*i,Number(Number((eleArr[i].innerHTML)).toFixed(1))]);
+		
+		latArr.push(lat);
+		lonArr.push(lon);
+		latlonArr.push(new kakao.maps.LatLng(lat,lon));	
+		
+	}
+
+	const maxLat = mnBound.getAttribute("maxlat");
+	const maxLon = mnBound.getAttribute("maxlon");	
+	const minLat = mnBound.getAttribute("minlat");
+	const minLon = mnBound.getAttribute("minlon");
+
+	courseBounds.extend(new kakao.maps.LatLng(maxLat,maxLon));
+	courseBounds.extend(new kakao.maps.LatLng(minLat,minLon));
 	
-	cPoly.setPath(courseLine);
-	courseLine.forEach(function(c, i) {
-		courseBounds.extend(c);
-	});
+	
+	cPoly.setPath(latlonArr);
+
 		
 	google.charts.load('current', {'packages':['corechart']});
 	google.charts.setOnLoadCallback(drawAltitude); 
 	
 	///////--------------------- 고도 차트
 	   function drawAltitude() {
-        const data = google.visualization.arrayToDataTable(altitudeData);
+		   const data = new google.visualization.DataTable();
+	        data.addColumn('number','거리');
+	        data.addColumn('number','고도');
 
-        const options = {
-          	  title: '자전거코스 고도',
-          	  animation:{duration:3000,easing:'out',startup:true},
-                hAxis: {title: '거리(km)' ,titleTextStyle: {color: '#333'},gridlines: {color: 'transparent'}},
-                vAxis: {title:'고도(m)',titleTextStyle: {color: '#333'},minValue: 0},
-                curveType: 'function',
-                width:'100%',
-                height:300,
-              };
+			if(altitudeData.length != 0){
+				data.addRows(altitudeData);
+			}
+	        
+	        const options = {
+	            	  title: '자전거코스 고도',
+	            	  animation:{duration:3000,easing:'out',startup:true},
+	                  hAxis: {title: '거리(km)' ,titleTextStyle: {color: '#333'},gridlines: {color: 'transparent'}},
+	                  vAxis: {title:'고도(m)',titleTextStyle: {color: '#333'},minValue: 0},
+	                  curveType: 'function',
+	                  width:'100%',
+	                  height:300,
+	                };
 
-        const chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-        window.addEventListener("resize",drawAltitude,false);
+	        const chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+	        chart.draw(data, options);
+	        window.addEventListener("resize",drawAltitude,false);
       }
 	   
 	cBound.addEventListener("click", function(e) {

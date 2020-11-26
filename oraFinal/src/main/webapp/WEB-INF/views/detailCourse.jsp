@@ -260,7 +260,7 @@ window.onload = function(){
 	            xhr.setRequestHeader(header, token);
 	        }
 	    });*/
-	
+
 	const adminMenu = document.getElementById("adminMenu");
 	const updateCourse = document.getElementById("updateCourse");
 	const deleteCourse = document.getElementById("deleteCourse");
@@ -523,14 +523,36 @@ window.onload = function(){
 
 	const cStartLatLng = new kakao.maps.LatLng(cJson.c_s_latitude, cJson.c_s_longitude);
 	const cArriveLatLng = new kakao.maps.LatLng(cJson.c_e_latitude, cJson.c_e_longitude);
-	//console.log(cJson);
-	const cLineObj = JSON.parse(cJson.c_line);
-	const courseLine = eval(cLineObj.courseLine);
-	const altitudeData = eval(cLineObj.altitudeData);
 
-	courseLine.forEach(function(c, i) {
-		courseBounds.extend(c);
-	});
+	const courseLine = cJson.c_line;
+	let altitudeData = [];
+
+	const eleArr = $(courseLine).find("trkseg ele");
+	const trkptArr = $(courseLine).find("trkseg trkpt");
+	const mnBound = $(courseLine).find("bounds")[0];
+
+	const latlonArr = new Array();
+
+	const courseDistacne = cJson.c_distance;
+	const distancePerLine = Number(courseDistacne/(eleArr.length-1)).toFixed(10);
+
+	for(let i=0; i<trkptArr.length; i++){
+		const lat = trkptArr[i].getAttribute("lat");
+		const lon = trkptArr[i].getAttribute("lon");
+
+		altitudeData.push([distancePerLine*i,Number(Number((eleArr[i].innerHTML)).toFixed(1))]);
+		
+		latlonArr.push(new kakao.maps.LatLng(lat,lon));	
+		
+	}
+
+	const maxLat = mnBound.getAttribute("maxlat");
+	const maxLon = mnBound.getAttribute("maxlon");	
+	const minLat = mnBound.getAttribute("minlat");
+	const minLon = mnBound.getAttribute("minlon");
+
+	courseBounds.extend(new kakao.maps.LatLng(maxLat,maxLon));
+	courseBounds.extend(new kakao.maps.LatLng(minLat,minLon));
 
 	cBound.addEventListener("click", function(e) {
 		setBound(map, courseBounds);
@@ -545,33 +567,40 @@ window.onload = function(){
 	
 	new kakao.maps.Polyline({
 	    map: map,
-	    path: courseLine,
+	    path: latlonArr,
 	    strokeWeight: 6,
 	    strokeColor: '#FF2400',
 	    strokeOpacity: 0.8,
 	    strokeStyle: 'solid'
 	});
 
+	console.log(altitudeData);
 	google.charts.load('current', {'packages':['corechart']});
 	google.charts.setOnLoadCallback(drawAltitude); 
 	
 	///////--------------------- 고도 차트
 	   function drawAltitude() {
-        const data = google.visualization.arrayToDataTable(altitudeData);
+		   const data = new google.visualization.DataTable();
+	        data.addColumn('number','거리');
+	        data.addColumn('number','고도');
 
-        const options = {
-    	  title: '자전거코스 고도',
-    	  animation:{duration:2000,easing:'out',startup:true},
-          hAxis: {title: '거리(km)' ,titleTextStyle: {color: '#333'},gridlines: {color: 'transparent'}},
-          vAxis: {title:'고도(m)',titleTextStyle: {color: '#333'},minValue: 0},
-          curveType: 'function',
-          width:'100%',
-          height:300     
-        };
+			if(altitudeData.length != 0){
+				data.addRows(altitudeData);
+			}
+	        
+	        const options = {
+	            	  title: '자전거코스 고도',
+	            	  animation:{duration:3000,easing:'out',startup:true},
+	                  hAxis: {title: '거리(km)' ,titleTextStyle: {color: '#333'},gridlines: {color: 'transparent'}},
+	                  vAxis: {title:'고도(m)',titleTextStyle: {color: '#333'},minValue: 0},
+	                  curveType: 'function',
+	                  width:'100%',
+	                  height:300,
+	                };
 
-        const chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-        window.addEventListener("resize",drawAltitude,false);
+	        const chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+	        chart.draw(data, options);
+	        window.addEventListener("resize",drawAltitude,false);
         
       }
 
@@ -1333,6 +1362,7 @@ window.onload = function(){
 			<button id="cBound" title="경로 한눈에 보기"><img src="/detailCourseImg/cBoundBtn.png"></button>
   		</div>
       				<div class="text" style="margin-top: 20px;">
+      					<div style="width: 30%; text-align: right;" class="float-right"><a href="/courseLine/${c.c_no }_${c.c_name }_CycleCourse.gpx"><button class="boldText btn btn-info py-2 px-3">GPX파일 다운로드</button></a></div>
       					<span class="subheading" style="margin-left: 10px;">made by ${c.nickName }</span>
       					<h2>${c.c_name}</h2>
       				</div>

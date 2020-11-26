@@ -611,7 +611,9 @@ window.onload = function(){
 	image: arriveImage // 도착 마커이미지를 설정합니다
 	});
 	
-	let altitudeData = [['거리','고도'],['데이터없음',0]];  // 고도데이타를 담을 배열
+
+	let altitudeData = []; // 고도데이타를 담을 배열
+	let altitudeArr = []; // 고도를 담을 배열
 	const polyObj = new kakao.maps.Polyline(); // 라인의 길이를 담기위한 폴리라인객체
 	function getInfo() {
 	
@@ -626,16 +628,16 @@ window.onload = function(){
 		}
 	    else{ 
 
-			const sMarkerLatLon = manager.getOverlays().marker[0].getPosition();
+	    	const sMarkerLatLon = manager.getOverlays().marker[0].getPosition();
 			const eMarkerLatLon = manager2.getOverlays().marker[0].getPosition();
 			
 	    	const data = manager3.getData();
-	    	const latlonArr = data[kakao.maps.drawing.OverlayType.POLYLINE][0].points;
-			console.log(latlonArr[0]);
-			latlonArr[0].x = sMarkerLatLon.getLng();
-			latlonArr[0].y = sMarkerLatLon.getLat();
-			latlonArr[latlonArr.length-1].x = eMarkerLatLon.getLng();
-			latlonArr[latlonArr.length-1].y = eMarkerLatLon.getLat();
+	    	const xyArr = data[kakao.maps.drawing.OverlayType.POLYLINE][0].points;
+
+	    	xyArr[0].x = sMarkerLatLon.getLng();
+	    	xyArr[0].y = sMarkerLatLon.getLat();
+	    	xyArr[xyArr.length-1].x = eMarkerLatLon.getLng();
+	    	xyArr[xyArr.length-1].y = eMarkerLatLon.getLat();
 		
 			slat.value = sMarkerLatLon.getLat();
 	   		slon.value = sMarkerLatLon.getLng();
@@ -662,37 +664,60 @@ window.onload = function(){
 		arriveMarker.setMap(mapPE);
 		mapPE.setCenter(eMarkerLatLon);
 		/////////////// 대중교통 도착점 표시 끝   
+		
+		
+		const latArr = new Array();
+		const lonArr = new Array();
+		const latlonArr = new Array();
+		
+		
+		
+		for(let i=0; i<xyArr.length; i++){
+			const lat = xyArr[i].y;
+			const lon = xyArr[i].x;
+			
+			latArr.push(lat);
+			lonArr.push(lon);
+			latlonArr.push(new kakao.maps.LatLng(lat,lon));
 
-	    let pathStr="[";
-	        for(let i=0; i<latlonArr.length; i++){
+		}
 
-	            pathStr += " new kakao.maps.LatLng("+latlonArr[i].y+","+latlonArr[i].x+"),";
-	            latlonArr[i] = new kakao.maps.LatLng(latlonArr[i].y,latlonArr[i].x);
+		if(altitudeArr.length != 0){
+			if(latlonArr.length >= altitudeArr.length){
+				const num = latlonArr.length - altitudeArr.length;
+				const lastAlt = altitudeArr[altitudeArr.length-1];
+				for(let i=0; i<num; i++){
+					altitudeArr.push(lastAlt);
+				}
+			}
+			else{
+				altitudeArr = [];
+			}
+		}
+		
 
-	        }
-	   pathStr = pathStr.substring(0, pathStr.length-1);
-	   pathStr += "]";
-	   
+   	   altitudeData = []; // 고도데이타 초기화
 	   
 	   polyObj.setPath(latlonArr);
 	   const distance = (polyObj.getLength()/1000).toFixed(1);
-	   const distancePerLine = (((polyObj.getLength()/1000).toFixed(1))/(altitudeData.length-2)).toFixed(10); // 고도데이타에 -2한이유는 맨처음 열을 뺴기 위함임
 	   
-	   if(altitudeData.length > 2){
-		   const tempData = altitudeData; // 임시로 넣어놓는다
-		   altitudeData = [['거리','고도'],['데이터없음',0]]; // 얼티튜드 데이타 초기화
-		   for(let i=1; i<tempData.length; i++){
-			 altitudeData[i] = [distancePerLine*(i-1),tempData[i][1]];
-		   }
-		   
-	   }
+	   const distancePerLine = (distance/(altitudeArr.length-1)).toFixed(10);
+
+		if(altitudeArr.length != 0){
+			for(let i=0; i<altitudeArr.length; i++){
+				altitudeData.push([distancePerLine*i,Number(Number((altitudeArr[i])).toFixed(1))]);
+			}
+			
+		}
+  
 	    google.charts.setOnLoadCallback(drawAltitude);
 	    manager3.remove(manager3.getOverlays().polyline[0]);
 	    manager3.put(kakao.maps.drawing.OverlayType.POLYLINE, latlonArr);
     	fixC.innerHTML=""; // 새로 라인을 그리기 후 가져오기눌러주세요 글을 없앤다
     	fixC.setAttribute("val", "n");
-    	line.value = JSON.stringify({"courseLine":pathStr,"altitudeData":altitudeData});	
-		//line.value = '{"courseLine":'+pathStr+',"altitudeData":'+JSON.stringify(altitudeData)+'}';
+    	
+    	line.value = setGpx(latArr,lonArr,altitudeArr);
+
 	    dis.value = distance;
 	    time.value = (distance/20*60).toFixed(0);
 
@@ -1039,34 +1064,49 @@ window.onload = function(){
 			return;
 		}
 		reader.onload = function () {
-		
+
 			const courseBounds = new kakao.maps.LatLngBounds();
-			altitudeData = [['거리','고도'],['데이터없음',0]];   // 고도 초기화
+			altitudeData = [];  // 고도 초기화
+			altitudeArr = [];
+			
 			const eleArr = $(reader.result).find("trkseg ele");
 			const  trkptArr = $(reader.result).find("trkseg trkpt");
 
-			let pathStr="[";
+			const latArr = new Array();
+			const lonArr = new Array();
 			const latlonArr = new Array();
+					
 			for(let i=0; i<trkptArr.length; i++){
 				const lat = trkptArr[i].getAttribute("lat");
 				const lon = trkptArr[i].getAttribute("lon");
-
-				pathStr += " new kakao.maps.LatLng("+lat+","+lon+"),";
 				
-				latlonArr[i] = new kakao.maps.LatLng(lat,lon);
-				courseBounds.extend(latlonArr[i]);
+				latArr.push(lat);
+				lonArr.push(lon);
+				latlonArr.push(new kakao.maps.LatLng(lat,lon));
+				
 				
 			}
-			pathStr = pathStr.substring(0, pathStr.length-1);
-			pathStr += "]";
 			
+	
 			polyObj.setPath(latlonArr);
 			const distancePerLine = (((polyObj.getLength()/1000).toFixed(1))/(eleArr.length-1)).toFixed(10);
 
 			for(let i=0; i<eleArr.length; i++){
 				const elData = [distancePerLine*i,Number(Number((eleArr[i].innerHTML)).toFixed(1))];
-				altitudeData[i+1] = elData;
+				
+				altitudeData.push(elData);			
+				altitudeArr.push(eleArr[i].innerHTML);
+				
 			}
+			console.log(altitudeData);
+			const maxLat = Math.max.apply(null,latArr);
+			const maxLon = Math.max.apply(null,lonArr);
+			
+			const minLat = Math.min.apply(null,latArr);
+			const minLon = Math.min.apply(null,lonArr);
+
+			courseBounds.extend(new kakao.maps.LatLng(maxLat,maxLon));
+			courseBounds.extend(new kakao.maps.LatLng(minLat,minLon));
 
 			if(manager.getOverlays().marker[0]){
 				manager.remove(manager.getOverlays().marker[0]);
@@ -1118,16 +1158,93 @@ window.onload = function(){
 	
 	    	fixC.innerHTML=""; // 새로 라인을 그리기 후 가져오기눌러주세요 글을 없앤다
 	    	fixC.setAttribute("val", "n");
-	    	line.value = JSON.stringify({"courseLine":pathStr,"altitudeData":altitudeData});
+	    	line.value = setGpx(latArr,lonArr,altitudeArr);
 		    dis.value = distance;
 		    time.value = (distance/20*60).toFixed(0);
-
+		    
 		    infoC.disabled = true;
 //--------------------------------------------------
+ 
+ 	
+			setGpx(latArr,lonArr,altitudeArr);
 		};
 			reader.readAsText(file, "UTF-8");
-			this.value=null;
+		this.value = null;
 	});
+
+
+	function setGpx(latArr,lonArr,altitudeArr){
+
+		const maxLat = Math.max.apply(null,latArr);
+		const maxLon = Math.max.apply(null,lonArr);
+		
+		const minLat = Math.min.apply(null,latArr);
+		const minLon = Math.min.apply(null,lonArr);
+
+		const startLat = latArr[0];
+		const startLon = lonArr[0];
+		const endLat = latArr[latArr.length-1];
+		const endLon = lonArr[lonArr.length-1];
+
+	let	gpxStr = '<?xml version="1.0" encoding="UTF-8"?>\r\n\
+		<gpx xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" creator="siwook">\r\n\
+			<metadata>\r\n\
+				<desc>siwook</desc>\r\n\
+				<bounds maxlat="'+maxLat+'" maxlon="'+maxLon+'" minlat="'+minLat+'" minlon="'+minLon+'" />\r\n\
+			</metadata>\r\n\
+			<wpt lat="'+startLat+'" lon="'+startLon+'">\r\n\
+				<name>START</name>\r\n\
+				<sym>Flag, Green</sym>\r\n\
+				<extensions>\r\n\
+					<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">\r\n\
+					<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>\r\n\
+					</gpxx:WaypointExtension>\r\n\
+				</extensions>\r\n\
+				<ele>0</ele>\r\n\
+			</wpt>\r\n\
+			<wpt lat="'+endLat+'" lon="'+endLon+'">\r\n\
+				<name>END</name>\r\n\
+				<sym>Flag, Green</sym>\r\n\
+				<extensions>\r\n\
+					<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">\r\n\
+					<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>\r\n\
+					</gpxx:WaypointExtension>\r\n\
+				</extensions>\r\n\
+				<ele>0</ele>\r\n\
+			</wpt>\r\n\
+			<trk>\r\n\
+				<extensions>\r\n\
+					<gpxx:TrackExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">\r\n\
+					<gpxx:DisplayColor>Green</gpxx:DisplayColor>\r\n\
+					</gpxx:TrackExtension>\r\n\
+				</extensions>\r\n\
+				<trkseg>\r\n';
+
+		if(altitudeArr.length != 0){
+			for(let i=0; i<latArr.length; i++){
+				gpxStr += '<trkpt lat="'+latArr[i]+'" lon="'+lonArr[i]+'">\r\n\
+								<ele>'+altitudeArr[i]+'</ele>\r\n\
+						   </trkpt>\r\n';
+			}
+		}
+
+		else{
+			for(let i=0; i<latArr.length; i++){
+				gpxStr += '<trkpt lat="'+latArr[i]+'" lon="'+lonArr[i]+'">\r\n\
+								<ele>0</ele>\r\n\
+						   </trkpt>\r\n';
+			}
+		}
+
+		
+		
+		gpxStr +=		'</trkseg>\r\n\
+					</trk>\r\n\
+				</gpx>\r\n'
+		
+
+		return gpxStr;
+ 	}
 	
 
 	/////////----------------------------- 고도 차트 함수
@@ -1135,21 +1252,28 @@ window.onload = function(){
 	google.charts.setOnLoadCallback(drawAltitude);
 	///////--------------------- 고도 차트
 	   function drawAltitude() {
-        const data = google.visualization.arrayToDataTable(altitudeData);
+		   const data = new google.visualization.DataTable();
+	        data.addColumn('number','거리');
+	        data.addColumn('number','고도');
 
-        const options = {
-            	  title: '자전거코스 고도',
-            	  animation:{duration:3000,easing:'out',startup:true},
-                  hAxis: {title: '거리(km)' ,titleTextStyle: {color: '#333'},gridlines: {color: 'transparent'}},
-                  vAxis: {title:'고도(m)',titleTextStyle: {color: '#333'},minValue: 0},
-                  curveType: 'function',
-                  width:'100%',
-                  height:300,
-                };
+			if(altitudeData.length != 0){
+				data.addRows(altitudeData);
+			}
+	        
 
-        const chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-        window.addEventListener("resize",drawAltitude,false);
+	        const options = {
+	            	  title: '자전거코스 고도',
+	            	  animation:{duration:3000,easing:'out',startup:true},
+	                  hAxis: {title: '거리(km)' ,titleTextStyle: {color: '#333'},gridlines: {color: 'transparent'}},
+	                  vAxis: {title:'고도(m)',titleTextStyle: {color: '#333'},minValue: 0},
+	                  curveType: 'function',
+	                  width:'100%',
+	                  height:300,
+	                };
+
+	        const chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+	        chart.draw(data, options);
+	        window.addEventListener("resize",drawAltitude,false);
       }
 //////////////////////////////////////////////////////// 파일드랍기능 구현
 	const photoReg = /(.*?)\/(jpg|jpeg|png|bmp)$/;
@@ -1803,23 +1927,97 @@ window.onload = function(){
 		courseId.value = cJson.id;
 		courseCodeValue.value = cJson.code_value;
 		oldCourseName.value = cJson.c_name;
-
 		//----히든으로 넘길값들 (유지해야할 값)
+		
+		
 		courseName.value = cJson.c_name;
 		tag.value = cJson.c_tag;
 		
-		const ucLine = JSON.parse(cJson.c_line);
+		const ucLine = cJson.c_line;
 
-		const cLineArr = eval(ucLine.courseLine);   // 코스 위도경도 객체 배열
-		altitudeData = eval(ucLine.altitudeData); // 코스 고도를 전역변수 얼티튜드데이타에 담는다
-		manager.put(kakao.maps.drawing.OverlayType.MARKER, cLineArr[0],0);  // 출발점마커 
-		manager2.put(kakao.maps.drawing.OverlayType.MARKER, cLineArr[cLineArr.length-1],0); // 도착점 마커
-		manager3.put(kakao.maps.drawing.OverlayType.POLYLINE, cLineArr); // 코스폴리라인 
-		cLineArr.forEach(function(latlng, i) {
-			courseBounds.extend(latlng);
+		const eleArr = $(ucLine).find("trkseg ele");
+		const trkptArr = $(ucLine).find("trkseg trkpt");
+		const mnBound = $(ucLine).find("bounds")[0];
+
+		const latArr = new Array();
+		const lonArr = new Array();
+		const latlonArr = new Array();
+
+		for(let i=0; i<trkptArr.length; i++){
+			const lat = trkptArr[i].getAttribute("lat");
+			const lon = trkptArr[i].getAttribute("lon");
+			
+			latArr.push(lat);
+			lonArr.push(lon);
+			latlonArr.push(new kakao.maps.LatLng(lat,lon));	
+			
+		}
+
+		polyObj.setPath(latlonArr);
+		const distancePerLine = (((polyObj.getLength()/1000).toFixed(1))/(eleArr.length-1)).toFixed(10);
+
+		for(let i=0; i<eleArr.length; i++){
+			const elData = [distancePerLine*i,Number(Number((eleArr[i].innerHTML)).toFixed(1))];
+			
+			altitudeData.push(elData);			
+			altitudeArr.push(eleArr[i].innerHTML);
+			
+		}
+	
+		const maxLat = mnBound.getAttribute("maxlat");
+		const maxLon = mnBound.getAttribute("maxlon");	
+		const minLat = mnBound.getAttribute("minlat");
+		const minLon = mnBound.getAttribute("minlon");
+
+		courseBounds.extend(new kakao.maps.LatLng(maxLat,maxLon));
+		courseBounds.extend(new kakao.maps.LatLng(minLat,minLon));
+
+		manager.put(kakao.maps.drawing.OverlayType.MARKER, latlonArr[0],0);  // 출발점마커 
+		manager2.put(kakao.maps.drawing.OverlayType.MARKER, latlonArr[latlonArr.length-1],0); // 도착점 마커
+		manager3.put(kakao.maps.drawing.OverlayType.POLYLINE, latlonArr);
+		map.setBounds(courseBounds);
+		google.charts.setOnLoadCallback(drawAltitude);
+
+		const sMarkerLatLon = latlonArr[0];
+		const eMarkerLatLon = latlonArr[latlonArr.length-1];
+	
+		slat.value = sMarkerLatLon.getLat();
+   		slon.value = sMarkerLatLon.getLng();
+   		geocoder.coord2Address(sMarkerLatLon.getLng(), sMarkerLatLon.getLat(), function(result, status) {
+		    if(status === kakao.maps.services.Status.OK) {
+		       sLoc.value = result[0].address.address_name;
+		    }
 		});
-		map.setBounds(courseBounds);  // 맵 바운드 설정
-		getInfo(); // 코스가져오기를 실행시킴
+		//////////////// 대중교통 출발점 위치표시
+		startMarker.setPosition(sMarkerLatLon);
+		startMarker.setMap(mapPS);
+		mapPS.setCenter(sMarkerLatLon);
+		///////////// 대중교통 출발점표시 끝	
+		
+		elat.value = eMarkerLatLon.getLat();
+   		elon.value = eMarkerLatLon.getLng();
+	    geocoder.coord2Address(eMarkerLatLon.getLng(), eMarkerLatLon.getLat(), function(result, status) {
+		    if(status === kakao.maps.services.Status.OK) {
+		       eLoc.value = result[0].address.address_name;
+		    }
+		});
+		///////////// 대중교통 도착점 표시
+		arriveMarker.setPosition(eMarkerLatLon);
+		arriveMarker.setMap(mapPE);
+		mapPE.setCenter(eMarkerLatLon);
+		/////////////// 대중교통 도착점 표시 끝  
+
+	   const distance = (polyObj.getLength()/1000).toFixed(1);
+
+    	fixC.innerHTML=""; // 새로 라인을 그리기 후 가져오기눌러주세요 글을 없앤다
+    	fixC.setAttribute("val", "n");
+    	line.value = setGpx(latArr,lonArr,altitudeArr);
+	    dis.value = distance;
+	    time.value = (distance/20*60).toFixed(0);
+	    
+	    infoC.disabled = true;
+
+		
 		const c_views = cJson.c_views;
 		console.log(c_views);
 		c_views.forEach(function(v, i) {  // 코스풍경 셀렉트 선택
@@ -1915,7 +2113,7 @@ window.onload = function(){
 		});
 		
 	};	
-//	setUpdateCourse();
+
 	
 	
 	

@@ -631,7 +631,8 @@ const mNickName = checkM.item.nickName;
 	image: arriveImage // 도착 마커이미지를 설정합니다
 	});
 	
-	let altitudeData = [['거리','고도'],['데이터없음',0]];  // 고도데이타를 담을 배열
+	let altitudeData = []; // 고도데이타를 담을 배열
+	let altitudeArr = []; // 고도를 담을 배열
 	const polyObj = new kakao.maps.Polyline(); // 라인의 길이를 담기위한 폴리라인객체
 	function getInfo() {
 		
@@ -649,12 +650,12 @@ const mNickName = checkM.item.nickName;
 			const eMarkerLatLon = manager2.getOverlays().marker[0].getPosition();
 			
 	    	const data = manager3.getData();
-	    	const latlonArr = data[kakao.maps.drawing.OverlayType.POLYLINE][0].points;
-			console.log(latlonArr[0]);
-			latlonArr[0].x = sMarkerLatLon.getLng();
-			latlonArr[0].y = sMarkerLatLon.getLat();
-			latlonArr[latlonArr.length-1].x = eMarkerLatLon.getLng();
-			latlonArr[latlonArr.length-1].y = eMarkerLatLon.getLat();
+	    	const xyArr = data[kakao.maps.drawing.OverlayType.POLYLINE][0].points;
+
+	    	xyArr[0].x = sMarkerLatLon.getLng();
+	    	xyArr[0].y = sMarkerLatLon.getLat();
+	    	xyArr[xyArr.length-1].x = eMarkerLatLon.getLng();
+	    	xyArr[xyArr.length-1].y = eMarkerLatLon.getLat();
 		
 			slat.value = sMarkerLatLon.getLat();
 	   		slon.value = sMarkerLatLon.getLng();
@@ -681,37 +682,71 @@ const mNickName = checkM.item.nickName;
 		arriveMarker.setMap(mapPE);
 		mapPE.setCenter(eMarkerLatLon);
 		/////////////// 대중교통 도착점 표시 끝   
+		
+		const courseBounds = new kakao.maps.LatLngBounds(); 
+		const latArr = new Array();
+		const lonArr = new Array();
+		const latlonArr = new Array();
+		
+		
+		
+		for(let i=0; i<xyArr.length; i++){
+			const lat = xyArr[i].y;
+			const lon = xyArr[i].x;
+			
+			latArr.push(lat);
+			lonArr.push(lon);
+			latlonArr.push(new kakao.maps.LatLng(lat,lon));
 
-	    let pathStr="[";
-	        for(let i=0; i<latlonArr.length; i++){
+		}
 
-	        	pathStr += " new kakao.maps.LatLng("+latlonArr[i].y+","+latlonArr[i].x+"),";
-	            latlonArr[i] = new kakao.maps.LatLng(latlonArr[i].y,latlonArr[i].x);
+		if(altitudeArr.length != 0){
+			if(latlonArr.length >= altitudeArr.length){
+				const num = latlonArr.length - altitudeArr.length;
+				const lastAlt = altitudeArr[altitudeArr.length-1];
+				for(let i=0; i<num; i++){
+					altitudeArr.push(lastAlt);
+				}
+			}
+			else{
+				altitudeArr = [];
+			}
+		}
+		
 
-	        }
-	   pathStr = pathStr.substring(0, pathStr.length-1);
-	   pathStr += "]";
-	   
+   	   altitudeData = []; // 고도데이타 초기화
 	   
 	   polyObj.setPath(latlonArr);
 	   const distance = (polyObj.getLength()/1000).toFixed(1);
-	   const distancePerLine = (((polyObj.getLength()/1000).toFixed(1))/(altitudeData.length-2)).toFixed(10); // 고도데이타에 -2한이유는 맨처음 열을 뺴기 위함임
 	   
-	   if(altitudeData.length > 2){
-		   const tempData = altitudeData; // 임시로 넣어놓는다
-		   altitudeData = [['거리','고도'],['데이터없음',0]]; // 얼티튜드 데이타 초기화
-		   for(let i=1; i<tempData.length; i++){
-			 altitudeData[i] = [distancePerLine*(i-1),tempData[i][1]];
-		   }
-		   
-	   }
+	   const distancePerLine = (distance/(altitudeArr.length-1)).toFixed(10);
+
+		if(altitudeArr.length != 0){
+			for(let i=0; i<altitudeArr.length; i++){
+				altitudeData.push([distancePerLine*i,Number(Number((altitudeArr[i])).toFixed(1))]);
+			}
+			
+		}
+
+		const maxLat = Math.max.apply(null,latArr);
+		const maxLon = Math.max.apply(null,lonArr);
+		
+		const minLat = Math.min.apply(null,latArr);
+		const minLon = Math.min.apply(null,lonArr);
+
+		courseBounds.extend(new kakao.maps.LatLng(maxLat,maxLon));
+		courseBounds.extend(new kakao.maps.LatLng(minLat,minLon));
+
+		map.setBounds(courseBounds);
+  
 	    google.charts.setOnLoadCallback(drawAltitude);
 	    manager3.remove(manager3.getOverlays().polyline[0]);
 	    manager3.put(kakao.maps.drawing.OverlayType.POLYLINE, latlonArr);
     	fixC.innerHTML=""; // 새로 라인을 그리기 후 가져오기눌러주세요 글을 없앤다
     	fixC.setAttribute("val", "n");
-    	line.value = JSON.stringify({"courseLine":pathStr,"altitudeData":altitudeData});
-		//line.value = '{"courseLine":'+pathStr+',"altitudeData":'+JSON.stringify(altitudeData)+'}';
+    	
+    	line.value = setGpx(latArr,lonArr,altitudeArr);
+
 	    dis.value = distance;
 	    time.value = (distance/20*60).toFixed(0);
 
@@ -1061,34 +1096,48 @@ const mNickName = checkM.item.nickName;
 			return;
 		}
 		reader.onload = function () {
-			
+			$("#ftco-loader").show();
 			const courseBounds = new kakao.maps.LatLngBounds();
-			altitudeData = [['거리','고도'],['데이터없음',0]];   // 고도 초기화
+			altitudeData = [];  // 고도 초기화
+			altitudeArr = [];
+			
 			const eleArr = $(reader.result).find("trkseg ele");
 			const  trkptArr = $(reader.result).find("trkseg trkpt");
 
-			 let pathStr="[";
+			const latArr = new Array();
+			const lonArr = new Array();
 			const latlonArr = new Array();
+					
 			for(let i=0; i<trkptArr.length; i++){
 				const lat = trkptArr[i].getAttribute("lat");
 				const lon = trkptArr[i].getAttribute("lon");
-
-				pathStr += " new kakao.maps.LatLng("+lat+","+lon+"),";
 				
-				latlonArr[i] = new kakao.maps.LatLng(lat,lon);
-				courseBounds.extend(latlonArr[i]);
+				latArr.push(lat);
+				lonArr.push(lon);
+				latlonArr.push(new kakao.maps.LatLng(lat,lon));
+				
 				
 			}
-			pathStr = pathStr.substring(0, pathStr.length-1);
-			pathStr += "]";
 			
 			polyObj.setPath(latlonArr);
 			const distancePerLine = (((polyObj.getLength()/1000).toFixed(1))/(eleArr.length-1)).toFixed(10);
 
 			for(let i=0; i<eleArr.length; i++){
 				const elData = [distancePerLine*i,Number(Number((eleArr[i].innerHTML)).toFixed(1))];
-				altitudeData[i+1] = elData;
+				
+				altitudeData.push(elData);			
+				altitudeArr.push(eleArr[i].innerHTML);
+				
 			}
+
+			const maxLat = Math.max.apply(null,latArr);
+			const maxLon = Math.max.apply(null,lonArr);
+			
+			const minLat = Math.min.apply(null,latArr);
+			const minLon = Math.min.apply(null,lonArr);
+
+			courseBounds.extend(new kakao.maps.LatLng(maxLat,maxLon));
+			courseBounds.extend(new kakao.maps.LatLng(minLat,minLon));
 
 			if(manager.getOverlays().marker[0]){
 				manager.remove(manager.getOverlays().marker[0]);
@@ -1140,18 +1189,96 @@ const mNickName = checkM.item.nickName;
 	
 	    	fixC.innerHTML=""; // 새로 라인을 그리기 후 가져오기눌러주세요 글을 없앤다
 	    	fixC.setAttribute("val", "n");
-	    	line.value = JSON.stringify({"courseLine":pathStr,"altitudeData":altitudeData});
+	    	line.value = setGpx(latArr,lonArr,altitudeArr);
 		    dis.value = distance;
 		    time.value = (distance/20*60).toFixed(0);
 		    
 		    infoC.disabled = true;
 //--------------------------------------------------
  
-
+ 	
+			setGpx(latArr,lonArr,altitudeArr);
+			$("#ftco-loader").hide();
 		};
 			reader.readAsText(file, "UTF-8");
 		this.value = null;
 	});
+	 
+	//---------------------------------------------------------------
+
+
+	function setGpx(latArr,lonArr,altitudeArr){
+
+		const maxLat = Math.max.apply(null,latArr);
+		const maxLon = Math.max.apply(null,lonArr);
+		
+		const minLat = Math.min.apply(null,latArr);
+		const minLon = Math.min.apply(null,lonArr);
+
+		const startLat = latArr[0];
+		const startLon = lonArr[0];
+		const endLat = latArr[latArr.length-1];
+		const endLon = lonArr[lonArr.length-1];
+
+	let	gpxStr = '<?xml version="1.0" encoding="UTF-8"?>\r\n\
+		<gpx xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" creator="siwook">\r\n\
+			<metadata>\r\n\
+				<desc>siwook</desc>\r\n\
+				<bounds maxlat="'+maxLat+'" maxlon="'+maxLon+'" minlat="'+minLat+'" minlon="'+minLon+'" />\r\n\
+			</metadata>\r\n\
+			<wpt lat="'+startLat+'" lon="'+startLon+'">\r\n\
+				<name>START</name>\r\n\
+				<sym>Flag, Green</sym>\r\n\
+				<extensions>\r\n\
+					<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">\r\n\
+					<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>\r\n\
+					</gpxx:WaypointExtension>\r\n\
+				</extensions>\r\n\
+				<ele>0</ele>\r\n\
+			</wpt>\r\n\
+			<wpt lat="'+endLat+'" lon="'+endLon+'">\r\n\
+				<name>END</name>\r\n\
+				<sym>Flag, Green</sym>\r\n\
+				<extensions>\r\n\
+					<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">\r\n\
+					<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>\r\n\
+					</gpxx:WaypointExtension>\r\n\
+				</extensions>\r\n\
+				<ele>0</ele>\r\n\
+			</wpt>\r\n\
+			<trk>\r\n\
+				<extensions>\r\n\
+					<gpxx:TrackExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">\r\n\
+					<gpxx:DisplayColor>Green</gpxx:DisplayColor>\r\n\
+					</gpxx:TrackExtension>\r\n\
+				</extensions>\r\n\
+				<trkseg>\r\n';
+
+		if(altitudeArr.length != 0){
+			for(let i=0; i<latArr.length; i++){
+				gpxStr += '<trkpt lat="'+latArr[i]+'" lon="'+lonArr[i]+'">\r\n\
+								<ele>'+altitudeArr[i]+'</ele>\r\n\
+						   </trkpt>\r\n';
+			}
+		}
+
+		else{
+			for(let i=0; i<latArr.length; i++){
+				gpxStr += '<trkpt lat="'+latArr[i]+'" lon="'+lonArr[i]+'">\r\n\
+								<ele>0</ele>\r\n\
+						   </trkpt>\r\n';
+			}
+		}
+
+		
+		
+		gpxStr +=		'</trkseg>\r\n\
+					</trk>\r\n\
+				</gpx>\r\n'
+		
+
+		return gpxStr;
+ 	}
 	
 	
 	/////////----------------------------- 고도 차트 함수
@@ -1159,7 +1286,14 @@ const mNickName = checkM.item.nickName;
 	google.charts.setOnLoadCallback(drawAltitude);
 	///////--------------------- 고도 차트
 	   function drawAltitude() {
-        const data = google.visualization.arrayToDataTable(altitudeData);
+        const data = new google.visualization.DataTable();
+        data.addColumn('number','거리');
+        data.addColumn('number','고도');
+
+		if(altitudeData.length != 0){
+			data.addRows(altitudeData);
+		}
+        
 
         const options = {
             	  title: '자전거코스 고도',
@@ -1263,41 +1397,7 @@ const mNickName = checkM.item.nickName;
 	function mouseOut() {
 		gallery.src="../meetingImg/galleryOff.png";
 	}
-	//------------ 지하철역정보 셋팅 실패함... 안됨
-	/*
-	$.ajax({
-		url: "/publictransport/sub.json",
-		type: "get",
-		success: function(data){
-			console.log(data);
-		},
-		error: function(){
-			alert("에러");
-		}
-	}); */
 	
-	/*
-	const req = new XMLHttpRequest();
-	req.open("GET", "/publictransport/sub.json");
-	req.send(null);
-	req.addEventListener("load", function(e) {
-		const subwayJson = req.response;
-		 console.log(subwayJson);
-			alert(subwayJson);
-		 
-		const capital = subwayJson.수도권;
-		const busan = subwayJson.부산;
-		const daegu = subwayJson.대구;
-		const gwangju = subwayJson.광주;
-		const daejeon = subwayJson.대전;
-		console.log(capital);
-		console.log(busan);
-		console.log(daegu);
-		console.log(gwangju);
-		console.log(daejeon); 
-	}); 
-	*/
-	//--------------
 	//----------------------------------------------------------------------------------------------- 무인자전거
 	kakao.maps.event.addListener(map, 'idle', removePlaceOveray);
 
@@ -2016,7 +2116,7 @@ const mNickName = checkM.item.nickName;
 			</div>
 			
 			<!-- 선경로 숨겨도 되는지 물어보기 -->
-			<div>
+			<div style="display: none;">
 				<textarea rows="10" cols="80" id="line" name="c_line" readonly="readonly" style="border: none;"></textarea>
 			</div>
 			
