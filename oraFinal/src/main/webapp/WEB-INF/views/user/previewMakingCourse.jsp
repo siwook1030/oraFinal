@@ -1371,7 +1371,7 @@ document.addEventListener("DOMContentLoaded", function(){
 						  					<c:if test="${t.code_value=='00201' }">
 						  						<div class="pt-summury">
 							  						<table width="100%">
-							  							<tr><td rowspan="3"><img class="cPtIcon" src="publictransport/${t.pt_img }"></td>
+							  							<tr><td rowspan="3"><img class="cPtIcon" src="/publictransport/${t.pt_img }"></td>
 							  							<td>${t.pt_station }</td>
 							  							</tr>
 							  							<tr><td><img class="cInfoIcon" src="/detailCourseImg/next.png"></td></tr>
@@ -1411,7 +1411,7 @@ document.addEventListener("DOMContentLoaded", function(){
 						  					<c:if test="${t.code_value=='00202' }">
 						  						<div class="pt-summury">
 							  						<table width="100%">
-							  							<tr><td rowspan="3"><img class="cPtIcon" src="publictransport/${t.pt_img }"></td>
+							  							<tr><td rowspan="3"><img class="cPtIcon" src="/publictransport/${t.pt_img }"></td>
 							  							<td>도착점</td>
 							  							</tr>
 							  							<tr><td><img class="cInfoIcon" src="/detailCourseImg/next.png"></td></tr>
