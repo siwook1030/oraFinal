@@ -172,7 +172,7 @@
 	/* 작성일자 */		//let $div_c1_c3 = $("<div></div>").text(item.date_diff_str);
 					let $div_c4 = $("<div></div>").addClass("regdate").text(item.date_diff_str+" "); // css적용을 위한 클래스
 
-					let $span = $("<span></span>").text(item.rr_content);
+					let $span = $("<span></span>").html(item.rr_content);
 					// 댓글내용. 수정을 위해 rr_no값 속성에 추가
 					let $div_c2 = $("<div></div>").html($span).addClass("replyContent").attr("rr_no", item.rr_no);
 					

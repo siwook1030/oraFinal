@@ -110,7 +110,7 @@ window.onload = function(){
 									<li><a class="dropdown-item" href="/myPageMyRank"> 랭킹 </a></li>
 								</ul>
 							</li>							
-							<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
+							<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>
 							<c:if test="${m.code_value == '00101' }">
 								<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
 							</c:if>

@@ -483,6 +483,7 @@
                      <li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
                   </c:when>
                   <c:when test="${m != null }">
+
 					<li id="courseDropPoint"  class="nav-item dropdown">
 						<a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown" style="font-size: 15px;">  ${m.nickName } 라이더 님  </a>
 						<ul class="dropdown-menu">

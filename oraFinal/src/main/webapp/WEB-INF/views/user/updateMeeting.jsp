@@ -563,7 +563,7 @@
 				        	const minLon = mnBound.getAttribute("minlon");
 
 				        	courseBounds.extend(new kakao.maps.LatLng(maxLat,maxLon));
-				        	courseBounds.extend(new kakao.maps.LatLng(minLat,minLon));;
+				        	courseBounds.extend(new kakao.maps.LatLng(minLat,minLon));
 				        	
 				            coursePolyline.setPath(latlonArr); 
 				            startMarker.setMap(map);

@@ -1104,6 +1104,11 @@ const mNickName = checkM.item.nickName;
 			const eleArr = $(reader.result).find("trkseg ele");
 			const  trkptArr = $(reader.result).find("trkseg trkpt");
 
+			if(eleArr.length == 0 || trkptArr.length == 0){
+				alert("gpx파일의 형식이 아닙니다.");
+				return;
+			}
+
 			const latArr = new Array();
 			const lonArr = new Array();
 			const latlonArr = new Array();
@@ -1201,7 +1206,7 @@ const mNickName = checkM.item.nickName;
 			$("#ftco-loader").hide();
 		};
 			reader.readAsText(file, "UTF-8");
-		this.value = null;
+			this.value = null;
 	});
 	 
 	//---------------------------------------------------------------
@@ -1960,21 +1965,21 @@ const mNickName = checkM.item.nickName;
                      <li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
                   </c:when>
                   <c:when test="${m != null }">
-						<li id="courseDropPoint"  class="nav-item dropdown">
-							<a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown" style="font-size: 15px;">  ${m.nickName } 라이더 님  </a>
-							<ul class="dropdown-menu">
-								<li><a class="dropdown-item" href="/myPage?id=${m.id}"> 정보 수정 </a></li>
-								<li><a class="dropdown-item" href="/myPageSaveCourse"> 찜 목록 </a></li>
-								<li><a class="dropdown-item" href="/myPageMyCourse"> 내 코스 </a></li>
-								<li><a class="dropdown-item" href="/listReview?searchType=id&searchValue=${m.id }"> My 후기 </a></li>
-								<li><a class="dropdown-item" href="/listMeeting?id=${m.id}"> My 번개 </a></li>
-								<li><a class="dropdown-item" href="/myPageMyRank"> 랭킹 </a></li>
-							</ul>
-						</li>
-						<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>
-						<c:if test="${m.code_value == '00101' }">
-							<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
-						</c:if>
+                    <li id="courseDropPoint"  class="nav-item dropdown">
+                      <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown" style="font-size: 15px;">  ${m.nickName } 라이더 님  </a>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/myPage?id=${m.id}"> 정보 수정 </a></li>
+                        <li><a class="dropdown-item" href="/myPageSaveCourse"> 찜 목록 </a></li>
+                        <li><a class="dropdown-item" href="/myPageMyCourse"> 내 코스 </a></li>
+                        <li><a class="dropdown-item" href="/listReview?searchType=id&searchValue=${m.id }"> My 후기 </a></li>
+                        <li><a class="dropdown-item" href="/listMeeting?id=${m.id}"> My 번개 </a></li>
+                        <li><a class="dropdown-item" href="/myPageMyRank"> 랭킹 </a></li>
+                      </ul>
+                    </li>
+                    <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>
+                    <c:if test="${m.code_value == '00101' }">
+                      <li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
+                    </c:if>
                   </c:when>
                </c:choose>
             </ul>

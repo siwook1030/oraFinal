@@ -836,12 +836,31 @@ window.onload = function(){
 	if(c.c_no != 0){
 		startMarker.setPosition(new kakao.maps.LatLng(c.c_s_latitude, c.c_s_longitude));
 		arriveMarker.setPosition(new kakao.maps.LatLng(c.c_e_latitude, c.c_e_longitude));
-		const cLineObj = JSON.parse(c.c_line);
-		const courseLine = eval(cLineObj.courseLine);
-		coursePolyline.setPath(courseLine);
-		courseLine.forEach(function(c, i) {
-			courseBounds.extend(c);
-		})
+		
+		const courseLine = c.c_line;
+
+    	const trkptArr = $(courseLine).find("trkseg trkpt");
+    	const mnBound = $(courseLine).find("bounds")[0];
+
+    	const latlonArr = new Array();
+
+    	for(let i=0; i<trkptArr.length; i++){
+    		const lat = trkptArr[i].getAttribute("lat");
+    		const lon = trkptArr[i].getAttribute("lon");
+    		
+    		latlonArr.push(new kakao.maps.LatLng(lat,lon));	 		
+    	}
+        
+        const maxLat = mnBound.getAttribute("maxlat");
+    	const maxLon = mnBound.getAttribute("maxlon");	
+    	const minLat = mnBound.getAttribute("minlat");
+    	const minLon = mnBound.getAttribute("minlon");
+
+    	courseBounds.extend(new kakao.maps.LatLng(maxLat,maxLon));
+    	courseBounds.extend(new kakao.maps.LatLng(minLat,minLon));;
+    	
+		coursePolyline.setPath(latlonArr);
+
 		startMarker.setMap(map);
 		arriveMarker.setMap(map);
 		coursePolyline.setMap(map);

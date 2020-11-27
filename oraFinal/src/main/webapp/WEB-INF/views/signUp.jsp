@@ -99,7 +99,10 @@
     position: relative; }
     .my-wrap.my-wrap-2 .slider-text {
       height: 190px !important; }
-      
+     .myp5 {
+     	padding-top: 40px;
+     	padding-bottom: 40px;
+     }
       
 </style>
 
@@ -131,7 +134,7 @@
          <div class="container">
                      <div class="row block-9 justify-content-center mb-5">
              <div class="col-md-8 mb-md-5">
-                <form action="/signUp" id="signUpForm" method="post" class="bg-light p-5 contact-form">
+                <form action="/signUp" id="signUpForm" method="post" class="bg-light myp5 contact-form">
                   						<h2 class="mb-4" style="text-align: center; font-size: 30px;">회원가입</h2>
                   <div id="form" ><input type="text" type="text" class="form-control text-muted " id="id" name="id" maxlength="12" placeholder="사용하실 ID를 입력하세요(8~12자리)" required></div>
                   <div id="form"><input type="password" class="form-control text-muted " id="password" name="password" maxlength="12" type="password" placeholder="비밀번호를 입력하세요 영문+숫자+특수문자(8~12자리)조합"></div>
