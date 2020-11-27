@@ -30,8 +30,8 @@
     .cViewIcon {
    	width: 34px;
    }
-   .cPtIcon{
-   	width: 32px;
+     .cPtIcon{
+   	width: 50px;
    }
    
    #detailMap {
