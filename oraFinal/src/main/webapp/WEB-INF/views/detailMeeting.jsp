@@ -850,8 +850,6 @@ window.onload = function(){
     		
     		latlonArr.push(new kakao.maps.LatLng(lat,lon));	 		
     	}
-
-        const courseBounds = new kakao.maps.LatLngBounds();
         
         const maxLat = mnBound.getAttribute("maxlat");
     	const maxLon = mnBound.getAttribute("maxlon");	
