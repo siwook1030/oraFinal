@@ -82,7 +82,8 @@ window.onload = function(){
     <link rel="stylesheet" href="resources/css/magnific-popup.css">
     <link rel="stylesheet" href="resources/css/flaticon.css">
     <link rel="stylesheet" href="resources/css/style.css">
-
+</head>
+<body>
 
   <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
       <div class="container" ">
@@ -104,6 +105,8 @@ window.onload = function(){
                      <li class="nav-item"><a style="font-size: 15px;"  href="/myPage" class="my-link">${m.nickName } 라이더님</a></li>
                      <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="my-link">로그아웃</a></li>&nbsp;&nbsp;
                      <li class="nav-item active"><a style="font-size: 15px;" href="/myPage" class="my-link">마이페이지</a></li>
+            	 </c:when>
+                 </c:choose>
             </ul>
          </div>
 		<div  class="collapse navbar-collapse" style="display: block; font-size: 12px;">
@@ -116,8 +119,7 @@ window.onload = function(){
                 <li class="my"><a class="my-link_2"href="/myPageMyRank">랭킹</a></li>
                 
               
-                  </c:when>
-               </c:choose>
+
 
               </ul>
          </div>      
