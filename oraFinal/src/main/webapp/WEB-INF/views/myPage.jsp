@@ -10,6 +10,8 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
 <script type="text/javascript" src="/js/myPage.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+
 
 <style>
 
@@ -167,7 +169,6 @@
  color: #d0a183; 
  FONT-SIZE: 13pt; 
  FONT-WEIGHT: bolder}
- 
 
 </style>
 </head>   
@@ -203,7 +204,7 @@
 	        <ul class="navbar-nav ml-auto">
 	          <li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
 	          <li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
-	          <li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
+ 	          <li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
 	          <li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
 	          <li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
 	          <li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
