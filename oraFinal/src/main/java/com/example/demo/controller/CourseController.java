@@ -51,14 +51,13 @@ public class CourseController {
 		Gson gson = new Gson();
 		CourseVo c = cdao.getCourseByCno(c_no, path);
 		List<PublicTransportVo> ptList = cdao.getPublicTransportByCno(c_no);
-	//	List<FoodVo> fList = cdao.getFoodByCno(c_no);
+
 		model.addAttribute("c", c);
 		model.addAttribute("cJson", gson.toJson(c));
 		model.addAttribute("ptList", ptList);
 		model.addAttribute("ptJson", gson.toJson(ptList));
 		model.addAttribute("review", rdao.getReviewByCno(c_no));
-	//	model.addAttribute("fList", fList);
-	//	model.addAttribute("fJson", gson.toJson(fList));
+
 	}
 	@RequestMapping(value = "/admin/deleteCourse", produces = "application/json; charset=utf-8")
 	@ResponseBody
@@ -109,11 +108,6 @@ public class CourseController {
       System.out.println("세이브 컨트롤러 작동!!!!");
       Gson gson = new Gson();
       List<CourseVo> courseList = cdao.getSaveCourse(httpSession);
-
-      //model.addAttribute("courseList",courseList);
-      //model.addAttribute("photovo",photovo);
-      System.out.println(courseList);
-      System.out.println("코스리스트");
       
       return gson.toJson(courseList);
    }
@@ -125,9 +119,6 @@ public class CourseController {
       System.out.println("세이브 컨트롤러 작동!!!!");
       Gson gson = new Gson();
       List<CourseVo> courseList = cdao.getMyCourseById(httpSession);
-
-      System.out.println(courseList);
-      System.out.println("코스리스트");
       
       return gson.toJson(courseList);
    }
@@ -136,7 +127,7 @@ public class CourseController {
    @PostMapping(value = "/deleteSaveCourse", produces = "application/json; charset=utf-8")
    @ResponseBody
    public String deleteSaveCourse(HttpSession httpSession,int cno) {
-      System.out.println("코스삭제 컨트롤러작동" + cno);
+
       MemberVo m = (MemberVo)httpSession.getAttribute("m");
       HashMap map = new HashMap();
       map.put("id", m.getId());

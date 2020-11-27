@@ -1125,7 +1125,7 @@ window.onload = function(){
 				altitudeArr.push(eleArr[i].innerHTML);
 				
 			}
-			console.log(altitudeData);
+
 			const maxLat = Math.max.apply(null,latArr);
 			const maxLon = Math.max.apply(null,lonArr);
 			
@@ -1329,7 +1329,7 @@ window.onload = function(){
 	
 	function addPhoto(cpFiles){
 		const files = cpFiles; //드래그&드랍 항목
-		console.log(files);
+
 		for(let i = 0; i < files.length; i++) {
 			const file = files[i];
 			if (!file.type.match(photoReg)) {
@@ -1346,7 +1346,7 @@ window.onload = function(){
 	}
 	
 	function previewPhoto(file, idx) {
-		console.log("작동함");
+
 		const reader = new FileReader();
 		reader.onload = (function(f, idx) {
 			return function(e) {
@@ -1504,9 +1504,9 @@ window.onload = function(){
 			url:"https://openapi.gg.go.kr/BICYCL?key=e2d851f8493c448c964a25461359f1f5&pIndex=1&pSize=1000&SIGUN_NM="+code,
 			type:"get",
 			success:function(data){
-				console.log(data);
+
 				const cycList = data.querySelectorAll('row');
-				console.log(cycList[0]);
+
 				for(let i=0; i<cycList.length; i++){
 					setGgCycleMarker(cycList[i],cName,cycleUrl);
 				}
@@ -1693,7 +1693,7 @@ window.onload = function(){
 		const tagCheck = krsharpAvail.test(ctag);
 		const sPTStCheck = krengnumAvail.test(sPTSt);
 		const ePTStCheck = krengnumAvail.test(ePTSt);
-	console.log(sPTVal);
+
 		function cnameDupCheck(){  // 코스명 중복검사 함수
 			let check = "1";
 			if(oldCourseName.value == cname){  // 수정전 코스명과 수정 후 코스명이 같을경우 대비
@@ -2055,7 +2055,7 @@ window.onload = function(){
 
 		
 		const c_views = cJson.c_views;
-		console.log(c_views);
+		//console.log(c_views);
 		c_views.forEach(function(v, i) {  // 코스풍경 셀렉트 선택
 			if(i == 0){
 				const firstViewOp = document.querySelectorAll("#firstView option");

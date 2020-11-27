@@ -69,16 +69,6 @@ public class AdminController {
 	@ResponseBody
 	public String courseSearchLog() {
 		HashMap map = new HashMap();
-//		List<LogVo> dis = ldao.getLogList("00702");
-//		List<LogVo> time = ldao.getLogList("00703");
-//		List<LogVo> view = ldao.getLogList("00704");
-//		List<LogVo> tag = ldao.getLogList("00705");
-//		
-//		System.out.println(dis);
-//		System.out.println(time);
-//		System.out.println(view);
-//		System.out.println(tag);
-//		System.out.println(ldao.getLogList("00701"));
 		
 		map.put("reviewC", ldao.getLogList("004"));
 		map.put("meetingC", ldao.getLogList("005"));
@@ -94,7 +84,7 @@ public class AdminController {
 	@GetMapping(value = "/admin/getCourseListByTemp", produces = "application/json; charset=utf-8" )
 	@ResponseBody
 	public List<CourseVo> getCourseListByTemp(){
-		System.out.println(cdao.getCourseListByTemp());
+
 		return cdao.getCourseListByTemp();
 	}
 	
