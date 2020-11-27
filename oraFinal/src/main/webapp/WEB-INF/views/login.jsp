@@ -4,8 +4,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Ora - login</title>
+
+<title>로그인</title>
 	<jsp:include page="my_header.jsp"/>
+
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
    <meta name="_csrf_parameter" content="${_csrf.parameterName}" />

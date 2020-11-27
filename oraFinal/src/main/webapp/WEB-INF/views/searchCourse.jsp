@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>코스 지도검색</title>   
+<link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
+<title>코스 맞춤검색</title>   
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />
@@ -1424,7 +1425,7 @@ function MarkerTracker(map, target) {
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate pb-0 text-center">
           	<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">HOME <i class="fa fa-chevron-right"></i></a></span> <span>라이딩 코스 <i class="fa fa-chevron-right"></i></span></p>
-            <h1 class="mb-3 bread">코스 지도검색</h1>
+            <h1 class="mb-3 bread">코스 맞춤검색</h1>
           </div>
         </div>
       </div>

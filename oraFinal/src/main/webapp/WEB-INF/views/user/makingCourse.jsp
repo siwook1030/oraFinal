@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
 <title>메이킹 코스</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="_csrf_parameter" content="${_csrf.parameterName}" />
@@ -132,49 +133,7 @@ window.onload = function(){
 	            xhr.setRequestHeader(header, token);
 	        }
 	    });*/
-	//------
-function LoadingWithMask() {
-	    	console.log("로딩이미지 표시됨!!");
-    //화면의 높이와 너비를 구합니다.
-    var maskHeight = $(document).height();
-    var maskWidth  = window.document.body.clientWidth;
-     
-    //화면에 출력할 마스크를 설정해줍니다.
-    var mask       ="<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'></div>";
-    var loadingImg ='';
-      
-    loadingImg +="<div id='loadingImg'>";
-    loadingImg +=" <img src='/searchCourseImg/myLoc.gif' style='position: relative; display: block; margin: 0px auto;'/>";
-    loadingImg +="</div>"; 
-  
-    //화면에 레이어 추가
-    $('body')
-        .append(mask)
-        .append(loadingImg)
-        
-    //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채웁니다.
-    $('#mask').css({
-            'width' : maskWidth
-            ,'height': maskHeight
-            ,'opacity' :'0.3'
-    });
-  
-    //마스크 표시
-    $('#mask').show();  
-  
-    //로딩중 이미지 표시
-    $('#loadingImg').show();
-    console.log("로딩이미지끝!!");
-}
 
- 
-function closeLoadingWithMask() {
-    $('#mask, #loadingImg').hide();
-    $('#mask, #loadingImg').empty(); 
-}
-
-
-	//---
 	const courseName =  document.getElementById("courseName");
 	const slat =  document.getElementById("slat");
 	const slon =  document.getElementById("slon");
@@ -195,6 +154,9 @@ function closeLoadingWithMask() {
 	const line =  document.getElementById("line");
 	const photoInput = document.getElementById("photoInput");
 	const fixC =  document.getElementById("fixC"); // 수정시 가져오기필요문구 나타낼스판
+
+	const thumbnails = document.getElementById("thumbnails"); // 코스사진거는데
+	const drop = document.getElementById("drop"); // 코스사진 거는데 부모노드
 ////////////////////////////////////////////////////
 	const latPS = document.getElementById("latPS");
 	const lonPS = document.getElementById("lonPS");
@@ -756,7 +718,7 @@ const mNickName = checkM.item.nickName;
 
 		map.setBounds(courseBounds);
   
-	    google.charts.setOnLoadCallback(drawAltitude);
+		drawAltitude();
 	    manager3.remove(manager3.getOverlays().polyline[0]);
 	    manager3.put(kakao.maps.drawing.OverlayType.POLYLINE, latlonArr);
     	fixC.innerHTML=""; // 새로 라인을 그리기 후 가져오기눌러주세요 글을 없앤다
@@ -1176,7 +1138,7 @@ const mNickName = checkM.item.nickName;
 			}	
 			manager3.put(kakao.maps.drawing.OverlayType.POLYLINE, latlonArr);
 			map.setBounds(courseBounds);
-			google.charts.setOnLoadCallback(drawAltitude);
+			drawAltitude();
 
 			const sMarkerLatLon = latlonArr[0];
 			const eMarkerLatLon = latlonArr[latlonArr.length-1];
@@ -1218,9 +1180,6 @@ const mNickName = checkM.item.nickName;
 		    infoC.disabled = true;
 //--------------------------------------------------
  
- 	
-			setGpx(latArr,lonArr,altitudeArr);
-			$("#ftco-loader").hide();
 		};
 			reader.readAsText(file, "UTF-8");
 			this.value = null;
@@ -1332,10 +1291,11 @@ const mNickName = checkM.item.nickName;
         window.addEventListener("resize",drawAltitude,false);
       }
 //////////////////////////////////////////////////////// 파일드랍기능 구현
+	
+
 	const photoReg = /(.*?)\/(jpg|jpeg|png|bmp)$/;
 	
 	const uploadFiles = [];
-	const drop = document.getElementById("drop");
 
 	drop.addEventListener("dragenter", function(e) {
 		this.className = "drag-over";
@@ -1381,23 +1341,29 @@ const mNickName = checkM.item.nickName;
 		const reader = new FileReader();
 		reader.onload = (function(f, idx) {
 			return function(e) {
-				const div = '<div class="thumb"> \
-				<div class="close" data-idx="' + idx + '"><img class="x" src="../icons/x.png"/></div> \
-				<img src="' + e.target.result + '" title="' + escape(f.name) + '"/> \
-				</div>';
-				$("#thumbnails").append(div);
+				const thumb = document.createElement("div");
+				thumb.className = "thumb";
+				 
+				const div =	'<div class="close" data-idx="' + idx + '"><img class="x" src="../icons/x.png"/></div>\
+							<img src="' + e.target.result + '" title="' + escape(f.name) + '"/>\
+							</div>';
+				thumb.innerHTML = div;
+				thumbnails.append(thumb);
 			};
 		})(file, idx);
 			reader.readAsDataURL(file);
 	}
-	
-	$("#thumbnails").on("click", ".close", function(e) {
-		const $target = $(e.target.parentNode);
-		const idx = $target.attr('data-idx');
-		uploadFiles[idx].upload = 'disable'; //삭제된 항목은 업로드하지 않기 위해 플래그 생성
-		$target.parent().remove(); //프리뷰 삭제
-		});
+	drop.addEventListener("click", function(e) {
+			const className = e.target.className;
 
+			if(className == "x"){
+				const target = e.target.parentNode;
+				const idx = target.getAttribute('data-idx');
+				uploadFiles[idx].upload = 'disable';
+				target.parentNode.parentNode.removeChild(target.parentNode);
+			}
+	});
+	
 	function cPhotoNumCheck(){
 		let cPhotoCnt = 0;  // 업로드할 사진수 체크
 		uploadFiles.forEach(function(file, i) {
@@ -1920,7 +1886,7 @@ const mNickName = checkM.item.nickName;
 			contentType: false,
 			processData: false,
 			success: function(re){
-				const w = window.open("/user/preview","코스미리보기","width=1200px,height=1000px,toolbar=no,resizable=no,location=no,menubar=no,directories=no,status=no");
+				const w = window.open("/user/preview","코스미리보기","width=800px,height=1000px,toolbar=no,resizable=no,location=no,menubar=no,directories=no,status=no");
 			},
 			error: function(){
 				alert("에러발생");
@@ -2175,7 +2141,7 @@ const mNickName = checkM.item.nickName;
 			<!-- 코스 사진 -->
 
 			<div id="thumbnailsDiv" class="textFont">사진을 등록해주세요.
-				<div id="drop" style="width: 865px; height: 300px; padding: 3px;">
+				<div id="drop" style="height: 300px; padding: 3px;">
 					<div id="thumbnails"></div>
 				</div>
 			</div><br>

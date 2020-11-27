@@ -4,7 +4,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>회원 정보 수정</title>
+<link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
+<title>마이페이지</title>
 <meta name="_csrf_parameter" content="${_csrf.parameterName}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />
 <meta name="_csrf" content="${_csrf.token}" />

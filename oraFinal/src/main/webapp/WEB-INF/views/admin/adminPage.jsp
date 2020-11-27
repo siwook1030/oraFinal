@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
 <title>관리자 페이지</title>
 <meta name="_csrf_parameter" content="${_csrf.parameterName}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />
@@ -96,7 +97,8 @@
 			const bBtn = document.getElementById("board-chart-tab");		    
 		  
 		// 차트 구성하는 구간
-		
+			google.charts.load("current", {packages:["corechart","bar"]});
+			
 			let dis;
 			let time;
 			let view;
@@ -108,22 +110,25 @@
 			
 			const lReq = new XMLHttpRequest();
 			lReq.addEventListener("load", function(e) {
-				
-				const logMap = lReq.response;
-				
-				 dis = logMap.dis;
-				 time = logMap.time;
-				 view = logMap.view;
-				 tag = logMap.tag;
-				 cno = logMap.cno;
-				 
-				 reviewC = logMap.reviewC;
-				 meetingC = logMap.meetingC;
-	
+				if(lReq.status == 200){
+					const logMap = lReq.response;
+					
+					 dis = logMap.dis;
+					 time = logMap.time;
+					 view = logMap.view;
+					 tag = logMap.tag;
+					 cno = logMap.cno;
+					 
+					 reviewC = logMap.reviewC;
+					 meetingC = logMap.meetingC;
+					 google.charts.setOnLoadCallback(drawChart);
+				}
+				else{
+					alert("에러발생");
+				}
+
 			});
-			lReq.addEventListener("error", function(e) {
-				
-			});
+
 			lReq.open("GET", "/admin/courseSearchLog",true);
 			lReq.responseType="json";
 			lReq.send(null);
@@ -302,9 +307,9 @@
  
 		      }
 
-		 google.charts.load("current", {packages:["corechart","bar"]});
+		 
 		// google.charts.load("current", {packages:["bar"]});
-		  google.charts.setOnLoadCallback(drawChart);
+		  
 
 		cBtn.addEventListener("click", function(e) {
 			setTimeout(drawChart, 200);

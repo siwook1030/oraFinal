@@ -6,11 +6,8 @@
 <head>
 <meta charset="UTF-8">
 
-
-<title>Insert title here</title>
-
 <link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
-<title>오늘의 라이딩 - Today's riding</title>
+<title>공지사항 수정</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="_csrf_parameter" content="${_csrf.parameterName}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />

@@ -6,6 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
 <title>코스상세</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="_csrf_parameter" content="${_csrf.parameterName}" />
@@ -318,17 +319,20 @@ window.onload = function(){
 		}
 
 		const req = new XMLHttpRequest();
+		req.addEventListener("load", function(e) {
+			if(req.status == 200){
+				const rep = req.response;
+				alert(rep.message);
+				window.location = "/mainPage"
+			}
+			else{
+				alert("에러발생");
+			}
+			
+		})
 		req.open("GET", "/admin/deleteCourse?c_no="+c_no);
 		req.responseType = "json";
 		req.send(null);
-		req.addEventListener("load", function(e) {
-			const rep = this.response;
-			alert(rep.message);
-			window.location = "/mainPage"
-		})
-		req.addEventListener("error", function(e){
-			alert("에러발생");
-		}) 
 	});	
 	
 	//------------------------- 관리자확인 끝
@@ -563,11 +567,9 @@ window.onload = function(){
 	for(let i=0; i<trkptArr.length; i++){
 		const lat = trkptArr[i].getAttribute("lat");
 		const lon = trkptArr[i].getAttribute("lon");
-
-		altitudeData.push([distancePerLine*i,Number(Number((eleArr[i].innerHTML)).toFixed(1))]);
 		
-		latlonArr.push(new kakao.maps.LatLng(lat,lon));	
-		
+		altitudeData.push([distancePerLine*i,Number(Number((eleArr[i].innerHTML)).toFixed(1))]);		
+		latlonArr.push(new kakao.maps.LatLng(lat,lon));		
 	}
 
 	const maxLat = mnBound.getAttribute("maxlat");
@@ -598,7 +600,6 @@ window.onload = function(){
 	    strokeStyle: 'solid'
 	});
 
-	console.log(altitudeData);
 	google.charts.load('current', {'packages':['corechart']});
 	google.charts.setOnLoadCallback(drawAltitude); 
 	

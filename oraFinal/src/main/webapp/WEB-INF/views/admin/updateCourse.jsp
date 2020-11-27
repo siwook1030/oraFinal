@@ -8,6 +8,7 @@
 <meta name="_csrf_parameter" content="${_csrf.parameterName}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />
 <meta name="_csrf" content="${_csrf.token}" />
+<link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
 <title>코스 수정</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
@@ -173,6 +174,9 @@ window.onload = function(){
 	const line =  document.getElementById("line");
 	const photoInput = document.getElementById("photoInput");
 	const fixC =  document.getElementById("fixC"); // 수정시 가져오기필요문구 나타낼스판
+
+	const thumbnails = document.getElementById("thumbnails"); // 코스사진거는데
+	const drop = document.getElementById("drop"); // 코스사진 거는데 부모노드
 ////////////////////////////////////////////////////
 	const pt_noPS = document.getElementById("pt_noPS");
 
@@ -728,7 +732,7 @@ window.onload = function(){
 			
 		}
   
-	    google.charts.setOnLoadCallback(drawAltitude);
+		drawAltitude();
 	    manager3.remove(manager3.getOverlays().polyline[0]);
 	    manager3.put(kakao.maps.drawing.OverlayType.POLYLINE, latlonArr);
     	fixC.innerHTML=""; // 새로 라인을 그리기 후 가져오기눌러주세요 글을 없앤다
@@ -1146,7 +1150,7 @@ window.onload = function(){
 			}	
 			manager3.put(kakao.maps.drawing.OverlayType.POLYLINE, latlonArr);
 			map.setBounds(courseBounds);
-			google.charts.setOnLoadCallback(drawAltitude);
+			drawAltitude();
 
 			const sMarkerLatLon = latlonArr[0];
 			const eMarkerLatLon = latlonArr[latlonArr.length-1];
@@ -1272,7 +1276,6 @@ window.onload = function(){
 
 	/////////----------------------------- 고도 차트 함수
 	google.charts.load('current', {'packages':['corechart']});
-	google.charts.setOnLoadCallback(drawAltitude);
 	///////--------------------- 고도 차트
 	   function drawAltitude() {
 		   const data = new google.visualization.DataTable();
@@ -1302,7 +1305,6 @@ window.onload = function(){
 	const photoReg = /(.*?)\/(jpg|jpeg|png|bmp)$/;
 	
 	const uploadFiles = [];
-	const drop = document.getElementById("drop");
 	
 	drop.addEventListener("dragenter", function(e) {
 		this.className = "drag-over";
@@ -1339,8 +1341,6 @@ window.onload = function(){
 				return;
 			}
 			const size = uploadFiles.push(file); //업로드 목록에 추가
-			console.log(file);
-			console.log("파일들어감");
 			previewPhoto(file, size - 1); //미리보기 만들기
 		}
 	}
@@ -1350,22 +1350,29 @@ window.onload = function(){
 		const reader = new FileReader();
 		reader.onload = (function(f, idx) {
 			return function(e) {
-				const div = '<div class="thumb"> \
-				<div class="close" data-idx="' + idx + '"><img class="x" src="../icons/x.png"/></div> \
-				<img src="' + e.target.result + '" title=""/> \
-				</div>';
-				$("#thumbnails").append(div);
+				const thumb = document.createElement("div");
+				thumb.className = "thumb";
+				 
+				const div =	'<div class="close" data-idx="' + idx + '"><img class="x" src="../icons/x.png"/></div>\
+							<img src="' + e.target.result + '" title="' + escape(f.name) + '"/>\
+							</div>';
+				thumb.innerHTML = div;
+				thumbnails.append(thumb);
 			};
 		})(file, idx);
 			reader.readAsDataURL(file);
 	}
 
-	$("#thumbnails").on("click", ".close", function(e) {
-		const $target = $(e.target.parentNode);
-		const idx = $target.attr('data-idx');
-		uploadFiles[idx].upload = 'disable'; //삭제된 항목은 업로드하지 않기 위해 플래그 생성
-		$target.parent().remove(); //프리뷰 삭제
-		});
+	drop.addEventListener("click", function(e) {
+		const className = e.target.className;
+
+		if(className == "x"){
+			const target = e.target.parentNode;
+			const idx = target.getAttribute('data-idx');
+			uploadFiles[idx].upload = 'disable';
+			target.parentNode.parentNode.removeChild(target.parentNode);
+		}
+	});
 
 	function cPhotoNumCheck(){
 		let cPhotoCnt = 0;  // 업로드할 사진수 체크
@@ -1936,10 +1943,16 @@ window.onload = function(){
 	req.open("GET", "/admin/getUpdateCourse?c_no="+courseNumber);
 	req.send(null);
 	req.addEventListener("load", function(e) {
-		const repMap = JSON.parse(this.response);
-		const cJson = repMap.cJson;
-		const ptJson = repMap.ptJson;
-		setUpdateCourse(cJson,ptJson);
+		if(req.status == 200){
+			const repMap = JSON.parse(this.response);
+			const cJson = repMap.cJson;
+			const ptJson = repMap.ptJson;
+			setUpdateCourse(cJson,ptJson);
+		}
+		else{
+			alert("에러발생");
+		}
+		
 	})
 
 	  function setUpdateCourse(cJson,ptJson){   // 업데이트코스 데이타 설정 함수
@@ -2129,9 +2142,6 @@ window.onload = function(){
 				addPhoto([imgFile]);
 				
 			})
-			req.addEventListener("error", function(e) {
-				alert("에러발생");
-			})	
 		
 		});
 		
@@ -2356,7 +2366,7 @@ window.onload = function(){
 			
 			<!-- 코스 사진 -->
 			<div id="thumbnailsDiv" class="textFont">사진을 등록해주세요.
-				<div id="drop" style="width: 865px; height: 300px; padding: 3px;">
+				<div id="drop" style="height: 300px; padding: 3px;">
 					<div id="thumbnails"></div>
 				</div>
 			</div><br>

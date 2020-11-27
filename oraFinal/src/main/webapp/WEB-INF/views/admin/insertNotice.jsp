@@ -9,7 +9,7 @@
 <meta name="_csrf_header" content="${_csrf.headerName}" />
 <meta name="_csrf" content="${_csrf.token}" />
 <link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
-<title>오늘의 라이딩 - Today's riding</title>
+<title>공지사항 쓰기</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
