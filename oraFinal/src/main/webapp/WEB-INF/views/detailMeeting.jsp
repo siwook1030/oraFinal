@@ -836,12 +836,33 @@ window.onload = function(){
 	if(c.c_no != 0){
 		startMarker.setPosition(new kakao.maps.LatLng(c.c_s_latitude, c.c_s_longitude));
 		arriveMarker.setPosition(new kakao.maps.LatLng(c.c_e_latitude, c.c_e_longitude));
-		const cLineObj = JSON.parse(c.c_line);
-		const courseLine = eval(cLineObj.courseLine);
-		coursePolyline.setPath(courseLine);
-		courseLine.forEach(function(c, i) {
-			courseBounds.extend(c);
-		})
+		
+		const courseLine = c.c_line;
+
+    	const trkptArr = $(courseLine).find("trkseg trkpt");
+    	const mnBound = $(courseLine).find("bounds")[0];
+
+    	const latlonArr = new Array();
+
+    	for(let i=0; i<trkptArr.length; i++){
+    		const lat = trkptArr[i].getAttribute("lat");
+    		const lon = trkptArr[i].getAttribute("lon");
+    		
+    		latlonArr.push(new kakao.maps.LatLng(lat,lon));	 		
+    	}
+
+        const courseBounds = new kakao.maps.LatLngBounds();
+        
+        const maxLat = mnBound.getAttribute("maxlat");
+    	const maxLon = mnBound.getAttribute("maxlon");	
+    	const minLat = mnBound.getAttribute("minlat");
+    	const minLon = mnBound.getAttribute("minlon");
+
+    	courseBounds.extend(new kakao.maps.LatLng(maxLat,maxLon));
+    	courseBounds.extend(new kakao.maps.LatLng(minLat,minLon));;
+    	
+		coursePolyline.setPath(latlonArr);
+
 		startMarker.setMap(map);
 		arriveMarker.setMap(map);
 		coursePolyline.setMap(map);
@@ -904,7 +925,7 @@ window.onload = function(){
 							<c:when test="${m != null }">
 								<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
 								<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
-								<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+								<li class="nav-item"><a style="font-size: 15px;" href="/myPage" class="nav-link">마이페이지</a></li>
 							<c:if test="${m.code_value == '00101' }">
 								<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
 							</c:if>

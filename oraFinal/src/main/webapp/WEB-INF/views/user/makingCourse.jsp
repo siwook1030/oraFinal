@@ -1104,6 +1104,11 @@ const mNickName = checkM.item.nickName;
 			const eleArr = $(reader.result).find("trkseg ele");
 			const  trkptArr = $(reader.result).find("trkseg trkpt");
 
+			if(eleArr.length == 0 || trkptArr.length == 0){
+				alert("gpx파일의 형식이 아닙니다.");
+				return;
+			}
+
 			const latArr = new Array();
 			const lonArr = new Array();
 			const latlonArr = new Array();
@@ -1201,7 +1206,7 @@ const mNickName = checkM.item.nickName;
 			$("#ftco-loader").hide();
 		};
 			reader.readAsText(file, "UTF-8");
-		this.value = null;
+			this.value = null;
 	});
 	 
 	//---------------------------------------------------------------
@@ -1961,7 +1966,7 @@ const mNickName = checkM.item.nickName;
                   </c:when>
                   <c:when test="${m != null }">
                      <li class="nav-item"><a style="font-size: 15px; color: #fff; cursor:default;" class="nav-link">${m.nickName } 라이더님</a></li>
-                     <li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>&nbsp;&nbsp;
+                     <li class="nav-item"><a style="font-size: 15px;" href="/myPage" class="nav-link">마이페이지</a></li>&nbsp;&nbsp;
                      <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>
                   <c:if test="${m.code_value == '00101' }">
 								<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>

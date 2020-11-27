@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,17 +17,12 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.demo.util.BitSms;
 
 @Controller
-@RequestMapping("/smsSend")
 public class SmsController {
 	@Autowired
 	private BitSms bs;
-
-	public void setBs(BitSms bs) {
-		this.bs = bs;
-	}
 	
 	
-	@RequestMapping(method = RequestMethod.GET,  produces = "application/text; charset=utf8")
+	@GetMapping(value = "/smsSend",  produces = "application/text; charset=utf8")
 	@ResponseBody
 	public String smsSubmit(String phoneNum, HttpSession session) {
 		Random rand = new Random();
@@ -43,7 +39,7 @@ public class SmsController {
 		return re;
 	}
 	
-	@RequestMapping(method = RequestMethod.POST,  produces = "application/text; charset=utf8")
+	@PostMapping(value = "/smsSend",  produces = "application/text; charset=utf8")
 	@ResponseBody
 	public String sms(String num,  HttpSession session) {
 		String chek = "";
@@ -59,6 +55,23 @@ public class SmsController {
 		System.out.println("입력번호 : " + num);
 		System.out.println("체크번호 : " + chek);
 		return chek;
+	}
+	
+	@GetMapping(value = "/smsSendMy",  produces = "application/text; charset=utf8")
+	@ResponseBody
+	public String smsSendMy(String phoneNum, HttpSession session) {
+		Random rand = new Random();
+		String sendMsg = "[오늘의라이더] 본인확인 인증번호\r\n";
+		String number = "";
+		for(int i=0; i<6; i++) {
+			number += rand.nextInt(10);
+		}
+		session.setAttribute("number", number);
+		sendMsg += number;
+		String re = bs.sendMsg(phoneNum, sendMsg);
+		System.out.println("결과체크 : " +re);
+		//re가 1이면 전송성공 아니면 실패
+		return re;
 	}
 	
 }

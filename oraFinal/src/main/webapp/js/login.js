@@ -73,12 +73,9 @@ function login(){
 			memberId :id.value.trim(),
 			memberPassword : pwd.value.trim()
 		},
-		/*beforeSend : function(xhr)
+	/*	beforeSend : function(xhr)
 		{
-			//이거 안하면 403 error
-			//데이터를 전송하기 전에 헤더에 csrf값을 설정한다
-			var $token = $("#token");
-			xhr.setRequestHeader($token.data("token-name"), $token.val());
+			xhr.setRequestHeader(parameter, token);
 		},*/
 		success : function(response){
 			if(response.code == "200"){
@@ -239,7 +236,7 @@ function login(){
             	  		return;
             	  	}
 	               $.ajax({
-	                  url: "/smsSend",
+	                  url: "/smsSendMy",
 	                  type: "GET",
 	                  data:{
 	                     "phoneNum":phonePwd.value.trim()
@@ -285,9 +282,9 @@ function login(){
 	                  phone.focus();
 	                  return;
 	               }
-	               alert("번호발송");
+
 	               $.ajax({
-	                  url: "/smsSend",
+	                  url: "/smsSendMy",
 	                  type: "GET",
 	                  data:{
 	                     "phoneNum":phone.value.trim()

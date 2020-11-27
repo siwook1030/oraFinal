@@ -37,7 +37,7 @@ public class LoginController {
 		SavedRequest savedRequest = requestCache.getRequest(request, response);
 		String referrer = request.getHeader("Referer");
 		
-		if( referrer == null || referrer.equals("http://localhost:8088/signUp")) {
+		if( referrer == null || referrer.equals("http://localhost:8088/signUp") ||  referrer.equals("http://localhost:8088/login") ) {
 			referrer = "http://localhost:8088/mainPage";
 		}
 		
