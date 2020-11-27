@@ -130,6 +130,10 @@
 	.navbar .nav-item:hover .dropdown-menu .dropdown-item {
 		color: #5D5D5D;
 	}
+	
+	.right-text {
+		text-align: right;
+	}
 </style>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -2297,8 +2301,8 @@ window.onload = function(){
 			<!-- 경도 --> <input type="hidden" id="elon" name="c_e_longitude" value="0" readonly="readonly">
 			<!-- 도착지 --> <input type="text" id="eLoc" name="c_e_locname" readonly="readonly" size="50" placeholder="도착지 주소가 입력됩니다."><br>
 			
-			<!-- 거리 -->거리 <input type="text"  id="dis" name="c_distance" value="0" readonly="readonly"> km<br>
-			<!-- 시간 -->시간 <input type="text" id="time" name="c_time" value="0" readonly="readonly"> 분<br>
+			<!-- 거리 -->거리 <input class="right-text" type="text"  id="dis" name="c_distance" value="0" readonly="readonly"> km<br>
+			<!-- 시간 -->시간 <input class="right-text" type="text" id="time" name="c_time" value="0" readonly="readonly"> 분<br>
 			<!-- 난이도 -->
 			<div>
 			<label for="diff" class="textFont">코스난이도 </label>
@@ -2394,7 +2398,7 @@ window.onload = function(){
 			<!-- 경도 --> <input type="hidden" id="lonPS" name="pt_longitudePS" value="0">
 			<div>
 			<label for="disPS" class="textFont">거리 </label>
-			<input type="text" id="disPS" name="pt_distancePS" value="0" readonly="readonly"> km
+			<input class="right-text" type="text" id="disPS" name="pt_distancePS" value="0" readonly="readonly"> km
 			</div>
 			<div>
 			<label for="sPT" class="textFont">대중교통 </label>
@@ -2437,7 +2441,7 @@ window.onload = function(){
 			<!-- 경도 --> <input type="hidden" id="lonPE" name="pt_longitudePE" value="0" >
 			<div>
 				<label for="disPE" class="textFont">거리 </label>
-				 <input type="text" id="disPE" name="pt_distancePE" value="0" readonly="readonly"> km
+				 <input class="right-text" type="text" id="disPE" name="pt_distancePE" value="0" readonly="readonly"> km
 			</div>			
 			<div>
 			<label for="ePT" class="textFont">대중교통 </label>
