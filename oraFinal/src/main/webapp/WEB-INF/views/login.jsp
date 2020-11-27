@@ -87,8 +87,8 @@
         width: 400px;
         height: 270px;
         position: absolute;
-        top:50%;
-        left: 38%;
+        top:30%;
+        left: 39%;
         padding:20px;
         margin: -90px 0 0 -20px; /*위치*/
         background:#ffffff;
@@ -111,11 +111,11 @@
 	
    .modal_wrapPwd{ /*비밀번로호 모달*/
         display: none;
-        width: 400px;
+        width: 420px;
         height: 350px;
         position: absolute;
-        top:50%;
-        left: 38%;
+        top:30%;
+        left: 39%;
         padding:20px;
         margin: -90px 0 0 -20px; /*위치*/
         background:#ffffff;
@@ -156,11 +156,12 @@
          /*회색부분 크기*/
     .colmd7 { 
     -webkit-box-flex: 0;
-    -ms-flex: 0 0 66.66667%;
-    flex: 0 0 66.66667%;
-    max-width: 40%; }   /*여기*/
+    max-width: 100%; }   /*여기*/
       
-      
+    .prmd5 {
+    padding-right: 0rem !important;
+    width: 100%;
+}  
     
 /* =============================== 현왕 모달창 내부 css 종료 =================================== */
 /* =============================== 현왕 모달창 열기 & 내부 버튼 css 시작 =================================== */
@@ -178,8 +179,7 @@
       }
 /* =============================== 현왕 모달창 열기 & 내부 버튼 css 종료 =================================== */
     </style>
-    
-<jsp:include page="my_header2.jsp"/>
+
 </head>
 <body>
 
@@ -189,8 +189,8 @@
     <section class="">
       <div class="container" >
         <div class="row block-9 justify-content-center mb-5">
-          <div class="colmd7 mb-md-5 bg-light p-5 contact-form">
-					<div class="heading-section pr-md-5">
+          <div class="colmd7 mbmd5 bg-light p-5 contact-form">
+					<div class="heading-section prmd5">
 						<h2 class="mb-4" style="text-align: center; font-size: 30px;">오늘의 라이딩 로그인</h2>
 						<p style="text-align: center; color: black; margin: 0 0 10px;">오늘도 힘차게 달려볼까요?</p>
 						<div class="container">
@@ -201,7 +201,6 @@
 					    			<button id="login-button" type="button" class="btn btn-primary form-control" onclick="location.href='/mainPage'">로그인</button>
 									<button id="login-button-id" type="button" class="btn" style="font-size: 15px;">아이디찾기</button>
 					    			<button id="login-button-pwd" type="button" class="btn"  style="font-size: 15px; ">비밀번호 재발급</button>
-					    			<h6 style="font-size: 13px; display: inline-block;" >아직 회원이 아니세요?</h6>
 					    			<button id="login-button-pwd" type="button" class="btn "onclick="location.href='/signUp'"  style="font-size: 15px;  ">회원가입</button>
 								</div>					   
 						</div>

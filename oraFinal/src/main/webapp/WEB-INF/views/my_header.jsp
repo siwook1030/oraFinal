@@ -103,7 +103,7 @@ window.onload = function(){
                   <c:when test="${m != null }">
                      <li class="nav-item"><a style="font-size: 15px;"  href="/myPage" class="my-link">${m.nickName } 라이더님</a></li>
                      <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="my-link">로그아웃</a></li>&nbsp;&nbsp;
-                     <li class="nav-item active"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="my-link">마이페이지</a></li>
+                     <li class="nav-item active"><a style="font-size: 15px;" href="/myPage" class="my-link">마이페이지</a></li>
             </ul>
          </div>
 		<div  class="collapse navbar-collapse" style="display: block; font-size: 12px;">

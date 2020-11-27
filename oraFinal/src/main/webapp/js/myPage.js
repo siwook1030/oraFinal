@@ -74,7 +74,7 @@
                }
                
                $.ajax({
-                  url: "/smsSend",
+                  url: "/smsSendMy",
                   type: "GET",
                   data:{
                      "phoneNum":phone.value.trim()
