@@ -40,6 +40,7 @@
 	float:left;
  	padding: 50px;
     padding:0 10px;  
+    font:bold 16px Dotum;
  }
    
  #my_a{
@@ -141,8 +142,8 @@
 						<h1 class="mb-3 bread" style="padding-top: 170px;">My 코스</h1>
 		            </span>
 			              <ul class="my" style="font-size: 10px">
-				 			<li class="my_li2" ><a id="my_a" class="nav-link_2" href="/myPage" >내 코스</a></li>
-			                <li class="my_li" ><a id="my_a" class="nav-link_2" href="/myPageSaveCourse" >찜목록</a></li>
+				 			<li class="my_li2" ><a id="my_a" class="nav-link_2" href="/myPage" >정보 수정</a></li>
+			                <li class="my_li" ><a id="my_a" class="nav-link_2" href="/myPageSaveCourse" >찜 목록</a></li>
 			            	<li class="my_li"><a id="my_a" class="nav-link_2" href="/listReview?searchType=id&searchValue=${m.id }">내 후기</a></li>
 			            	<li class="my_li"><a id="my_a" class="nav-link_2" href="/listMeeting?id=${m.id}">내 번개</a></li>  
 			         	    <li class="my_li"><a id="my_a" class="nav-link_2" href="/myPageMyRank">랭킹</a></li>
@@ -159,9 +160,6 @@
  <section class="ftco-section ftco-no-pb ftco-no-pt">
     <div class="container">   
     	<div class="mb-5"></div>
-           <div class="col-md-12 heading-section text-center ftco-animate mb-5">
-	          			<span class="subheading">내가 만든 코스</span>	
-	          		</div>
       <div class="row" id="saveCourseList"></div>
         <div class="row mt-5">
           <div class="col text-center">

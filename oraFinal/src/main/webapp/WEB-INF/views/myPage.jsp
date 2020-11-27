@@ -156,6 +156,7 @@
 	float:left;
  	padding: 50px;
     padding:0 10px;  
+    font:bold 16px Dotum;
  }
    
  #my_a{
@@ -225,7 +226,7 @@
 		           		 </span>
 			              <ul class="my" style="font-size: 10px">
 					<!-- 		<li class="my_li" ><a id="my_a" class="nav-link_2" href="/myPage" >정보 수정</a></li> -->
-					 		<li class="my_li2" ><a id="my_a" class="nav-link_2" href="/myPageSaveCourse" >찜목록</a></li>
+					 		<li class="my_li2" ><a id="my_a" class="nav-link_2" href="/myPageSaveCourse" >찜 목록</a></li>
 							<li class="my_li" ><a id="my_a" class="nav-link_2" href="/myPageMyCourse" >내 코스</a></li>
 			                <li class="my_li"><a id="my_a" class="nav-link_2" href="/listReview?searchType=id&searchValue=${m.id }">내 후기</a></li>
 			                <li class="my_li"><a id="my_a" class="nav-link_2" href="/listMeeting?id=${m.id}">내 번개</a></li>

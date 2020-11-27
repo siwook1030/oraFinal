@@ -79,7 +79,8 @@
     display:inline-block;  
 	float:left;
  	padding: 50px;
-    padding:0 10px;  
+    padding:0 10px;
+    font:bold 16px Dotum;  
  }
    
  #my_a{
@@ -191,9 +192,6 @@
 <section class="ftco-section ftco-no-pb ftco-no-pt">
     <div class="container">   
            <div class="mb-5"></div>
-           <div class="col-md-12 heading-section text-center ftco-animate mb-5">
-	          			<span class="subheading">찜 코스</span>	
-	          		</div>
       <div class="row" id="saveCourseList"></div>
         <div class="row mt-5">
           <div class="col text-center">
