@@ -124,6 +124,24 @@
 			FONT-WEIGHT: bolder;
 		}
 		/* myPage 끝 */	
+	/* header dropdown */
+	.ftco-navbar-light .navbar-nav > .nav-item .dropdown-menu {
+		/* background: #fff;
+		background-color: #fff;
+		opacity: 0.7; */
+		background: rgba(255,255,255,0.7);
+		/* border: 2px solid white; */
+		/* width: 100px; */
+		min-width: 9rem;
+		color: white;
+	}
+	.dropdown-item {
+		font-weight: bold;
+		color: #5D5D5D;
+	} 
+	.navbar .nav-item:hover .dropdown-menu .dropdown-item {
+		color: #5D5D5D;
+	}
 	</style>
 
 	<script type="text/javascript">
@@ -315,18 +333,17 @@
 	</script>	    
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 		<div class="container">
 			<a style="font-size: 30px;" class="navbar-brand" href="/mainPage">
-				<span style="font-weight: bold;">
-					<font color="#45A3F5">오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font> <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font>
+				<span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
+					<font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font>
 				</span>
 			</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-               <span class="oi oi-menu"></span> Menu
-            </button>
-            
-         	<div style="display: block;">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        	<span class="oi oi-menu"></span> Menu
+			</button>
+			<div style="display: block;">
 				<div class="collapse navbar-collapse" id="ftco-nav">
 					<ul class="navbar-nav ml-auto">
 						<c:choose>
@@ -353,23 +370,32 @@
 							</c:when>
 						</c:choose>
 					</ul>
-				</div> 
-	
+				</div>    
 				<div class="collapse navbar-collapse" id="ftco-nav">
-					<ul class="navbar-nav ml-auto">
+					<ul class="navbar-nav ml-auto" >
 						<li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
-						<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
-						<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
+						<li id="courseDropPoint"  class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">  오늘의 라이딩  </a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="/listNotice"> 공지사항 </a></li>
+							</ul>
+						</li>
+						<li id="courseDropPoint"  class="nav-item dropdown">
+							<a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown">  라이딩 코스  </a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="/searchCourse"> 맞춤 코스 검색 </a></li>
+								<li><a class="dropdown-item" href="/tagSearchCourse"> 태그 코스 검색 </a></li>
+							</ul>
+						</li>
 						<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
-						<li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+						<li class="nav-item active"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
 						<li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
 					</ul>
 				</div>
-
 			</div>
 		</div>
 	</nav>
-	<!-- END nav -->	
+    <!-- END nav -->	
 
    <section class="hero-wrap hero-wrap-2" style="background-image: url('headerImg/meetingMain.jpg');" data-stellar-background-ratio="0.5">
 		<div class="overlay"></div>
