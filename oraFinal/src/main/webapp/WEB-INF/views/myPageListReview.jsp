@@ -50,7 +50,6 @@ window.onload = function(){
                <a href="/myPageMyRank">랭킹</a>
                 </span>
                 </p>
-     </ul>
             
           </div>
         </div>

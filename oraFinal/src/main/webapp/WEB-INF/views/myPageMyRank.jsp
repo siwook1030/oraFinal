@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,7 +32,8 @@
 
 
     .send {
-      < !--인증번호 받기버튼-->background: #24A148 !important;
+      /* 인증번호 받기버튼 */
+      background: #24A148 !important;
       border: 1px solid #24A148 !important;
       color: #fff !important;
     }
@@ -48,11 +50,12 @@
     }
 
     .phone_input {
-      < !--새전화번호입력-->padding-right: 50px;
+      /* 새전화번호입력 */
+      padding-right: 50px;
       font-size: 14px;
     }
 
-<!-- 탭조절 	-->
+/* 탭조절 */
 .my-wrap {
   width: 100%;
   height: 850px;
@@ -87,8 +90,8 @@
            /*회색부분 크기*/
     .colmd8 { 
     -webkit-box-flex: 0;
-    -ms-flex: 0 0 70%%;
-    flex: 0 0 70%%;
+    -ms-flex: 0 0 70%;
+    flex: 0 0 70%;
     max-width: 70%; }   /*여기*/
  
 #login {
@@ -169,7 +172,25 @@
  color: #d0a183; 
  FONT-SIZE: 13pt; 
  FONT-WEIGHT: bolder}
- 
+
+	/* header dropdown */
+	.ftco-navbar-light .navbar-nav > .nav-item .dropdown-menu {
+		/* background: #fff;
+		background-color: #fff;
+		opacity: 0.7; */
+		background: rgba(255,255,255,0.7);
+		/* border: 2px solid white; */
+		/* width: 100px; */
+		min-width: 9rem;
+		color: white;
+	}
+	.dropdown-item {
+		font-weight: bold;
+		color: #5D5D5D;
+	} 
+	.navbar .nav-item:hover .dropdown-menu .dropdown-item {
+		color: #5D5D5D;
+	} 
 
 </style>
 </head>   
@@ -185,36 +206,68 @@
     <link rel="stylesheet" href="resources/css/flaticon.css">
     <link rel="stylesheet" href="resources/css/style.css">
 
-  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-      <div class="container">
-         			 <a style="font-size: 30px;" class="navbar-brand" href="/mainPage">
-        <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
-        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-               <span class="oi oi-menu"></span> Menu
-            </button>
-         
-           <div class="collapse navbar-collapse" id="ftco-nav" style="display: block; ">
-              <ul class="navbar-nav ml-auto">
-      
-                     <li class="nav-item"><a style="font-size: 15px; color: #fff; cursor:default;" class="nav-link" href="/myPage?id=${m.id}">${m.nickName } 라이더님</a></li>
-                     <li class="nav-item active"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
-                     <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>
-            </ul>
-         </div>   
-	      <div class="collapse navbar-collapse" id="ftco-nav">
-	        <ul class="navbar-nav ml-auto">
-	          <li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
-	          <li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
-	          <li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
-	          <li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
-	          <li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
-	          <li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
-	        </ul>
-	      </div>
-       </div>
- </nav>
-   
+	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+		<div class="container">
+			<a style="font-size: 30px;" class="navbar-brand" href="/mainPage">
+				<span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
+					<font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font>
+				</span>
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        	<span class="oi oi-menu"></span> Menu
+			</button>
+			<div style="display: block;">
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto">
+						<c:choose>
+							<c:when test="${m == null }">
+								<li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
+								<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
+							</c:when>
+							<c:when test="${m != null }">
+								<li id="courseDropPoint"  class="nav-item  active dropdown">
+									<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" style="font-size: 15px;">  ${m.nickName } 라이더 님  </a>
+									<ul class="dropdown-menu">
+										<li><a class="dropdown-item" href="/myPage?id=${m.id}"> 정보 수정 </a></li>
+										<li><a class="dropdown-item" href="/myPageSaveCourse"> 찜 목록 </a></li>
+										<li><a class="dropdown-item" href="/myPageMyCourse"> 내 코스 </a></li>
+										<li><a class="dropdown-item" href="/listReview?searchType=id&searchValue=${m.id }"> My 후기 </a></li>
+										<li><a class="dropdown-item" href="/listMeeting?id=${m.id}"> My 번개 </a></li>
+										<li><a class="dropdown-item" href="/myPageMyRank"> 랭킹 </a></li>
+									</ul>
+								</li>
+								<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>
+								<c:if test="${m.code_value == '00101' }">
+									<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
+								</c:if>
+							</c:when>
+						</c:choose>
+					</ul>
+				</div>    
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto" >
+						<li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
+						<li id="courseDropPoint"  class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">  오늘의 라이딩  </a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="/listNotice"> 공지사항 </a></li>
+							</ul>
+						</li>
+						<li id="courseDropPoint"  class="nav-item dropdown">
+							<a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown">  라이딩 코스  </a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="/searchCourse"> 맞춤 코스 검색 </a></li>
+								<li><a class="dropdown-item" href="/tagSearchCourse"> 태그 코스 검색 </a></li>
+							</ul>
+						</li>
+						<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
+						<li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+						<li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</nav>
     <!-- END nav -->
 
 <body>
