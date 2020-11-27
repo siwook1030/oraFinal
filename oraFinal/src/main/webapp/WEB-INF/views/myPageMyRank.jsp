@@ -158,6 +158,7 @@
 	float:left;
  	padding: 50px;
     padding:0 10px;  
+    font:bold 16px Dotum;
  }
    
  #my_a{
