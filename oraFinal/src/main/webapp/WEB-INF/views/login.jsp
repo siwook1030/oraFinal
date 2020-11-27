@@ -90,7 +90,7 @@
         width: 400px;
         height: 270px;
         position: absolute;
-        top:30%;
+        top:90%;
         left: 39%;
         padding:20px;
         margin: -90px 0 0 -20px; /*위치*/
@@ -117,7 +117,7 @@
         width: 420px;
         height: 350px;
         position: absolute;
-        top:30%;
+        top:90%;
         left: 39%;
         padding:20px;
         margin: -90px 0 0 -20px; /*위치*/

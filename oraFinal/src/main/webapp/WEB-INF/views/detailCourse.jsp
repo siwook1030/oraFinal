@@ -694,7 +694,6 @@ window.onload = function(){
 				},
 				success:function(re){
 					if(re == "1"){
-						alert("찜코스가 삭제되었습니다.");
 						location.reload();
 					}
 					else{

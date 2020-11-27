@@ -86,7 +86,7 @@ public class InsertMeetingController {
 	@PostMapping(value = "/user/insertMeeting", produces = "application/json;charset=utf-8")
 	@ResponseBody
 	public String insertSubmit(HttpServletRequest request, @RequestParam HashMap map) {
-		System.out.println("***map : "+map);
+		//System.out.println("***map : "+map);
 		
 		int m_no = mdao.NextMNum();
 		int c_no = Integer.parseInt((String)map.get("c_no"));

@@ -75,9 +75,6 @@ public class MakingCourseController {
 			@RequestParam Map<String, Object> map,@RequestParam(value="c_views",required = false) String[] c_views,
 			@RequestParam(value="c_tags",required = false) List<String> c_tags,
 			List<MultipartFile> uploadfile){
-
-		System.out.println("코스데이타 : "+ map);
-		System.out.println("업로드파일 : "+uploadfile);
 		
 		 int c_no = 0;
 		 String code_value = (String)map.get("code_value");
@@ -131,9 +128,6 @@ public class MakingCourseController {
 		 List<PublicTransportVo> ptList = new ArrayList<PublicTransportVo>();
 		 ptList.add(sPT);
 		 ptList.add(ePT);
-		 System.out.println(c);
-		 System.out.println(sPT);
-		 System.out.println(ePT);
 		 
 		 String previewPhotoPath = request.getRealPath("/previewPhoto")+"/";
 		 List<String> uploadFilesName = new ArrayList<String>();

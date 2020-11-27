@@ -36,17 +36,18 @@ public class LoginController {
 		RequestCache requestCache = new HttpSessionRequestCache();
 		SavedRequest savedRequest = requestCache.getRequest(request, response);
 		String referrer = request.getHeader("Referer");
-		
-		if( referrer == null || referrer.equals("http://localhost:8088/signUp") ||  referrer.equals("http://localhost:8088/login") ) {
-			referrer = "http://localhost:8088/mainPage";
+
+		if( referrer == null || referrer.endsWith("signUp")||  referrer.endsWith("login") ) {
+			referrer = "/mainPage";
 		}
 		
 		if(savedRequest != null) {
 			referrer = savedRequest.getRedirectUrl();
+			requestCache.removeRequest(request, response);
 		}
 
 		    request.getSession().setAttribute("prevPage", referrer);
-			System.out.println(referrer);
+
 			
 		return "login";
 	}
