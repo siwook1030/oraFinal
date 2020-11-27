@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>오늘의 라이딩</title>
+<link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
+<title>후기게시판</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />

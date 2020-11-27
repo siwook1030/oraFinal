@@ -87,7 +87,7 @@ public class AdminController {
 		map.put("time", ldao.getLogList("00703"));
 		map.put("view", ldao.getLogList("00704"));
 		map.put("tag", ldao.getLogList("00705"));
-		
+
 		return new Gson().toJson(map);
 	}
 	

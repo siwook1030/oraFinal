@@ -3,7 +3,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-   <title>내 작성 코스</title>
+<link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
+   <title>마이페이지</title>
 
 <meta charset="UTF-8">
 <meta name="_csrf_parameter" content="${_csrf.parameterName}" />

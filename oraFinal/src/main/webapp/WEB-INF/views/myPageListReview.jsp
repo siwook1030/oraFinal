@@ -4,8 +4,8 @@
 <html lang="en">
   <head>
   <jsp:include page="my_header.jsp"/>
-  
-    <title>내 작성 후기</title>
+  	<link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
+    <title>마이페이지</title>
 
 <meta name="_csrf_parameter" content="${_csrf.parameterName}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />

@@ -4,7 +4,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>오늘의 라이딩</title>
+<link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
+    <title>번게게시판 글쓰기</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="_csrf_parameter" content="${_csrf.parameterName}" />
