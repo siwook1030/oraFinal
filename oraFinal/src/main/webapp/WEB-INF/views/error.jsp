@@ -21,9 +21,12 @@
 	</style>
 </head>
 <body>
-	<a href="/mainPage">
-		<img class="homeBtn" src="/icons/home.png" style="width: 40px; margin: 50px 0 0 50px;">
-	</a>
+	<div>
+		<a href="/mainPage">
+			<img class="homeBtn" src="/icons/home.png" style="width: 40px; margin: 0 5px 20px 50px;">
+		</a>
+		<div style="font-size: 30px; color: #2a3045; font-weight: bold; display: inline-block; margin-top: 50px;">오늘의 라이딩</div>
+	</div>
 	<section class="ftco-section">
 		<div class="container">
 			<img class="error" src="/icons/error.png" style="width: 100%;">
