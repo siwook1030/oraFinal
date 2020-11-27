@@ -114,19 +114,18 @@
 	
 	#transportS{
 
-		margin-left:50px;
 		width : 90%;
 		height: 350px;
 	}
 	#transportE{
 
-		margin-left:50px;
 		width : 90%;
 		height: 350px;
 
 	}
 	.pt-summury{
-		margin-top: 35px;
+		height: 50%;
+		padding-top: 50px;
 	}
 	#addInfo{
 		border: solid 1px white;
@@ -234,6 +233,13 @@
 		color: #5D5D5D;
 	}
 
+	.locname {
+		margin-left: 40px;
+	}
+	
+	.arrowTd {
+	 padding: 20px 0 20px 0;
+	}
 </style>
 <style>
 .map_wrap, .map_wrap * {margin:0; padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
@@ -1521,11 +1527,10 @@ window.onload = function(){
 						      <div class="col-md-12 heading-section text-center ftco-animate">
 						          		<span class="subheading">대중교통</span>
 						        	  <div style="margin: 20px 0 20px 0; text-align: left;">
-						     <div  class="addInfoTitle"><img src="/detailCourseImg/startline.png" width="80px;"></div>
+						     <div  class="addInfoTitle"><img src="/detailCourseImg/startline.png" width="80px;"><strong class="locname">${c.c_s_locname }</strong></div>
 								<div id="transportS">
 						  			<div style="width: 100%; margin-top: 10px;">
 						  				<div class="ptBox" >
-						  				<div class="pt-summury"><strong>${c.c_s_locname }</strong></div>
 						  				<c:forEach var="t" items="${ptList }">
 						  					<c:if test="${t.code_value=='00201' }">
 						  						<div class="pt-summury">
@@ -1533,7 +1538,7 @@ window.onload = function(){
 							  							<tr><td rowspan="3"><img class="cPtIcon" src="publictransport/${t.pt_img }"></td>
 							  							<td>${t.pt_station }</td>
 							  							</tr>
-							  							<tr><td><img class="cInfoIcon" src="/detailCourseImg/next.png"></td></tr>
+							  							<tr ><td class="arrowTd"><img class="cInfoIcon" src="/detailCourseImg/next.png"></td></tr>
 							  							<tr><td>출발점</td></tr>
 							  						</table>
 						  						</div>
@@ -1561,11 +1566,10 @@ window.onload = function(){
 						  		</div>
 						  		
 						  		 <div style="margin: 80px 0 20px 0; text-align: left;">
-						  		<div class="addInfoTitle"><img src="/detailCourseImg/finishline.png" width="80px;"></div>
+						  		<div class="addInfoTitle"><img src="/detailCourseImg/finishline.png" width="80px;"><strong class="locname">${c.c_e_locname }</strong></div>
 						  		<div id="transportE">
 						  			<div style="width: 100%; margin-top: 10px;">
 						  				<div class="ptBox" >
-						  				<div class="pt-summury"><strong>${c.c_e_locname }</strong></div>
 						  				<c:forEach var="t" items="${ptList }">
 						  					<c:if test="${t.code_value=='00202' }">
 						  						<div class="pt-summury">
@@ -1573,7 +1577,7 @@ window.onload = function(){
 							  							<tr><td rowspan="3"><img class="cPtIcon" src="publictransport/${t.pt_img }"></td>
 							  							<td>도착점</td>
 							  							</tr>
-							  							<tr><td><img class="cInfoIcon" src="/detailCourseImg/next.png"></td></tr>
+							  							<tr><td class="arrowTd"><img class="cInfoIcon" src="/detailCourseImg/next.png"></td></tr>
 							  							<tr><td>${t.pt_station }</td></tr>
 							  						</table>
 						  						</div>
