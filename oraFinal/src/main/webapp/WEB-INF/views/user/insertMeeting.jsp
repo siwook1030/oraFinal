@@ -24,7 +24,7 @@
 		font-size: 15px;
 	}
 	/* input, select, textarea 태그설정 */
-	input, select { border: none; background-color: transparent; width: 55%; text-align: center; }
+	input, select { border: none; background-color: transparent; width: 62%; text-align: center; }
 	textarea:focus, input:focus { outline: none; }
 	
 	/* 등록, 취소 버튼 */

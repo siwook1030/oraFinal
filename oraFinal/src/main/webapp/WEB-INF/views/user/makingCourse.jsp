@@ -2261,7 +2261,9 @@ const mNickName = checkM.item.nickName;
 			</div>
 			<div>
 			<label for="ePTStation" class="textFont">역/정류장 </label>
-			 <input type="text" id="ePTStation" name="pt_stationPE" maxlength="14" placeholder="ex)2호선 신촌역, 신촌오거리역.."> <span id="ePTStationCnt"></span>
+
+			 <input type="text" id="ePTStation" name="pt_stationPE" maxlength="14" placeholder="ex)2호선 신촌역, 11번 신촌초등학교.."> <span id="ePTStationCnt"></span>
+
 			</div>
 			
 			<!-- 대중교통도착 선경로 -->
