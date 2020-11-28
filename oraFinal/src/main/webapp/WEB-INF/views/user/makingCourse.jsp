@@ -2037,15 +2037,18 @@ const mNickName = checkM.item.nickName;
           </div>
         </div>
       </div>
-    </section>
+    </section>  
+    
     <section class="ftco-section ftco-property-details">
-    <div id="siwook"></div>
       <div class="container">
 			<div class="col-md-12 heading-section text-center ftco-animate">
      			<span class="subheading">나만의 코스를 만들어 공유해보세요.</span>
      		</div>
-	
 	<div id="contents">
+		<!-- Button trigger modal -->
+		<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#staticBackdrop">
+		<strong>메이킹 코스 설명서(필독)</strong>
+		</button>
 		<form id="courseForm">
 		<div>		
 			<input type="text" name="c_name"  id="courseName" maxlength="15" placeholder="나만의 코스에 이름을 붙여주세요.">
@@ -2276,6 +2279,26 @@ const mNickName = checkM.item.nickName;
 			</div>
 		</div>
 		</section>
+		
+		<!-- Modal -->
+		<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-xl">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="staticBackdropLabel"><img width="30px" src="/detailCourseImg/makingInfo2.png">메이킹 코스 설명서</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <img width="100%" src="/adminImg/makingCourseInfo.png">
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">끄기</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 		
 	<!-- footer 시작 -->
 	<footer class="ftco-footer ftco-section">

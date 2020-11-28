@@ -176,7 +176,7 @@ public class MakingCourseController {
 			@RequestParam Map<String, Object> map,@RequestParam(value="c_views",required = false) String[] c_views,
 			@RequestParam(value="c_tags",required = false) List<String> c_tags,
 			List<MultipartFile> uploadfile){
-
+			System.out.println("레그코스 작동한다");
 		 int c_no = cdao.nextCno();
 		 String code_value = (String)map.get("code_value");
 		 String id = (String)map.get("id");
