@@ -1165,6 +1165,10 @@ window.onload = function(){
 			    if(status === kakao.maps.services.Status.OK) {
 			       sLoc.value = result[0].address.address_name;
 			    }
+			    else{
+			    	 sLoc.value = "";
+			    	 alert("출발지 주소를 찾을 수 없습니다. 출발마커를 옮겨주세요.")
+				}
 			});
 			//////////////// 대중교통 출발점 위치표시
 			startMarker.setPosition(sMarkerLatLon);
@@ -1178,6 +1182,10 @@ window.onload = function(){
 			    if(status === kakao.maps.services.Status.OK) {
 			       eLoc.value = result[0].address.address_name;
 			    }
+			    else{
+			    	 eLoc.value = "";
+			    	 alert("도착지 주소를 찾을 수 없습니다. 도착마커를 옮겨주세요.")
+				}
 			});
 			///////////// 대중교통 도착점 표시
 			arriveMarker.setPosition(eMarkerLatLon);
@@ -1675,6 +1683,8 @@ window.onload = function(){
 	function preCheck(){ // 미리보기,등록 할때 값들 제어를 할 함수
 		
 		const cname = courseName.value.trim();
+		const sLocName = sLoc.value.trim();
+		const eLocName = eLoc.value.trim();
 		const fixCVal = fixC.getAttribute("val");
 		const fixPSVal = fixPS.getAttribute("val");
 		const fixPEVal = fixPE.getAttribute("val");
@@ -1690,7 +1700,7 @@ window.onload = function(){
 
 		const cPhotoCnt = cPhotoNumCheck();
 		
-		const krengAvail = /^[가-힣a-zA-Z\s]{2,10}$/;
+		const krengAvail = /^[가-힣a-zA-Z\s]{2,15}$/;
 		const krsharpAvail = /^[가-힣#\s]{2,15}$/;
 		const krengnumAvail = /^[가-힣a-zA-Z0-9\s]{2,14}$/;
 		const cnameCheck = krengAvail.test(cname);
@@ -1725,13 +1735,23 @@ window.onload = function(){
 			return 1;
 		}
 		if(cnameCheck == false){
-			alert("코스명의 형식이 유효하지 않습니다(한글 또는 영문자 2~10자).");
+			alert("코스명의 형식이 유효하지 않습니다(한글 또는 영문자 2~15자).");
 			courseName.focus();
 			return 1;
 		}
 		if(cnameDupCheck() == "1"){
 			alert("중복된 코스명입니다. 다른 코스명을 입력해주세요");
 			courseName.focus();
+			return 1;
+		}  
+		if(sLocName == ""){
+			alert("출발지 지역명을 찾을 수 없습니다. 출발마커를 옮겨주세요.");
+			sLoc.focus();
+			return 1;
+		}  
+		if(eLocName == ""){
+			alert("도착지 지역명을 찾을 수 없습니다. 도착마커를 옮겨주세요.");
+			eLoc.focus();
 			return 1;
 		}  
 		if(fixCVal != "n"){
