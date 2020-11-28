@@ -8208,7 +8208,7 @@ h1, h2, h3, h4, h5,
   .ftco-navbar-light .navbar-nav > .nav-item > .nav-link {
     font-size: 18px;
     padding-top: .7rem;
-    padding-bottom: .7rem;
+    padding-bottom: 3px;
     padding-left: 20px;
     padding-right: 20px;
     color: #fff;
@@ -8337,7 +8337,7 @@ h1, h2, h3, h4, h5,
       letter-spacing: .1em; }
     .ftco-navbar-light.scrolled .nav-link {
       padding-top: 0.9rem !important;
-      padding-bottom: 0.9rem !important;
+      padding-bottom: 0.2rem !important;
       color: #000000 !important; }
       .ftco-navbar-light.scrolled .nav-link.active {
         color: #d8572d !important; }
@@ -8689,7 +8689,7 @@ h1, h2, h3, h4, h5,
   background: #d8572d !important; }
 
 .bg-darken {
-  background: #88bea6; }	/* #4f9424 ����ȣ ����*/
+  background: #88bea6; }	/* #4f9424 占쏙옙占쏙옙호 占쏙옙占쏙옙*/
 
 .btn {
   cursor: pointer;
@@ -9441,7 +9441,7 @@ textarea.form-control {
     width: 50px;
     height: 1px;
     margin-top: -1px;
-    background: #d8572d;	/* #d8572d ���ȣ ��� */}
+    background: #d8572d;	/* #d8572d 占쏙옙占싫� 占쏙옙占� */}
 
   .heading-section .subheading:before {
     position: absolute;
@@ -9454,7 +9454,7 @@ textarea.form-control {
     width: 50px;
     height: 1px;
     margin-top: -1px;
-    background: #d8572d;	/* #d8572d ���ȣ ��� */ }
+    background: #d8572d;	/* #d8572d 占쏙옙占싫� 占쏙옙占� */ }
 
 
 .heading-section h2 {
@@ -10190,7 +10190,7 @@ textarea.form-control {
 
     
 
-/* ----------- �������� ------------ */
+/* ----------- 占쏙옙占쏙옙占쏙옙占쏙옙 ------------ */
 
 
 
