@@ -179,13 +179,13 @@ window.onload = function(){
 	const fixPE = document.getElementById("fixPE");;  // 수정시 가져오기필요문구 나타낼스판
 
 ////////////////////////////////////////////////////////////// 변수선언끝 	
-	const courseNameCnt = document.getElementById("courseNameCnt");  // 10자
+	const courseNameCnt = document.getElementById("courseNameCnt");  // 15자
 	const courseTagCnt = document.getElementById("courseTagCnt");  // 15자
 	const wordsCnt = document.getElementById("wordsCnt");  // 3000자
 	const sPTStationCnt = document.getElementById("sPTStationCnt"); // 14자
 	const ePTStationCnt = document.getElementById("ePTStationCnt"); // 14자
 
-	const courseNameMaxCnt = 10;
+	const courseNameMaxCnt = 15;
 	const courseTagMaxCnt = 15;
 	const wordsMaxCnt = 3000;
 	const stationMaxCnt = 14;
@@ -2020,7 +2020,7 @@ const mNickName = checkM.item.nickName;
 	<div id="contents">
 		<form id="courseForm">
 		<div>		
-			<input type="text" name="c_name"  id="courseName" maxlength="10" placeholder="나만의 코스에 이름을 붙여주세요.">
+			<input type="text" name="c_name"  id="courseName" maxlength="15" placeholder="나만의 코스에 이름을 붙여주세요.">
 			<span id="courseNameCnt"></span>
 		</div>
 			
