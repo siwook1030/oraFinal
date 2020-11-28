@@ -31,7 +31,7 @@
    	width: 34px;
    }
    .cPtIcon{
-   	width: 50px;
+   	width: 70px;
    }
 
 
@@ -105,9 +105,10 @@
 	.ptBox {
 		float: left;  
 		height:350px; 
-		width: 30%; 
+		width: 35%; 
 		text-align: center;
-		font-size: large;
+		font-size: x-small;
+		margin-right: 20px;
 	}
 	.ptBox table {
 		padding: 0 3px 0 3px;

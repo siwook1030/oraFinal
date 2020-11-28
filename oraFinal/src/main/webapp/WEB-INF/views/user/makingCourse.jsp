@@ -2048,7 +2048,7 @@ const mNickName = checkM.item.nickName;
 	<div id="contents">
 		<form id="courseForm">
 		<div>		
-			<input type="text" name="c_name"  id="courseName" maxlength="15" placeholder="나만의 코스에 이름을 붙여주세요.">
+			<input type="text" name="c_name"  id="courseName" maxlength="17" placeholder="나만의 코스에 이름을 붙여주세요.">
 			<span id="courseNameCnt"></span>
 		</div>
 			
@@ -2113,7 +2113,7 @@ const mNickName = checkM.item.nickName;
 				<option value="1">쉬움</option>
 				<option value="2">보통</option>
 				<option value="3">어려움</option>
-				<option value="4">힘듬</option>
+				<option value="4">힘듦</option>
 			</select>
 			</div>
 			<div>
@@ -2215,8 +2215,8 @@ const mNickName = checkM.item.nickName;
 			</select>
 			</div>
 			<div>
-			<label for="sPTStation" class="textFont">역이름 </label>
-			 <input type="text" id="sPTStation"  name="pt_stationPS" maxlength="14" placeholder="ex)2호선 신촌역, 신촌오거리역.."> <span id="sPTStationCnt"></span>
+			<label for="sPTStation" class="textFont">역/정류장 </label>
+			 <input type="text" id="sPTStation"  name="pt_stationPS" maxlength="20" placeholder="ex)2호선 신촌역, 11번 신촌초등학교.."> <span id="sPTStationCnt"></span>
 			</div>
 			<!-- 대중교통출발 선경로 -->
 			<div style="display: none;">
