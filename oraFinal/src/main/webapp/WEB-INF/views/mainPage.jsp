@@ -488,7 +488,7 @@ window.onload = function(){
 									<c:if test="${c.c_difficulty == 1 }"><span style="color:#88bea6;">쉬움</span></c:if>
 									<c:if test="${c.c_difficulty == 2 }"><span style="color: #eccb6a;">보통</span></c:if>
 									<c:if test="${c.c_difficulty == 3 }"><span style="color: #c8572d;">어려움</span></c:if>
-									<c:if test="${c.c_difficulty == 4 }"><span style="color:red;">힘듬</span></c:if>
+									<c:if test="${c.c_difficulty == 4 }"><span style="color:red;">힘듦</span></c:if>
 									</li>
 								</ul>
 						

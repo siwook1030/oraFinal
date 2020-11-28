@@ -2331,7 +2331,7 @@ window.onload = function(){
 				<option value="1">쉬움</option>
 				<option value="2">보통</option>
 				<option value="3">어려움</option>
-				<option value="4">힘듬</option>
+				<option value="4">힘듦</option>
 			</select>
 			</div>
 			<div>
@@ -2426,12 +2426,12 @@ window.onload = function(){
 				<option value="(입력안함)">--대중교통선택--</option>
 				<option value="지하철">지하철</option>
 				<option value="시내버스">시내버스</option>
-				<option value="고속버스">고속버스</option>
+				<option value="시외버스">시외버스</option>
 				<option value="기차">기차</option>
 			</select>
 			</div>
 			<div>
-			<label for="sPTStation" class="textFont">역이름 </label>
+			<label for="sPTStation" class="textFont">역/정류장 </label>
 			 <input type="text" id="sPTStation"  name="pt_stationPS" maxlength="14" placeholder="ex)2호선 신촌역, 신촌오거리역.."> <span id="sPTStationCnt"></span>
 			</div>
 			<!-- 대중교통출발 선경로 -->
@@ -2469,12 +2469,12 @@ window.onload = function(){
 				<option value="(입력안함)">--대중교통선택--</option>
 				<option value="지하철">지하철</option>
 				<option value="시내버스">시내버스</option>
-				<option value="고속버스">고속버스</option>
+				<option value="시외버스">시외버스</option>
 				<option value="기차">기차</option>
 			</select>
 			</div>
 			<div>
-			<label for="ePTStation" class="textFont">역이름 </label>
+			<label for="ePTStation" class="textFont">역/정류장 </label>
 			 <input type="text" id="ePTStation" name="pt_stationPE" maxlength="14" placeholder="ex)2호선 신촌역, 신촌오거리역.."> <span id="ePTStationCnt"></span>
 			</div>
 			

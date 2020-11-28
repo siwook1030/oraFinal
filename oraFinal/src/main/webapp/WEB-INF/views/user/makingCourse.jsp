@@ -1087,19 +1087,17 @@ const mNickName = checkM.item.nickName;
 			return;
 		}
 		reader.onload = function () {
-			$("#ftco-loader").show();
 			const courseBounds = new kakao.maps.LatLngBounds();
 			altitudeData = [];  // 고도 초기화
 			altitudeArr = [];
 			
 			const eleArr = $(reader.result).find("trkseg ele");
 			const  trkptArr = $(reader.result).find("trkseg trkpt");
-
 			if(eleArr.length == 0 || trkptArr.length == 0){
 				alert("gpx파일의 형식이 아닙니다.");
 				return;
 			}
-
+			
 			const latArr = new Array();
 			const lonArr = new Array();
 			const latlonArr = new Array();
@@ -1114,7 +1112,7 @@ const mNickName = checkM.item.nickName;
 				
 				
 			}
-			
+
 			polyObj.setPath(latlonArr);
 			const distancePerLine = (((polyObj.getLength()/1000).toFixed(1))/(eleArr.length-1)).toFixed(10);
 
@@ -1147,7 +1145,8 @@ const mNickName = checkM.item.nickName;
 			
 			if(manager3.getOverlays().polyline[0]){
 				manager3.remove(manager3.getOverlays().polyline[0]);
-			}	
+			}
+	
 			manager3.put(kakao.maps.drawing.OverlayType.POLYLINE, latlonArr);
 			map.setBounds(courseBounds);
 			drawAltitude();
@@ -1199,7 +1198,7 @@ const mNickName = checkM.item.nickName;
 		    
 		    infoC.disabled = true;
 //--------------------------------------------------
- 
+		    console.log("시작7");
 		};
 			reader.readAsText(file, "UTF-8");
 			this.value = null;
@@ -2213,7 +2212,7 @@ const mNickName = checkM.item.nickName;
 				<option value="(입력안함)">--대중교통선택--</option>
 				<option value="지하철">지하철</option>
 				<option value="시내버스">시내버스</option>
-				<option value="고속버스">고속버스</option>
+				<option value="시외버스">시외버스</option>
 				<option value="기차">기차</option>
 			</select>
 			</div>
@@ -2256,13 +2255,15 @@ const mNickName = checkM.item.nickName;
 				<option value="(입력안함)">--대중교통선택--</option>
 				<option value="지하철">지하철</option>
 				<option value="시내버스">시내버스</option>
-				<option value="고속버스">고속버스</option>
+				<option value="시외버스">시외버스</option>
 				<option value="기차">기차</option>
 			</select>
 			</div>
 			<div>
 			<label for="ePTStation" class="textFont">역/정류장 </label>
+
 			 <input type="text" id="ePTStation" name="pt_stationPE" maxlength="14" placeholder="ex)2호선 신촌역, 11번 신촌초등학교.."> <span id="ePTStationCnt"></span>
+
 			</div>
 			
 			<!-- 대중교통도착 선경로 -->
