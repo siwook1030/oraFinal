@@ -55,7 +55,7 @@ window.onload = function(){
 			diffContent = '<span style="color: #c8572d;">어려움</span>';
 		}
 		else if(diff == 4){
-			diffContent = '<span style="color:red;">힘듬</span>';
+			diffContent = '<span style="color:red;">힘듦</span>';
 		}
 
 		let courseViewContent="";

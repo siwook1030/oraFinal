@@ -215,7 +215,7 @@ public class CourseManager {
 			}
 			
 		}
-		System.out.println(cNumList);
+
 		for(int c_no : cNumList) {
 			map.put("c_no", c_no);
 			scList.add(selectByCnoandUserDis(map));
