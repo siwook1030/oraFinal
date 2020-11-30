@@ -37,7 +37,7 @@
 		#commentDiv { border: 1px solid gray; width: auto; }
 		#mr_content { width: 100%; height: 110px; padding: 10px 10px 10px 13px; font-size: 14px; border: none; }
 		#btnRepDiv { text-align: right; margin: 0 7px 7px 0; }
-		#mr_contentSpan { display: inline-block; font-size: 13px; vertical-align: bottom; margin-right: 10px; }
+		.mr_contentSpan { display: inline-block; font-size: 13px; vertical-align: bottom; margin-right: 10px; vertical-align: bottom; }
 		#btnInsertReply { background-color: #c8572d; }
 		/* 댓글수 */
 		#repImg, #repStr, #repCnt { display: inline-block; font-size: 18px; }
@@ -63,6 +63,12 @@
 		.txtDiv { /* border: 1px solid purple; */ text-align: right; margin: 0 7px 7px 0; }
 		.txtMaxCntSpan { /* border: 1px solid red; */ font-size: 13px; display: inline-block; vertical-align: bottom; }
 		.btnRepComDiv { /* border: 1px solid blue; */ display: inline-block; margin-left: 10px; }
+		.updateTa { width: 100%; height: 110px; font-size: 14px; padding: 10px 10px 10px 13px; }
+		.btnCancel.btn { background-color: #eccb6a; margin-left: 3px; }
+		.updateTxtDiv { border: 1px solid gray; width: auto; margin-top: 5px; }
+		.updateTxtDiv textarea { border: none; }
+		.updateBtn { text-align: right; margin: 0 7px 7px 0; display: right; }
+		.uptxtDiv { display: inline-block; vertical-align: bottom; display: rigth; }
 		/* 지도 */
 		.map_wrap { position: relative; width: 100%; height: 450px; font-size: 80%; }
 		#meetingLocBtn{
@@ -304,26 +310,35 @@ window.onload = function(){
 			const updateDiv = document.createElement("div");
 			const updateContent = '<img src="rank/'+mr.rank_icon+'" height="25">'+mr.nickName+'<br>';
 			const update_input = document.createElement("textarea");
-			update_input.setAttribute("rows", "10");
-			update_input.setAttribute("cols", "80");
+			/* update_input.setAttribute("rows", "10");
+			update_input.setAttribute("cols", "80"); */
 			update_input.setAttribute("maxlength", repMaxCnt);
 			update_input.className="updateTa";
 			update_input.innerHTML=content;  // 글내용만 넣는다
 			
 			const uptxtMaxCntSpan = document.createElement("span");
+			uptxtMaxCntSpan.className = 'mr_contentSpan';
 			const uptxtDiv = document.createElement("div");
-			
-			uptxtDiv.append(uptxtMaxCntSpan);
+			uptxtDiv.className = 'uptxtDiv';
+			const updateTxtDiv = document.createElement("div");
+			updateTxtDiv.className = 'updateTxtDiv';
+			const updateBtn = document.createElement("div");
+			updateBtn.className = 'updateBtn'; 
 			
 			const btn_updateCancel = document.createElement("button");
 			btn_updateCancel.setAttribute("oldContent", content);
-			btn_updateCancel.className="btnCancel";
+			btn_updateCancel.className="btnCancel btn";
 			btn_updateCancel.innerHTML="취소";
 			const btn_update = document.createElement("button");
 			btn_update.innerHTML="수정";
+			btn_update.className="btn";
 			updateDiv.innerHTML = updateContent;
-			updateDiv.append(update_input,uptxtDiv,btn_updateCancel,btn_update);
-			li3.append(updateDiv);
+			/* updateDiv.append(update_input,uptxtDiv,btn_update, btn_updateCancel); */
+			
+			uptxtDiv.append(uptxtMaxCntSpan);
+			updateBtn.append(uptxtDiv, btn_update, btn_updateCancel);
+			updateTxtDiv.append(update_input, updateBtn);
+			li3.append(updateDiv,updateTxtDiv);
 
 			// li1 댓글보여주는거 , li2 답글달기보여주는거, li3 수정하는거 보여주는거
 			ul.append(li1,li2,li3);
@@ -1077,7 +1092,7 @@ window.onload = function(){
 						<textarea name="mr_content" id="mr_content" maxlength="300" placeholder="댓글을 입력하세요."></textarea>
 						<div id="btnRepDiv">
 							<!-- 댓글글자수 -->
-							<span id="mr_contentSpan"></span>
+							<span id="mr_contentSpan" class="mr_contentSpan"></span>
 							<button id="btnInsertReply" class="btn" type="button">등록</button>
 					
 						</div>
