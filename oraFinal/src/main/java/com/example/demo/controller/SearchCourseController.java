@@ -126,7 +126,7 @@ public class SearchCourseController {
 		return cdao.tagSearchCourseList(tags);
 	}
 	
-	@PostMapping(value = "/speechSearch", produces = "application/json; charset=utf-8")
+/*	@PostMapping(value = "/speechSearch", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String speech(HttpServletRequest request, MultipartFile speak) {
 		System.out.println(speak);
@@ -199,6 +199,6 @@ public class SearchCourseController {
 	    
 	    System.out.println(result);
 	    return result;
-	}
+	}*/
 	
 }
