@@ -221,7 +221,7 @@ window.onload = function(){
 	}
 
 	// rest api 구현연습-----------------------------------
-	 	const record = document.getElementById("record")
+	 /*	const record = document.getElementById("record")
         const stop = document.getElementById("stop")
         const soundClips = document.getElementById("sound-clips")
 
@@ -315,7 +315,7 @@ window.onload = function(){
                 })
         }
 
-	
+	*/
 
 	//------------------------------------------------------
 
@@ -414,10 +414,10 @@ window.onload = function(){
     </section>
     
         <div>
-    	    <input type=checkbox id="chk-hear-mic"><label for="chk-hear-mic">마이크 소리 듣기</label>
+  <!--  	<input type=checkbox id="chk-hear-mic"><label for="chk-hear-mic">마이크 소리 듣기</label>
     <button id="record">녹음</button>
     <button id="stop">정지</button>
-    <div id="sound-clips"></div>
+    <div id="sound-clips"></div>-->
     </div>
     
     <section class="ftco-section goto-here">
