@@ -4,7 +4,22 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
 <title>Insert title here</title>
+<script type="text/javascript">
+window.onload = function(){
+	 const token = $("meta[name='_csrf']").attr("content");
+	    const header = $("meta[name='_csrf_header']").attr("content");
+	    $(document).ajaxSend(function(e, xhr, options) {
+	        if(token && header) {
+	            xhr.setRequestHeader(header, token);
+	        }
+	    });
+	
+}
+</script>
 </head>
 <body>
     
@@ -88,7 +103,6 @@
   <script src="resources/js/jquery.animateNumber.min.js"></script>
   <script src="resources/js/scrollax.min.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-  <script src="resources/js/google-map.js"></script>
   <script src="resources/js/main.js"></script>
     
 </body>

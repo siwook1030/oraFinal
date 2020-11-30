@@ -18,6 +18,11 @@ public class ReviewDao {
 	public List<ReviewVo> selectList(HashMap mybatis_map){
 		return ReviewManager.selectList(mybatis_map);
 	}
+	// 코스별 조회수 상위3개 뽑아오기
+	public List<ReviewVo> getReviewByCno(int c_no){
+		return ReviewManager.getReviewByCno(c_no);
+	}
+	
 	public List<ReviewVo> myPageSelectList(HttpSession httpSession){
 		return ReviewManager.MyPageSelectList(httpSession);
 	}
@@ -86,5 +91,16 @@ public class ReviewDao {
 	}
 	public int deleteTemp(String id) {
 		return ReviewManager.deleteTemp(id);
+	}
+	public int deleteRepOne(int rr_no) {
+		return ReviewManager.deleteRepOne(rr_no);
+	}
+	public int updateRep(Review_repVo rrvo) {
+		return ReviewManager.updateRep(rrvo);
+	}
+	
+	// 로그기록위해 댓글 삭제전 아이디 가져오기
+	public Review_repVo getReviewRepOne(int rr_no) {
+		return ReviewManager.getReviewRepOne(rr_no);
 	}
 }

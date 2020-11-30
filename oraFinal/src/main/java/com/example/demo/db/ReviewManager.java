@@ -39,6 +39,17 @@ public class ReviewManager {
 	    }
 		return list;
 	}
+	// 코스별 후기 조회수 상위3개 뽑아오기
+	public static List<ReviewVo> getReviewByCno(int c_no){
+		List<ReviewVo> list = null;
+		SqlSession session = sqlSessionFactory.openSession();
+		list = session.selectList("review.selectOrderByHit", c_no);
+		session.close();
+		for(ReviewVo r : list) {
+			r.setRf(selectListFile(r.getR_no()));
+	    }
+		return list;
+	}
 	
 	//마이페이지 내후기
 	public static List<ReviewVo> MyPageSelectList(HttpSession httpSession){
@@ -156,6 +167,7 @@ public class ReviewManager {
 	}
 	public static int insertRep(Review_repVo rrvo) {
 		int re = 0;
+		System.out.println(rrvo);
 		SqlSession session = sqlSessionFactory.openSession();
 		re = session.insert("review.insertRep", rrvo);
 		session.commit();
@@ -208,5 +220,30 @@ public class ReviewManager {
 		session.commit();
 		session.close();
 		return re;
+	}
+	public static int deleteRepOne(int rr_no) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.delete("review.deleteRepOne", rr_no);
+		session.commit();
+		session.close();
+		return re;
+	}
+	public static int updateRep(Review_repVo rrvo) {
+		int re = 0;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.update("review.updateRep", rrvo);
+		session.commit();
+		session.close();
+		return re;
+	}
+	
+	// 로그기록 댓글 삭제전 아이디 가져오기위해
+	public static Review_repVo getReviewRepOne(int rr_no) {
+		SqlSession session = sqlSessionFactory.openSession();
+		Review_repVo rrvo = session.selectOne("review.selectReviewRep",rr_no);
+		session.close();
+		
+		return rrvo;
 	}
 }

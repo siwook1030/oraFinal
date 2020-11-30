@@ -6,8 +6,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>미리보기</title>
+<link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
+<title>메이킹코스 미리보기</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="/resources/css/animate.css">
@@ -19,6 +23,16 @@
 <style type="text/css">
 
    /*매인섹션부분css------------ ----------------*/
+  .cInfoIcon {
+   	width: 20px;
+   }
+   
+    .cViewIcon {
+   	width: 34px;
+   }
+     .cPtIcon{
+   	width: 50px;
+   }
    
    #detailMap {
   	text-align: center;
@@ -73,9 +87,9 @@
    	
    	color : 00FFFF;
    	font-weight : bold;
-    border-top : 2px #bae4f0 solid;
+    border-top : 2px #d0a183 solid;
    	border-bottom: 1px #EBEBEB solid;
-   	background-color: #F5FFFF;
+   	background-color: #f4dfcf;
    }
     #course-summury-table tbody{
     	border-bottom: 1px #EBEBEB solid;
@@ -90,19 +104,34 @@
 
 		
 	}
+	.ptBox {
+		float: left;  
+		height:350px; 
+		width: 30%; 
+		text-align: center;
+		font-size: large;
+	}
+	.ptBox table {
+		padding: 0 3px 0 3px;
+	}
+	
 	#transportS{
-		border: solid 1px white;
-		margin-left:50px;
-		width : 80%;
-		height: 300px;
+
+		width : 90%;
+		height: 350px;
 	}
 	#transportE{
-		border: solid 1px white;
-		margin-left:50px;
-		width : 80%;
-		height: 300px;
+
+		width : 90%;
+		height: 350px;
 
 	}
+	
+	.pt-summury{
+		height: 50%;
+		padding-top: 50px;
+	}
+	
 	#addInfo{
 		border: solid 1px white;
 		width: 70%;
@@ -112,13 +141,73 @@
 	}
 	.addInfoTitle{
 		border-bottom : 1px solid #EBEBEB;
-		font-size: 120%;
+		font-size: 140%;
+		font-weight: bold;
+		padding: 0 0 0 0;
+		
 	}
 	
 	.property-wrap .img {
 		height: 350px;
 	}
+	.nav-link active, .nav-link {
+		font-weight: bold;
+	}
 	
+	.nav-link:hover, .nav-link:focus{
+		background: #f4dfcf;
+   		 color: white; 
+	}
+	
+	.tagA {
+		margin-left: 5px;
+	}
+	
+   .tagA:hover, .tagA:focus {
+    background: #c8572d;
+    color: #fff; 
+    font-weight: bold;
+    }
+    
+    .search-place:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: '';
+    background: none;
+    opacity: 0;
+    z-index: -1;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    transition: all 0.3s ease; }
+    
+    #desc span{
+    	font-size: 20px;
+    }
+    
+     .search-place:hover .desc span {
+    background: #d8572d;
+    color: #fff; }
+    
+       .search-place:after,	 .col-md-4, .img, .search-place img {
+   	border-radius: 10px;
+   }
+   
+      #map, #PSmap, #PEmap {
+    	border-radius: 20px;
+    }
+    
+       .testimony-wrap {
+    box-shadow: 10px 5px 21px -14px rgba(14, 14, 14, 0.8);
+    width: 100%;
+    height: 300px;
+    background-color: #F7F7F7;
+}
+
    /*메인섹션 끝css--------------------------*/
    /*float 초기화 아이디*/
    #clear{
@@ -158,12 +247,47 @@
 .placeinfo .foodTitle {font-weight: bold; font-size:14px;border-radius: 6px 6px 0 0;margin: -1px -1px 0 -1px;padding:10px; color: #fff;background: #d95050;background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;}
 .placeinfo .tel {color:#0f7833;}
 .placeinfo .jibun {color:#999;font-size:11px;margin-top:0;}
+	/* header dropdown */
+	.ftco-navbar-light .navbar-nav > .nav-item .dropdown-menu {
+		/* background: #fff;
+		background-color: #fff;
+		opacity: 0.7; */
+		background: rgba(255,255,255,0.7);
+		/* border: 2px solid white; */
+		/* width: 100px; */
+		min-width: 9rem;
+		color: white;
+	}
+	.dropdown-item {
+		font-weight: bold;
+		color: #5D5D5D;
+	} 
+	.navbar .nav-item:hover .dropdown-menu .dropdown-item {
+		color: #5D5D5D;
+	}
+	
+		.locname {
+		margin-left: 40px;
+	}
+	
+	.arrowTd {
+	 padding: 20px 0 20px 0;
+	}
 </style>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 <script type="text/javascript">
 window.onload = function(){
+
+	 	const token = $("meta[name='_csrf']").attr("content");
+	    const header = $("meta[name='_csrf_header']").attr("content");
+	    const parameter = $("meta[name='_csrf_parameter']").attr("content");
+	    /*$(document).ajaxSend(function(e, xhr, options) {
+	        if(token && header) {
+	            xhr.setRequestHeader(header, token);
+	        }
+	    });*/
 	
 	// 마커를 클릭했을 때 해당 장소의 상세정보를 보여줄 커스텀오버레이입니다
 	const placeOverlay = new kakao.maps.CustomOverlay({zIndex:1}), 
@@ -390,35 +514,70 @@ window.onload = function(){
 	const preStartLatLng = new kakao.maps.LatLng(cJson.c_s_latitude, cJson.c_s_longitude);
 	const preArriveLatLng = new kakao.maps.LatLng(cJson.c_e_latitude, cJson.c_e_longitude);
 	
-	const cLineObj = JSON.parse(cJson.c_line);
-	const courseLine = eval(cLineObj.courseLine);
-	const altitudeData = eval(cLineObj.altitudeData);
+	const courseLine = cJson.c_line;
+	let altitudeData = [];
+
+	const eleArr = $(courseLine).find("trkseg ele");
+	const trkptArr = $(courseLine).find("trkseg trkpt");
+	const mnBound = $(courseLine).find("bounds")[0];
+
+	const latArr = new Array();
+	const lonArr = new Array();
+	const latlonArr = new Array();
+
+	const courseDistacne = cJson.c_distance;
+	const distancePerLine = Number(courseDistacne/(eleArr.length-1)).toFixed(10);
+
+	for(let i=0; i<trkptArr.length; i++){
+		const lat = trkptArr[i].getAttribute("lat");
+		const lon = trkptArr[i].getAttribute("lon");
+
+		altitudeData.push([distancePerLine*i,Number(Number((eleArr[i].innerHTML)).toFixed(1))]);
+		
+		latArr.push(lat);
+		lonArr.push(lon);
+		latlonArr.push(new kakao.maps.LatLng(lat,lon));	
+		
+	}
+
+	const maxLat = mnBound.getAttribute("maxlat");
+	const maxLon = mnBound.getAttribute("maxlon");	
+	const minLat = mnBound.getAttribute("minlat");
+	const minLon = mnBound.getAttribute("minlon");
+
+	courseBounds.extend(new kakao.maps.LatLng(maxLat,maxLon));
+	courseBounds.extend(new kakao.maps.LatLng(minLat,minLon));
 	
-	cPoly.setPath(courseLine);
-	courseLine.forEach(function(c, i) {
-		courseBounds.extend(c);
-	});
+	
+	cPoly.setPath(latlonArr);
+
 		
 	google.charts.load('current', {'packages':['corechart']});
 	google.charts.setOnLoadCallback(drawAltitude); 
 	
 	///////--------------------- 고도 차트
 	   function drawAltitude() {
-        const data = google.visualization.arrayToDataTable(altitudeData);
+		   const data = new google.visualization.DataTable();
+	        data.addColumn('number','거리');
+	        data.addColumn('number','고도');
 
-        const options = {
-          	  title: '자전거코스 고도',
-          	  animation:{duration:3000,easing:'out',startup:true},
-                hAxis: {title: '거리(km)' ,titleTextStyle: {color: '#333'},gridlines: {color: 'transparent'}},
-                vAxis: {title:'고도(m)',titleTextStyle: {color: '#333'},minValue: 0},
-                curveType: 'function',
-                width:'100%',
-                height:300,
-              };
+			if(altitudeData.length != 0){
+				data.addRows(altitudeData);
+			}
+	        
+	        const options = {
+	            	  title: '자전거코스 고도',
+	            	  animation:{duration:3000,easing:'out',startup:true},
+	                  hAxis: {title: '거리(km)' ,titleTextStyle: {color: '#333'},gridlines: {color: 'transparent'}},
+	                  vAxis: {title:'고도(m)',titleTextStyle: {color: '#333'},minValue: 0},
+	                  curveType: 'function',
+	                  width:'100%',
+	                  height:300,
+	                };
 
-        const chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-        window.addEventListener("resize",drawAltitude,false);
+	        const chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+	        chart.draw(data, options);
+	        window.addEventListener("resize",drawAltitude,false);
       }
 	   
 	cBound.addEventListener("click", function(e) {
@@ -993,12 +1152,12 @@ document.addEventListener("DOMContentLoaded", function(){
  </script>
 </head>
 <body>
-  		<section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+  		<section class="hero-wrap hero-wrap-2" style="background-image: url('/headerImg/makingCourseMain.jpg');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate pb-0 text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="#">오늘의 라이딩<i class="fa fa-chevron-right"></i></a></span> <span>미리보기<i class="fa fa-chevron-right"></i></span></p>
+          	<p class="breadcrumbs"><span class="mr-2"><a href="#">HOME <i class="fa fa-chevron-right"></i></a></span> <span>미리보기 <i class="fa fa-chevron-right"></i></span></p>
             <h1 class="mb-3 bread">${c.c_name}</h1>
           </div>
         </div>
@@ -1010,7 +1169,33 @@ document.addEventListener("DOMContentLoaded", function(){
       	<div class="row justify-content-center">
       		<div class="col-md-12">
       			<div class="property-details">
-		 			<div><a href="#" id="nSaveCoruse" title="코스 찜하기" ><img src="/detailCourseImg/nfavor.png" width="50px" height="50px"><i></i></a></div>	 			
+      			
+      			<c:if test="${not empty uploadFilesName}">
+      				<div class="ftco-animate">
+						<a class="search-place img" style="background-image: url(/previewPhoto/${uploadFilesName[0]});">	
+							<div class="desc" id="desc">
+								<span>${c.c_loc}</span> <span>${c.c_view}</span> <br><span>${c.c_tag}</span>		
+							</div>
+							<div class="desc" style="text-align: right;">
+								<img id="ySaveCoruse"  title="코스 찜하기" src="/detailCourseImg/yfavor.png" width="50px" height="50px" style="cursor: pointer;">
+							</div>
+						</a>
+					</div>
+				</c:if>
+				
+				<c:if test="${empty uploadFilesName }">
+      				<div class="ftco-animate">
+						<a class="search-place img" style="background-image: url(/coursePhoto/empty.png);">	
+							<div class="desc" id="desc">
+								<span>${c.c_loc}</span> <span>${c.c_view}</span> <br><span>${c.c_tag}</span>		
+							</div>
+							<div class="desc" style="text-align: right;">
+								<img id="ySaveCoruse"  title="코스 찜하기" src="/detailCourseImg/yfavor.png" width="50px" height="50px" style="cursor: pointer;">
+							</div>
+						</a>
+					</div>
+				</c:if>
+		
       	<div id="detailMap">
   		<div class="map_wrap">
   		<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
@@ -1068,6 +1253,11 @@ document.addEventListener("DOMContentLoaded", function(){
       					<span class="subheading" style="margin-left: 10px;">made by ${c.nickName }</span>
       					<h2>${c.c_name}</h2>
       				</div>
+      				<div>
+      					<c:forEach var="t" items="${c.c_tags }">
+      						<a class="tagA" href="#">#${t}</a>
+      					</c:forEach>
+      				</div>
       			</div>
       		</div>
       	</div>
@@ -1121,11 +1311,11 @@ document.addEventListener("DOMContentLoaded", function(){
 							  					<c:if test="${c.c_difficulty ==1 }"><span style="color: #88bea6;">쉬움</span><br></c:if>
 							  					<c:if test="${c.c_difficulty ==2 }"><span style="color: #eccb6a;">보통</span><br></c:if>
 							  					<c:if test="${c.c_difficulty ==3 }"><span style="color: #c8572d;">어려움</span><br></c:if>
-							  					<c:if test="${c.c_difficulty ==4 }"><span style="color: red;">매우 어려움</span><br></c:if>
+							  					<c:if test="${c.c_difficulty ==4 }"><span style="color: red;">힘듦</span><br></c:if>
 							  					</td>
 							  					<td>
 							  					<c:forEach var="v" items="${c.c_views }">
-							  						<img src="/courseViewImg/${v}.png">&nbsp;
+							  						<img class="cViewIcon" src="/courseViewImg/${v}.png">&nbsp;
 							  					</c:forEach>		
 							  					</td>
 							  				</tr>
@@ -1145,7 +1335,7 @@ document.addEventListener("DOMContentLoaded", function(){
 									<div id="courseWordsTitle" style="margin-bottom: 20px; font-size: 110%;">
 										<span style="text-decoration: underline;">&nbsp;&nbsp;${c.c_name } 코스만의&nbsp;&nbsp;'<span style="color: #eccb6a;font-weight: bold;">갬</span><span style="color: #c8572d; font-weight: bold; ">성</span>' 포인트&nbsp;&nbsp;&nbsp;</span>
 									</div>
-									<div id="courseWordsContent" style="font-size: 90%; white-space:pre;">${c.c_words }</div>
+									<div id="courseWordsContent" style=" white-space: pre-wrap;">${c.c_words }</div>
 					  			</div>
 					  		 </div>
 						    </div>
@@ -1158,7 +1348,7 @@ document.addEventListener("DOMContentLoaded", function(){
 							     	 <div class="row ftco-animate">
 							     	  <div class="col-md-12">
 	           							 <div class="carousel-properties owl-carousel">
-								  		<c:if test="${uploadFilesName != null }">
+								  		<c:if test="${not empty uploadFilesName }">
 								  			<c:forEach var="p" items="${uploadFilesName }">
 									  			 <div class="item" style="height: 400px;">
 	               									 <div class="property-wrap ftco-animate" style="height: 400px;">
@@ -1179,44 +1369,78 @@ document.addEventListener("DOMContentLoaded", function(){
 						      <div class="col-md-12 heading-section text-center ftco-animate">
 						          		<span class="subheading">대중교통</span>
 						        	  <div style="margin: 20px 0 20px 0; text-align: left;">
-						     <div  class="addInfoTitle">출발점</div>
+						     <div  class="addInfoTitle"><img src="/detailCourseImg/startline.png" width="80px;"><strong class="locname">${c.c_s_locname }</strong></div>
 								<div id="transportS">
 						  			<div style="width: 100%; margin-top: 10px;">
-						  				<div style="float: left;  border: solid 1px gray;  height:300px; width: 30%; text-align: center;">
-						  				<div><strong>${c.c_s_locname }</strong></div>
+						  				<div class="ptBox" >
 						  				<c:forEach var="t" items="${ptList }">
 						  					<c:if test="${t.code_value=='00201' }">
-						  						<div><img src="publictransport/${t.pt_img }">&nbsp;${t.pt_station } ▷▷ 출발점</div>
-						  						<div><img src="/detailCourseImg/disArrow.png"> ${t.pt_distance }km&nbsp;
-						  						<img src="/detailCourseImg/run.png"><fmt:formatNumber value="${t.pt_distance/5*60+1 }" pattern=".0" />분&nbsp;&nbsp;
-						  						<img src="/detailCourseImg/bicycle.png">&nbsp;<fmt:formatNumber value="${t.pt_distance/20*60+1 }" pattern=".0" />분
+						  						<div class="pt-summury">
+							  						<table width="100%">
+							  							<tr><td rowspan="3"><img class="cPtIcon" src="/publictransport/${t.pt_img }"></td>
+							  							<td>${t.pt_station }</td>
+							  							</tr>
+							  							<tr><td class="arrowTd"><img class="cInfoIcon" src="/detailCourseImg/next.png"></td></tr>
+							  							<tr><td>출발점</td></tr>
+							  						</table>
+						  						</div>
+						  						<div class="pt-summury">
+							  						<table width="100%">
+							  							<tr>
+							  								<td><img class="cInfoIcon" src="/detailCourseImg/disArrow.png"></td>
+							  								<td><img class="cInfoIcon" src="/detailCourseImg/run.png"></td>
+							  								<td><img class="cInfoIcon" src="/detailCourseImg/bicycle.png"></td>
+							  							</tr>
+							  							<tr>
+							  								<td>${t.pt_distance }km</td>
+							  								<td><fmt:formatNumber value="${t.pt_distance/5*60+1 }" pattern=".0" />분</td>
+							  								<td><fmt:formatNumber value="${t.pt_distance/20*60+1 }" pattern=".0" />분</td>
+							  							</tr>
+							  						</table>
 						  						</div>
 						  					</c:if>
 						  				</c:forEach>
 						  				</div>
-						  				<div id="PSmap" style=" border: solid 1px black; height:300px; width: 1px%;">
+						  				<div id="PSmap" style=" height:350px; width: 1px%;">
 						  				</div>
 						  			</div>
 						  		</div>
 						  		</div>
 						  		
 						  		 <div style="margin: 80px 0 20px 0; text-align: left;">
-						  		<div class="addInfoTitle">도착점</div>
+						  		<div class="addInfoTitle"><img src="/detailCourseImg/finishline.png" width="80px;"><strong class="locname">${c.c_e_locname }</strong></div>
 						  		<div id="transportE">
 						  			<div style="width: 100%; margin-top: 10px;">
-						  				<div style="float: left;  border: solid 1px gray;  height:300px; width: 30%; text-align: center;">
-						  				<div><strong>${c.c_e_locname }</strong></div>
+						  				<div class="ptBox" >
 						  				<c:forEach var="t" items="${ptList }">
 						  					<c:if test="${t.code_value=='00202' }">
-						  						<div><img src="publictransport/${t.pt_img }">&nbsp;${t.pt_station } ▷▷ 출발점</div>
-						  						<div><img src="/detailCourseImg/disArrow.png"> ${t.pt_distance }km&nbsp;
-						  						<img src="/detailCourseImg/run.png"><fmt:formatNumber value="${t.pt_distance/5*60+1 }" pattern=".0" />분&nbsp;&nbsp;
-						  						<img src="/detailCourseImg/bicycle.png">&nbsp;<fmt:formatNumber value="${t.pt_distance/20*60+1 }" pattern=".0" />분
+						  						<div class="pt-summury">
+							  						<table width="100%">
+							  							<tr><td rowspan="3"><img class="cPtIcon" src="/publictransport/${t.pt_img }"></td>
+							  							<td>도착점</td>
+							  							</tr>
+							  							<tr><td class="arrowTd"><img class="cInfoIcon" src="/detailCourseImg/next.png"></td></tr>
+							  							<tr><td>${t.pt_station }</td></tr>
+							  						</table>
+						  						</div>
+						  						<div class="pt-summury">
+							  						<table width="100%">
+							  							<tr>
+							  								<td><img class="cInfoIcon" src="/detailCourseImg/disArrow.png"></td>
+							  								<td><img class="cInfoIcon" src="/detailCourseImg/run.png"></td>
+							  								<td><img class="cInfoIcon" src="/detailCourseImg/bicycle.png"></td>
+							  							</tr>
+							  							<tr>
+							  								<td>${t.pt_distance }km</td>
+							  								<td><fmt:formatNumber value="${t.pt_distance/5*60+1 }" pattern=".0" />분</td>
+							  								<td><fmt:formatNumber value="${t.pt_distance/20*60+1 }" pattern=".0" />분</td>
+							  							</tr>
+							  						</table>
 						  						</div>
 						  					</c:if>
 						  				</c:forEach>
 						  				</div>
-						  				<div id="PEmap" style=" border: solid 1px black; height: 300px;width: 1px%;">
+						  				<div id="PEmap" style=" height: 350px;width: 1px%;">
 						  				</div>
 						  			</div>
 						  		</div>
@@ -1230,93 +1454,22 @@ document.addEventListener("DOMContentLoaded", function(){
 						          		<span class="subheading">코스후기</span>
 						        	  <div style="margin: 20px 0 20px 0;"></div>
 						      <div class="row">						      	
-							   		<div class="col-md-7">
-							   			<h3 class="head">23 Reviews</h3>
-							   			<div class="review d-flex">
-									   		<div class="user-img" style="background-image: url(images/person_1.jpg)"></div>
-									   		<div class="desc">
-									   			<h4>
-									   				<span class="text-left">Jacob Webb</span>
-									   				<span class="text-right">14 March 2018</span>
-									   			</h4>
-									   			<p class="star">
-									   				<span>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-								   					</span>
-								   					<span class="text-right"><a href="#" class="reply"><i class="fa fa-reply"></i></a></span>
-									   			</p>
-									   			<p>When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrov</p>
-									   		</div>
-									   	</div>
-									
-							   		</div>
-							   		<div class="col-md-5">
-							   			<div class="rating-wrap">
-								   			<h3 class="head">Give a Review</h3>
-								   			<div class="wrap">
-									   			<p class="star">
-									   				<span>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					(98%)
-								   					</span>
-								   					<span>20 Reviews</span>
-									   			</p>
-									   			<p class="star">
-									   				<span>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					(85%)
-								   					</span>
-								   					<span>10 Reviews</span>
-									   			</p>
-									   			<p class="star">
-									   				<span>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					(70%)
-								   					</span>
-								   					<span>5 Reviews</span>
-									   			</p>
-									   			<p class="star">
-									   				<span>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					(10%)
-								   					</span>
-								   					<span>0 Reviews</span>
-									   			</p>
-									   			<p class="star">
-									   				<span>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					(0%)
-								   					</span>
-								   					<span>0 Reviews</span>
-									   			</p>
-									   		</div>
-								   		</div>
-							   		</div>
 							   	</div>
+							   	<div class="ftco-animate" >
+				    				  <div class="item" style="display: inline-block; text-align: center;">
+						                <div class="testimony-wrap">
+						                  	<span class="fa fa-quote-left"></span>
+						                    	<div class="user-img"></div>
+						                    	<div class="pl-3">
+						                    		<h3>등록된 후기가 없습니다.</h3>
+								                    <p class="name">후기를 남겨보세요!</p>
+								                    <span class="position"><img src="/detailCourseImg/pencil.png" width="20px">
+								                    <a href="#">후기게시판</a>
+								                    </span>
+								                  </div>
+						                </div>
+						              </div>
+				    				</div>
 							   	</div>
 						    </div>
 						  </div>
@@ -1325,6 +1478,67 @@ document.addEventListener("DOMContentLoaded", function(){
 				</div>
       </div>
     </section>
+    
+	<!-- footer 시작 -->
+	<footer class="ftco-footer ftco-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Today's Riding</h2>
+              <p>For your perfect ride.</p>
+              <ul class="ftco-footer-social list-unstyled mt-5">
+                <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="fa fa-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">Community</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>코스 찾기</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>라이딩 후기</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>번개 라이딩</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>FAQs</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">About Ora</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>오늘의 라이딩</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>공지사항</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>QnA</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon fa fa-map"></span><span class="text">서울시 마포구 백범로 23</span></li>
+	                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+82 02 1234 5678</span></a></li>
+	                <li><a href="#"><span class="icon fa fa-envelope pr-4"></span><span class="text">ora@bit.com</span></a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
+
+            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> 오늘의 라이딩 All rights reserved
+  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+          </div>
+        </div>
+      </div>
+    </footer> 
   		
  <!-- loader -->
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
@@ -1340,7 +1554,6 @@ document.addEventListener("DOMContentLoaded", function(){
   <script src="/resources/js/jquery.magnific-popup.min.js"></script>
   <script src="/resources/js/jquery.animateNumber.min.js"></script>
   <script src="/resources/js/scrollax.min.js"></script>
-  <script src="/resources/js/google-map.js"></script>
   <script src="/resources/js/main.js"></script>    	
 </body>
 </html>

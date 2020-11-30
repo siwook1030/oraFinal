@@ -27,11 +27,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.demo.admin.PointCause;
+import com.example.demo.admin.PointGet;
 import com.example.demo.dao.CourseDao;
 import com.example.demo.dao.MemberDao;
 import com.example.demo.dao.ReviewDao;
-import com.example.demo.util.PointCause;
-import com.example.demo.util.PointGet;
 import com.example.demo.vo.CourseVo;
 import com.example.demo.vo.MemberVo;
 import com.example.demo.vo.PointVo;
@@ -498,7 +498,7 @@ public class ReviewController {
 							FileInputStream fis = new FileInputStream(temp_file);
 							byte[] data = fis.readAllBytes();
 							fis.close();
-							temp_file.delete();
+							temp_file.delete();		// 복사끝나면 임시파일 삭제
 							File file = new File(path+"/review/"+decodeResult);
 							FileOutputStream fos = new FileOutputStream(file);
 							fos.write(data);
@@ -541,5 +541,19 @@ public class ReviewController {
 			mav.setViewName("errorPage");
 		}
 		return mav;
+	}
+	
+	@RequestMapping(value = "/deleteRepOne", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public void deleteRepOne(int rr_no) {
+		rdao.deleteRepOne(rr_no);
+	}
+	
+	@RequestMapping(value = "/updateRep", produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public void updateRep(Review_repVo rrvo) {
+		//System.out.println("rr_no:"+rrvo.getRr_no());
+		//System.out.println("rr_content:"+rrvo.getRr_content());
+		rdao.updateRep(rrvo);
 	}
 }

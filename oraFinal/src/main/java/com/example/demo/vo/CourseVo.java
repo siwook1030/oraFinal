@@ -28,13 +28,16 @@ public class CourseVo {
 	private double c_distance;
 	private int c_time;
 	private int c_difficulty;
+	private String c_tag;
+	private List<String> c_tags; // 디비에서 꺼내온 뷰를 "-" 나눠서 다시 배열로 넣기위해
+	private String c_regdate;
 	private String c_view;
 	private String[] c_views; // 디비에서 꺼내온 뷰를 "-" 나눠서 다시 배열로 넣기위해
 	private String c_words;
 	private String c_line;
 	private String c_temp;
 	private double userDis; //코스와 유저의현재위치와의  거리
-	private   List<CoursePhotoVo> c_photo;
+	private List<CoursePhotoVo> c_photo;
 	//private List<PublicTransportVo> pt; 교통편은 경로표시를 위해 따로 뺏음
 	
 	

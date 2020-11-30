@@ -5,8 +5,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>라이딩 코스</title>   
+<link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
+<title>코스 맞춤검색</title>   
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="/resources/css/animate.css">
@@ -16,6 +20,20 @@
 	<link rel="stylesheet" href="/resources/css/flaticon.css">
 	<link rel="stylesheet" href="/resources/css/style.css">
 <style type="text/css">
+   
+   
+   .cInfoIcon {
+   	width: 25px;
+   }
+   
+    .cViewIcon {
+   	width: 34px;
+   }
+   
+      .viewImg {
+   	margin-right: 10px;
+   }
+   
    
    /*매인섹션부분css------------ ----------------*/
 
@@ -133,6 +151,10 @@
 	font-weight: bold; 
 	}
 	
+	   .search-place:after,	 .col-md-4, .img, .search-place img {
+   	border-radius: 10px;
+   }
+	
    /* 두루누비 따온 소스*/
    [data-toggle="buttons"] .btn.btn-line.btn-success {
     background-color: #eee;
@@ -213,12 +235,39 @@ input, button, select, textarea {
 .hAddr {position:absolute;left:10px;top:10px;border-radius: 2px;background:#fff;background:rgba(255,255,255,0.8);z-index:1;padding:5px;}
 #centerAddr {display:block;margin-top:2px;font-weight: normal;}
 .bAddr {padding:5px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+
+	/* header dropdown */
+	.ftco-navbar-light .navbar-nav > .nav-item .dropdown-menu {
+		/* background: #fff;
+		background-color: #fff;
+		opacity: 0.7; */
+		background: rgba(255,255,255,0.7);
+		/* border: 2px solid white; */
+		/* width: 100px; */
+		min-width: 9rem;
+		color: white;
+	}
+	.dropdown-item {
+		font-weight: bold;
+		color: #5D5D5D;
+	} 
+	.navbar .nav-item:hover .dropdown-menu .dropdown-item {
+		color: #5D5D5D;
+	}
 </style>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
 <script type="text/javascript">
 window.onload = function(){
+	const token = $("meta[name='_csrf']").attr("content");
+    const header = $("meta[name='_csrf_header']").attr("content");
+    const parameter = $("meta[name='_csrf_parameter']").attr("content");
+   /* $(document).ajaxSend(function(e, xhr, options) {
+        if(token && header) {
+            xhr.setRequestHeader(header, token);
+        }
+    });*/
 
 	const myLat = document.getElementById("lat");
 	const myLon  = document.getElementById("lon");
@@ -746,7 +795,7 @@ function MarkerTracker(map, target) {
 		console.log( "풍경 : "+view);
 
 		$.ajax({
-			url:"/searchCourse",
+			url:"/searchCourse?"+parameter+"="+token,
 			type:"POST",
 			data:{
 				"latitude":latitude,
@@ -921,7 +970,7 @@ function MarkerTracker(map, target) {
 			diffContent = '매우어려움';
 		}
      let content = '<div class="placeinfo">' +
-     				' <a class="title" href="/detailCourse?c_no='+c.c_no+'" target="_blank" title="' + c.c_name + '"><img width="22px" src="/courseViewImg/'+c.c_views[0]+'.png"> ' + c.c_name + '</a>';   
+     				' <a class="title" href="/detailCourse?c_no='+c.c_no+'" target="_blank" title="' + c.c_name + '"><img width="22px" title="'+c.c_views[0]+'" src="/courseViewImg/'+c.c_views[0]+'.png"> ' + c.c_name + '</a>';   
 	
 	    content += '    <span title="' + c.nickName + '">' + "made by "+c.nickName + '</span>';
 	             
@@ -959,32 +1008,32 @@ function MarkerTracker(map, target) {
 			diffContent = '<span style="color: #c8572d;">어려움</span>';
 		}
 		else if(diff == 4){
-			diffContent = '<span style="color:red;">매우어려움</span>';
+			diffContent = '<span style="color:red;">힘듦</span>';
 		}
 
 		let courseViewContent="";
 		c.c_views.forEach(function(v, i) {
-			courseViewContent += '<div class="img" style="background-image: url(/courseViewImg/'+v+'.png);"></div>';
+			courseViewContent += '<div title="'+v+'" class="img viewImg" style="background-image: url(/courseViewImg/'+v+'.png);"></div>';
 		});
-		
+
 		
 	let courseContent = '<div class="property-wrap ftco-animate fadeInUp ftco-animated">\
 			<a href="/detailCourse?c_no='+c.c_no+'" class="img" target="_blank" style="background-image: url('+c.c_photo[0].cp_path+'/'+c.c_photo[0].cp_name+');">\
 				<div class="rent-sale">\
 					<span class="rent">'+c.c_loc+'</span>\
 				</div>\
-				<p class="price"><span class="orig-price">'+c.userDis+'km 떨어짐</span></p>\
+				<p title="떨어진 거리" class="price"><span class="orig-price" style="color:black;">'+c.userDis+'km 떨어짐</span></p>\
 			</a>\
 			<div class="text">\
 				<h3><a href="/detailCourse?c_no='+c.c_no+'" target="_blank">'+c.c_name+'</a></h3>\
 				<span class="location">made by '+c.nickName+'</span>\
-				<a href="#map"  title="지도위치" class="d-flex align-items-center justify-content-center btn-custom" id="linkMap" lat="'+c.c_s_latitude+'" lng="'+c.c_s_longitude+'">\
-					<span class="fa fa-link" id="linkMap2" lat="'+c.c_s_latitude+'" lng="'+c.c_s_longitude+'"></span>\
+				<a href="#mapLink"  title="지도위치" class="d-flex align-items-center justify-content-center btn-custom" id="linkMap" lat="'+c.c_s_latitude+'" lng="'+c.c_s_longitude+'">\
+					<span id="linkMap2" lat="'+c.c_s_latitude+'" lng="'+c.c_s_longitude+'"><img src="/searchCourseImg/compass.png" width="32px" id="linkMap" lat="'+c.c_s_latitude+'" lng="'+c.c_s_longitude+'"></span>\
 				</a>\
 				<ul class="property_list" style="font-weight: bold;" >\
-					<li><span class="flaticon-bed"><img src="/searchCourseImg/distance.png"></span>'+c.c_distance+'km</li>\
-					<li><span class="flaticon-bathtub"><img src="/searchCourseImg/time.png"></span>'+courseTime+'</li>\
-					<li><span class="flaticon-floor-plan"><img src="/searchCourseImg/difficulty.png"></span>'+diffContent+'</li>\
+					<li title="코스거리" ><span class="flaticon-bed"><img class="cInfoIcon" src="/searchCourseImg/distance.png"></span>'+c.c_distance+'km</li>\
+					<li title="소요시간" ><span class="flaticon-bathtub"><img class="cInfoIcon" src="/searchCourseImg/time.png"></span>'+courseTime+'</li>\
+					<li title="난이도" ><span class="flaticon-floor-plan"><img class="cInfoIcon" src="/searchCourseImg/difficulty.png"></span>'+diffContent+'</li>\
 				</ul>\
 				<div class="list-team d-flex align-items-center mt-2 pt-2 border-top">\
 					<div class="d-flex align-items-center">'+courseViewContent+'</div>\
@@ -1306,52 +1355,77 @@ function MarkerTracker(map, target) {
 </script>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-      <div class="container">
-         <a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
-        <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
-        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-               <span class="oi oi-menu"></span> Menu
-            </button>
-         
-         <div class="collapse navbar-collapse" id="ftco-nav">
-              <ul class="navbar-nav ml-auto">
-               <c:choose>
-                  <c:when test="${m == null }">
-                     <li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
-                     <li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
-                  </c:when>
-                  <c:when test="${m != null }">
-                     <li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
-                     <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
-                     <li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
-                  </c:when>
-               </c:choose>
-            </ul>
-         </div>      
-
-         <div class="collapse navbar-collapse" id="ftco-nav">
-           <ul class="navbar-nav ml-auto">
-             <li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
-             <li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
-             <li class="nav-item active"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
-             <li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
-             <li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
-             <li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
-             <!-- <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>-->
-           </ul>
-         </div>
-       </div>
-   </nav>
+	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+		<div class="container">
+			<a style="font-size: 30px;" class="navbar-brand" href="/mainPage">
+				<span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
+					<font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font>
+				</span>
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        	<span class="oi oi-menu"></span> Menu
+			</button>
+			<div style="display: block;">
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto">
+						<c:choose>
+							<c:when test="${m == null }">
+								<li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
+								<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
+							</c:when>
+							<c:when test="${m != null }">
+								<li id="courseDropPoint"  class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" style="font-size: 15px;">  ${m.nickName } 라이더 님  </a>
+									<ul class="dropdown-menu">
+										<li><a class="dropdown-item" href="/myPage?id=${m.id}"> 정보 수정 </a></li>
+										<li><a class="dropdown-item" href="/myPageSaveCourse"> 찜 목록 </a></li>
+										<li><a class="dropdown-item" href="/myPageMyCourse"> 내 코스 </a></li>
+										<li><a class="dropdown-item" href="/listReview?searchType=id&searchValue=${m.id }"> My 후기 </a></li>
+										<li><a class="dropdown-item" href="/listMeeting?id=${m.id}"> My 번개 </a></li>
+										<li><a class="dropdown-item" href="/myPageMyRank"> 랭킹 </a></li>
+									</ul>
+								</li>
+								<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>
+								<c:if test="${m.code_value == '00101' }">
+									<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
+								</c:if>
+							</c:when>
+						</c:choose>
+					</ul>
+				</div>    
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto" >
+						<li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
+						<li id="courseDropPoint"  class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">  오늘의 라이딩  </a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="/listNotice"> 공지사항 </a></li>
+							</ul>
+						</li>
+						<li id="courseDropPoint"  class="nav-item active dropdown">
+							<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">  라이딩 코스  </a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="/searchCourse"> 맞춤 코스 검색 </a></li>
+								<li><a class="dropdown-item" href="/tagSearchCourse"> 태그 코스 검색 </a></li>
+							</ul>
+						</li>
+						<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
+						<li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+						<li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</nav>
     <!-- END nav -->
-	<section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+    
+	<section class="hero-wrap hero-wrap-2" style="background-image: url('/headerImg/searchCourseMain.jpg');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate pb-0 text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home <i class="fa fa-chevron-right"></i></a></span> <span>라이딩 코스 <i class="fa fa-chevron-right"></i></span></p>
-            <h1 class="mb-3 bread">라이딩 코스</h1>
+          	<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">HOME <i class="fa fa-chevron-right"></i></a></span> <span>라이딩 코스 <i class="fa fa-chevron-right"></i></span></p>
+            <h1 class="mb-3 bread">코스 맞춤검색</h1>
           </div>
         </div>
       </div>
@@ -1359,9 +1433,13 @@ function MarkerTracker(map, target) {
     
    <section class="ftco-section goto-here">
    <div class="container">
+   		<div class="col-md-12 heading-section text-center ftco-animate">
+     		<span class="subheading" id="mapLink">맞춤 코스를 검색해보아요</span>
+     	</div>
+     	<div style="margin-bottom: 50px;"></div>
 		<div style="text-align: center;">
   	 	<div class="map_wrap">
-		    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+		    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;border-radius: 20px;"></div>
 			    <div class="hAddr">
 			        <span class="title">지도중심기준 주소</span>
 			        <span id="centerAddr"></span>
@@ -1401,7 +1479,8 @@ function MarkerTracker(map, target) {
 					<div class="panel-heading" role="tab" id="headingOne">
 						<h5 class="panel-title">
 							<a role="button" class="success" data-toggle="collapse" data-parent="#accordion" href="#searchPanel" title="상세검색을 열고 닫습니다." aria-controls="searchPanel" aria-expanded="true">
-				                             	빠르게 코스를 검색해보세요<span style="padding-right: 940px;"></span>
+				                    <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
+        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font></span>과 함께 꼭 맞는 코스를 찾아보아요<span style="padding-right: 750px;"></span>
                             			</a>
                         			</h5>
                     			</div>
@@ -1472,7 +1551,7 @@ function MarkerTracker(map, target) {
 															<input type="radio" name="time" id="time3" value="180" autocomplete="off"> 2 - 3시간
 														</label>
 														<label class="btn btn-success btn-line btn-small">
-															<input type="radio" name="time" id="time3" value="1000" autocomplete="off"> 3시간 초과
+															<input type="radio" name="time" id="time3" value="1000" autocomplete="off"> 3시간 이상
 														</label>
 													</div>
 												</div>
@@ -1544,15 +1623,18 @@ function MarkerTracker(map, target) {
 	  			</div>
 	  	</div>
 	</div>
+	
+	
   </section>
 
- <footer class="ftco-footer ftco-section">
+	<!-- footer 시작 -->
+	<footer class="ftco-footer ftco-section">
       <div class="container">
         <div class="row mb-5">
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Ecoverde</h2>
-              <p>Far far away, behind the word mountains, far from the countries.</p>
+              <h2 class="ftco-heading-2">Today's Riding</h2>
+              <p>For your perfect ride.</p>
               <ul class="ftco-footer-social list-unstyled mt-5">
                 <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
                 <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
@@ -1564,42 +1646,32 @@ function MarkerTracker(map, target) {
             <div class="ftco-footer-widget mb-4 ml-md-4">
               <h2 class="ftco-heading-2">Community</h2>
               <ul class="list-unstyled">
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Search Properties</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>For Agents</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Reviews</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>코스 찾기</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>라이딩 후기</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>번개 라이딩</a></li>
                 <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>FAQs</a></li>
               </ul>
             </div>
           </div>
           <div class="col-md">
             <div class="ftco-footer-widget mb-4 ml-md-4">
-              <h2 class="ftco-heading-2">About Us</h2>
+              <h2 class="ftco-heading-2">About Ora</h2>
               <ul class="list-unstyled">
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Our Story</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Meet the team</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>오늘의 라이딩</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>공지사항</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>QnA</a></li>
               </ul>
             </div>
           </div>
-          <div class="col-md">
-             <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Company</h2>
-              <ul class="list-unstyled">
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>About Us</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Press</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Contact</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
-              </ul>
-            </div>
-          </div>
+          
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
             	<h2 class="ftco-heading-2">Have a Questions?</h2>
             	<div class="block-23 mb-3">
 	              <ul>
-	                <li><span class="icon fa fa-map"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
-	                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929 210</span></a></li>
-	                <li><a href="#"><span class="icon fa fa-envelope pr-4"></span><span class="text">info@yourdomain.com</span></a></li>
+	                <li><span class="icon fa fa-map"></span><span class="text">서울시 마포구 백범로 23</span></li>
+	                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+82 02 1234 5678</span></a></li>
+	                <li><a href="#"><span class="icon fa fa-envelope pr-4"></span><span class="text">ora@bit.com</span></a></li>
 	              </ul>
 	            </div>
             </div>
@@ -1607,14 +1679,14 @@ function MarkerTracker(map, target) {
         </div>
         <div class="row">
           <div class="col-md-12 text-center">
-	
+
             <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> 오늘의 라이딩 All rights reserved
   <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
           </div>
         </div>
       </div>
-    </footer>
+    </footer> 
 
   <!-- loader -->
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
@@ -1630,7 +1702,6 @@ function MarkerTracker(map, target) {
   <script src="/resources/js/jquery.magnific-popup.min.js"></script>
   <script src="/resources/js/jquery.animateNumber.min.js"></script>
   <script src="/resources/js/scrollax.min.js"></script>
-  <script src="/resources/js/google-map.js"></script>
   <script src="/resources/js/main.js"></script>   
   </body>
 </html>

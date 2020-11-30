@@ -6,8 +6,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
 <title>코스상세</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="/resources/css/animate.css">
@@ -19,6 +23,17 @@
 <style type="text/css">
    
    /*매인섹션부분css------------ ----------------*/
+	.cInfoIcon {
+   	width: 25px;
+   }
+   
+    .cViewIcon {
+   	width: 34px;
+   }
+   .cPtIcon{
+   	width: 70px;
+   }
+
 
    #adminMenu{
    	display: none;
@@ -60,19 +75,7 @@
    #detailTitle{
    		margin : 30px 0 30px 0;
    }
-   .ySaveCourse{
-   		background-image: url("/detailCourseImg/yfavor.png");
-   		background-size: cover;
-   		width: 100px;
-   		height: 100px;
-   }
-   .nSaveCourse{
-   		background-image: url("/detailCourseImg/nfavor.png");
-   		background-size: cover;
-   		width: 100px;
-   		height: 100px;
-   }
-   
+ 
    #course-summury-table{
    		width: 100%; 
    		padding-top: 30px;		
@@ -98,21 +101,33 @@
 
 		
 	}
+	
+	.ptBox {
+		float: left;  
+		height:350px; 
+		width: 35%; 
+		text-align: center;
+		font-size: x-small;
+		margin-right: 20px;
+	}
+	.ptBox table {
+		padding: 0 3px 0 3px;
+	}
+	
 	#transportS{
 
-		margin-left:50px;
-		width : 80%;
-		height: 300px;
+		width : 90%;
+		height: 350px;
 	}
 	#transportE{
 
-		margin-left:50px;
-		width : 80%;
-		height: 300px;
+		width : 90%;
+		height: 350px;
 
 	}
 	.pt-summury{
-		margin-top: 35px;
+		height: 50%;
+		padding-top: 50px;
 	}
 	#addInfo{
 		border: solid 1px white;
@@ -123,12 +138,43 @@
 	}
 	.addInfoTitle{
 		border-bottom : 1px solid #EBEBEB;
-		font-size: 120%;
+		font-size: 140%;
+		font-weight: bold;
+		padding: 0 0 0 0;
+		
 	}
 	
 	.property-wrap .img {
 		height: 350px;
 	}
+	
+	.d-flex .nav-link active, .d-flex .nav-link {
+		font-weight: bold;
+	}
+	
+	.d-flex .nav-link:hover, .d-flex .nav-link:focus{
+		background: #f4dfcf;
+   		 color: white; 
+	}
+	
+	.tagA {
+		margin-left: 5px;
+	}
+	
+   .tagA:hover, .tagA:focus {
+    background: #c8572d;
+    color: #fff; 
+    font-weight: bold;
+    }
+    
+    #map, #PSmap, #PEmap {
+    	border-radius: 20px;
+    }
+    
+    .boldText {
+    	font-weight: bold;
+    	font-size: 110%;
+    }
 
    /*메인섹션 끝css--------------------------*/
 
@@ -136,7 +182,66 @@
    #clear{
    	clear: both; 
    }
+   
+     .search-place:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: '';
+    background: none;
+    opacity: 0;
+    z-index: -1;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    -webkit-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    transition: all 0.3s ease; }
+    
+    #desc span{
+    	font-size: 20px;
+    }
+    
+     .search-place:hover .desc span {
+    background: #d8572d;
+    color: #fff; }
+    
+       .search-place:after,	 .col-md-4, .img, .search-place img {
+   	border-radius: 10px;
+   }
+   .testimony-wrap {
+    box-shadow: 10px 5px 21px -14px rgba(14, 14, 14, 0.8);
+    width: 100%;
+    height: 300px;
+    background-color: #F7F7F7;
+	}
+	/* header dropdown */
+	.ftco-navbar-light .navbar-nav > .nav-item .dropdown-menu {
+		/* background: #fff;
+		background-color: #fff;
+		opacity: 0.7; */
+		background: rgba(255,255,255,0.7);
+		/* border: 2px solid white; */
+		/* width: 100px; */
+		min-width: 9rem;
+		color: white;
+	}
+	.dropdown-item {
+		font-weight: bold;
+		color: #5D5D5D;
+	} 
+	.navbar .nav-item:hover .dropdown-menu .dropdown-item {
+		color: #5D5D5D;
+	}
 
+	.locname {
+		margin-left: 40px;
+	}
+	
+	.arrowTd {
+	 padding: 20px 0 20px 0;
+	}
 </style>
 <style>
 .map_wrap, .map_wrap * {margin:0; padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
@@ -173,6 +278,15 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=services"></script>
 <script>
 window.onload = function(){
+	 	const token = $("meta[name='_csrf']").attr("content");
+	    const header = $("meta[name='_csrf_header']").attr("content");
+	    const parameter = $("meta[name='_csrf_parameter']").attr("content");
+	   /* $(document).ajaxSend(function(e, xhr, options) {
+	        if(token && header) {
+	            xhr.setRequestHeader(header, token);
+	        }
+	    });*/
+
 	const adminMenu = document.getElementById("adminMenu");
 	const updateCourse = document.getElementById("updateCourse");
 	const deleteCourse = document.getElementById("deleteCourse");
@@ -196,7 +310,6 @@ window.onload = function(){
 	updateCourse.addEventListener("click", function(e) {
 		const c_no = e.target.value;
 		window.open("/admin/updateCourse?c_no="+c_no,"코스수정(관리자)");
-		//window.open("views/admin/updateCourse.jsp?c_no="+c_no,"코스수정(관리자)");
 	});
 
 	deleteCourse.addEventListener("click", function(e) {
@@ -207,17 +320,20 @@ window.onload = function(){
 		}
 
 		const req = new XMLHttpRequest();
+		req.addEventListener("load", function(e) {
+			if(req.status == 200){
+				const rep = req.response;
+				alert(rep.message);
+				window.location = "/mainPage"
+			}
+			else{
+				alert("에러발생");
+			}
+			
+		})
 		req.open("GET", "/admin/deleteCourse?c_no="+c_no);
 		req.responseType = "json";
 		req.send(null);
-		req.addEventListener("load", function(e) {
-			const rep = this.response;
-			alert(rep.message);
-			window.location = "/mainPage"
-		})
-		req.addEventListener("error", function(e){
-			alert("에러발생");
-		}) 
 	});	
 	
 	//------------------------- 관리자확인 끝
@@ -433,17 +549,37 @@ window.onload = function(){
 	const courseBounds = new kakao.maps.LatLngBounds(); 
 
 	const cJson =${cJson};
-
+	console.log("코스라인구성 시작");
 	const cStartLatLng = new kakao.maps.LatLng(cJson.c_s_latitude, cJson.c_s_longitude);
 	const cArriveLatLng = new kakao.maps.LatLng(cJson.c_e_latitude, cJson.c_e_longitude);
-	//console.log(cJson);
-	const cLineObj = JSON.parse(cJson.c_line);
-	const courseLine = eval(cLineObj.courseLine);
-	const altitudeData = eval(cLineObj.altitudeData);
 
-	courseLine.forEach(function(c, i) {
-		courseBounds.extend(c);
-	});
+	const courseLine = cJson.c_line;
+	let altitudeData = [];
+
+	const eleArr = $(courseLine).find("trkseg ele");
+	const trkptArr = $(courseLine).find("trkseg trkpt");
+	const mnBound = $(courseLine).find("bounds")[0];
+
+	const latlonArr = new Array();
+
+	const courseDistacne = cJson.c_distance;
+	const distancePerLine = Number(courseDistacne/(eleArr.length-1)).toFixed(10);
+
+	for(let i=0; i<trkptArr.length; i++){
+		const lat = trkptArr[i].getAttribute("lat");
+		const lon = trkptArr[i].getAttribute("lon");
+		
+		altitudeData.push([distancePerLine*i,Number(Number((eleArr[i].innerHTML)).toFixed(1))]);		
+		latlonArr.push(new kakao.maps.LatLng(lat,lon));		
+	}
+
+	const maxLat = mnBound.getAttribute("maxlat");
+	const maxLon = mnBound.getAttribute("maxlon");	
+	const minLat = mnBound.getAttribute("minlat");
+	const minLon = mnBound.getAttribute("minlon");
+
+	courseBounds.extend(new kakao.maps.LatLng(maxLat,maxLon));
+	courseBounds.extend(new kakao.maps.LatLng(minLat,minLon));
 
 	cBound.addEventListener("click", function(e) {
 		setBound(map, courseBounds);
@@ -458,33 +594,39 @@ window.onload = function(){
 	
 	new kakao.maps.Polyline({
 	    map: map,
-	    path: courseLine,
+	    path: latlonArr,
 	    strokeWeight: 6,
 	    strokeColor: '#FF2400',
 	    strokeOpacity: 0.8,
 	    strokeStyle: 'solid'
 	});
-
+	console.log("코스라인구성 끝");
 	google.charts.load('current', {'packages':['corechart']});
 	google.charts.setOnLoadCallback(drawAltitude); 
 	
 	///////--------------------- 고도 차트
 	   function drawAltitude() {
-        const data = google.visualization.arrayToDataTable(altitudeData);
+		   const data = new google.visualization.DataTable();
+	        data.addColumn('number','거리');
+	        data.addColumn('number','고도');
 
-        const options = {
-    	  title: '자전거코스 고도',
-    	  animation:{duration:2000,easing:'out',startup:true},
-          hAxis: {title: '거리(km)' ,titleTextStyle: {color: '#333'},gridlines: {color: 'transparent'}},
-          vAxis: {title:'고도(m)',titleTextStyle: {color: '#333'},minValue: 0},
-          curveType: 'function',
-          width:'100%',
-          height:300     
-        };
+			if(altitudeData.length != 0){
+				data.addRows(altitudeData);
+			}
+	        
+	        const options = {
+	            	  title: '자전거코스 고도',
+	            	  animation:{duration:3000,easing:'out',startup:true},
+	                  hAxis: {title: '거리(km)' ,titleTextStyle: {color: '#333'},gridlines: {color: 'transparent'}},
+	                  vAxis: {title:'고도(m)',titleTextStyle: {color: '#333'},minValue: 0},
+	                  curveType: 'function',
+	                  width:'100%',
+	                  height:300,
+	                };
 
-        const chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-        window.addEventListener("resize",drawAltitude,false);
+	        const chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+	        chart.draw(data, options);
+	        window.addEventListener("resize",drawAltitude,false);
         
       }
 
@@ -515,7 +657,7 @@ window.onload = function(){
 				}
 			}
 			$.ajax({
-				url:"/user/addSaveCourse",
+				url:"/user/addSaveCourse?"+parameter+"="+token,
 				type:"POST",
 				data:{
 					"c_no":c_no,
@@ -523,7 +665,7 @@ window.onload = function(){
 				},
 				success:function(re){
 					if(re == "1"){
-						alert("찜코스로 등록되었습니다");
+						alert("찜코스로 등록되었습니다.(마이페이지 '찜코스'에서 확인하세요)");
 						location.reload();
 					}
 					else{
@@ -545,7 +687,7 @@ window.onload = function(){
 				}
 
 			$.ajax({
-				url:"/user/deleteSaveCourse",
+				url:"/user/deleteSaveCourse?"+parameter+"="+token,
 				type:"POST",
 				data:{
 					"c_no":c_no,
@@ -553,7 +695,6 @@ window.onload = function(){
 				},
 				success:function(re){
 					if(re == "1"){
-						alert("찜코스가 삭제되었습니다.");
 						location.reload();
 					}
 					else{
@@ -1108,56 +1249,82 @@ window.onload = function(){
 	cst.addEventListener("click", function(e) {
 		setTimeout(drawAltitude, 200);
 	});
+
 	
 }
  </script>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-      <div class="container">
-         <a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
-        <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
-        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-               <span class="oi oi-menu"></span> Menu
-            </button>
-         
-         <div class="collapse navbar-collapse" id="ftco-nav">
-              <ul class="navbar-nav ml-auto">
-               <c:choose>
-                  <c:when test="${m == null }">
-                     <li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
-                     <li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
-                  </c:when>
-                  <c:when test="${m != null }">
-                     <li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
-                     <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
-                     <li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
-                  </c:when>
-               </c:choose>
-            </ul>
-         </div>      
-
-         <div class="collapse navbar-collapse" id="ftco-nav">
-           <ul class="navbar-nav ml-auto">
-             <li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
-             <li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
-             <li class="nav-item active" ><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
-             <li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
-             <li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
-             <li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
-             <!-- <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>-->
-           </ul>
-         </div>
-       </div>
-   </nav>
+	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+		<div class="container">
+			<a style="font-size: 30px;" class="navbar-brand" href="/mainPage">
+				<span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
+					<font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font>
+				</span>
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+	        	<span class="oi oi-menu"></span> Menu
+			</button>
+			<div style="display: block;">
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto">
+						<c:choose>
+							<c:when test="${m == null }">
+								<li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
+								<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
+							</c:when>
+							<c:when test="${m != null }">
+								<li id="courseDropPoint"  class="nav-item dropdown">
+									<a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown" style="font-size: 15px;">  ${m.nickName } 라이더 님  </a>
+									<ul class="dropdown-menu">
+										<li><a class="dropdown-item" href="/myPage?id=${m.id}"> 정보 수정 </a></li>
+										<li><a class="dropdown-item" href="/myPageSaveCourse"> 찜 목록 </a></li>
+										<li><a class="dropdown-item" href="/myPageMyCourse"> 내 코스 </a></li>
+										<li><a class="dropdown-item" href="/listReview?searchType=id&searchValue=${m.id }"> My 후기 </a></li>
+										<li><a class="dropdown-item" href="/listMeeting?id=${m.id}"> My 번개 </a></li>
+										<li><a class="dropdown-item" href="/myPageMyRank"> 랭킹 </a></li>
+									</ul>
+								</li>
+								<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>
+								<c:if test="${m.code_value == '00101' }">
+									<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
+								</c:if>
+							</c:when>
+						</c:choose>
+					</ul>
+				</div>    
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto" >
+						<li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
+						<li id="courseDropPoint"  class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">  오늘의 라이딩  </a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="/listNotice"> 공지사항 </a></li>
+							</ul>
+						</li>
+						<li id="courseDropPoint"  class="nav-item active dropdown">
+							<a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown">  라이딩 코스  </a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="/searchCourse"> 맞춤 코스 검색 </a></li>
+								<li><a class="dropdown-item" href="/tagSearchCourse"> 태그 코스 검색 </a></li>
+							</ul>
+						</li>
+						<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
+						<li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+						<li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</nav>
     <!-- END nav -->
-	<section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+    
+	<section class="hero-wrap hero-wrap-2" style="background-image: url('/headerImg/searchCourseMain.jpg');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate pb-0 text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="#">오늘의 라이딩<i class="fa fa-chevron-right"></i></a></span> <span>코스 상세<i class="fa fa-chevron-right"></i></span></p>
+          	<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">HOME <i class="fa fa-chevron-right"></i></a></span> <span>코스 상세 <i class="fa fa-chevron-right"></i></span></p>
             <h1 class="mb-3 bread">${c.c_name}</h1>
           </div>
         </div>
@@ -1170,15 +1337,26 @@ window.onload = function(){
       		<div class="col-md-12">
       			<div class="property-details">
       				<div id="adminMenu">
-			  			<span>관리자 메뉴</span>
-			  			<button id="updateCourse" value="${c.c_no}">코스수정</button>  <button id="deleteCourse" value="${c.c_no}">코스삭제</button>
+			  			<img src="/adminImg/admintool.png" width="50px;"> <span><strong>관리자 메뉴</strong></span>
+			  			<button id="updateCourse" class="boldText btn btn-info py-2 px-3" value="${c.c_no}">코스수정</button>  <button id="deleteCourse" class="boldText btn btn-secondary py-2 px-3" value="${c.c_no}">코스삭제</button>
   					</div>
-		 			<div><a href="" id="nSaveCoruse" title="코스 찜하기" ><img src="/detailCourseImg/nfavor.png" width="50px" height="50px"><i></i></a></div>
-		 			<div><a href="" id="ySaveCoruse" ><img src="/detailCourseImg/yfavor.png" width="50px" height="50px"><i></i></a></div>
-		 			
+				<div class="mb-3"></div>
+		<div class="ftco-animate">
+			<a class="search-place img" style="background-image: url(${c.c_photo[0].cp_path}/${c.c_photo[0].cp_name});">	
+				<div class="desc" id="desc">
+					<span>${c.c_loc}</span> <span>${c.c_view}</span> <br><span>${c.c_tag}</span>		
+				</div>
+				<div class="desc" style="text-align: right;">
+					<img id="ySaveCoruse"  title="코스 찜하기" src="/detailCourseImg/yfavor.png" width="50px" height="50px" style="cursor: pointer;">
+					<img id="nSaveCoruse" title="코스 찜하기" src="/detailCourseImg/nfavor.png" width="50px" height="50px" style="cursor: pointer;">
+				</div>
+			</a>
+		</div>
+		
+				
       	<div id="detailMap">
   		<div class="map_wrap">
-  		<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+  		<div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;border-radius: 20px;"></div>
   		 <ul id="category">
   		 <li id="HP8" data-order="0"> 
             <span class="category_bg hospital"></span>
@@ -1230,8 +1408,14 @@ window.onload = function(){
 			<button id="cBound" title="경로 한눈에 보기"><img src="/detailCourseImg/cBoundBtn.png"></button>
   		</div>
       				<div class="text" style="margin-top: 20px;">
+      					<div style="width: 30%; text-align: right;" class="float-right"><a href="/courseLine/${c.c_no }_${c.c_name }_CycleCourse.gpx"><button class="boldText btn btn-info py-2 px-3">GPX파일 다운로드</button></a></div>
       					<span class="subheading" style="margin-left: 10px;">made by ${c.nickName }</span>
       					<h2>${c.c_name}</h2>
+      				</div>
+      				<div>
+      					<c:forEach var="t" items="${c.c_tags }">
+      						<a class="tagA" title="태그검색" target="_blank" href="/tagSearchCourse?searchTag=${t}">#${t}</a>
+      					</c:forEach>
       				</div>
       			</div>
       		</div>
@@ -1286,11 +1470,11 @@ window.onload = function(){
 							  					<c:if test="${c.c_difficulty ==1 }"><span style="color: #88bea6;">쉬움</span><br></c:if>
 							  					<c:if test="${c.c_difficulty ==2 }"><span style="color: #eccb6a;">보통</span><br></c:if>
 							  					<c:if test="${c.c_difficulty ==3 }"><span style="color: #c8572d;">어려움</span><br></c:if>
-							  					<c:if test="${c.c_difficulty ==4 }"><span style="color: red;">매우 어려움</span><br></c:if>
+							  					<c:if test="${c.c_difficulty ==4 }"><span style="color: red;">힘듦</span><br></c:if>
 							  					</td>
 							  					<td>
 							  					<c:forEach var="v" items="${c.c_views }">
-							  						<img src="/courseViewImg/${v}.png">&nbsp;
+							  						<img class="cViewIcon" title="${v }" src="/courseViewImg/${v}.png">&nbsp;
 							  					</c:forEach>		
 							  					</td>
 							  				</tr>
@@ -1310,7 +1494,7 @@ window.onload = function(){
 									<div id="courseWordsTitle" style="margin-bottom: 20px; font-size: 110%;">
 										<span style="text-decoration: underline;">&nbsp;&nbsp;${c.c_name } 코스만의&nbsp;&nbsp;'<span style="color: #eccb6a;font-weight: bold;">갬</span><span style="color: #c8572d; font-weight: bold; ">성</span>' 포인트&nbsp;&nbsp;&nbsp;</span>
 									</div>
-									<div id="courseWordsContent" style="font-size: 90%; white-space:pre;">${c.c_words }</div>
+									<div id="courseWordsContent" style="white-space: pre-wrap;">${c.c_words }</div>
 					  			</div>
 					  		 </div>
 						    </div>
@@ -1323,7 +1507,7 @@ window.onload = function(){
 							     	 <div class="row ftco-animate">
 							     	  <div class="col-md-12">
 	           							 <div class="carousel-properties owl-carousel">
-								  		<c:if test="${c.c_photo != null }">
+								  		<c:if test="${not empty c.c_photo }">
 								  			<c:forEach var="p" items="${c.c_photo }">
 									  			 <div class="item" style="height: 400px;">
 	               									 <div class="property-wrap ftco-animate" style="height: 400px;">
@@ -1344,44 +1528,78 @@ window.onload = function(){
 						      <div class="col-md-12 heading-section text-center ftco-animate">
 						          		<span class="subheading">대중교통</span>
 						        	  <div style="margin: 20px 0 20px 0; text-align: left;">
-						     <div  class="addInfoTitle">출발점</div>
+						     <div  class="addInfoTitle"><img src="/detailCourseImg/startline.png" width="80px;"><strong class="locname">${c.c_s_locname }</strong></div>
 								<div id="transportS">
 						  			<div style="width: 100%; margin-top: 10px;">
-						  				<div style="float: left;  height:300px; width: 30%; text-align: center;">
-						  				<div class="pt-summury"><strong>${c.c_s_locname }</strong></div>
+						  				<div class="ptBox" >
 						  				<c:forEach var="t" items="${ptList }">
 						  					<c:if test="${t.code_value=='00201' }">
-						  						<div class="pt-summury"><img src="publictransport/${t.pt_img }">&nbsp;${t.pt_station } ▷▷ 출발점</div>
-						  						<div class="pt-summury"><img src="/detailCourseImg/disArrow.png"> ${t.pt_distance }km&nbsp;
-						  						<img src="/detailCourseImg/run.png"><fmt:formatNumber value="${t.pt_distance/5*60+1 }" pattern=".0" />분&nbsp;&nbsp;
-						  						<img src="/detailCourseImg/bicycle.png">&nbsp;<fmt:formatNumber value="${t.pt_distance/20*60+1 }" pattern=".0" />분
+						  						<div class="pt-summury">
+							  						<table width="100%">
+							  							<tr><td rowspan="3"><img class="cPtIcon" src="/publictransport/${t.pt_img }"></td>
+							  							<td>${t.pt_station }</td>
+							  							</tr>
+							  							<tr ><td class="arrowTd"><img class="cInfoIcon" src="/detailCourseImg/next.png"></td></tr>
+							  							<tr><td>출발점</td></tr>
+							  						</table>
+						  						</div>
+						  						<div class="pt-summury">
+							  						<table width="100%">
+							  							<tr>
+							  								<td><img class="cInfoIcon" src="/detailCourseImg/disArrow.png"></td>
+							  								<td><img class="cInfoIcon" src="/detailCourseImg/run.png"></td>
+							  								<td><img class="cInfoIcon" src="/detailCourseImg/bicycle.png"></td>
+							  							</tr>
+							  							<tr>
+							  								<td>${t.pt_distance }km</td>
+							  								<td><fmt:formatNumber value="${t.pt_distance/5*60+1 }" pattern=".0" />분</td>
+							  								<td><fmt:formatNumber value="${t.pt_distance/20*60+1 }" pattern=".0" />분</td>
+							  							</tr>
+							  						</table>
 						  						</div>
 						  					</c:if>
 						  				</c:forEach>
 						  				</div>
-						  				<div id="PSmap" style=" height:300px; width: 1px%;">
+						  				<div id="PSmap" style=" height:350px; width: 1px%;">
 						  				</div>
 						  			</div>
 						  		</div>
 						  		</div>
 						  		
 						  		 <div style="margin: 80px 0 20px 0; text-align: left;">
-						  		<div class="addInfoTitle">도착점</div>
+						  		<div class="addInfoTitle"><img src="/detailCourseImg/finishline.png" width="80px;"><strong class="locname">${c.c_e_locname }</strong></div>
 						  		<div id="transportE">
 						  			<div style="width: 100%; margin-top: 10px;">
-						  				<div style="float: left;  height:300px; width: 30%; text-align: center;">
-						  				<div class="pt-summury"><strong>${c.c_e_locname }</strong></div>
+						  				<div class="ptBox" >
 						  				<c:forEach var="t" items="${ptList }">
 						  					<c:if test="${t.code_value=='00202' }">
-						  						<div class="pt-summury"><img src="publictransport/${t.pt_img }">&nbsp;${t.pt_station } ▷▷ 출발점</div>
-						  						<div class="pt-summury"><img src="/detailCourseImg/disArrow.png"> ${t.pt_distance }km&nbsp;
-						  						<img src="/detailCourseImg/run.png"><fmt:formatNumber value="${t.pt_distance/5*60+1 }" pattern=".0" />분&nbsp;&nbsp;
-						  						<img src="/detailCourseImg/bicycle.png">&nbsp;<fmt:formatNumber value="${t.pt_distance/20*60+1 }" pattern=".0" />분
+						  						<div class="pt-summury">
+							  						<table width="100%">
+							  							<tr><td rowspan="3"><img class="cPtIcon" src="/publictransport/${t.pt_img }"></td>
+							  							<td>도착점</td>
+							  							</tr>
+							  							<tr><td class="arrowTd"><img class="cInfoIcon" src="/detailCourseImg/next.png"></td></tr>
+							  							<tr><td>${t.pt_station }</td></tr>
+							  						</table>
+						  						</div>
+						  						<div class="pt-summury">
+							  						<table width="100%">
+							  							<tr>
+							  								<td><img class="cInfoIcon" src="/detailCourseImg/disArrow.png"></td>
+							  								<td><img class="cInfoIcon" src="/detailCourseImg/run.png"></td>
+							  								<td><img class="cInfoIcon" src="/detailCourseImg/bicycle.png"></td>
+							  							</tr>
+							  							<tr>
+							  								<td>${t.pt_distance }km</td>
+							  								<td><fmt:formatNumber value="${t.pt_distance/5*60+1 }" pattern=".0" />분</td>
+							  								<td><fmt:formatNumber value="${t.pt_distance/20*60+1 }" pattern=".0" />분</td>
+							  							</tr>
+							  						</table>
 						  						</div>
 						  					</c:if>
 						  				</c:forEach>
 						  				</div>
-						  				<div id="PEmap" style=" height: 300px;width: 1px%;">
+						  				<div id="PEmap" style=" height: 350px;width: 1px%;">
 						  				</div>
 						  			</div>
 						  		</div>
@@ -1393,95 +1611,46 @@ window.onload = function(){
 						    <div class="tab-pane fade" id="course-review" role="tabpanel" aria-labelledby="course-review-tab">
 						     <div class="col-md-12 heading-section text-center ftco-animate">
 						          		<span class="subheading">코스후기</span>
-						        	  <div style="margin: 20px 0 20px 0;"></div>
-						      <div class="row">						      	
-							   		<div class="col-md-7">
-							   			<h3 class="head">23 Reviews</h3>
-							   			<div class="review d-flex">
-									   		<div class="user-img" style="background-image: url(images/person_1.jpg)"></div>
-									   		<div class="desc">
-									   			<h4>
-									   				<span class="text-left">Jacob Webb</span>
-									   				<span class="text-right">14 March 2018</span>
-									   			</h4>
-									   			<p class="star">
-									   				<span>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-								   					</span>
-								   					<span class="text-right"><a href="#" class="reply"><i class="fa fa-reply"></i></a></span>
-									   			</p>
-									   			<p>When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrov</p>
-									   		</div>
-									   	</div>
-									
-							   		</div>
-							   		<div class="col-md-5">
-							   			<div class="rating-wrap">
-								   			<h3 class="head">Give a Review</h3>
-								   			<div class="wrap">
-									   			<p class="star">
-									   				<span>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					(98%)
-								   					</span>
-								   					<span>20 Reviews</span>
-									   			</p>
-									   			<p class="star">
-									   				<span>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					(85%)
-								   					</span>
-								   					<span>10 Reviews</span>
-									   			</p>
-									   			<p class="star">
-									   				<span>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					(70%)
-								   					</span>
-								   					<span>5 Reviews</span>
-									   			</p>
-									   			<p class="star">
-									   				<span>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					(10%)
-								   					</span>
-								   					<span>0 Reviews</span>
-									   			</p>
-									   			<p class="star">
-									   				<span>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					<i class="fa fa-star"></i>
-									   					(0%)
-								   					</span>
-								   					<span>0 Reviews</span>
-									   			</p>
-									   		</div>
-								   		</div>
-							   		</div>
-							   	</div>
+						        	  
+						      <div class="row">
+						      <div style="margin: 20px 0 20px 0;"></div>	
+						      	<c:if test="${not empty review }">
+							      	<c:forEach var="r" items="${review }">     	
+									<div class="col-md-4" style="text-align: left;">
+										<c:if test="${not empty r.rf }">
+											<a href="/detailReview?r_no=${r.r_no }" class="search-place img" style="background-image: url(${r.rf[0].rf_path }/${r.rf[0].rf_savename});">
+										</c:if>
+										<c:if test="${empty r.rf }">
+											<a href="/detailReview?r_no=${r.r_no }" class="search-place img" style="background-image: url(/icons/empty.png);">
+										</c:if>
+											<div><img src="/detailCourseImg/best.png" width="60px"></div>
+												<div class="desc">
+													<h3><span>${r.r_title }</span></h3>
+													<span>${r.c_name }</span><br>
+													<span><img src="/rank/${r.rank_icon }" width="22px"> ${r.nickName }</span>
+												</div>
+						    				</a>
+					    			</div>
+					    			</c:forEach>	 
+				    			</c:if>
+				    			</div>
+				    			<c:if test="${empty review}">
+				    				<div class="ftco-animate" >
+				    				  <div class="item" style="display: inline-block; text-align: center;">
+						                <div class="testimony-wrap">
+						                  	<span class="fa fa-quote-left"></span>
+						                    	<div class="user-img"></div>
+						                    	<div class="pl-3">
+						                    		<h3>등록된 후기가 없습니다.</h3>
+								                    <p class="name">후기를 남겨보세요!</p>
+								                    <span class="position"><img src="/detailCourseImg/pencil.png" width="20px">
+								                    <a href="/listReview">후기게시판</a>
+								                    </span>
+								                  </div>
+						                </div>
+						              </div>
+				    				</div>
+				    			</c:if>				   	
 							   	</div>
 						    </div>
 						  </div>
@@ -1491,13 +1660,14 @@ window.onload = function(){
       </div>
     </section>
   	
-  	<footer class="ftco-footer ftco-section">
+	<!-- footer 시작 -->
+	<footer class="ftco-footer ftco-section">
       <div class="container">
         <div class="row mb-5">
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Ecoverde</h2>
-              <p>Far far away, behind the word mountains, far from the countries.</p>
+              <h2 class="ftco-heading-2">Today's Riding</h2>
+              <p>For your perfect ride.</p>
               <ul class="ftco-footer-social list-unstyled mt-5">
                 <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
                 <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
@@ -1509,42 +1679,32 @@ window.onload = function(){
             <div class="ftco-footer-widget mb-4 ml-md-4">
               <h2 class="ftco-heading-2">Community</h2>
               <ul class="list-unstyled">
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Search Properties</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>For Agents</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Reviews</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>코스 찾기</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>라이딩 후기</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>번개 라이딩</a></li>
                 <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>FAQs</a></li>
               </ul>
             </div>
           </div>
           <div class="col-md">
             <div class="ftco-footer-widget mb-4 ml-md-4">
-              <h2 class="ftco-heading-2">About Us</h2>
+              <h2 class="ftco-heading-2">About Ora</h2>
               <ul class="list-unstyled">
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Our Story</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Meet the team</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>오늘의 라이딩</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>공지사항</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>QnA</a></li>
               </ul>
             </div>
           </div>
-          <div class="col-md">
-             <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Company</h2>
-              <ul class="list-unstyled">
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>About Us</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Press</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Contact</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
-              </ul>
-            </div>
-          </div>
+          
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
             	<h2 class="ftco-heading-2">Have a Questions?</h2>
             	<div class="block-23 mb-3">
 	              <ul>
-	                <li><span class="icon fa fa-map"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
-	                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929 210</span></a></li>
-	                <li><a href="#"><span class="icon fa fa-envelope pr-4"></span><span class="text">info@yourdomain.com</span></a></li>
+	                <li><span class="icon fa fa-map"></span><span class="text">서울시 마포구 백범로 23</span></li>
+	                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+82 02 1234 5678</span></a></li>
+	                <li><a href="#"><span class="icon fa fa-envelope pr-4"></span><span class="text">ora@bit.com</span></a></li>
 	              </ul>
 	            </div>
             </div>
@@ -1552,15 +1712,15 @@ window.onload = function(){
         </div>
         <div class="row">
           <div class="col-md-12 text-center">
-	
+
             <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> 오늘의 라이딩 All rights reserved
   <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
           </div>
         </div>
       </div>
-    </footer>
-
+    </footer> 
+    
   <!-- loader -->
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
@@ -1575,7 +1735,6 @@ window.onload = function(){
   <script src="/resources/js/jquery.magnific-popup.min.js"></script>
   <script src="/resources/js/jquery.animateNumber.min.js"></script>
   <script src="/resources/js/scrollax.min.js"></script>
-  <script src="/resources/js/google-map.js"></script>
   <script src="/resources/js/main.js"></script>   
 </body>
 </html>

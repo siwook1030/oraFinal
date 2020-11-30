@@ -4,9 +4,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Ora - login</title>
+
+<title>로그인</title>
+	<jsp:include page="my_header.jsp"/>
+
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!--  -->
 
 <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
@@ -28,7 +34,6 @@
 
 <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
 <script type="text/javascript" src="/js/login.js">
-
 </script>
 <style type="text/css">
 	
@@ -76,8 +81,6 @@
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
 }
-
-
 	 *:focus { outline:none; }
 	    
     	/* =============================== 현왕 모달창 내부 css =================================== */
@@ -85,12 +88,12 @@
    .modal_wrapId{ /* 아이디 찾기 모달*/
         display: none;
         width: 400px;
-        height: 300px;
+        height: 270px;
         position: absolute;
-        top:100%;
-        left: 50%;
+        top:90%;
+        left: 39%;
         padding:20px;
-        margin: -90px 0 0 -200px; /*위치*/
+        margin: -90px 0 0 -20px; /*위치*/
         background:#ffffff;
         z-index: 3;
         font-family: sans-serif;
@@ -111,13 +114,13 @@
 	
    .modal_wrapPwd{ /*비밀번로호 모달*/
         display: none;
-        width: 400px;
+        width: 420px;
         height: 350px;
         position: absolute;
-        top:100%;
-        left: 50%;
+        top:90%;
+        left: 39%;
         padding:20px;
-        margin: -90px 0 0 -200px; /*위치*/
+        margin: -90px 0 0 -20px; /*위치*/
         background:#ffffff;
         z-index: 3;
         font-family: sans-serif;
@@ -135,6 +138,34 @@
         z-index: 1;
     }
     
+    <!-- 메뉴 탭조절 	-->
+.my-wrap {
+  width: 100%;
+  height: 850px;
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top center;
+  z-index: 0; }
+  @media (max-width: 991.98px) {
+    .my-wrap {
+      background-position: top center !important; } }
+  .my-wrap.my-wrap-2 {
+    height: 170px !important;
+    position: relative; }
+    .my-wrap.my-wrap-2 .slider-text {
+      height: 190px !important; }
+      
+         /*회색부분 크기*/
+    .colmd7 { 
+    -webkit-box-flex: 0;
+    max-width: 100%; }   /*여기*/
+      
+    .prmd5 {
+    padding-right: 0rem !important;
+    width: 100%;
+}  
+    
 /* =============================== 현왕 모달창 내부 css 종료 =================================== */
 /* =============================== 현왕 모달창 열기 & 내부 버튼 css 시작 =================================== */
 #modal_btn, #btn_pw_ok, .modal_closeId .modal_closeIPwd {
@@ -150,434 +181,57 @@
          color: white;
       }
 /* =============================== 현왕 모달창 열기 & 내부 버튼 css 종료 =================================== */
+	/* header dropdown */
+	.ftco-navbar-light .navbar-nav > .nav-item .dropdown-menu {
+		/* background: #fff;
+		background-color: #fff;
+		opacity: 0.7; */
+		background: rgba(255,255,255,0.7);
+		/* border: 2px solid white; */
+		/* width: 100px; */
+		min-width: 9rem;
+		color: white;
+	}
+	.dropdown-item {
+		font-weight: bold;
+		color: #5D5D5D;
+	} 
+	.navbar .nav-item:hover .dropdown-menu .dropdown-item {
+		color: #5D5D5D;
+	}
     </style>
-    
-	<script type="text/javascript">
-	$(function(){
-		
-		
-	    
-	    function onClickId() {
-	        document.querySelector('.modal_wrapId').style.display ='block';
-	        document.querySelector('.black_bgId').style.display ='block';
-	    }   
-	    function onClickPwd() {
-	        document.querySelector('.modal_wrapPwd').style.display ='block';
-	        document.querySelector('.black_bgPwd').style.display ='block';
-	    }    
-	    function offClickId() {
-	        document.querySelector('.modal_wrapId').style.display ='none';
-	        document.querySelector('.black_bgId').style.display ='none';
-	        location.reload();
-	    }
-	    function offClickPwd() {
-	        document.querySelector('.modal_wrapPwd').style.display ='none';
-	        document.querySelector('.black_bgPwd').style.display ='none';
-	        location.reload();
-	    }
-	 
-	    document.getElementById('login-button-id').addEventListener('click', onClickId);
-	    document.getElementById('login-button-pwd').addEventListener('click', onClickPwd);
-	    document.querySelector('.modal_closeId').addEventListener('click', offClickId);
-	    document.querySelector('.modal_closePwd').addEventListener('click', offClickPwd);
-	<!-- ===================================== 현왕 모달창 실행 자바스크립트 추가 종료 =========================================== -->
-	<!-- ===================================== 현왕 모달창 내용 자바스크립트 추가 & 암호 변경하면 비밀번호 <input type=text>에 전달 =========================================== -->
-	      const phone = document.getElementById("phone");
-	      const phonePwd = document.getElementById("phonePwd");
-	      const sendPhone = document.getElementById("sendPhone");
-	      const sendPhonePwd = document.getElementById("sendPhonePwd");
-	      const checkNum = document.getElementById("checkNum");
-	      const inputNum = document.getElementById("inputNum");
-	      const inputNumPwd = document.getElementById("inputNumPwd");
-	      const inf = document.getElementById("inputNumForm");
-	      const id = document.getElementById("IdPwd");
-		  $("#bb").css({display: "none"});
-		  
-	      sendPhone.onclick=sendPhoneReq;   
-	      sendPhonePwd.onclick=sendPhoneReqPwd;   
-	      
-	      checkNum.onclick=checkNumReq;   
-	      checkNumPwd.onclick=checkNumReqPwd;   
-	      
-	      let i = 1;
-	       $("#btnUpdate2").click(function() {
-	          const pwd1 = document.getElementById("password1").value;
-	          const pwd2 = document.getElementById("password2").value;
-	          var pass = false;
-	          if(pwd1 == pwd2){
-	             if(pwd1 != "" && pwd2 !=""){
-	             alert("비밀번호가 일치합니다");
-	            }//if
-	             pass = true;
-	          }else{//if
-	             alert("비밀번호가 일치하지 않습니다.");
-	              return false;
-	          }//else
-	          if(pass){
-	             if(pwd1 != "" && pwd2 !=""){
-	                 const pwAvail = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^*()\-_=+\\\|\[\]{};:\'",.<>\/?]).{8,12}$/;
-	                 const pwAvailCheck = pwAvail.test(pwd1.trim());
-	                 if(!pwAvailCheck){
-	                     alert("비밀번호는 문자,숫자,특수기호 1가지이상 포함하여야합니다");
-	                     return;
-	                 }//if
-	             }//if
-	             $.ajax("/updatePwd", {
-		             data:{"password" : pwd1 , "id" : id.value},
-		             type: "POST",
-		             success:function(re){
-			             console.log(id.value);         
-			             console.log(pw1);         
-	                alert("회원 정보가 수정되었습니다");         
-	                window.location.reload();
-	             }});      //에이작
-	          }//if
-	        });//펑션끝
-	      function sendPhoneReqPwd(){// 인증번호 발송
-	         const phAvail = /^01[0179][0-9]{7,8}$/;
-	         const phAvailCheck = phAvail.test(phonePwd.value.trim());
-	         
-	            if(id.value.trim() == ""){
-	               alert("아이디를 입력하세요.");
-	               id.focus();
-	               return;
-	            }
-	            if(phonePwd.value.trim() == ''){
-	               alert("휴대전화를 입력하세요.");
-	               phonePwd.focus();
-	               return;
-	            }
-	               if(phonePwd.value.trim() == ''){
-	                  alert("휴대전화번호를 입력하세요..");
-	                  phonePwd.focus();
-	                  return;
-	               }
-	               else if(phAvailCheck == false){
-	                  alert("유효하지 않은 번호입니다.");
-	                  phonePwd.focus();
-	                  return;
-	               }
-	               else if(checkPhoneNumPwd() == 0){
-	                  alert("가입 되어있지 않은 번호입니다");
-	                  phonePwd.focus();
-	                  return;
-	               }
-	               $.ajax({
-	   	                  url: "/selectMemberId",
-	   	                  type: "POST",
-	   	               	  async: false,
-	   	                  data:{
-	   	                     "phone":phonePwd.value.trim()
-	   	                  },
-	   	                success: function(data){
-		      	        	if(id.value.trim() != data.id){
-								alert("가입 하신 아이디와 전화번호를 다시확인해주세요.");
-								i = 0;	
-								return;
-				      	    }else{
-								i = 1;
-						    }
-	   	                }
-	         	  	});
-	         	  	
-        	  		if(i == 0){
-            	  		return;
-            	  	}
-	               $.ajax({
-	                  url: "/smsSend",
-	                  type: "GET",
-	                  data:{
-	                     "phoneNum":phonePwd.value.trim()
-	                  },
-	                  success: function(data){
-	                     if(data == "1"){
-	                        alert("인증번호가 발송되었습니다.");
-	                        $("#phonePwd").prop('readonly', true);
-	                        $(".hiddenPhone").css({display: "inline-block"});
-	                        
-	                        inputNum.value="";
-	                        inputNum.focus();
-	                     }else{
-	                        alert("인증번호 발송에 실패하였습니다.");
-	                     }
-	                  },
-	                  error: function(){
-	                     alert("서버에러");
-	                  }
-	               });
-	               
-	      }
-	  	document.getElementById("phone").onkeypress=enterkeysendPhoneReq;
-	  	function enterkeysendPhoneReq(){
-			if(window.event.keyCode == 13){
-				sendPhoneReq();
-			}
-		}
-	  	document.getElementById("inputNum").onkeypress=enterkeycheckNumReq;
-	  	function enterkeycheckNumReq(){
-			if(window.event.keyCode == 13){
-				checkNumReq();
-			}
-		}
-	  	document.getElementById("phonePwd").onkeypress=enterkeysendPhoneReqPwd;
-	  	document.getElementById("IdPwd").onkeypress=enterkeysendPhoneReqPwd;
-	  	function enterkeysendPhoneReqPwd(){
-			if(window.event.keyCode == 13){
-				sendPhoneReqPwd();
-			}
-		}
-	  	document.getElementById("inputNumPwd").onkeypress=enterkeycheckNumReqPwd;
-	  	function enterkeycheckNumReqPwd(){
-			if(window.event.keyCode == 13){
-				checkNumReqPwd();
-			}
-		}
-	      function sendPhoneReq(){// 인증번호 발송
-	         const phAvail = /^01[0179][0-9]{7,8}$/;
-	         const phAvailCheck = phAvail.test(phone.value.trim());
-	            if(phone.value.trim() == ''){
-	               alert("휴대전화를 입력하세요.");
-	               phone.focus();
-	               return;
-	            }
-	               if(phone.value.trim() == ''){
-	                  alert("휴대전화번호를 입력하세요..");
-	                  phone.focus();
-	                  return;
-	               }
-	               else if(phAvailCheck == false){
-	                  alert("유효하지 않은 번호입니다.");
-	                  phone.focus();
-	                  return;
-	               }
-	               else if(checkPhoneNum() == 0){
-	                  alert("가입 되어있지 않은 번호입니다");
-	                  phone.focus();
-	                  return;
-	               }
-	               alert("번호발송");
-	               $.ajax({
-	                  url: "/smsSend",
-	                  type: "GET",
-	                  data:{
-	                     "phoneNum":phone.value.trim()
-	                  },
-	                  success: function(data){
-	                     if(data == "1"){
-	                        alert("인증번호가 발송되었습니다.");
-	                        $("#phone").prop('readonly', true);
-	                        $("#IdPwd").prop('readonly', true);
-	                        $(".hiddenPhone").css({display: "inline-block"});
-	                        
-	                        inputNum.value="";
-	                        inputNum.focus();
-	                     }else{
-	                        alert("인증번호 발송에 실패하였습니다.");
-	                     }
-	                  },
-	                  error: function(){
-	                     alert("서버에러");
-	                  }
-	               });
-	               
-	      }
-	      
-	      function checkNumReqPwd(){//인증번호 확인
-	         
-	               if(inputNumPwd.value.trim() == ''){
-	                  alert("인증번호를 입력하세요..");
-	                  inputNumPwd.focus();
-	                  return;
-	               }
-	               else if(inputNumPwd.value.trim().length != 6){
-	                  alert("인증번호는 6자리입니다.");
-	                  inputNumPwd.focus();
-	                  return;
-	               }
-	               let idR = 0;      
-	               $.ajax({
-	                  url: "/smsSend",
-	                  type: "POST",
-	                  data:{
-	                     "num":inputNumPwd.value.trim()
-	                  },
-	                  success: function(data){
-	                     if(data == '1'){
-		                     idR = 1;
-	                        alert("인증되었습니다.");
-	                        $.ajax({
-		      	                  url: "/selectMemberId",
-		      	                  type: "POST",
-		      	                  data:{
-		      	                     "phone":phonePwd.value.trim()
-		      	                  },
-		      	                success: function(data){
-			      	                $("#bb").css({display: "block"});
-		      	                }
-		            	   });
-	                       
-	                        inputNumPwd.value="";
-	                        $(".hiddenPhone").css({display: "none"});
-	                     }else{
-	                        alert("인증번호가 일치하지 않습니다.");
-	                     }
-	                  },
-	                  error: function(){
-	                     alert("서버에러");
-	                  }
-	               });
-	               if(idR == 1){
-	            	   
-			       }
-	               
-	      }
-	      function checkNumReq(){//인증번호 확인
-	         
-	               if(inputNum.value.trim() == ''){
-	                  alert("인증번호를 입력하세요..");
-	                  inputNum.focus();
-	                  return;
-	               }
-	               else if(inputNum.value.trim().length != 6){
-	                  alert("인증번호는 6자리입니다.");
-	                  inputNum.focus();
-	                  return;
-	               }
-	               let idR = 0;      
-	               $.ajax({
-	                  url: "/smsSend",
-	                  type: "POST",
-	                  data:{
-	                     "num":inputNum.value.trim()
-	                  },
-	                  success: function(data){
-	                     if(data == '1'){
-		                     idR = 1;
-	                        alert("인증되었습니다.");
-	                        $.ajax({
-		      	                  url: "/selectMemberId",
-		      	                  type: "POST",
-		      	                  data:{
-		      	                     "phone":phone.value.trim()
-		      	                  },
-		      	                success: function(data){
-			      	                $("#h2").text("고객님의 아이디는 "+data.id+" 입니다.");
-		      	                }
-		            	   });
-	                       
-	                        inputNum.value="";
-	                        $(".hiddenPhone").css({display: "none"});
-	                        $("#kakusu").css({display:"none"});
-	                     }else{
-	                        alert("인증번호가 일치하지 않습니다.");
-	                     }
-	                  },
-	                  error: function(){
-	                     alert("서버에러");
-	                  }
-	               });
-	               if(idR == 1){
-	            	   
-			       }
-	               
-	      }
-	      function checkPhoneNumPwd(){//디비저장 폰있는지 중복방지
-	          let check = 1;
-	          const phoneNum = phonePwd.value.trim();
-	          
-	          $.ajax({
-	             url:"/phoneNumCheck",
-	             type:"POST",
-	             async: false,
-	             data:{"phone":phoneNum},
-	             success:function(data){
-	                if(data == "0"){
-	                   check = 0;
-	                }
-	             },
-	             error:function(){
-	                alert("에러발생");
-	             }
-	          });
-	          
-	          
-	          return check;
-	       }
-	      function checkPhoneNum(){//디비저장 폰있는지 중복방지
-	          let check = 1;
-	          const phoneNum = phone.value.trim();
-	          
-	          $.ajax({
-	             url:"/phoneNumCheck",
-	             type:"POST",
-	             async: false,
-	             data:{"phone":phoneNum},
-	             success:function(data){
-	                if(data == "0"){
-	                   check = 0;
-	                }
-	             },
-	             error:function(){
-	                alert("에러발생");
-	             }
-	          });
-	          
-	          
-	          return check;
-	       }
-	      // $(".hidden").css({display: "none"});
-	       $(".hiddenPhone").css({display: "none"});
-	});
-	</script>
+
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-		<div class="container">
-			<a class="navbar-brand" href="index.html">오늘의 라이딩</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="oi oi-menu"></span> Menu
-			</button>
-			<div class="collapse navbar-collapse" id="ftco-nav">
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item active"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
-					<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
-					<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
-					<li class="nav-item"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
-					<li class="qnav-item"><a href="" class="nav-link">라이딩 정보</a></li>
-				</ul>
-			</div>
-	    </div>
-	</nav>
-    <!-- END nav -->
-    
-	<section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
-		<div class="overlay"></div>
-		<div class="container">
-			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
-				<div class="col-md-9 ftco-animate pb-0 text-center">
-					<h1 class="mb-3 bread">Login</h1>
-				</div>
-			</div>
-		</div>
-	</section>
+	<section class="hero-wrap hero-wrap-2" style="background-image: url('/headerImg/signUpAndInMain.jpg');" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate pb-0 text-center">
+          	<p class="breadcrumbs"><span class="mr-2"><a href="/mainPage">HOME <i class="fa fa-chevron-right"></i></a></span> <span>로그인 <i class="fa fa-chevron-right"></i></span></p>
+            <h1 class="mb-3 bread" id="tagTitle">로그인</h1>
+          </div>
+        </div>
+      </div>
+    </section>
 
-	<section class="ftco-section ftco-no-pb ftco-no-pt contact-section">
-		<div class="container">
-			<div class="row block-9 justify-content-center mb-5"> 
-<!-- 여기  wrap-about py-md-5 ftco-animate-->		<div class="colmd8 mb-md-5 bg-light p-5 contact-form">
-			
-					<div class="heading-section pr-md-5">
+<!-- <section class="my-wrap my-wrap-2" style="background-color: #fff;"  id=top></section> -->
+    <section class="ftco-section">
+      <div class="container" >
+        <div class="row block-9 justify-content-center mb-5">
+          <div class="colmd7 mbmd5 bg-light p-5 contact-form">
+					<div class="heading-section prmd5">
 						<h2 class="mb-4" style="text-align: center; font-size: 30px;">오늘의 라이딩 로그인</h2>
-						<p style="text-align: center; color: black; margin: 0 0 10px;">오늘도 힘차게 달려볼까요.?</p>
+						<p style="text-align: center; color: black; margin: 0 0 10px;">오늘도 힘차게 달려볼까요?</p>
 						<div class="container">
-									<input type="text" class="form-control form-group" id="member-id"  placeholder="아이디를 입력하세요." name="member-id"  maxlength="12" required>
-									<input type="password" class="form-control form-group" id="member-password"  placeholder="비밀번호를 입력하세요." name="member-password" maxlength="12" required>
-									<input type="hidden" id="token" data-token-name="${_csrf.headerName}" 	placeholder="비밀번호를 입력하세요." value="${_csrf.token}">
+									<input type="text" class="form-control form-group" id="member-id"  placeholder="아이디를 입력하세요" name="member-id"  maxlength="12" required>
+									<input type="password" class="form-control form-group" id="member-password"  placeholder="비밀번호를 입력하세요" name="member-password" maxlength="12" required>
+									
 					    		<div style="text-align: center;">
 					    			<button id="login-button" type="button" class="btn btn-primary form-control" onclick="location.href='/mainPage'">로그인</button>
 									<button id="login-button-id" type="button" class="btn" style="font-size: 15px;">아이디찾기</button>
-					    			<button id="login-button-pwd" type="button" class="btn"  style="font-size: 15px; ">비밀번호찾기</button>
-					    			<button id="login-button-pwd" type="button" class="btn "onclick="location.href='/signUp'"  style="font-size: 15px; ">회원가입</button>
+					    			<button id="login-button-pwd" type="button" class="btn"  style="font-size: 15px; ">비밀번호 재발급</button>
+					    			<button id="login-button-pwd" type="button" class="btn "onclick="location.href='/signUp'"  style="font-size: 15px;  ">회원가입</button>
 								</div>					   
 						</div>
 					</div>
@@ -585,13 +239,8 @@
 			</div>
 		</div>
 	</section>
-  
-
-  <!-- loader -->
-  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
-
-
  
+	<section>
      <%-- =================== 화면에서 안보이는 모달창 부분 [ 버튼 클릭시 모달 화면으로 보이는 내용 ] 아이디찾기 완료 =================== --%>
        <div class="black_bgId"></div>
          <div class="modal_wrapId">
@@ -600,15 +249,16 @@
              </div>
              	<h4 class="mb-4" style="text-align: center; font-size: 20px;">아이디 찾기</h4>
 		         <div id=kakusu>
-                <input type="tel" id="phone" name="phone"  class=" hidden form-group form-control2" maxlength="11" placeholder="휴대폰 번호'-'없이 입력해 주세요."> 
+
+                <input type="tel" id="phone" name="phone"  class=" hidden form-group form-control2" maxlength="11" placeholder="휴대폰 번호'-'없이 입력해 주세요" required> 
 		         <input type="button" id="sendPhone" class="hidden  btn btn-primary form-group form-control2" value="인증번호 받기">
 		         </div>
 		         <div id="inputNumForm">
-		            <input type="tel" id="inputNum" class="hiddenPhone form-group form-input-control3" name="inputNum" maxlength="6" placeholder="인증번호를 입력하세요.">
+		            <input type="tel" id="inputNum" class="hiddenPhone form-group form-input-control3" name="inputNum" maxlength="6" placeholder="인증번호를 입력하세요" required>
 		            <input type="button" id="checkNum" class="hiddenPhone btn btn-primary form-control3" value="인증">
 		         </div> 
-<%--수정필요 --%>		         <div id="miseru" style="padding: 50px;">
-		         <h2 id="h2"class="mb-4" style=" text-align:center;  font-size: 16px"></h2>
+<%--수정필요 --%>		         <div id="miseru" style="padding: 20px;">
+		         <h3 id="h2"class="" style=" text-align:center;  font-size: 16px"></h3>
 		         </div>
              <br>
 
@@ -621,28 +271,32 @@
           <div class="close" style="float: right; padding-left: 400px" >    
              <button type="button" class=" btn btu-primary modal_closePwd" >ⓧ</button>
              </div>
+             <div id="cc">
                	<h4 class="mb-4" style="text-align: center; font-size: 20px;">비밀번호 재발급</h4>
                  <div>
-  	            <input type="text" id="IdPwd" name="Id" class="hidden  form-group form-control2" maxlength="12"  placeholder="아이디를 입력하세요." > 
+  	            <input type="text" id="IdPwd" name="Id" class="hidden  form-group form-control2" maxlength="12"  placeholder="아이디를 입력하세요" required> 
                 </div>
-                <input type="tel" id="phonePwd" name="phone" class="hidden  form-group form-control2" maxlength="11"  placeholder="휴대폰 번호'-'없이 입력해 주세요." > 
+                <input type="tel" id="phonePwd" name="phone" class="hidden  form-group form-control2" maxlength="11"  placeholder="휴대폰 번호'-'없이 입력해 주세요" required > 
 		         <div>
-		         <input type="button" id="sendPhonePwd" class="hidden btn btn-primary form-control2 form-group" value="인증번호 받기">
+		         <input type="button" id="sendPhonePwd" class="hidden btn btn-primary form-control2 form-group" value="인증번호 받기" required>
 		         </div>
 		         <div id="inputNumForm">
-		            <input type="tel" id="inputNumPwd" class="hiddenPhone form-group form-input-control3" name="inputNumPwd" maxlength="6" placeholder="인증번호를 입력하세요.">
+		            <input type="tel" id="inputNumPwd" class="hiddenPhone form-group form-input-control3" name="inputNumPwd" maxlength="6" placeholder="인증번호를 입력하세요" required>
 		            <input type="button" id="checkNumPwd" class="hiddenPhone btn btn-primary form-control3" value="인증">
+		         </div>
 		         </div> 
              <br>
-             	<div id="bb">
-             	 <div id=modify class="hidden">비밀번호</div>
+              	<div id="bb">
+             	 <div id=modify class="hidden">
+             	 	<h4 class="mb-4" style="text-align: center; font-size: 20px;">비밀번호 재발급</h4>
 		         <div ></div>
-		         <input type="password" id="password1" class="hidden"  placeholder="새 비밀번호를 입력하세요." name="password"/>
+		         <input type="password" id="password1" class="hidden form-group form-control2"  placeholder="새 비밀번호를 입력하세요" name="password"/ required >
 		         <div ></div>
-		         <input type="password" id="password2" class="hidden"  placeholder="새 비밀번호를 다시 입력하세요." name="password2"/>
-		         <button id="btnUpdate2"  class="" >수정하기</button>
+		         <input type="password" id="password2" class="hidden form-group form-control2"  placeholder="새 비밀번호를 다시 입력하세요" name="password2"/ required>
+		         <button id="btnUpdate2"  class="hidden btn btn-primary form-control2 form-group" onclick="location.href='/login'">수정하기</button></a>
 		         </div>   
          </div>
+	</section>
     
     <%-- =================== 화면에서 안보이는 모달창 부분 [ 버튼 클릭시 모달 화면으로 보이는 내용 ] =================== --%>
   <script src="/resources/js/jquery.min.js"></script>
@@ -660,7 +314,66 @@
   <script src="/resources/js/google-map.js"></script>
   <script src="/resources/js/main.js"></script>
    
+	<!-- footer 시작 -->
+	<footer class="ftco-footer ftco-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+              <h2 class="ftco-heading-2">Today's Riding</h2>
+              <p>For your perfect ride.</p>
+              <ul class="ftco-footer-social list-unstyled mt-5">
+                <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
+                <li class="ftco-animate"><a href="#"><span class="fa fa-instagram"></span></a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">Community</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>코스 찾기</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>라이딩 후기</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>번개 라이딩</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>FAQs</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4 ml-md-4">
+              <h2 class="ftco-heading-2">About Ora</h2>
+              <ul class="list-unstyled">
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>오늘의 라이딩</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>공지사항</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>QnA</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="col-md">
+            <div class="ftco-footer-widget mb-4">
+            	<h2 class="ftco-heading-2">Have a Questions?</h2>
+            	<div class="block-23 mb-3">
+	              <ul>
+	                <li><span class="icon fa fa-map"></span><span class="text">서울시 마포구 백범로 23</span></li>
+	                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+82 02 1234 5678</span></a></li>
+	                <li><a href="#"><span class="icon fa fa-envelope pr-4"></span><span class="text">ora@bit.com</span></a></li>
+	              </ul>
+	            </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 text-center">
 
+            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> 오늘의 라이딩 All rights reserved
+  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+          </div>
+        </div>
+      </div>
+    </footer> 
  
   </body>
 </html>

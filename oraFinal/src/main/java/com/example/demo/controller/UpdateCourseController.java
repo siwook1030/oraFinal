@@ -47,14 +47,16 @@ public class UpdateCourseController {
 		map.put("cJson", cdao.getCourseByCno(c_no, path));
 		map.put("ptJson",cdao.getPublicTransportByCno(c_no));
 		return gson.toJson(map);
-	//	model.addAttribute("cJson", gson.toJson(cdao.getCourseByCno(c_no, path)));
-	//	model.addAttribute("ptJson", gson.toJson(cdao.getPublicTransportByCno(c_no)));
+
 	}
 	
 
 	@PostMapping(value = "/admin/updateCourse", produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String updateCourse(HttpSession session,HttpServletRequest request,@RequestParam Map<String, Object> map,@RequestParam(value="c_views",required = false) String[] c_views, List<MultipartFile> uploadfile){
+	public String updateCourse(HttpSession session,HttpServletRequest request,
+			@RequestParam Map<String, Object> map,@RequestParam(value="c_views",required = false) String[] c_views,
+			@RequestParam(value="c_tags",required = false) List<String> c_tags,
+			List<MultipartFile> uploadfile){
 
 		 int c_no = Integer.parseInt((String)map.get("c_no"));
 		 String code_value = (String)map.get("code_value");
@@ -71,13 +73,14 @@ public class UpdateCourseController {
 		 double c_distance = Double.parseDouble((String)map.get("c_distance"));
 		 int c_time = Integer.parseInt((String)map.get("c_time"));
 		 int c_difficulty = Integer.parseInt((String)map.get("c_difficulty"));
+		 String c_tag = (String)map.get("c_tag");
 		 String c_view = (String)map.get("c_view");
 		 String c_words = (String)map.get("c_words");
 		 String c_temp = "Y";
 		 double userDis = 0; //코스와 유저의현재위치와의  거리
 		 
 		 String cLinepath = request.getRealPath(MakingCourseController.courseLinePath);
-		 String c_line=c_no+"_c_line.dat";
+		 String c_line=c_no+"_"+c_name + MakingCourseController.courseLineName;
 		 String c_lineDat = (String)map.get("c_line");
 		 	 	 
 		 List<CoursePhotoVo> c_photo = new ArrayList<CoursePhotoVo>();
@@ -91,7 +94,7 @@ public class UpdateCourseController {
 			 cpCnt++;
 		 }
 		
-		 CourseVo c = new CourseVo(c_no, code_value, id, nickName, c_name, c_s_locname, c_s_latitude, c_s_longitude, c_e_locname, c_e_latitude, c_e_longitude, c_loc, c_distance, c_time, c_difficulty, c_view, c_views, c_words, c_line, c_temp, userDis, c_photo);
+		 CourseVo c = new CourseVo(c_no, code_value, id, nickName, c_name, c_s_locname, c_s_latitude, c_s_longitude, c_e_locname, c_e_latitude, c_e_longitude, c_loc, c_distance, c_time, c_difficulty, c_tag, c_tags, null,c_view, c_views, c_words, c_line, c_temp, userDis, c_photo);
 	
 		 
 		 int pt_noPS = Integer.parseInt((String)map.get("pt_noPS"));

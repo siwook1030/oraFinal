@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.dao.CourseDao;
+import com.example.demo.dao.ReviewDao;
 import com.example.demo.db.CourseManager;
 
 import com.example.demo.vo.CoursePhotoVo;
@@ -39,61 +40,10 @@ import com.google.gson.Gson;
 public class CourseController {	
 	
 	@Autowired
-	private CourseDao cdao;
+	private CourseDao cdao;	
 	
-	@GetMapping("/searchCourse")
-	public void searchCourseForm() {
-		
-	}
-	
-	@PostMapping(value ="/searchCourse", produces = "application/json; charset=utf8")
-	@ResponseBody
-	public String searchCourse(double latitude, double longitude, int distance, int time,@RequestParam(value="view[]",required = false) List<String> view) {
-		HashMap map = new HashMap();
-		System.out.println("위도 : "+latitude);
-		System.out.println("경도 : "+longitude);
-		System.out.println("거리 : "+distance);
-		System.out.println("시간 : "+time);
-		System.out.println("풍경 : " + view);
-		int minDis = 0;
-		if(distance > 0) { 
-			 minDis = 20;
-		}
-		if(distance >50) {
-			minDis = 950;
-		}
-		
-		int minTime = 0;
-		if(time > 0) {
-			 minTime = 60;
-		}
-		if(time > 180) {
-			minTime = 820;
-		}
-		
-		
-		if(view != null) {
-			int cnt=1;
-			for(String v : view) {
-				map.put("view"+cnt, v);
-				cnt++;
-			}
-		}
-
-		map.put("latitude", latitude);
-		map.put("longitude", longitude);
-		map.put("distance", distance);
-		map.put("minDis", minDis);
-		map.put("time", time);
-		map.put("minTime", minTime);
-		List<CourseVo> sclList = cdao.searchCourseList(map);
-		
-		Gson gson = new Gson();
-		
-		return gson.toJson(sclList);
-		
-	}
-	
+	@Autowired
+	private ReviewDao rdao;
 	
 	@RequestMapping(value = "/detailCourse", produces = "application/json; charset=utf-8")
 	public void detailCourse(HttpServletRequest request,Model model, int c_no) {
@@ -101,13 +51,13 @@ public class CourseController {
 		Gson gson = new Gson();
 		CourseVo c = cdao.getCourseByCno(c_no, path);
 		List<PublicTransportVo> ptList = cdao.getPublicTransportByCno(c_no);
-	//	List<FoodVo> fList = cdao.getFoodByCno(c_no);
+
 		model.addAttribute("c", c);
 		model.addAttribute("cJson", gson.toJson(c));
 		model.addAttribute("ptList", ptList);
 		model.addAttribute("ptJson", gson.toJson(ptList));
-	//	model.addAttribute("fList", fList);
-	//	model.addAttribute("fJson", gson.toJson(fList));
+		model.addAttribute("review", rdao.getReviewByCno(c_no));
+
 	}
 	@RequestMapping(value = "/admin/deleteCourse", produces = "application/json; charset=utf-8")
 	@ResponseBody
@@ -158,15 +108,6 @@ public class CourseController {
       System.out.println("세이브 컨트롤러 작동!!!!");
       Gson gson = new Gson();
       List<CourseVo> courseList = cdao.getSaveCourse(httpSession);
-      List<CoursePhotoVo> photovo =null;
-      for (CourseVo c : courseList) {
-         photovo =(c.getC_photo());
-      }
-      //model.addAttribute("courseList",courseList);
-      //model.addAttribute("photovo",photovo);
-      System.out.println(courseList);
-      System.out.println("코스리스트");
-      System.out.println(photovo);
       
       return gson.toJson(courseList);
    }
@@ -178,13 +119,6 @@ public class CourseController {
       System.out.println("세이브 컨트롤러 작동!!!!");
       Gson gson = new Gson();
       List<CourseVo> courseList = cdao.getMyCourseById(httpSession);
-      List<CoursePhotoVo> photovo =null;
-      for (CourseVo c : courseList) {
-         photovo =(c.getC_photo());
-      }
-      System.out.println(courseList);
-      System.out.println("코스리스트");
-      System.out.println(photovo);
       
       return gson.toJson(courseList);
    }
@@ -193,7 +127,7 @@ public class CourseController {
    @PostMapping(value = "/deleteSaveCourse", produces = "application/json; charset=utf-8")
    @ResponseBody
    public String deleteSaveCourse(HttpSession httpSession,int cno) {
-      System.out.println("코스삭제 컨트롤러작동" + cno);
+
       MemberVo m = (MemberVo)httpSession.getAttribute("m");
       HashMap map = new HashMap();
       map.put("id", m.getId());

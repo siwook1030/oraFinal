@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+		<gpx xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" creator="siwook">
+			<metadata>
+				<desc>siwook</desc>
+				<bounds maxlat="37.51839696890417" maxlon="127.01013531717133" minlat="37.49604893222365" minlon="126.94733985128877" />
+			</metadata>
+			<wpt lat="37.508006098412366" lon="126.94733985128877">
+				<name>START</name>
+				<sym>Flag, Green</sym>
+				<extensions>
+					<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
+					<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>
+					</gpxx:WaypointExtension>
+				</extensions>
+				<ele>0</ele>
+			</wpt>
+			<wpt lat="37.51839696890417" lon="127.01013531717133">
+				<name>END</name>
+				<sym>Flag, Green</sym>
+				<extensions>
+					<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
+					<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>
+					</gpxx:WaypointExtension>
+				</extensions>
+				<ele>0</ele>
+			</wpt>
+			<trk>
+				<extensions>
+					<gpxx:TrackExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
+					<gpxx:DisplayColor>Green</gpxx:DisplayColor>
+					</gpxx:TrackExtension>
+				</extensions>
+				<trkseg>
+<trkpt lat="37.508006098412366" lon="126.94733985128877">
+								<ele>0</ele>
+						   </trkpt>
+<trkpt lat="37.49604893222365" lon="126.97105058254095">
+								<ele>0</ele>
+						   </trkpt>
+<trkpt lat="37.50484524930174" lon="126.98425690745171">
+								<ele>0</ele>
+						   </trkpt>
+<trkpt lat="37.51839696890417" lon="127.01013531717133">
+								<ele>0</ele>
+						   </trkpt>
+</trkseg>
+					</trk>
+				</gpx>

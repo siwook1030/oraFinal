@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -134,12 +135,14 @@ public class CourseManager {
 		
 	}
 	
-	
+	// 메인페이치 뷰추천 코스용
 	public static List<CourseVo> getCourseByView(String view) {  // 메인페이지 추천
 		List<CourseVo> clist = new ArrayList<CourseVo>();
 		SqlSession session = sqlSessionFactory.openSession();
 		clist = session.selectList("course.selectByView", view);
 		for(CourseVo c : clist) {
+			List<String> tagList = Arrays.asList(c.getC_tag().split("#"));
+			c.setC_tags(tagList.subList(1, tagList.size()));
 			c.setC_views(c.getC_view().split("-"));
 			List<CoursePhotoVo> cpList = session.selectList("course.selectCoursePhoto", c.getC_no());
 			Collections.shuffle(cpList);
@@ -150,23 +153,26 @@ public class CourseManager {
 		return clist;
 	}
 	
+	// 코스상세용
 	public static CourseVo getCourseByCno(int c_no, String path) {
 		CourseVo c = null;
 		SqlSession session = sqlSessionFactory.openSession();
 		c = session.selectOne("course.selectByCno", c_no);
+		List<String> tagList = Arrays.asList(c.getC_tag().split("#"));
+		c.setC_tags(tagList.subList(1, tagList.size()));
+		System.out.println(tagList);
+		System.out.println(c.getC_tags());
 		c.setC_views(c.getC_view().split("-"));
 		c.setC_line(FileUtilCollection.readText(c.getC_line(), path));
 		List<CoursePhotoVo> cpList = session.selectList("course.selectCoursePhoto", c_no);			
 		Collections.shuffle(cpList);
-		if(cpList.size() == 0 ) {
-			cpList = null;
-		} 
 		c.setC_photo(cpList);
 		session.close();
 		
 		return c;
 	}
 	
+	// 게시판용 코스리스트
 	public static List<CourseVo> listCourse(){
 		List<CourseVo> cList = null;
 		SqlSession session = sqlSessionFactory.openSession();
@@ -176,6 +182,7 @@ public class CourseManager {
 		return cList;
 	}
 	
+	// 맞춤검색 코스
 	public static List<CourseVo> searchCourseList(HashMap map){
 		List<CourseVo> scList = new ArrayList<CourseVo>();
 		List<Integer> inCnumList = null;
@@ -208,7 +215,7 @@ public class CourseManager {
 			}
 			
 		}
-		System.out.println(cNumList);
+
 		for(int c_no : cNumList) {
 			map.put("c_no", c_no);
 			scList.add(selectByCnoandUserDis(map));
@@ -217,15 +224,65 @@ public class CourseManager {
 		return scList;
 	}
 	
+	// 태그검색 코스
+	public static List<CourseVo> tagSearchCourseList(String searchTag) {
+		List<CourseVo> tscList = null;
+		SqlSession session = sqlSessionFactory.openSession();
+		tscList = session.selectList("course.selectTagSearchCourse", searchTag);
+		
+		for(CourseVo c : tscList) {
+			c.setC_views(c.getC_view().split("-"));
+			List<CoursePhotoVo> cpList = session.selectList("course.selectCoursePhoto", c.getC_no());			
+			Collections.shuffle(cpList);
+			c.setC_photo(cpList);
+		}
+		
+		session.close();
+		return tscList;
+	}
+	
+	//승인대기 코스리스트 갖고오기
+	public static List<CourseVo> getCourseListByTemp() {
+		List<CourseVo> tempList = null;
+		SqlSession session = sqlSessionFactory.openSession();
+		tempList = session.selectList("course.selectCourseListByTemp");
+		
+		for(CourseVo c : tempList) {
+			c.setC_views(c.getC_view().split("-"));
+			List<CoursePhotoVo> cpList = session.selectList("course.selectCoursePhoto", c.getC_no());			
+			Collections.shuffle(cpList);
+			c.setC_photo(cpList);
+		}
+		
+		session.close();
+		return tempList;
+	}
+	// 승인대기 코스 승인해주기
+	public static int approveCourse(int c_no) {
+		int re = -1;
+		SqlSession session = sqlSessionFactory.openSession();
+		re = session.update("course.approveCourse", c_no);
+		if(re > 0) {
+			session.commit();
+		}
+		else {
+			session.rollback();
+		}
+		session.close();
+		
+		return re;
+	}
+	
+	// 코스명 중복체크
 	public static int cnameDupCheck(String c_name) {
 		int re = 1;
 		SqlSession session = sqlSessionFactory.openSession();
 		re = session.selectOne("course.cnameDupCheck", c_name);
-		
+		session.close();
 		return re;
 		
 	}
-	
+	// 대중교통 갖고오기
 	public static List<PublicTransportVo> getPublicTransportByCno(int c_no){
 		List<PublicTransportVo> ptList = null;
 		SqlSession session = sqlSessionFactory.openSession();
@@ -260,7 +317,7 @@ public class CourseManager {
 		session.close();
 		return f;
 	}
-	
+	// 맞춤검색에서 사용자위치 있을 시 코스와의 거리 구하는용도
 	private static CourseVo selectByCnoandUserDis(HashMap map) {
 		CourseVo c = null;
 		SqlSession session = sqlSessionFactory.openSession();
@@ -309,6 +366,7 @@ public class CourseManager {
 		SaveCourseList = session.selectList("course.selectSaveCourse", m.getId());
 		List<CoursePhotoVo> cpList = null;
 		for (CourseVo c : SaveCourseList) {
+			c.setC_views(c.getC_view().split("-"));
 			cpList=session.selectList("course.selectCoursePhoto", c.getC_no());
 			Collections.shuffle(cpList);
 			c.setC_photo(cpList);
@@ -319,18 +377,19 @@ public class CourseManager {
 	//내가만든 코스 가져오기
 	public static List<CourseVo> getMyCourseById(HttpSession httpSession) {
 		MemberVo m = (MemberVo)httpSession.getAttribute("m");
-		List<CourseVo> SaveCourseList;
+		List<CourseVo> makingCourseList;
 		SqlSession session = sqlSessionFactory.openSession();
-		SaveCourseList = session.selectList("course.selectMyCourse", m.getId());
+		makingCourseList = session.selectList("course.selectMyCourse", m.getId());
 		List<CoursePhotoVo> cpList = null;
-		for (CourseVo c : SaveCourseList) {
+		for (CourseVo c : makingCourseList) {
+			c.setC_views(c.getC_view().split("-"));
 			cpList=session.selectList("course.selectCoursePhoto", c.getC_no());
 			Collections.shuffle(cpList);
 			c.setC_photo(cpList);
 		}
 		
 		session.close();
-		return SaveCourseList;
+		return makingCourseList;
 	}
 	//찜코스 삭제
 	public static int deleteSaveCourse(HashMap map) {

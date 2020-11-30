@@ -5,8 +5,12 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>오늘의 라이딩</title>
+<link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
+<title>번개게시판</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+	<meta name="_csrf_header" content="${_csrf.headerName}" />
+	<meta name="_csrf" content="${_csrf.token}" />
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="resources/css/animate.css">
@@ -16,50 +20,142 @@
 	<link rel="stylesheet" href="resources/css/flaticon.css">
 	<link rel="stylesheet" href="resources/css/style.css">
  	<style>
-		.btn {
-			color: white;
-			padding: 8px 12px;
-			background-color: #88BEA6;
-			float: right;
-			font-size: 15px;
-			border: none;
-			cursor: pointer;
-		}
+		.btn { color: white; padding: 8px 12px; background-color: #88BEA6; float: right; font-size: 15px; border: none; cursor: pointer; }
 		/* 글등록버튼 페이징버튼과 공간분리 */
-		.col.text-center * {
-			clear: both;
-			margin-bottom: 20px;
-		}
-		.emptyStr {
-			position: relative;
-			bottom: 130px;
-			left: 70px;
-			color: black;
-			opacity: 0.2;
-		}
+		.col.text-center * { clear: both; margin-bottom: 20px; }
+		.emptyStr { position: relative; bottom: 130px; left: 70px; color: black; opacity: 0.2; }
 		/* 썸네일사진 중앙기준 */
-		#listImg {
-			position: absolute;
-			left: 50%;
-			top: 50%;
-			height: auto;
-			width: auto;
-			width: 767px;
+		#listImg { position: absolute; left: 50%; top: 50%; height: auto; width: auto; width: 767px;
 		 	-webkit-transform: translate(-50%,-50%); /* 구글, 사파리 */
 			-ms-transform: translate(-50%,-50%); /* 익스플로러 */
-		 	transform: translate(-50%, -50%);
-		}
+		 	transform: translate(-50%, -50%); }
 		/* 게시글 제목 */
-		.blog-entry .text { height: 450px; border: 1px solid orange; }
-		.meta.mb-3 { height: 120px; border: 1px solid purple; }
-		.meta.mb-3 div { border: 1px solid pink; }
+		.heading a { height: 60px; padding-bottom: 30px; display: inline-block; }
+		.blog-entry .text { height: 500px; /* border: 1px solid orange; */ }
+		.meta.mb-3 { height: 95px; /* border: 1px solid purple */; }
+		.meta.mb-3 div { /* border: 1px solid pink; */ }
+		.metaDiv_1, .metaDiv_2 { width: 100%; }
+		.c_name { display: inline-block; }
+		.nickName { display: inline-block; }
+		.m_regdate { font-size: 13px; display: inline-block; vertical-align: top;  float: right; }
+		.meta-chat { font-size: 14px; display: inline-block; float: right;}
+		.m_timeImg, .m_time { display: inline-block; margin-right: 10px; vertical-align: bottom; font-size: 20px; }
+		.m_timeImg { margin-bottom: 4px; }
 		/* 페이징 */
 		.pageUl { border: none; }
+		.block-27 ul li a, .block-27 ul li span { color: black; }
 		.btnPrevNext { border: none; }
+		
+		/* myPage CSS 시작 */
+		#login {
+			font-size: 14px;
+			text-align: right;
+		}
+		.my{
+			padding: 5px;
+			margin: 2px;
+		}
+		
+		.nav-link_2 {
+			font-size: 12px;
+		    padding-top: .1rem;
+		    padding-bottom: .1rem;
+		    padding-left: 1px;
+		    padding-right: 1px;
+		    color: #fff;
+		    font-weight: 400;
+		    opacity: 1 !important;
+		}
+		
+		.nav-link {
+		    font-size: 18px;
+		    padding-top: .7rem;
+		    padding-bottom: .7rem;
+		    padding-left: 20px;
+		    padding-right: 20px;
+		    color: #fff;
+		    font-weight: 600;
+		    opacity: 1 !important;
+		}
+		.nav-link:hover {
+			color: #c8572d;
+		}
+		.nav-link2:visited {
+			color: red;
+		}
+		
+		/* 화면 줄어들때 메뉴색 */
+		@media (max-width: 991.98px) {
+			.ftco-navbar-light {
+				background: #000000 !important;
+				position: relative;
+				top: 0; }
+		}    
+		.my{
+			padding: 50px;
+		}
+		.my_ul{
+			list-style:none; 
+		 	text-align: center;
+		}
+		.my_li{
+		    display:inline-block;  
+			float:left;
+		 	padding: 50px;
+		 	border-left:1px solid #999;             /* 각 메뉴의 왼쪽에 "|" 표시(분류 표시) */
+		    font:bold 16px Dotum;                     /* 폰트 설정 - 12px의 돋움체 굵은 글씨로 표시 */
+		    padding:0 10px;  
+		}
+		 
+		.my_li2{
+		    display:inline-block;  
+			float:left;
+		 	padding: 50px;
+		    padding:0 10px;  
+	        font:bold 16px Dotum;
+		}
+		   
+		#my_a{
+			color: #bbbbbb;
+			font:bold 14px Dotum; 
+		}
+		#my_a:hover {
+			color: #d0a183; 
+			FONT-SIZE: 13pt; 
+			FONT-WEIGHT: bolder;
+		}
+		/* myPage 끝 */	
+	/* header dropdown */
+	.ftco-navbar-light .navbar-nav > .nav-item .dropdown-menu {
+		/* background: #fff;
+		background-color: #fff;
+		opacity: 0.7; */
+		background: rgba(255,255,255,0.7);
+		/* border: 2px solid white; */
+		/* width: 100px; */
+		min-width: 9rem;
+		color: white;
+	}
+	.dropdown-item {
+		font-weight: bold;
+		color: #5D5D5D;
+	} 
+	.navbar .nav-item:hover .dropdown-menu .dropdown-item {
+		color: #5D5D5D;
+	}
 	</style>
 
 	<script type="text/javascript">
 	window.onload = function(){
+			const token = $("meta[name='_csrf']").attr("content");
+		    const header = $("meta[name='_csrf_header']").attr("content");
+		    const parameter = $("meta[name='_csrf_parameter']").attr("content");
+		    $(document).ajaxSend(function(e, xhr, options) {
+		        if(token && header) {
+		            xhr.setRequestHeader(header, token);
+		        }
+		    });
+		
 		let pageNo = 1;
 		let id = `${id}`;
 		const recordSize = ${recordSize};
@@ -170,7 +266,6 @@
 				// console.log('*** arr length : '+arr.length);
 				// console.log(data.mf[0]);
 
-				// 사진출력
 				let listImg;
 				let emptyStr;
 				if(data.mf.length!=0) {
@@ -179,33 +274,42 @@
 					listImg = $('<img/>').attr('src',"/icons/empty.png");
 					emptyStr = $('<div></div>').html('').addClass('emptyStr'); // 빈화면에 글씨적을 수 있음
 				}
-	            const contentImg = $('<a></a>').addClass('block-20 img').attr("href",'detailMeeting?m_no='+data.m_no).append(listImg, emptyStr);
+				const contentImg = $('<a></a>').addClass('block-20 img').attr("href",'detailMeeting?m_no='+data.m_no).append(listImg, emptyStr);
 
-		        // 게시글 내용
-	            // const m_no = $('<div></div>').html(data.m_no);
-	            const c_nameA = $('<a href="/detailCourse?c_no='+data.c_no+'"></a>').html(data.c_name);
-	            const c_name = $('<div></div>').append(c_nameA);
-	            const m_time = $('<div></div>').html(data.m_time);
-	            const nickName_icon = $('<img/>').attr({src : 'rank/'+data.rank_icon, height : '20px'});
-	            const nickNameA = $('<a href="/listMeeting?id='+data.id+'"></a>').html(data.nickName);
-	            const nickName = $('<div></div>').append(nickName_icon, nickNameA);
-	            const m_regdate = $('<div></div>').html(data.date_diff_str);
-	            // const m_hit = $('<div></div>').html(data.m_hit);
-	            const speechImg = $('<span></span>').addClass('fa fa-comment'); // 말풍선
-	            const m_repCnt = $('<div></div>').addClass('meta-chat').append(speechImg, " "+data.m_repCnt); // 말풍선 + 댓글수
-	            const m_titleA = $('<a></a>').attr('href','detailMeeting?m_no='+data.m_no).html(data.m_title);
-	            const m_title = $('<h3></h3>').addClass('heading').append(m_titleA);
+				// 게시글 내용
+				// const m_no = $('<div></div>').html(data.m_no);
+				let c_nameA;
+				if(data.c_no == 0) {
+					c_nameA = $('<a href="#"></a>').html(data.c_name);
+				} else {
+					c_nameA = $('<a href="/detailCourse?c_no='+data.c_no+'"></a>').html(data.c_name);
+				}
+				const c_name = $('<div></div>').append(c_nameA).addClass('c_name');
+				const m_timeImg = $('<img/>').attr({src : '/meetingImg/calendar.png', height : '30px'}).addClass('m_timeImg');
+				const m_time = $('<div></div>').html(data.m_time).addClass('m_time');
+				const nickNameImg = $('<img/>').attr({src : '/rank/'+data.rank_icon, height : '20px'});
+				const nickNameA = $('<a href="/listMeeting?id='+data.id+'"></a>').html(' '+data.nickName);
+				const nickName = $('<div></div>').append(nickNameImg, nickNameA).addClass('nickName');
+				const m_regdate = $('<div></div>').html(data.date_diff_str).addClass('m_regdate');
+				// const m_hit = $('<div></div>').html(data.m_hit);
+				const speechImg = $('<span></span>').addClass('fa fa-comment'); // 말풍선
+				const m_repCnt = $('<div></div>').addClass('meta-chat').append(speechImg, " "+data.m_repCnt); // 말풍선 + 댓글수
+				const m_titleA = $('<a></a>').attr('href','detailMeeting?m_no='+data.m_no).html(data.m_title);
+				const m_title = $('<h3></h3>').addClass('heading').append(m_titleA);
 
-	            // div에 내용담기
-	            const metaDiv = $('<div></div>').addClass('meta mb-3');
-	            const textDiv = $('<div></div>').addClass('text');
-	            const blog_entryDiv = $('<div></div>').addClass('blog-entry justify-content-end');
-	            const col = $('<div></div>').addClass('col-md-3 d-flex ftco-animate fadeInUp ftco-animated');
+				// div에 내용담기
+				const metaDiv = $('<div></div>').addClass('meta mb-3');
+				const textDiv = $('<div></div>').addClass('text');
+				const blog_entryDiv = $('<div></div>').addClass('blog-entry justify-content-end');
+				const col = $('<div></div>').addClass('col-md-3 d-flex ftco-animate fadeInUp ftco-animated');
 
-	            metaDiv.append(c_name, m_time, nickName, m_regdate, /* m_hit, */ m_repCnt);
-	            textDiv.append(contentImg, metaDiv, m_title);
-	            blog_entryDiv.append(textDiv);
-	            col.append(blog_entryDiv);
+				const metaDiv_1 = $('<div></div>').append(c_name, m_repCnt).addClass('metaDiv_1');
+				const metaDiv_2 = $('<div></div>').append(nickName, m_regdate /* , m_hit */).addClass('metaDiv_2');
+				metaDiv.append(metaDiv_1, metaDiv_2);
+               
+				textDiv.append(contentImg, m_title, m_timeImg, m_time, metaDiv);
+				blog_entryDiv.append(textDiv);
+				col.append(blog_entryDiv);
 
 				$('#rowDFlex').append(col);   
 			});
@@ -215,7 +319,7 @@
 	function checkLogin(){
 		let check;
 			$.ajax({
-				url: "/checkLogin",
+				url: "/checkLogin?"+parameter+"="+token,
 				type: "POST",
 	            async: false,
 	            success: function(response){
@@ -232,78 +336,95 @@
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 		<div class="container">
-			<a style="font-family: 나눔스퀘어라운드" class="navbar-brand" href="/mainPage">
-				<span style="font-weight: bold;">
-					<font color="#45A3F5">오</font>
-					<font color="#bae4f0">늘</font>
-					<font color="#88bea6">의</font>
-					<font color="#eccb6a">라</font>
-					<font color="#d0a183">이</font>
-					<font color="#c8572d">딩
+			<a style="font-size: 30px;" class="navbar-brand" href="/mainPage">
+				<span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
+					<font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font>
 				</span>
 			</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="oi oi-menu"></span> Menu
+	        	<span class="oi oi-menu"></span> Menu
 			</button>
-	      
-			<div class="collapse navbar-collapse" id="ftco-nav">
-		        <ul class="navbar-nav ml-auto">
-					<c:choose>
-						<c:when test="${m == null }">
-							<li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
-							<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
-						</c:when>
-						<c:when test="${m != null }">
-							<li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
-							<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
-							<li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
-						</c:when>
-					</c:choose>
-				</ul>
-			</div>      
-
-			<div class="collapse navbar-collapse" id="ftco-nav">
-				<ul class="navbar-nav ml-auto">
-					<li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
-					<li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
-					<li class="nav-item"><a href="/searchCourse" class="nav-link">라이딩 코스</a></li>
-					<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
-					<li class="nav-item active"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
-					<li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
-				</ul>
+			<div style="display: block;">
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto">
+						<c:choose>
+							<c:when test="${m == null }">
+								<li class="nav-item"><a style="font-size: 15px;" href="/login" class="nav-link">로그인</a></li>
+								<li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
+							</c:when>
+							<c:when test="${m != null }">
+								<li id="courseDropPoint"  class="nav-item dropdown">
+									<a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown" style="font-size: 15px;">  ${m.nickName } 라이더 님  </a>
+									<ul class="dropdown-menu">
+										<li><a class="dropdown-item" href="/myPage?id=${m.id}"> 정보 수정 </a></li>
+										<li><a class="dropdown-item" href="/myPageSaveCourse"> 찜 목록 </a></li>
+										<li><a class="dropdown-item" href="/myPageMyCourse"> 내 코스 </a></li>
+										<li><a class="dropdown-item" href="/listReview?searchType=id&searchValue=${m.id }"> My 후기 </a></li>
+										<li><a class="dropdown-item" href="/listMeeting?id=${m.id}"> My 번개 </a></li>
+										<li><a class="dropdown-item" href="/myPageMyRank"> 랭킹 </a></li>
+									</ul>
+								</li>
+								<li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>
+								<c:if test="${m.code_value == '00101' }">
+									<li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
+								</c:if>
+							</c:when>
+						</c:choose>
+					</ul>
+				</div>    
+				<div class="collapse navbar-collapse" id="ftco-nav">
+					<ul class="navbar-nav ml-auto" >
+						<li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
+						<li id="courseDropPoint"  class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">  오늘의 라이딩  </a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="/listNotice"> 공지사항 </a></li>
+							</ul>
+						</li>
+						<li id="courseDropPoint"  class="nav-item dropdown">
+							<a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown">  라이딩 코스  </a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="/searchCourse"> 맞춤 코스 검색 </a></li>
+								<li><a class="dropdown-item" href="/tagSearchCourse"> 태그 코스 검색 </a></li>
+							</ul>
+						</li>
+						<li class="nav-item"><a href="/listReview" class="nav-link">라이딩 후기</a></li>
+						<li class="nav-item active"><a href="/listMeeting" class="nav-link">번개 라이딩</a></li>
+						<li class="nav-item"><a href="/user/makingCourse" class="nav-link">메이킹 코스</a></li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</nav>
-	<!-- END nav -->	
-    
-    <section class="hero-wrap hero-wrap-2" style="background-image: url('resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+    <!-- END nav -->	
+
+   <section class="hero-wrap hero-wrap-2" style="background-image: url('headerImg/meetingMain.jpg');" data-stellar-background-ratio="0.5">
 		<div class="overlay"></div>
 		<div class="container">
 			<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
 				<div class="col-md-9 ftco-animate pb-0 text-center">
 				
 				<div id="id1">
-		          <p class="breadcrumbs"><span class="mr-2"><a href="mainPage">Home <i class="fa fa-chevron-right"></i></a></span> <span>번개 라이딩 <i class="fa fa-chevron-right"></i></span></p>
-		          <h1 class="mb-3 bread">번개 라이딩</h1>
-	            </div>
+					<p class="breadcrumbs"><span class="mr-2"><a href="mainPage">Home <i class="fa fa-chevron-right"></i></a></span> <span>번개 라이딩 <i class="fa fa-chevron-right"></i></span></p>
+					<h1 class="mb-3 bread">번개 라이딩</h1>
+				</div>
 	
 	            <div id="id2">
-		            <span >
-		              <h1 class="mb-3 bread">마이페이지</h1>
-		            </span>
-		            <p class="breadcrumbs">
-		              <span class="mr-2">
-		                <a href="index.html">Home <i class="fa fa-chevron-right"></i></a>
-		              </span>
-		              <a href="/myPage">정보 수정 <i class="fa fa-chevron-right"></i></a>
-		              <span>
-		                <a href="/myPageSaveCourse">찜 목록 <i class="fa fa-chevron-right"></i></a>
-		                <a href="/myPageMyCourse">내 작성 코스<i class="fa fa-chevron-right"></i></a>
-		                <a href="/myPageListReview">내 작성 후기<i class="fa fa-chevron-right"></i></a>
-		                <a href="listMeeting?id=${m.id}">내 작성 번개<i class="fa fa-chevron-right"></i></a>
-		                <a href="/myPageMyRank">랭킹</a>
-		              </span>
-	              </div>
+					<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
+				<div class="ftco-animate pb-0 text-center">
+     				 <span>
+						<h1 class="mb-3 bread" style="padding-top: 170px;">My 번개</h1>
+		           		 </span>
+			           <ul class="my" style="font-size: 10px">
+					 		<li class="my_li2" ><a id="my_a" class="nav-link_2" href="/myPage" >정보 수정</a></li>
+					 		<li class="my_li" ><a id="my_a" class="nav-link_2" href="/myPageSaveCourse" >찜 목록</a></li>
+							<li class="my_li" ><a id="my_a" class="nav-link_2" href="/myPageMyCourse" >내 코스</a></li>
+			                <li class="my_li"><a id="my_a" class="nav-link_2" href="/listReview?searchType=id&searchValue=${m.id }">내 후기</a></li>
+			      <!--      <li class="my_li"><a id="my_a" class="nav-link_2" href="/listMeeting?id=${m.id}">내 번개</a></li>  -->
+			                <li class="my_li"><a id="my_a" class="nav-link_2" href="/myPageMyRank">랭킹</a></li>
+			              </ul>
+					</div>
+				</div>
 				</div>
 			</div>
 		</div>
@@ -315,98 +436,13 @@
 			<div class="row mt-5">
 				<div class="col text-center">
 					<!-- 등록버튼 -->
-					<div><a href="/user/insertMeeting" class="btn">등록</a></div>                    
+					<div><a href="/user/insertMeeting" class="btn btn-success">등록</a></div>                    
 					<div class="block-27"><ul class="pageUl"><!-- 페이징처리 --></ul></div>
 				</div>
 			</div>
 		</div> <!-- container 끝 -->
 	</section>
     
-	<!-- footer -->
-    <footer class="ftco-footer ftco-section">
-      <div class="container">
-        <div class="row mb-5">
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Ecoverde</h2>
-              <p>Far far away, behind the word mountains, far from the countries.</p>
-              <ul class="ftco-footer-social list-unstyled mt-5">
-                <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
-                <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
-                <li class="ftco-animate"><a href="#"><span class="fa fa-instagram"></span></a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4 ml-md-4">
-              <h2 class="ftco-heading-2">Community</h2>
-              <ul class="list-unstyled">
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Search Properties</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>For Agents</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Reviews</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>FAQs</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4 ml-md-4">
-              <h2 class="ftco-heading-2">About Us</h2>
-              <ul class="list-unstyled">
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Our Story</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Meet the team</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md">
-             <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Company</h2>
-              <ul class="list-unstyled">
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>About Us</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Press</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Contact</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4">
-               <h2 class="ftco-heading-2">Have a Questions?</h2>
-               <div class="block-23 mb-3">
-                 <ul>
-                   <li><span class="icon fa fa-map"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
-                   <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929 210</span></a></li>
-                   <li><a href="#"><span class="icon fa fa-envelope pr-4"></span><span class="text">info@yourdomain.com</span></a></li>
-                 </ul>
-               </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12 text-center">
-   
-            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-          </div>
-        </div>
-      </div>
-    </footer>
-    
-  <!-- loader -->
-  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
-  
-  <script src="/resources/js/jquery.min.js"></script>
-  <script src="/resources/js/jquery-migrate-3.0.1.min.js"></script>
-  <script src="/resources/js/popper.min.js"></script>
-  <script src="/resources/js/bootstrap.min.js"></script>
-  <script src="/resources/js/jquery.easing.1.3.js"></script>
-  <script src="/resources/js/jquery.waypoints.min.js"></script>
-  <script src="/resources/js/jquery.stellar.min.js"></script>
-  <script src="/resources/js/owl.carousel.min.js"></script>
-  <script src="/resources/js/jquery.magnific-popup.min.js"></script>
-  <script src="/resources/js/jquery.animateNumber.min.js"></script>
-  <script src="/resources/js/scrollax.min.js"></script>
-  <script src="/resources/js/main.js"></script>
+	<jsp:include page="footer.jsp" />
 </body>
 </html>

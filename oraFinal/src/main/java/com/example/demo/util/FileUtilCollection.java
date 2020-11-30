@@ -43,22 +43,22 @@ public class FileUtilCollection {
 	}
 	
 	public static String readText(String filename, String path) {  // 텍스트 읽어오는 메소드(스트링 파일명과 경로를 매개변수로 받음)
-		String text = "";
+		StringBuilder sb = new StringBuilder(15000);
 		try {
 			File file = new File(path+filename);
 			FileReader fileReader = new FileReader(file);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			String line = "";
 			while((line= bufferedReader.readLine()) != null) {
-				text += line;
+				sb.append(line);
 			}
-			
+			System.out.println("끝낫다" + new Date());
 			bufferedReader.close();
 		}catch (Exception e) {
 			System.out.println("파일유틸컬렉션 리드텍스트 예외 " +e.getMessage());
 		}
 		
-		return text;
+		return sb.toString();
 	}
 	
 	public static void createFolder(String pathFolder) {  // 폴더 생성 메소드 (스트링 경로+폴더명을 매개변수로 받음)

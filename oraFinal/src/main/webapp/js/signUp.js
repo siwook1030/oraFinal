@@ -1,4 +1,13 @@
 window.onload = function(){
+	const token = $("meta[name='_csrf']").attr("content");
+    const header = $("meta[name='_csrf_header']").attr("content");
+    const parameter = $("meta[name='_csrf_parameter']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) {
+        if(token && header) {
+            xhr.setRequestHeader(header, token);
+        }
+    });
+
    console.log("작동함");
    const id = document.getElementById("id");
    const pwd = document.getElementById("password");
@@ -133,7 +142,7 @@ function signUp(){
 function signUpOk(){
 
       $.ajax({
-            url: "/signUp",
+            url: "/signUp?"+parameter+"="+token,
             type: "POST",
             data: $("#signUpForm").serialize(),
             success: function(data){
@@ -214,7 +223,7 @@ function checkNumReq(){
          }
                
          $.ajax({
-            url: "/smsSend",
+            url: "/smsSend?"+parameter+"="+token,
             type: "POST",
             data:{
                "num":inputNum.value.trim()
@@ -241,7 +250,7 @@ function checkNumReq(){
 function check(){
       let idCheckNum = 1;
           $.ajax({
-            url: "/idCheck",
+            url: "/idCheck?"+parameter+"="+token,
             async: false,
             type: "POST",
             data:{
@@ -266,7 +275,7 @@ function check(){
 function checkNick(){
       let nickCheck = 1;
          $.ajax({
-            url: "/nickCheck",
+            url: "/nickCheck?"+parameter+"="+token,
             type: "POST",
             async: false,
             data:{
@@ -292,7 +301,7 @@ function checkPhoneNum(){
    const phoneNum = phone.value.trim();
    
    $.ajax({
-      url:"/phoneNumCheck",
+      url:"/phoneNumCheck?"+parameter+"="+token,
       type:"POST",
       async: false,
       data:{"phone":phoneNum},

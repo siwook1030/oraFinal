@@ -5,6 +5,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
+<link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
 <title>코스 수정</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700,800,900&display=swap" rel="stylesheet">
@@ -35,6 +39,9 @@
 	font-weight: bold; 
 	
 	} 
+	#sPTStation, #ePTStation {
+		width: 300px;
+	}
 	
 	#courseForm {
 		width: 100%;
@@ -43,6 +50,10 @@
  #cTitle{
 	font-size: 140%;
 }
+
+  #map, #mapPE, #mapPS {
+    	border-radius: 20px;
+    }
 
  /*매인섹션 끝 ------------------*/
 
@@ -75,7 +86,7 @@
 	/* 게시판 인덱스 제외 전체 */
 	#contents { border: 1px solid #D5D5D5; padding: 60px; margin: 50px 0 100px; }
 	/* 코스이름 만들기 */
-	#courseName { border: none; border-bottom: 1px solid gray; margin: 10px; width: 880px; height: 50px; margin: 20px 0 30px; font-size: 30px; }
+	#courseName { border: none; border-bottom: 1px solid gray; margin: 10px; width: 90%; height: 50px; margin: 20px 0 30px; font-size: 30px; }
 	/* 지도 3 */
 	#map, #mapPS, #mapPE { width: 100%; height: 470px; font-family: 'Malgun Gothic',dotum,'돋움',sans-serif; font-size: 12px; margin: 0 0 10px; }
 	/* 등록, 미리보기 버튼 */
@@ -95,9 +106,34 @@
 	.readFilebox input[type="file"] { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; border: 0; }
  	.filebox label { position:relative; bottom:25px; left:20px;  color: #747474; font-size: 15px; vertical-align: middel; background-color: white; cursor: pointer; text-align: center; }
 	.filebox input[type="file"] { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; border: 0; }
-	#courseNameCnt { position: relative; left: 820px; bottom: 55px; }
-	#wordsCnt { position: relative; left: 790px; bottom: 55px; font-size: 13px; }
 	#wordsDiv, #thumbnailsDiv { padding: 20px 3px; border: 1px solid gray; border-radius: 10px; text-align: center; margin-bottom: 30px; }
+	
+	.textFont {
+		font-size: 110%;
+		font-weight: bold;
+	}
+	/* header dropdown */
+	.ftco-navbar-light .navbar-nav > .nav-item .dropdown-menu {
+		/* background: #fff;
+		background-color: #fff;
+		opacity: 0.7; */
+		background: rgba(255,255,255,0.7);
+		/* border: 2px solid white; */
+		/* width: 100px; */
+		min-width: 9rem;
+		color: white;
+	}
+	.dropdown-item {
+		font-weight: bold;
+		color: #5D5D5D;
+	} 
+	.navbar .nav-item:hover .dropdown-menu .dropdown-item {
+		color: #5D5D5D;
+	}
+	
+	.right-text {
+		text-align: right;
+	}
 </style>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -105,6 +141,15 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0f57515ee2bdb3942d39aad2a2b73740&libraries=drawing,services"></script>
 <script>
 window.onload = function(){
+	 const token = $("meta[name='_csrf']").attr("content");
+	    const header = $("meta[name='_csrf_header']").attr("content");
+	    const parameter = $("meta[name='_csrf_parameter']").attr("content");
+	  /*  $(document).ajaxSend(function(e, xhr, options) {
+	        if(token && header) {
+	            xhr.setRequestHeader(header, token);
+	        }
+	    });*/
+	
 	const oldCourseName = document.getElementById("oldCourseName");
 	
 	const nickName = document.getElementById("nickName");
@@ -121,6 +166,7 @@ window.onload = function(){
 	const elat =  document.getElementById("elat");
 	const elon =  document.getElementById("elon");
 	const eLoc =  document.getElementById("eLoc");
+	const tag = document.getElementById("tag");
 	const words = document.getElementById("words");
 	const firstView =  document.getElementById("firstView");
 	const secondView =  document.getElementById("secondView");
@@ -132,6 +178,9 @@ window.onload = function(){
 	const line =  document.getElementById("line");
 	const photoInput = document.getElementById("photoInput");
 	const fixC =  document.getElementById("fixC"); // 수정시 가져오기필요문구 나타낼스판
+
+	const thumbnails = document.getElementById("thumbnails"); // 코스사진거는데
+	const drop = document.getElementById("drop"); // 코스사진 거는데 부모노드
 ////////////////////////////////////////////////////
 	const pt_noPS = document.getElementById("pt_noPS");
 
@@ -154,12 +203,14 @@ window.onload = function(){
 	const fixPE = document.getElementById("fixPE");;  // 수정시 가져오기필요문구 나타낼스판
 
 ////////////////////////////////////////////////////////////// 변수선언끝 	
-	const courseNameCnt = document.getElementById("courseNameCnt");  // 10자 
+	const courseNameCnt = document.getElementById("courseNameCnt");  // 15자 
+	const courseTagCnt = document.getElementById("courseTagCnt");  // 15자
 	const wordsCnt = document.getElementById("wordsCnt");  // 3000자
 	const sPTStationCnt = document.getElementById("sPTStationCnt"); // 14자
 	const ePTStationCnt = document.getElementById("ePTStationCnt"); // 14자
 
-	const courseNameMaxCnt = 10;
+	const courseNameMaxCnt = 15;
+	const courseTagMaxCnt = 15;
 	const wordsMaxCnt = 3000;
 	const stationMaxCnt = 14;
 	
@@ -168,6 +219,12 @@ window.onload = function(){
 	});
 	courseName.addEventListener("keyup", function(e) {
 		textCount(e.target, courseNameCnt, courseNameMaxCnt);
+	});
+	tag.addEventListener("keydown", function(e) {
+		textCount(e.target, courseTagCnt, courseTagMaxCnt);
+	});
+	tag.addEventListener("keyup", function(e) {
+		textCount(e.target, courseTagCnt, courseTagMaxCnt);
 	});
 	words.addEventListener("keydown", function(e) {
 		textCount(e.target, wordsCnt, wordsMaxCnt);
@@ -273,6 +330,8 @@ window.onload = function(){
 	};
 
 // --------------------------------------------------------- 풍경 셀렉트 노드생성 끝
+	const infoC = document.getElementById("infoC");
+	
 	document.getElementById("startC").addEventListener("click", function(e) {
 		selectOverlay('MARKER');
 	});
@@ -288,7 +347,7 @@ window.onload = function(){
 	document.getElementById("frontPolyC").addEventListener("click", function(e) {
 		front();
 	});
-	document.getElementById("infoC").addEventListener("click", function(e) {
+	infoC.addEventListener("click", function(e) {
 		getInfo();
 	});
 	document.getElementById("chkBicycle").addEventListener("click", function(e) {
@@ -296,6 +355,8 @@ window.onload = function(){
 	});
 
 //////////////////////////////////////// 코스끝
+	const infoPS = document.getElementById("infoPS");
+
 	document.getElementById("publicTranportPS").addEventListener("click", function(e) {
 		selectOverlayPS('MARKER');
 	});
@@ -308,7 +369,7 @@ window.onload = function(){
 	document.getElementById("frontPolyPS").addEventListener("click", function(e) {
 		frontPS();
 	});
-	document.getElementById("infoPS").addEventListener("click", function(e) {
+	infoPS.addEventListener("click", function(e) {
 		getInfoPS();
 	});
 	document.getElementById("chkBicyclePS").addEventListener("click", function(e) {
@@ -316,6 +377,8 @@ window.onload = function(){
 	});
 
 //////////////////////////////////////////// 대중교통 출발점 끝
+	const infoPE = document.getElementById("infoPE");
+
 	document.getElementById("publicTranportPE").addEventListener("click", function(e) {
 		selectOverlayPE('MARKER');
 	});
@@ -328,7 +391,7 @@ window.onload = function(){
 	document.getElementById("frontPolyPE").addEventListener("click", function(e) {
 		frontPE();
 	});
-	document.getElementById("infoPE").addEventListener("click", function(e) {
+	infoPE.addEventListener("click", function(e) {
 		getInfoPE();
 	});
 	document.getElementById("chkBicyclePE").addEventListener("click", function(e) {
@@ -456,6 +519,11 @@ window.onload = function(){
 	const manager3 = new kakao.maps.drawing.DrawingManager(options3);
 
 	function setFixC(){
+		infoC.disabled = false;
+		infoPS.disabled = false;
+		infoPE.disabled = false;
+		
+		
 		fixC.innerHTML="가져오기를 눌러주세요";
 		fixC.setAttribute("val", "y");
 		fixPS.innerHTML="가져오기를 눌러주세요";
@@ -569,7 +637,9 @@ window.onload = function(){
 	image: arriveImage // 도착 마커이미지를 설정합니다
 	});
 	
-	let altitudeData = [['거리','고도'],['데이터없음',0]];  // 고도데이타를 담을 배열
+
+	let altitudeData = []; // 고도데이타를 담을 배열
+	let altitudeArr = []; // 고도를 담을 배열
 	const polyObj = new kakao.maps.Polyline(); // 라인의 길이를 담기위한 폴리라인객체
 	function getInfo() {
 	
@@ -584,16 +654,16 @@ window.onload = function(){
 		}
 	    else{ 
 
-			const sMarkerLatLon = manager.getOverlays().marker[0].getPosition();
+	    	const sMarkerLatLon = manager.getOverlays().marker[0].getPosition();
 			const eMarkerLatLon = manager2.getOverlays().marker[0].getPosition();
 			
 	    	const data = manager3.getData();
-	    	const latlonArr = data[kakao.maps.drawing.OverlayType.POLYLINE][0].points;
-			console.log(latlonArr[0]);
-			latlonArr[0].x = sMarkerLatLon.getLng();
-			latlonArr[0].y = sMarkerLatLon.getLat();
-			latlonArr[latlonArr.length-1].x = eMarkerLatLon.getLng();
-			latlonArr[latlonArr.length-1].y = eMarkerLatLon.getLat();
+	    	const xyArr = data[kakao.maps.drawing.OverlayType.POLYLINE][0].points;
+
+	    	xyArr[0].x = sMarkerLatLon.getLng();
+	    	xyArr[0].y = sMarkerLatLon.getLat();
+	    	xyArr[xyArr.length-1].x = eMarkerLatLon.getLng();
+	    	xyArr[xyArr.length-1].y = eMarkerLatLon.getLat();
 		
 			slat.value = sMarkerLatLon.getLat();
 	   		slon.value = sMarkerLatLon.getLng();
@@ -620,41 +690,64 @@ window.onload = function(){
 		arriveMarker.setMap(mapPE);
 		mapPE.setCenter(eMarkerLatLon);
 		/////////////// 대중교통 도착점 표시 끝   
-	    let cnt=0;
-	    let pathStr="[";
-	        for(let i=0; i<latlonArr.length; i++){
-	            cnt++;
-	            let str = " new kakao.maps.LatLng("+latlonArr[i].y+","+latlonArr[i].x+")";
-	            latlonArr[i] = new kakao.maps.LatLng(latlonArr[i].y,latlonArr[i].x);
-	            if(cnt < latlonArr.length)
-	           		 pathStr += str+",";
-	            else
-	                pathStr += str;
-	        }
-	   pathStr += "]";
-	   
+		
+		
+		const latArr = new Array();
+		const lonArr = new Array();
+		const latlonArr = new Array();
+		
+		
+		
+		for(let i=0; i<xyArr.length; i++){
+			const lat = xyArr[i].y;
+			const lon = xyArr[i].x;
+			
+			latArr.push(lat);
+			lonArr.push(lon);
+			latlonArr.push(new kakao.maps.LatLng(lat,lon));
+
+		}
+
+		if(altitudeArr.length != 0){
+			if(latlonArr.length >= altitudeArr.length){
+				const num = latlonArr.length - altitudeArr.length;
+				const lastAlt = altitudeArr[altitudeArr.length-1];
+				for(let i=0; i<num; i++){
+					altitudeArr.push(lastAlt);
+				}
+			}
+			else{
+				altitudeArr = [];
+			}
+		}
+		
+
+   	   altitudeData = []; // 고도데이타 초기화
 	   
 	   polyObj.setPath(latlonArr);
 	   const distance = (polyObj.getLength()/1000).toFixed(1);
-	   const distancePerLine = (((polyObj.getLength()/1000).toFixed(1))/(altitudeData.length-2)).toFixed(10); // 고도데이타에 -2한이유는 맨처음 열을 뺴기 위함임
 	   
-	   if(altitudeData.length > 2){
-		   const tempData = altitudeData; // 임시로 넣어놓는다
-		   altitudeData = [['거리','고도'],['데이터없음',0]]; // 얼티튜드 데이타 초기화
-		   for(let i=1; i<tempData.length; i++){
-			 altitudeData[i] = [distancePerLine*(i-1),tempData[i][1]];
-		   }
-		   
-	   }
-	    google.charts.setOnLoadCallback(drawAltitude);
+	   const distancePerLine = (distance/(altitudeArr.length-1)).toFixed(10);
+
+		if(altitudeArr.length != 0){
+			for(let i=0; i<altitudeArr.length; i++){
+				altitudeData.push([distancePerLine*i,Number(Number((altitudeArr[i])).toFixed(1))]);
+			}
+			
+		}
+  
+		drawAltitude();
 	    manager3.remove(manager3.getOverlays().polyline[0]);
 	    manager3.put(kakao.maps.drawing.OverlayType.POLYLINE, latlonArr);
     	fixC.innerHTML=""; // 새로 라인을 그리기 후 가져오기눌러주세요 글을 없앤다
     	fixC.setAttribute("val", "n");
-    	line.value = JSON.stringify({"courseLine":pathStr,"altitudeData":altitudeData});	
-		//line.value = '{"courseLine":'+pathStr+',"altitudeData":'+JSON.stringify(altitudeData)+'}';
+    	
+    	line.value = setGpx(latArr,lonArr,altitudeArr);
+
 	    dis.value = distance;
 	    time.value = (distance/20*60).toFixed(0);
+
+	    infoC.disabled = true;
 	  }
 	}
 
@@ -722,6 +815,7 @@ window.onload = function(){
 		}
 		fixPS.innerHTML="가져오기를 눌러주세요!";
 		fixPS.setAttribute("val", "y");
+		infoPS.disabled = false;
 	});
 	 
 	function selectOverlayPS(type) {
@@ -784,17 +878,14 @@ window.onload = function(){
 		  	latPS.value = psMarkerLatLon.getLat();
 		    lonPS.value = psMarkerLatLon.getLng();
 	  
-		    let cnt=0;
 		    let pathStr="[";
 		        for(let i=0; i<latlonArr.length; i++){
-		            cnt++;
-		            let str = " new kakao.maps.LatLng("+latlonArr[i].y+","+latlonArr[i].x+")";
+
+		            pathStr += " new kakao.maps.LatLng("+latlonArr[i].y+","+latlonArr[i].x+"),";
 		            latlonArr[i] = new kakao.maps.LatLng(latlonArr[i].y,latlonArr[i].x);
-		            if(cnt < latlonArr.length)
-		           		 pathStr += str+",\r\n";
-		            else
-		                pathStr += str;
+
 		        }
+		   pathStr = pathStr.substring(0, pathStr.length-1);
 		   pathStr += "]";
 	
 		    managerPS.remove(managerPS.getOverlays().polyline[0]);
@@ -806,6 +897,8 @@ window.onload = function(){
 	
 			linePS.value = pathStr;
 		   	disPS.value = distance;
+
+		   	infoPS.disabled = true;
 		}
 	}
 /////////////////////////////////////////////////// 출발점 교통편 끝
@@ -873,6 +966,7 @@ window.onload = function(){
 			}
 			fixPE.innerHTML="가져오기를 눌러주세요!";
 			fixPE.setAttribute("val", "y");
+			infoPE.disabled = false;
 	});
 	    
 	function selectOverlayPE(type) {
@@ -935,17 +1029,15 @@ window.onload = function(){
 		  	latPE.value = peMarkerLatLon.getLat();
 		    lonPE.value = peMarkerLatLon.getLng();
 	  
-		    let cnt=0;
+
 		    let pathStr="[";
 		        for(let i=0; i<latlonArr.length; i++){
-		            cnt++;
-		            let str = " new kakao.maps.LatLng("+latlonArr[i].y+","+latlonArr[i].x+")";
+
+		            pathStr += " new kakao.maps.LatLng("+latlonArr[i].y+","+latlonArr[i].x+"),";
 		            latlonArr[i] = new kakao.maps.LatLng(latlonArr[i].y,latlonArr[i].x);
-		            if(cnt < latlonArr.length)
-		           		 pathStr += str+",\r\n";
-		            else
-		                pathStr += str;
+
 		        }
+		   pathStr = pathStr.substring(0, pathStr.length-1);
 		   pathStr += "]";
 	
 		    managerPE.remove(managerPE.getOverlays().polyline[0]);
@@ -957,6 +1049,7 @@ window.onload = function(){
 	
 			linePE.value = pathStr;
 		   	disPE.value = distance;
+		   	infoPE.disabled = true;
 		}
 	}
 
@@ -982,9 +1075,9 @@ window.onload = function(){
 	   
 	}
 	////////////-------------------------------바이크루트
-	const bike = document.getElementById("bike");
+//	const bike = document.getElementById("bike");
 	const bikeFile = document.getElementById("bikeFile");
-	bike.addEventListener("click", function(e) {
+	bikeFile.addEventListener("change", function(e) {
 		let reader = new FileReader();
 		const file = bikeFile.files[0];
 		if(file == undefined){
@@ -999,26 +1092,53 @@ window.onload = function(){
 		reader.onload = function () {
 
 			const courseBounds = new kakao.maps.LatLngBounds();
-			altitudeData = [['거리','고도'],['데이터없음',0]];   // 고도 초기화
+			altitudeData = [];  // 고도 초기화
+			altitudeArr = [];
+			
 			const eleArr = $(reader.result).find("trkseg ele");
 			const  trkptArr = $(reader.result).find("trkseg trkpt");
-			
+
+			if(eleArr.length == 0 || trkptArr.length == 0){
+				alert("gpx파일의 형식이 아닙니다.");
+				return;
+			}
+
+			const latArr = new Array();
+			const lonArr = new Array();
 			const latlonArr = new Array();
+					
 			for(let i=0; i<trkptArr.length; i++){
 				const lat = trkptArr[i].getAttribute("lat");
 				const lon = trkptArr[i].getAttribute("lon");
-				latlonArr[i] = new kakao.maps.LatLng(lat,lon);
-				courseBounds.extend(latlonArr[i]);
+				
+				latArr.push(lat);
+				lonArr.push(lon);
+				latlonArr.push(new kakao.maps.LatLng(lat,lon));
+				
 				
 			}
+			
+	
 			polyObj.setPath(latlonArr);
 			const distancePerLine = (((polyObj.getLength()/1000).toFixed(1))/(eleArr.length-1)).toFixed(10);
-			console.log(distancePerLine);
+
 			for(let i=0; i<eleArr.length; i++){
 				const elData = [distancePerLine*i,Number(Number((eleArr[i].innerHTML)).toFixed(1))];
-				altitudeData[i+1] = elData;
+				
+				altitudeData.push(elData);			
+				altitudeArr.push(eleArr[i].innerHTML);
+				
 			}
-			console.log(altitudeData);
+
+			const maxLat = Math.max.apply(null,latArr);
+			const maxLon = Math.max.apply(null,lonArr);
+			
+			const minLat = Math.min.apply(null,latArr);
+			const minLon = Math.min.apply(null,lonArr);
+
+			courseBounds.extend(new kakao.maps.LatLng(maxLat,maxLon));
+			courseBounds.extend(new kakao.maps.LatLng(minLat,minLon));
+
 			if(manager.getOverlays().marker[0]){
 				manager.remove(manager.getOverlays().marker[0]);
 			}	
@@ -1034,37 +1154,169 @@ window.onload = function(){
 			}	
 			manager3.put(kakao.maps.drawing.OverlayType.POLYLINE, latlonArr);
 			map.setBounds(courseBounds);
-			google.charts.setOnLoadCallback(drawAltitude);
+			drawAltitude();
+
+			const sMarkerLatLon = latlonArr[0];
+			const eMarkerLatLon = latlonArr[latlonArr.length-1];
+		
+			slat.value = sMarkerLatLon.getLat();
+	   		slon.value = sMarkerLatLon.getLng();
+	   		geocoder.coord2Address(sMarkerLatLon.getLng(), sMarkerLatLon.getLat(), function(result, status) {
+			    if(status === kakao.maps.services.Status.OK) {
+			       sLoc.value = result[0].address.address_name;
+			    }
+			    else{
+			    	 sLoc.value = "";
+			    	 alert("출발지 주소를 찾을 수 없습니다. 출발마커를 옮겨주세요.")
+				}
+			});
+			//////////////// 대중교통 출발점 위치표시
+			startMarker.setPosition(sMarkerLatLon);
+			startMarker.setMap(mapPS);
+			mapPS.setCenter(sMarkerLatLon);
+			///////////// 대중교통 출발점표시 끝	
+			
+			elat.value = eMarkerLatLon.getLat();
+	   		elon.value = eMarkerLatLon.getLng();
+		    geocoder.coord2Address(eMarkerLatLon.getLng(), eMarkerLatLon.getLat(), function(result, status) {
+			    if(status === kakao.maps.services.Status.OK) {
+			       eLoc.value = result[0].address.address_name;
+			    }
+			    else{
+			    	 eLoc.value = "";
+			    	 alert("도착지 주소를 찾을 수 없습니다. 도착마커를 옮겨주세요.")
+				}
+			});
+			///////////// 대중교통 도착점 표시
+			arriveMarker.setPosition(eMarkerLatLon);
+			arriveMarker.setMap(mapPE);
+			mapPE.setCenter(eMarkerLatLon);
+			/////////////// 대중교통 도착점 표시 끝  
+	
+		   const distance = (polyObj.getLength()/1000).toFixed(1);
+	
+	    	fixC.innerHTML=""; // 새로 라인을 그리기 후 가져오기눌러주세요 글을 없앤다
+	    	fixC.setAttribute("val", "n");
+	    	line.value = setGpx(latArr,lonArr,altitudeArr);
+		    dis.value = distance;
+		    time.value = (distance/20*60).toFixed(0);
+		    
+		    infoC.disabled = true;
+//--------------------------------------------------
+ 
+ 	
+			setGpx(latArr,lonArr,altitudeArr);
 		};
 			reader.readAsText(file, "UTF-8");
+			this.value = null;
+	});
 
-	})
+
+	function setGpx(latArr,lonArr,altitudeArr){
+
+		const maxLat = Math.max.apply(null,latArr);
+		const maxLon = Math.max.apply(null,lonArr);
+		
+		const minLat = Math.min.apply(null,latArr);
+		const minLon = Math.min.apply(null,lonArr);
+
+		const startLat = latArr[0];
+		const startLon = lonArr[0];
+		const endLat = latArr[latArr.length-1];
+		const endLon = lonArr[lonArr.length-1];
+
+	let	gpxStr = '<?xml version="1.0" encoding="UTF-8"?>\r\n\
+		<gpx xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" creator="siwook">\r\n\
+			<metadata>\r\n\
+				<desc>siwook</desc>\r\n\
+				<bounds maxlat="'+maxLat+'" maxlon="'+maxLon+'" minlat="'+minLat+'" minlon="'+minLon+'" />\r\n\
+			</metadata>\r\n\
+			<wpt lat="'+startLat+'" lon="'+startLon+'">\r\n\
+				<name>START</name>\r\n\
+				<sym>Flag, Green</sym>\r\n\
+				<extensions>\r\n\
+					<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">\r\n\
+					<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>\r\n\
+					</gpxx:WaypointExtension>\r\n\
+				</extensions>\r\n\
+				<ele>0</ele>\r\n\
+			</wpt>\r\n\
+			<wpt lat="'+endLat+'" lon="'+endLon+'">\r\n\
+				<name>END</name>\r\n\
+				<sym>Flag, Green</sym>\r\n\
+				<extensions>\r\n\
+					<gpxx:WaypointExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">\r\n\
+					<gpxx:DisplayMode>SymbolAndName</gpxx:DisplayMode>\r\n\
+					</gpxx:WaypointExtension>\r\n\
+				</extensions>\r\n\
+				<ele>0</ele>\r\n\
+			</wpt>\r\n\
+			<trk>\r\n\
+				<extensions>\r\n\
+					<gpxx:TrackExtension xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">\r\n\
+					<gpxx:DisplayColor>Green</gpxx:DisplayColor>\r\n\
+					</gpxx:TrackExtension>\r\n\
+				</extensions>\r\n\
+				<trkseg>\r\n';
+
+		if(altitudeArr.length != 0){
+			for(let i=0; i<latArr.length; i++){
+				gpxStr += '<trkpt lat="'+latArr[i]+'" lon="'+lonArr[i]+'">\r\n\
+								<ele>'+altitudeArr[i]+'</ele>\r\n\
+						   </trkpt>\r\n';
+			}
+		}
+
+		else{
+			for(let i=0; i<latArr.length; i++){
+				gpxStr += '<trkpt lat="'+latArr[i]+'" lon="'+lonArr[i]+'">\r\n\
+								<ele>0</ele>\r\n\
+						   </trkpt>\r\n';
+			}
+		}
+
+		
+		
+		gpxStr +=		'</trkseg>\r\n\
+					</trk>\r\n\
+				</gpx>\r\n'
+		
+
+		return gpxStr;
+ 	}
+	
+
 	/////////----------------------------- 고도 차트 함수
 	google.charts.load('current', {'packages':['corechart']});
-	google.charts.setOnLoadCallback(drawAltitude);
 	///////--------------------- 고도 차트
 	   function drawAltitude() {
-        const data = google.visualization.arrayToDataTable(altitudeData);
+		   const data = new google.visualization.DataTable();
+	        data.addColumn('number','거리');
+	        data.addColumn('number','고도');
 
-        const options = {
-            	  title: '자전거코스 고도',
-            	  animation:{duration:3000,easing:'out',startup:true},
-                  hAxis: {title: '거리(km)' ,titleTextStyle: {color: '#333'},gridlines: {color: 'transparent'}},
-                  vAxis: {title:'고도(m)',titleTextStyle: {color: '#333'},minValue: 0},
-                  curveType: 'function',
-                  width:'100%',
-                  height:300,
-                };
+			if(altitudeData.length != 0){
+				data.addRows(altitudeData);
+			}
+	        
 
-        const chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-        window.addEventListener("resize",drawAltitude,false);
+	        const options = {
+	            	  title: '자전거코스 고도',
+	            	  animation:{duration:3000,easing:'out',startup:true},
+	                  hAxis: {title: '거리(km)' ,titleTextStyle: {color: '#333'},gridlines: {color: 'transparent'}},
+	                  vAxis: {title:'고도(m)',titleTextStyle: {color: '#333'},minValue: 0},
+	                  curveType: 'function',
+	                  width:'100%',
+	                  height:300,
+	                };
+
+	        const chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+	        chart.draw(data, options);
+	        window.addEventListener("resize",drawAltitude,false);
       }
 //////////////////////////////////////////////////////// 파일드랍기능 구현
 	const photoReg = /(.*?)\/(jpg|jpeg|png|bmp)$/;
 	
 	const uploadFiles = [];
-	const drop = document.getElementById("drop");
 	
 	drop.addEventListener("dragenter", function(e) {
 		this.className = "drag-over";
@@ -1089,7 +1341,7 @@ window.onload = function(){
 	
 	function addPhoto(cpFiles){
 		const files = cpFiles; //드래그&드랍 항목
-		console.log(files);
+
 		for(let i = 0; i < files.length; i++) {
 			const file = files[i];
 			if (!file.type.match(photoReg)) {
@@ -1101,33 +1353,38 @@ window.onload = function(){
 				return;
 			}
 			const size = uploadFiles.push(file); //업로드 목록에 추가
-			console.log(file);
-			console.log("파일들어감");
 			previewPhoto(file, size - 1); //미리보기 만들기
 		}
 	}
 	
 	function previewPhoto(file, idx) {
-		console.log("작동함");
+
 		const reader = new FileReader();
 		reader.onload = (function(f, idx) {
 			return function(e) {
-				const div = '<div class="thumb"> \
-				<div class="close" data-idx="' + idx + '"><img class="x" src="../icons/x.png"/></div> \
-				<img src="' + e.target.result + '" title=""/> \
-				</div>';
-				$("#thumbnails").append(div);
+				const thumb = document.createElement("div");
+				thumb.className = "thumb";
+				 
+				const div =	'<div class="close" data-idx="' + idx + '"><img class="x" src="../icons/x.png"/></div>\
+							<img src="' + e.target.result + '" title="' + escape(f.name) + '"/>\
+							</div>';
+				thumb.innerHTML = div;
+				thumbnails.append(thumb);
 			};
 		})(file, idx);
 			reader.readAsDataURL(file);
 	}
 
-	$("#thumbnails").on("click", ".close", function(e) {
-		const $target = $(e.target.parentNode);
-		const idx = $target.attr('data-idx');
-		uploadFiles[idx].upload = 'disable'; //삭제된 항목은 업로드하지 않기 위해 플래그 생성
-		$target.parent().remove(); //프리뷰 삭제
-		});
+	drop.addEventListener("click", function(e) {
+		const className = e.target.className;
+
+		if(className == "x"){
+			const target = e.target.parentNode;
+			const idx = target.getAttribute('data-idx');
+			uploadFiles[idx].upload = 'disable';
+			target.parentNode.parentNode.removeChild(target.parentNode);
+		}
+	});
 
 	function cPhotoNumCheck(){
 		let cPhotoCnt = 0;  // 업로드할 사진수 체크
@@ -1259,9 +1516,9 @@ window.onload = function(){
 			url:"https://openapi.gg.go.kr/BICYCL?key=e2d851f8493c448c964a25461359f1f5&pIndex=1&pSize=1000&SIGUN_NM="+code,
 			type:"get",
 			success:function(data){
-				console.log(data);
+
 				const cycList = data.querySelectorAll('row');
-				console.log(cycList[0]);
+
 				for(let i=0; i<cycList.length; i++){
 					setGgCycleMarker(cycList[i],cName,cycleUrl);
 				}
@@ -1426,9 +1683,12 @@ window.onload = function(){
 	function preCheck(){ // 미리보기,등록 할때 값들 제어를 할 함수
 		
 		const cname = courseName.value.trim();
+		const sLocName = sLoc.value.trim();
+		const eLocName = eLoc.value.trim();
 		const fixCVal = fixC.getAttribute("val");
 		const fixPSVal = fixPS.getAttribute("val");
-		const fixPEVal = fixPE.getAttribute("val");		
+		const fixPEVal = fixPE.getAttribute("val");
+		const ctag = tag.value.trim();				
 		const fView = firstView.options[firstView.selectedIndex].value;	
 		const cDiff = diff.options[diff.selectedIndex].value;	
 		const cwords = words.value.trim();
@@ -1440,9 +1700,11 @@ window.onload = function(){
 
 		const cPhotoCnt = cPhotoNumCheck();
 		
-		const krengAvail = /^[가-힣a-zA-Z\s]{2,10}$/;
+		const krengAvail = /^[가-힣a-zA-Z\s]{2,15}$/;
+		const krsharpAvail = /^[가-힣#\s]{2,15}$/;
 		const krengnumAvail = /^[가-힣a-zA-Z0-9\s]{2,14}$/;
 		const cnameCheck = krengAvail.test(cname);
+		const tagCheck = krsharpAvail.test(ctag);
 		const sPTStCheck = krengnumAvail.test(sPTSt);
 		const ePTStCheck = krengnumAvail.test(ePTSt);
 
@@ -1453,7 +1715,7 @@ window.onload = function(){
 			}
 			
 			$.ajax({
-				url: "/user/cnameDupCheck",
+				url: "/user/cnameDupCheck?"+parameter+'='+token,
 				type: "POST",
 				async: false,
 				data:{"c_name" : cname},
@@ -1469,46 +1731,103 @@ window.onload = function(){
 
 		if(cname == ''){
 			alert("페이지 상단의 코스명을 입력한 후 진행해주세요.");
+			courseName.focus();
 			return 1;
 		}
 		if(cnameCheck == false){
-			alert("코스명의 형식이 유효하지 않습니다(한글 또는 영문자 2~10자).");
+			alert("코스명의 형식이 유효하지 않습니다(한글 또는 영문자 2~15자).");
+			courseName.focus();
 			return 1;
 		}
 		if(cnameDupCheck() == "1"){
 			alert("중복된 코스명입니다. 다른 코스명을 입력해주세요");
+			courseName.focus();
 			return 1;
 		}  
-		if(fixCVal != "n" || fixPSVal != "n" || fixPEVal != "n"){
+		if(sLocName == ""){
+			alert("출발지 지역명을 찾을 수 없습니다. 출발마커를 옮겨주세요.");
+			sLoc.focus();
+			return 1;
+		}  
+		if(eLocName == ""){
+			alert("도착지 지역명을 찾을 수 없습니다. 도착마커를 옮겨주세요.");
+			eLoc.focus();
+			return 1;
+		}  
+		if(fixCVal != "n"){
 			alert("코스만들기의 가져오기를 누른 후 진행해주세요.");
+			mapContainer.scrollIntoView();
+			return 1;
+		}
+		if(fixPSVal != "n"){
+			alert("출발점 대중교통 코스만들기의 가져오기를 누른 후 진행해주세요.");
+			mapContainerPS.scrollIntoView();
+			return 1;
+		}
+		if( fixPEVal != "n"){
+			alert("도착점 대중교통 코스만들기의 가져오기를 누른 후 진행해주세요.");
+			mapContainerPE.scrollIntoView();
+			return 1;
+		}
+		if(ctag == ""){
+			alert("코스 #태그를 입력해주세요.");
+			tag.focus();
+			return 1;
+		}
+		if(tagCheck == false){
+			alert("코스 #태그 형식히 유효하지 않습니다(한글,특수문자는#만 허용됩니다).");
+			tag.focus();
 			return 1;
 		}
 		if(fView == 0){
 			alert("코스풍경을 선택 후 진행해주세요.");
+			firstView.focus();
 			return 1;
 		}
 		if(cDiff == 0){
 			alert("코스난이도를 선택 후 진행해주세요.");
+			diff.focus();
 			return 1;
 		}
 		if(cwords == ''){
 			alert("코스상세설명을 입력 후 진행해주세요.");
+			words.focus();
 			return 1;
 		}
-		if(sPTVal ==0 || ePTVal==0 ){
-			alert("대중교통을 선택한 후 진행해주세요.");
+		if(sPTVal == '(입력안함)'){
+			alert("출발점 대중교통을 선택한 후 진행해주세요.");
+			sPT.focus();
 			return 1;
 		}
-		if(sPTSt =='' || ePTSt == '' ){
-			alert("대중교통역 이름을 입력 후 진행해주세요.");
+		if(sPTSt =='' ){
+			alert("출발점 대중교통역 이름을 입력 후 진행해주세요.");
+			sPTStation.focus();
 			return 1;
 		}
-		if(sPTStCheck == false || ePTStCheck == false ){
-			alert("대중교통역 이름의 형식이 유효하지 않습니다(한글,영문자,숫자 2~14자)");
+		if(sPTStCheck == false){
+			alert("출발점 대중교통역 이름의 형식이 유효하지 않습니다(한글,영문자,숫자 2~14자)");
+			sPTStation.focus();
+			return 1;
+		}
+		
+		if( ePTVal=='(입력안함)' ){
+			alert("도착점 대중교통을 선택한 후 진행해주세요.");
+			ePT.focus();
+			return 1;
+		}
+		if(ePTSt == '' ){
+			alert("도착점 대중교통역 이름을 입력 후 진행해주세요.");
+			ePTStation.focus();
+			return 1;
+		}
+		if(ePTStCheck == false ){
+			alert("도착점 대중교통역 이름의 형식이 유효하지 않습니다(한글,영문자,숫자 2~14자)");
+			ePTStation.focus();
 			return 1;
 		}
 		if(cPhotoCnt < 5){
 			alert("코스사진은 최소5장 이상 업로드해야 합니다");
+			photoInput.focus();
 			return 1;
 		}
 
@@ -1518,6 +1837,7 @@ window.onload = function(){
 	function getCourseData(){  // 미리보기,등록할때 데이터를 전달할 함수		
 
 		courseName.value = courseName.value.trim();
+		tag.value = tag.value.trim();
 		words.value =  words.value.trim();
 		sPTStation.value = sPTStation.value.trim();
 		ePTStation.value = ePTStation.value.trim();
@@ -1530,6 +1850,14 @@ window.onload = function(){
 		if(sLocName != eLocName){
 			c_loc += eLocName;
 		}
+
+		const c_tags = [];
+		const tagArr = tag.value.split("#");
+		tagArr.forEach(function(t, i) {
+			if(t != ""){
+				c_tags.push(t);
+			}
+		});
 
 		const c_views = [];
 		if(firstView.value != "0"){
@@ -1559,6 +1887,7 @@ window.onload = function(){
 
 		formData.set("c_view", c_view);
 		formData.set("c_views", c_views);
+		formData.set("c_tags", c_tags);
 		
 		formData.set("pt_stationPS", pt_stationPS);
 		formData.set("pt_stationPE", pt_stationPE);
@@ -1578,11 +1907,12 @@ window.onload = function(){
 		const fixCVal = fixC.getAttribute("val");
 		if(fixCVal != "n"){
 			alert("상단 첫 코스 가져오기를 실행해야만 미리보기를 볼 수 있습니다.");
+			mapContainer.scrollIntoView(top);
 			return;
 		}
 
 		$.ajax({
-			url:"/user/previewMakingCourse",
+			url:"/user/previewMakingCourse?"+parameter+"="+token,
 			type: "POST",
 			data: getCourseData(),
 			contentType: false,
@@ -1608,7 +1938,7 @@ window.onload = function(){
 		}
 
 		$.ajax({
-			url:"/admin/updateCourse",
+			url:"/admin/updateCourse?"+parameter+"="+token,
 			type: "POST",
 			data: getCourseData(),
 			contentType: false,
@@ -1632,15 +1962,21 @@ window.onload = function(){
 	//const  url = document.location.href;
 	//const courseNumber = url.substring(url.indexOf("=")+1);
 	const courseNumber = ${c_no};
-	console.log(courseNumber);
+
 	const req = new XMLHttpRequest();
 	req.open("GET", "/admin/getUpdateCourse?c_no="+courseNumber);
 	req.send(null);
 	req.addEventListener("load", function(e) {
-		const repMap = JSON.parse(this.response);
-		const cJson = repMap.cJson;
-		const ptJson = repMap.ptJson;
-		setUpdateCourse(cJson,ptJson);
+		if(req.status == 200){
+			const repMap = JSON.parse(this.response);
+			const cJson = repMap.cJson;
+			const ptJson = repMap.ptJson;
+			setUpdateCourse(cJson,ptJson);
+		}
+		else{
+			alert("에러발생");
+		}
+		
 	})
 
 	  function setUpdateCourse(cJson,ptJson){   // 업데이트코스 데이타 설정 함수
@@ -1651,24 +1987,99 @@ window.onload = function(){
 		courseId.value = cJson.id;
 		courseCodeValue.value = cJson.code_value;
 		oldCourseName.value = cJson.c_name;
-
 		//----히든으로 넘길값들 (유지해야할 값)
-		courseName.value = cJson.c_name;
 		
-		const ucLine = JSON.parse(cJson.c_line);
+		
+		courseName.value = cJson.c_name;
+		tag.value = cJson.c_tag;
+		
+		const ucLine = cJson.c_line;
 
-		const cLineArr = eval(ucLine.courseLine);   // 코스 위도경도 객체 배열
-		altitudeData = eval(ucLine.altitudeData); // 코스 고도를 전역변수 얼티튜드데이타에 담는다
-		manager.put(kakao.maps.drawing.OverlayType.MARKER, cLineArr[0],0);  // 출발점마커 
-		manager2.put(kakao.maps.drawing.OverlayType.MARKER, cLineArr[cLineArr.length-1],0); // 도착점 마커
-		manager3.put(kakao.maps.drawing.OverlayType.POLYLINE, cLineArr); // 코스폴리라인 
-		cLineArr.forEach(function(latlng, i) {
-			courseBounds.extend(latlng);
+		const eleArr = $(ucLine).find("trkseg ele");
+		const trkptArr = $(ucLine).find("trkseg trkpt");
+		const mnBound = $(ucLine).find("bounds")[0];
+
+		const latArr = new Array();
+		const lonArr = new Array();
+		const latlonArr = new Array();
+
+		for(let i=0; i<trkptArr.length; i++){
+			const lat = trkptArr[i].getAttribute("lat");
+			const lon = trkptArr[i].getAttribute("lon");
+			
+			latArr.push(lat);
+			lonArr.push(lon);
+			latlonArr.push(new kakao.maps.LatLng(lat,lon));	
+			
+		}
+
+		polyObj.setPath(latlonArr);
+		const distancePerLine = (((polyObj.getLength()/1000).toFixed(1))/(eleArr.length-1)).toFixed(10);
+
+		for(let i=0; i<eleArr.length; i++){
+			const elData = [distancePerLine*i,Number(Number((eleArr[i].innerHTML)).toFixed(1))];
+			
+			altitudeData.push(elData);			
+			altitudeArr.push(eleArr[i].innerHTML);
+			
+		}
+	
+		const maxLat = mnBound.getAttribute("maxlat");
+		const maxLon = mnBound.getAttribute("maxlon");	
+		const minLat = mnBound.getAttribute("minlat");
+		const minLon = mnBound.getAttribute("minlon");
+
+		courseBounds.extend(new kakao.maps.LatLng(maxLat,maxLon));
+		courseBounds.extend(new kakao.maps.LatLng(minLat,minLon));
+
+		manager.put(kakao.maps.drawing.OverlayType.MARKER, latlonArr[0],0);  // 출발점마커 
+		manager2.put(kakao.maps.drawing.OverlayType.MARKER, latlonArr[latlonArr.length-1],0); // 도착점 마커
+		manager3.put(kakao.maps.drawing.OverlayType.POLYLINE, latlonArr);
+		map.setBounds(courseBounds);
+		google.charts.setOnLoadCallback(drawAltitude);
+
+		const sMarkerLatLon = latlonArr[0];
+		const eMarkerLatLon = latlonArr[latlonArr.length-1];
+	
+		slat.value = sMarkerLatLon.getLat();
+   		slon.value = sMarkerLatLon.getLng();
+   		geocoder.coord2Address(sMarkerLatLon.getLng(), sMarkerLatLon.getLat(), function(result, status) {
+		    if(status === kakao.maps.services.Status.OK) {
+		       sLoc.value = result[0].address.address_name;
+		    }
 		});
-		map.setBounds(courseBounds);  // 맵 바운드 설정
-		getInfo(); // 코스가져오기를 실행시킴
+		//////////////// 대중교통 출발점 위치표시
+		startMarker.setPosition(sMarkerLatLon);
+		startMarker.setMap(mapPS);
+		mapPS.setCenter(sMarkerLatLon);
+		///////////// 대중교통 출발점표시 끝	
+		
+		elat.value = eMarkerLatLon.getLat();
+   		elon.value = eMarkerLatLon.getLng();
+	    geocoder.coord2Address(eMarkerLatLon.getLng(), eMarkerLatLon.getLat(), function(result, status) {
+		    if(status === kakao.maps.services.Status.OK) {
+		       eLoc.value = result[0].address.address_name;
+		    }
+		});
+		///////////// 대중교통 도착점 표시
+		arriveMarker.setPosition(eMarkerLatLon);
+		arriveMarker.setMap(mapPE);
+		mapPE.setCenter(eMarkerLatLon);
+		/////////////// 대중교통 도착점 표시 끝  
+
+	   const distance = (polyObj.getLength()/1000).toFixed(1);
+
+    	fixC.innerHTML=""; // 새로 라인을 그리기 후 가져오기눌러주세요 글을 없앤다
+    	fixC.setAttribute("val", "n");
+    	line.value = setGpx(latArr,lonArr,altitudeArr);
+	    dis.value = distance;
+	    time.value = (distance/20*60).toFixed(0);
+	    
+	    infoC.disabled = true;
+
+		
 		const c_views = cJson.c_views;
-		console.log(c_views);
+		//console.log(c_views);
 		c_views.forEach(function(v, i) {  // 코스풍경 셀렉트 선택
 			if(i == 0){
 				const firstViewOp = document.querySelectorAll("#firstView option");
@@ -1755,14 +2166,11 @@ window.onload = function(){
 				addPhoto([imgFile]);
 				
 			})
-			req.addEventListener("error", function(e) {
-				alert("에러발생");
-			})	
 		
 		});
 		
 	};	
-//	setUpdateCourse();
+
 	
 	
 	
@@ -1777,12 +2185,12 @@ window.onload = function(){
       <div class="container">
          <a style="font-family: 나눔스퀘어라운드;font-size: 30px;" class="navbar-brand" href="/mainPage">
         <span style="font-weight: bold;"><font color="#45A3F5" >오</font><font color="#bae4f0">늘</font><font color="#88bea6">의</font>
-        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</span></a>
+        <font color="#eccb6a">라</font><font color="#d0a183">이</font><font color="#c8572d">딩</font></span></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
                <span class="oi oi-menu"></span> Menu
             </button>
-         
-         <div class="collapse navbar-collapse" id="ftco-nav">
+       <div style="display: block;">
+         <div class="collapse navbar-collapse" id="ftco-nav" style="height: 20px;">
               <ul class="navbar-nav ml-auto">
                <c:choose>
                   <c:when test="${m == null }">
@@ -1790,15 +2198,27 @@ window.onload = function(){
                      <li class="nav-item"><a style="font-size: 15px;" href="/signUp" class="nav-link">회원가입</a></li>
                   </c:when>
                   <c:when test="${m != null }">
-                     <li class="nav-item"><a style="font-size: 15px;" class="nav-link">${m.nickName } 라이더님</a></li>
-                     <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>&nbsp;&nbsp;
-                     <li class="nav-item"><a style="font-size: 15px;" href="/myPage?id=${m.id}" class="nav-link">마이페이지</a></li>
+                     <li id="courseDropPoint"  class="nav-item dropdown">
+                      <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown" style="font-size: 15px;">  ${m.nickName } 라이더 님  </a>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/myPage?id=${m.id}"> 정보 수정 </a></li>
+                        <li><a class="dropdown-item" href="/myPageSaveCourse"> 찜 목록 </a></li>
+                        <li><a class="dropdown-item" href="/myPageMyCourse"> 내 코스 </a></li>
+                        <li><a class="dropdown-item" href="/listReview?searchType=id&searchValue=${m.id }"> My 후기 </a></li>
+                        <li><a class="dropdown-item" href="/listMeeting?id=${m.id}"> My 번개 </a></li>
+                        <li><a class="dropdown-item" href="/myPageMyRank"> 랭킹 </a></li>
+                      </ul>
+                    </li>
+                     <li class="nav-item"><a style="font-size: 15px;" href="/logout" class="nav-link">로그아웃</a></li>
+                       <c:if test="${m.code_value == '00101' }">
+                     <li class="nav-item"><a style="font-size: 15px;" href="/admin/adminPage" class="nav-link">관리자 페이지</a></li>
+							      </c:if>
                   </c:when>
                </c:choose>
             </ul>
          </div>      
 
-         <div class="collapse navbar-collapse" id="ftco-nav">
+         <div class="collapse navbar-collapse" id="ftco-nav" style="height: 40px;">
            <ul class="navbar-nav ml-auto">
              <li class="nav-item"><a href="/mainPage" class="nav-link">Home</a></li>
              <li class="nav-item"><a href="/listNotice" class="nav-link">오늘의 라이딩</a></li>
@@ -1810,14 +2230,15 @@ window.onload = function(){
            </ul>
          </div>
        </div>
+     </div>
    </nav>
     <!-- END nav -->
-	<section class="hero-wrap hero-wrap-2" style="background-image: url('/resources/images/bg_1.jpg');" data-stellar-background-ratio="0.5">
+	<section class="hero-wrap hero-wrap-2" style="background-image: url('/headerImg/makingCourseMain.jpg');" data-stellar-background-ratio="0.5">
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
           <div class="col-md-9 ftco-animate pb-0 text-center">
-          	<p class="breadcrumbs"><span class="mr-2"><a href="#">라이딩 코스<i class="fa fa-chevron-right"></i></a></span> <span>코스 상세<i class="fa fa-chevron-right"></i></span></p>
+          	<p class="breadcrumbs"><span class="mr-2"><a href="#">HOME <i class="fa fa-chevron-right"></i></a></span> <span>코스 상세 <i class="fa fa-chevron-right"></i></span></p>
             <h1 class="mb-3 bread">코스 수정</h1>
           </div>
         </div>
@@ -1831,8 +2252,10 @@ window.onload = function(){
 	
 	<div id="contents">
 		<form id="courseForm">
-			<input type="text" name="c_name"  id="courseName" maxlength="10" placeholder="나만의 코스에 이름을 붙여주세요.">
+		<div>
+			<input type="text" name="c_name"  id="courseName" maxlength="15" placeholder="나만의 코스에 이름을 붙여주세요.">
 			<span id="courseNameCnt"></span>
+		</div>
 			<div>
 				<input type="text" id="oldCourseName" readonly="readonly">
 			</div>
@@ -1864,18 +2287,18 @@ window.onload = function(){
 	  		</div>
 	  		<!-- p지워도 되는지? -->
 			<p>
-				<div class="readFilebox" style="position: relative; left: 720px; z-index: 2;">
+				<div class="readFilebox" style="text-align:right;  position: relative; z-index: 2;">
 					<label for="bikeFile">경로파일 불러오기</label>
 					<input type="file" value="경로파일" id="bikeFile"><br>
 				</div>
 				<div class="btnDiv">
-					<button type="button" class="btnOption" id="bike">경로만들기</button>
+					<!--  <button type="button" class="btnOption" id="bike">경로만들기</button>-->
 				    <button type="button" class="btnOption" id="startC">출발</button>
 				    <button type="button" class="btnOption" id="arriveC">도착</button>
 				    <button type="button" class="btnOption" id="polyC" >선</button>
 				    <button type="button" class="btnOption" id="backPolyC" class="disabled" disabled>선 되돌리기</button>
 				    <button type="button" class="btnOption" id="frontPolyC"  class="disabled" disabled>선 앞돌리기</button>
-				    <button type="button" class="btnOption" id="infoC" >가져오기</button><br>
+				    <button type="button" class="btnOption" id="infoC" disabled="disabled">가져오기</button><br>
 				     <span id="fixC" val="y" style="color: #d0a183; font-weight: bold;"></span>
 				</div>
 			</p>
@@ -1898,19 +2321,25 @@ window.onload = function(){
 			<!-- 경도 --> <input type="hidden" id="elon" name="c_e_longitude" value="0" readonly="readonly">
 			<!-- 도착지 --> <input type="text" id="eLoc" name="c_e_locname" readonly="readonly" size="50" placeholder="도착지 주소가 입력됩니다."><br>
 			
-			<!-- 거리 -->거리 <input type="text"  id="dis" name="c_distance" value="0" readonly="readonly">km<br>
-			<!-- 시간 -->시간 <input type="text" id="time" name="c_time" value="0" readonly="readonly">분<br>
+			<!-- 거리 -->거리 <input class="right-text" type="text"  id="dis" name="c_distance" value="0" readonly="readonly"> km<br>
+			<!-- 시간 -->시간 <input class="right-text" type="text" id="time" name="c_time" value="0" readonly="readonly"> 분<br>
 			<!-- 난이도 -->
+			<div>
+			<label for="diff" class="textFont">코스난이도 </label>
 			<select id="diff" name="c_difficulty">
 				<option value="0">--난이도 선택--</option>
 				<option value="1">쉬움</option>
 				<option value="2">보통</option>
 				<option value="3">어려움</option>
-				<option value="4">매우 어려움</option>
+				<option value="4">힘듦</option>
 			</select>
-			<br>
+			</div>
+			<div>
+			<label for="tag" class="textFont">코스 #태그 </label>
+			 <input type="text" name="c_tag" id="tag" maxlength="15" placeholder="ex)#가을#축제#힐링" style="width: 300px;"> <span id="courseTagCnt"></span>
+			</div>
 			<div id="rankViewAll">
-				<div id="rankViewTitle">어울리는 풍경을 지정해주세요.</div>
+				<div id="rankViewTitle" class="textFont">어울리는 풍경을 지정해주세요.</div>
 				<div class="rankView">
 					<!-- 1순위 -->
 					<img src="../courseMaking/finger_1.png"><br>
@@ -1951,23 +2380,26 @@ window.onload = function(){
 			</div>
 			
 			<!-- 코스 설명 -->
-			<div id="wordsDiv">코스에 대해서 간단히 설명해주세요.
-				<textarea rows="20" cols="100" id="words" name="c_words" maxlength="3000" placeholder="ex) 시원한 강과함께 들판을 나란히 두고 라이딩하는..." style="border: none; width: 840px; padding: 10px 5px 0 5px;"></textarea>
+			<div id="wordsDiv" class="textFont">코스에 대해서 간단히 설명해주세요.
+				<textarea rows="20" cols="30" id="words" name="c_words" maxlength="3000" placeholder="ex) 시원한 강과함께 들판을 나란히 두고 라이딩하는..." style="resize:none; border: none; width:80%; padding: 10px 5px 0 5px;"></textarea>
+				<div style="text-align: right; padding-right: 130px; height: 50px;">
+					<span id="wordsCnt"></span>
+				</div>
 			</div>
-			<span id="wordsCnt"></span>
+			
 			
 			<!-- 코스 사진 -->
-			<div id="thumbnailsDiv">사진을 등록해주세요.
-				<div id="drop" style="width: 865px; height: 300px; padding: 3px;">
+			<div id="thumbnailsDiv" class="textFont">사진을 등록해주세요.
+				<div id="drop" style="height: 300px; padding: 3px;">
 					<div id="thumbnails"></div>
 				</div>
 			</div><br>
-			<div class="filebox" style="position: relative; bottom: 90px; left: 770px;">
+			<div class="filebox" style="position: relative; bottom: 100px; text-align: right; margin: 0 40px 0 0;">
 				<label for="photoInput"><img src="../meetingImg/galleryOff.png" title="사진등록" id="gallery" width="50px"/></label>
 				<input type="file" id="photoInput" multiple="multiple">
 			</div>
 				
-			[출발점 대중교통]
+			<strong>[출발점 대중교통]</strong>
 			<div id="mapPS"></div>
 			<div id="bicycleInfoPS" class="bicycleInfo">
 				<input type="checkbox" id="chkBicyclePS"/> 자전거도로 정보 보기
@@ -1977,32 +2409,40 @@ window.onload = function(){
 				<button type="button" class="btnOption" id="polyPS" >선</button>
 				<button type="button" class="btnOption" id="backPolyPS" class="disabled" disabled>선 되돌리기</button>
 				<button type="button" class="btnOption" id="frontPolyPS" class="disabled" disabled>선 앞돌리기</button>
-				<button type="button" class="btnOption" id="infoPS" >가져오기</button><br>
+				<button type="button" class="btnOption" id="infoPS" disabled="disabled">가져오기</button><br>
 				<span id="fixPS" val="y" style="color: #d0a183;; font-weight: bold;"></span>
 			</div>
 			<input type="hidden" id="pt_noPS" name="pt_noPS">
 			<!-- 대중교통위치 -->
 			<!-- 위도 --> <input type="hidden" id="latPS" name="pt_latitudePS" value="0">
 			<!-- 경도 --> <input type="hidden" id="lonPS" name="pt_longitudePS" value="0">
-			거리 <input type="text" id="disPS" name="pt_distancePS" value="0" readonly="readonly">km<br>
+			<div>
+			<label for="disPS" class="textFont">거리 </label>
+			<input class="right-text" type="text" id="disPS" name="pt_distancePS" value="0" readonly="readonly"> km
+			</div>
+			<div>
+			<label for="sPT" class="textFont">대중교통 </label>
 			<select id="sPT" name="pt_imgPS">
 				<option value="(입력안함)">--대중교통선택--</option>
 				<option value="지하철">지하철</option>
 				<option value="시내버스">시내버스</option>
-				<option value="고속버스">고속버스</option>
+				<option value="시외버스">시외버스</option>
 				<option value="기차">기차</option>
-			</select><br>
-			역이름 <input type="text" id="sPTStation"  name="pt_stationPS" maxlength="14" placeholder="ex)신촌역,신촌오거리.."><span id="sPTStationCnt"></span>
-			<br>
+			</select>
+			</div>
+			<div>
+			<label for="sPTStation" class="textFont">역/정류장 </label>
+			 <input type="text" id="sPTStation"  name="pt_stationPS" maxlength="14" placeholder="ex)2호선 신촌역, 신촌오거리역.."> <span id="sPTStationCnt"></span>
+			</div>
 			<!-- 대중교통출발 선경로 -->
 			<div style="display: none;">
 				<textarea rows="10" cols="80" id="linePS" name="pt_linePS"></textarea>
 			</div>
-			<br><br><br>
+			<div style="margin-top: 50px;"></div>
 			
 			
 			
-			[도착점 대중교통]
+			<strong>[도착점 대중교통]</strong>
 			<div id="mapPE"></div>
 			<div id="bicycleInfoPE" class="bicycleInfo">
 				<input type="checkbox" id="chkBicyclePE"/> 자전거도로 정보 보기
@@ -2012,23 +2452,31 @@ window.onload = function(){
 			    <button type="button" class="btnOption" id="polyPE" >선</button>
 			    <button type="button" class="btnOption" id="backPolyPE" class="disabled" disabled>선 되돌리기</button> <!-- disabled -->
 				<button type="button" class="btnOption" id="frontPolyPE" class="disabled" disabled>선 앞돌리기</button>
-				<button type="button" class="btnOption" id="infoPE" >가져오기</button><br>
+				<button type="button" class="btnOption" id="infoPE" disabled="disabled">가져오기</button><br>
 				<span id="fixPE" val="y" style="color: #d0a183;; font-weight: bold;"></span>
 			</div>
 			<input type="hidden" id="pt_noPE" name="pt_noPE">
 			<!-- 대중교통위치 --> 
 			<!-- 위도 --> <input type="hidden" id="latPE" name="pt_latitudePE" value="0" >
 			<!-- 경도 --> <input type="hidden" id="lonPE" name="pt_longitudePE" value="0" >
-			거리 <input type="text" id="disPE" name="pt_distancePE" value="0" readonly="readonly">km<br>
+			<div>
+				<label for="disPE" class="textFont">거리 </label>
+				 <input class="right-text" type="text" id="disPE" name="pt_distancePE" value="0" readonly="readonly"> km
+			</div>			
+			<div>
+			<label for="ePT" class="textFont">대중교통 </label>
 			<select id="ePT" name="pt_imgPE">
 				<option value="(입력안함)">--대중교통선택--</option>
 				<option value="지하철">지하철</option>
 				<option value="시내버스">시내버스</option>
-				<option value="고속버스">고속버스</option>
+				<option value="시외버스">시외버스</option>
 				<option value="기차">기차</option>
-			</select><br>
-			역이름 <input type="text" id="ePTStation" name="pt_stationPE" maxlength="14" placeholder="ex)신촌역,신촌오거리.."><span id="ePTStationCnt"></span>
-			<br>
+			</select>
+			</div>
+			<div>
+			<label for="ePTStation" class="textFont">역/정류장 </label>
+			 <input type="text" id="ePTStation" name="pt_stationPE" maxlength="14" placeholder="ex)2호선 신촌역, 신촌오거리역.."> <span id="ePTStationCnt"></span>
+			</div>
 			
 			<!-- 대중교통도착 선경로 -->
 			<div style="display: none;">
@@ -2043,13 +2491,14 @@ window.onload = function(){
 			</div>
 			</div>
 		</section>
-<footer class="ftco-footer ftco-section">
+	<!-- footer 시작 -->
+	<footer class="ftco-footer ftco-section">
       <div class="container">
         <div class="row mb-5">
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Ecoverde</h2>
-              <p>Far far away, behind the word mountains, far from the countries.</p>
+              <h2 class="ftco-heading-2">Today's Riding</h2>
+              <p>For your perfect ride.</p>
               <ul class="ftco-footer-social list-unstyled mt-5">
                 <li class="ftco-animate"><a href="#"><span class="fa fa-twitter"></span></a></li>
                 <li class="ftco-animate"><a href="#"><span class="fa fa-facebook"></span></a></li>
@@ -2061,42 +2510,32 @@ window.onload = function(){
             <div class="ftco-footer-widget mb-4 ml-md-4">
               <h2 class="ftco-heading-2">Community</h2>
               <ul class="list-unstyled">
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Search Properties</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>For Agents</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Reviews</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>코스 찾기</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>라이딩 후기</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>번개 라이딩</a></li>
                 <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>FAQs</a></li>
               </ul>
             </div>
           </div>
           <div class="col-md">
             <div class="ftco-footer-widget mb-4 ml-md-4">
-              <h2 class="ftco-heading-2">About Us</h2>
+              <h2 class="ftco-heading-2">About Ora</h2>
               <ul class="list-unstyled">
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Our Story</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Meet the team</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>오늘의 라이딩</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>공지사항</a></li>
+                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>QnA</a></li>
               </ul>
             </div>
           </div>
-          <div class="col-md">
-             <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Company</h2>
-              <ul class="list-unstyled">
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>About Us</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Press</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Contact</a></li>
-                <li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Careers</a></li>
-              </ul>
-            </div>
-          </div>
+          
           <div class="col-md">
             <div class="ftco-footer-widget mb-4">
             	<h2 class="ftco-heading-2">Have a Questions?</h2>
             	<div class="block-23 mb-3">
 	              <ul>
-	                <li><span class="icon fa fa-map"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
-	                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+2 392 3929 210</span></a></li>
-	                <li><a href="#"><span class="icon fa fa-envelope pr-4"></span><span class="text">info@yourdomain.com</span></a></li>
+	                <li><span class="icon fa fa-map"></span><span class="text">서울시 마포구 백범로 23</span></li>
+	                <li><a href="#"><span class="icon fa fa-phone"></span><span class="text">+82 02 1234 5678</span></a></li>
+	                <li><a href="#"><span class="icon fa fa-envelope pr-4"></span><span class="text">ora@bit.com</span></a></li>
 	              </ul>
 	            </div>
             </div>
@@ -2104,14 +2543,14 @@ window.onload = function(){
         </div>
         <div class="row">
           <div class="col-md-12 text-center">
-	
+
             <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> 오늘의 라이딩 All rights reserved
   <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
           </div>
         </div>
       </div>
-    </footer>
+    </footer> 
 
   <!-- loader -->
   <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
@@ -2127,7 +2566,6 @@ window.onload = function(){
   <script src="/resources/js/jquery.magnific-popup.min.js"></script>
   <script src="/resources/js/jquery.animateNumber.min.js"></script>
   <script src="/resources/js/scrollax.min.js"></script>
-  <script src="/resources/js/google-map.js"></script>
   <script src="/resources/js/main.js"></script>   
 
 </body>

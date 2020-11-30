@@ -10,6 +10,7 @@ import com.example.demo.vo.MeetingVo;
 import com.example.demo.vo.Meeting_fileVo;
 import com.example.demo.vo.Meeting_peopleVo;
 import com.example.demo.vo.Meeting_repVo;
+import com.example.demo.vo.Meeting_tempVo;
 
 @Repository
 public class MeetingDao {
@@ -56,8 +57,8 @@ public class MeetingDao {
 		return MeetingManager.detailMFile(m_no);
 	}
     
-	public int insertMFile(List<Meeting_fileVo> mf) {
-		return MeetingManager.insertMFile(mf);
+	public int insertMFile(Meeting_fileVo mfvo) {
+		return MeetingManager.insertMFile(mfvo);
 	}
 
 	public int updateMRep(Meeting_repVo mr) {
@@ -129,5 +130,30 @@ public class MeetingDao {
 
 	public int nextStep(int mr_ref) {
 		return MeetingManager.nextStep(mr_ref);
+	}
+	
+	public Meeting_tempVo selectTemp(String id) {
+		return MeetingManager.selectTemp(id);
+	}
+	
+	public int insertTempId(String id) {
+		return MeetingManager.insertTempId(id);
+	}
+	
+	public int updateTemp(Meeting_tempVo mtvo) {
+		return MeetingManager.updateTemp(mtvo);
+	}
+	
+	public int deleteTemp(String id) {
+		return MeetingManager.deleteTemp(id);
+	}
+	
+	public int deleteMfOne(int mf_no) {
+		return MeetingManager.deleteMfOne(mf_no);
+	}
+	
+	// 로그기록중 댓글삭제전 아이디 가져오기위헤
+	public Meeting_repVo getMeetingRepOne(int mr_no) {
+		return MeetingManager.getMeetingRepOne(mr_no);
 	}
 }
