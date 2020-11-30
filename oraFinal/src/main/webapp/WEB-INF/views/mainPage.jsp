@@ -443,7 +443,7 @@ window.onload = function(){
             </div>
           </div>
         </div>
-      </div>
+      </div>  
     </section>	
 
         
