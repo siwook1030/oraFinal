@@ -427,7 +427,7 @@ window.onload = function(){
 
 	<!-- 메인 이미지 -->
     <section class="hero-wrap" data-stellar-background-ratio="0.5">
-      <div class="overlay" style="overflow: hidden;"><video autoplay muted loop src="/resources/images/mainPageVideo.mov"></video></div>
+      <div class="overlay" style="overflow: hidden;"><video autoplay muted loop src="/resources/images/mainPageVideo01.mov"></video></div>
       <div class="container">
         <div class="row no-gutters slider-text align-items-center">
           <div class="col-lg-7 col-md-6 ftco-animate d-flex align-items-end">
