@@ -148,7 +148,7 @@ function signUpOk(){
             success: function(data){
                if(data == "1"){
                   alert("회원가입 성공!");
-                  window.location = "http://localhost:8088/mainPage";
+                  window.location = "/mainPage";
                }else{
                   alert("회원가입 실패");
                }

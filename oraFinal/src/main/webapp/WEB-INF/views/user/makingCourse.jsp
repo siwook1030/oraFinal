@@ -2286,7 +2286,7 @@ const mNickName = checkM.item.nickName;
 		  <div class="modal-dialog modal-xl">
 		    <div class="modal-content">
 		      <div class="modal-header">
-		        <h5 class="modal-title" id="staticBackdropLabel"><img width="30px" src="/detailCourseImg/makingInfo2.png">메이킹 코스 설명서</h5>
+		        <h5 class="modal-title" id="staticBackdropLabel"><img width="30px" src="/detailCourseImg/makingInfo2.png"><a href="https://chrome.google.com/webstore/detail/bikeroutexyz-for-chrome/kglfobkcdlefpknbcckmlmemggfdnmcd?hl=ko" target="_blank">메이킹 코스 설명서</a></h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true">&times;</span>
 		        </button>
