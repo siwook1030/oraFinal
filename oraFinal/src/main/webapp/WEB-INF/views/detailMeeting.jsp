@@ -97,6 +97,11 @@
 		#mPeople a { color: gray; font-size: 14px; }
 		/* 글내용 */
 		.ck-content { padding: 20px; margin-bottom: 100px; width: auto; }
+		.ck-content::after {
+			content: "";
+			display: block;
+			clear: both;
+		}
 		/* 게시글 수정삭제 버튼 */
 		.btn { color: white; background-color: #bae4f0; padding: 8px 12px; display: inline-block; font-size: 15px; border: none; cursor: pointer; }
 		.btn:hover {
