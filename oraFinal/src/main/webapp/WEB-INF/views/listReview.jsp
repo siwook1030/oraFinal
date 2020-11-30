@@ -81,13 +81,6 @@
 	const PAGE_LINKS = 5;			// 페이지 하단에 표시되는 페이지링크 수
 	let page = 1;	// 현재 페이지 저장 변수(기본은 1페이지)
 
-$(document).ready(function(){
-	$("#myPage2").css({"display": "none"});
-	if(URLSearch.has("searchType")) {
-		searchType = URLSearch.get("searchType");	
-	}
-
-
 
 	$(document).ready(function(){
 		const token = $("meta[name='_csrf']").attr("content");
@@ -113,7 +106,8 @@ $(document).ready(function(){
 		}
 		if(URLSearch.has("searchMethod")) {
 			searchMethod = URLSearch.get("searchMethod");
-		}	
+		}
+	
 
 		getJson();			// 댓글과 페이지링크 만드는 함수
 		getCourseList();	// List<CourseVo> 받아오기. 코스명으로 게시글 검색용도
@@ -302,7 +296,6 @@ $(document).ready(function(){
 						$("#pageLink").append(pageLi, " ");
 					}
 				}
-
 			})
 		}
 	});
