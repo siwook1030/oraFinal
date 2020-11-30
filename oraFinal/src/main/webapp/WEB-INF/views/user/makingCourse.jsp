@@ -37,6 +37,7 @@
 	#courseForm {
 		width: 100%;
 	}
+	
 	#sPTStation, #ePTStation {
 		width: 300px;
 	}
@@ -121,6 +122,8 @@
 	.right-text {
 		text-align: right;
 	}
+	
+	
 
 </style>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -229,6 +232,8 @@ window.onload = function(){
 		countTag.innerHTML = txtCnt+" / "+maxCnt;
 	}
 
+	
+	
 // ------------------------- 글자수 세기 이벤트끝 (코스명,코스설명,출발도착대중교통역)
 const checkM = checkLogin(); // 로그인정보
 const mId = checkM.item.id;
@@ -1957,7 +1962,7 @@ const mNickName = checkM.item.nickName;
 		});
 	});
 
-
+	$("#courseForm button").attr("type", "button");
 }
 </script>
 </head>
@@ -2054,7 +2059,7 @@ const mNickName = checkM.item.nickName;
 			<span id="courseNameCnt"></span>
 		</div>
 			
-			<div id="map"></div>
+			<div id="map" style="text-align: center;"></div>
  			
  			<div class="bicycleInfo" id="bicycleInfo">
 				<input type="checkbox" id="chkBicycle"/> 자전거도로 정보 보기

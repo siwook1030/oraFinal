@@ -2172,7 +2172,7 @@ window.onload = function(){
 	};	
 
 	
-	
+	$("#courseForm button").attr("type", "button");
 	
 	
 	//--------------- 수정내용 세팅장소 끝
@@ -2263,7 +2263,7 @@ window.onload = function(){
 			<!-- div 감싼 이유 물어보기 -->
 			<!-- <div id="detailMap">
 				<div class="map_wrap"> -->
-				<div id="map"></div>
+				<div id="map" style="text-align: center;"></div>
 				<!-- </div> -->
 			<!-- </div> -->
  			
@@ -2488,6 +2488,7 @@ window.onload = function(){
 			<div class="btnDiv">
 				<button type="button" class="btnAdd" id="previewUpdateCourse" style="background-color: #eccb6a">미리보기</button>
 				<button type="button" class="btnAdd" id="updateCourse" style="background-color: #d0a183">수정</button>
+			</div>
 			</div>
 			</div>
 		</section>
