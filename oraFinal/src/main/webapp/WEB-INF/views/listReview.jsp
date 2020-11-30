@@ -55,13 +55,15 @@ let page = 1;	// 현재 페이지 저장 변수(기본은 1페이지)
 $(document).ready(function(){
 	$("#myPage2").css({"display": "none"});
 	if(URLSearch.has("searchType")) {
-		searchType = URLSearch.get("searchType");
-		$("#myPage1").css({"display": "none"});
-		$("#myPage2").css({"display": "inline-block"});
+		searchType = URLSearch.get("searchType");	
 	}
 
 	if(URLSearch.has("searchValue")) {
 		searchValue = URLSearch.get("searchValue");
+		if(searchValue == `${m.id}`){
+			$("#myPage1").css({"display": "none"});
+			$("#myPage2").css({"display": "inline-block"});
+		}
 	}
 	if(URLSearch.has("searchMethod")) {
 		searchMethod = URLSearch.get("searchMethod");

@@ -155,6 +155,7 @@
 	<script type="text/javascript">
 	$(function(){
 		
+		
 	    
 	    function onClickId() {
 	        document.querySelector('.modal_wrapId').style.display ='block';
@@ -306,6 +307,31 @@
 	               });
 	               
 	      }
+	  	document.getElementById("phone").onkeypress=enterkeysendPhoneReq;
+	  	function enterkeysendPhoneReq(){
+			if(window.event.keyCode == 13){
+				sendPhoneReq();
+			}
+		}
+	  	document.getElementById("inputNum").onkeypress=enterkeycheckNumReq;
+	  	function enterkeycheckNumReq(){
+			if(window.event.keyCode == 13){
+				checkNumReq();
+			}
+		}
+	  	document.getElementById("phonePwd").onkeypress=enterkeysendPhoneReqPwd;
+	  	document.getElementById("IdPwd").onkeypress=enterkeysendPhoneReqPwd;
+	  	function enterkeysendPhoneReqPwd(){
+			if(window.event.keyCode == 13){
+				sendPhoneReqPwd();
+			}
+		}
+	  	document.getElementById("inputNumPwd").onkeypress=enterkeycheckNumReqPwd;
+	  	function enterkeycheckNumReqPwd(){
+			if(window.event.keyCode == 13){
+				checkNumReqPwd();
+			}
+		}
 	      function sendPhoneReq(){// 인증번호 발송
 	         const phAvail = /^01[0179][0-9]{7,8}$/;
 	         const phAvailCheck = phAvail.test(phone.value.trim());
@@ -574,7 +600,7 @@
              </div>
              	<h4 class="mb-4" style="text-align: center; font-size: 20px;">아이디 찾기</h4>
 		         <div id=kakusu>
-                <input type="tel" id="phone" name="phone"  class=" hidden form-group form-control2" maxlength="11" placeholder="휴대폰 번호'-'없이 입력해 주세요." > 
+                <input type="tel" id="phone" name="phone"  class=" hidden form-group form-control2" maxlength="11" placeholder="휴대폰 번호'-'없이 입력해 주세요."> 
 		         <input type="button" id="sendPhone" class="hidden  btn btn-primary form-group form-control2" value="인증번호 받기">
 		         </div>
 		         <div id="inputNumForm">

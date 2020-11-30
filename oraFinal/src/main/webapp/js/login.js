@@ -3,11 +3,13 @@ window.onload = function(){
 	
 	document.getElementById("member-id").onkeyup=enterkey;
 	document.getElementById("member-password").onkeyup=enterkey;
+
 	function enterkey(){
 		if(window.event.keyCode == 13){
 			login();
 		}
 	}
+
 
 	document.getElementById("login-button").onclick = login;
 

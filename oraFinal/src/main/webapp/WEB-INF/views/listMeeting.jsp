@@ -83,7 +83,7 @@
 	               $('#rowDFlex').empty();
 	               setPage(map.totRecord);
 	               setList(map.list);
-	               if(map.id !== '%'){
+	               if(map.id !== '%' && map.id == `${m.id}`){
 					$("#id1").css({"display": "none"});
 					$("#id2").css({"display": "inline-block"});
 			       }
