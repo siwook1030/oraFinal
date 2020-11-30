@@ -468,7 +468,6 @@ $(document).ready(function(){
 					</div>
 				
 					<div id="myPage2">	
-
 					<div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
 				<div class="ftco-animate pb-0 text-center">
      				 <span>
