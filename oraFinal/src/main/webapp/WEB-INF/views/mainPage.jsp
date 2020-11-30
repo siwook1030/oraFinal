@@ -108,6 +108,31 @@
 	.navbar .nav-item:hover .dropdown-menu .dropdown-item {
 		color: #5D5D5D;
 	}
+	
+	#cBound {
+				margin-top:5px;
+				padding : 6px;
+				border : 1px solid white;
+				opacity: 0.9;
+				background-color: white;
+				border-radius: 3px;
+				cursor: pointer;
+	}
+	
+	#markerInfo {
+	margin: 0 0 0 8px;
+	padding: 5px; 
+	z-index: 1; left: 10px; 
+	width: 190px; 
+	background-color:rgba(255,255,255,0.8); 
+	text-align: center; 
+	color: black; 
+	font-size: 14px; 
+	font-weight: bold; 
+	}
+	.allMapMarker {
+		width: 20px;
+	}
    
 .placeinfo_wrap {position:absolute;bottom:28px;left:-150px;width:300px;}
 .placeinfo {position:relative;width:100%;border-radius:6px;border: 1px solid #ccc;border-bottom:2px solid #ddd;padding-bottom: 10px;background: #fff;}
@@ -144,6 +169,7 @@ window.onload = function(){
 
 
 	const cBound = document.getElementById("cBound");
+	const markerInfo = document.getElementById("markerInfo");
 	const mapCenter = new kakao.maps.LatLng(35.84079054000633, 127.8426863007031);
 	
 	const map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
@@ -154,6 +180,7 @@ window.onload = function(){
 	const zoomControl = new kakao.maps.ZoomControl();
 	map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 	map.addControl(cBound, kakao.maps.ControlPosition.RIGHT);
+	map.addControl(markerInfo, kakao.maps.ControlPosition.BOTTOMLEFT);
 
 	cBound.addEventListener("click", function(e) {
 		map.setLevel(13);
@@ -589,13 +616,13 @@ window.onload = function(){
         </div>
 	        <div class="col-md-12" >
 	           <div id="map" style="width:100%;height:600px; text-align: center; border-radius: 20px;"></div>
-	           <button id="cBound" title="한눈에 보기" style="margin-top:5px;
-				padding : 6px;
-				border : 1px solid white;
-				opacity: 0.9;
-				background-color: white;
-				border-radius: 3px;
-				cursor: pointer;"><img width="20px" src="/detailCourseImg/cBoundBtn.png"></button>
+	           <button id="cBound" title="한눈에 보기"><img width="20px" src="/detailCourseImg/cBoundBtn.png"></button>
+	           <div id="markerInfo">
+	           <img class="allMapMarker" src="/courseMarkerImg/river.png">강 
+	           <img class="allMapMarker" src="/courseMarkerImg/mount.png">산 
+	           <img class="allMapMarker" src="/courseMarkerImg/attract.png">명소 
+	           <img class="allMapMarker" src="/courseMarkerImg/sea.png">바다 
+	           </div>
 	        </div>
       </div>
     </section>
