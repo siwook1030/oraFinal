@@ -37,7 +37,7 @@ public class SignUpController {
 	public String submitSignUp(MemberVo m, Model model) throws Exception {
 		String password = m.getPassword();
 		m.setPassword(passwordEncoder.encode(password));		
-		m.setCode_value("00101"); //관리자 00101, 정회원 00102
+		m.setCode_value("00102"); //관리자 00101, 정회원 00102
 		m.setRank_name("Lv1"); //처음 회원가입하면 기본으로 레벨1 제공
 		System.out.println(m);
 		int re = mdao.insertMember(m);
