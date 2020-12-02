@@ -5,8 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="shortcut icon" type="image⁄x-icon" href='/headerImg/logo.png'>
-<title>번개게시판</title>
+<title>오늘의 라이딩</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
 	<meta name="_csrf_header" content="${_csrf.headerName}" />
@@ -97,6 +96,11 @@
 		#mPeople a { color: gray; font-size: 14px; }
 		/* 글내용 */
 		.ck-content { padding: 20px; margin-bottom: 100px; width: auto; }
+		.ck-content::after {
+			content: "";
+			display: block;
+			clear: both;
+		}
 		/* 게시글 수정삭제 버튼 */
 		.btn { color: white; background-color: #bae4f0; padding: 8px 12px; display: inline-block; font-size: 15px; border: none; cursor: pointer; }
 		.btn:hover {

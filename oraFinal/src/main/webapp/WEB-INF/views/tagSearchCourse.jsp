@@ -62,7 +62,7 @@
 
 </style>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script type="text/javascript">
 window.onload = function(){
 
@@ -135,7 +135,7 @@ window.onload = function(){
 			url:"/tagSearchCourse?"+parameter+"="+token,
 			type:"POST",
 			data:{"searchTag":searchTag},
-			success:function(data){
+			success:data => {
 				searchList.innerHTML="";
 				courseNum.innerHTML="";	
 				scList = data;	
@@ -149,7 +149,7 @@ window.onload = function(){
 				courseNum.append(courseNumSpan1,courseNumSpan2);
 				searchKeword.scrollIntoView();
 			},
-			error:function(){
+			error: err => {
 				alert("에러발생");
 			},
 		})
@@ -219,6 +219,105 @@ window.onload = function(){
 		searchList.append(courseBox);
 
 	}
+
+	// rest api 구현연습-----------------------------------
+	 /*	const record = document.getElementById("record")
+        const stop = document.getElementById("stop")
+        const soundClips = document.getElementById("sound-clips")
+
+        const audioCtx = new(window.AudioContext || window.webkitAudioContext)() // 오디오 컨텍스트 정의
+
+        const analyser = audioCtx.createAnalyser()
+        //        const distortion = audioCtx.createWaveShaper()
+        //        const gainNode = audioCtx.createGain()
+        //        const biquadFilter = audioCtx.createBiquadFilter()
+
+        function makeSound(stream) {
+            const source = audioCtx.createMediaStreamSource(stream)
+
+            source.connect(analyser)
+            //            analyser.connect(distortion)
+            //            distortion.connect(biquadFilter)
+            //            biquadFilter.connect(gainNode)
+            //            gainNode.connect(audioCtx.destination) // connecting the different audio graph nodes together
+            analyser.connect(audioCtx.destination)
+
+        }
+
+        if (navigator.mediaDevices) { 
+            console.log('getUserMedia supported.')
+
+            const constraints = {
+                audio: true
+            }
+            let chunks = [];
+
+            navigator.mediaDevices.getUserMedia(constraints)
+                .then(stream => {
+
+                    const mediaRecorder = new MediaRecorder(stream)     
+     
+                    
+                    record.onclick = () => {
+                        mediaRecorder.start();
+                        console.log(mediaRecorder.state);
+                        console.log("recorder started");
+                        record.style.background = "red";
+                        record.style.color = "black";
+                    }
+
+                    stop.onclick = () => {
+                        mediaRecorder.stop();
+                        console.log(mediaRecorder.state);
+                        console.log("recorder stopped");
+                        record.style.background = "";
+                        record.style.color = "";
+                    }
+
+                    mediaRecorder.onstop = e => {
+
+                        const blob = new Blob(chunks, {
+                            'type': 'audio/wav'
+                        })
+                        console.log(chunks);
+                        console.log(blob);
+                        const audioURL = URL.createObjectURL(blob)
+                        
+                        const formdata= new FormData(); 
+                        formdata.append('speak', blob); 
+                        
+                        axios.request({ 
+                            method: 'POST',
+                            headers: {
+                                   'Content-Type' : 'multipart/form-data'
+                                }, 
+                            url: '/speechSearch?'+parameter+"="+token, 
+                            data: formdata
+                         }).then(
+                                 rep => {
+                         	console.log(rep);
+                         	console.log(rep.data);
+                         	console.log(rep.config.data);
+                         }, 
+                         err => {
+                        	 console.log(err);
+                         });
+                     
+                        chunks = [];
+                    }
+
+                    mediaRecorder.ondataavailable = e => {
+                        chunks.push(e.data);
+                    }
+                })
+                .catch(err => {
+                    console.log('The following error occurred: ' + err);
+                })
+        }
+
+	*/
+
+	//------------------------------------------------------
 
 }
 </script>
@@ -313,6 +412,13 @@ window.onload = function(){
 	    	</div>
 	    </div>
     </section>
+    
+        <div>
+  <!--  	<input type=checkbox id="chk-hear-mic"><label for="chk-hear-mic">마이크 소리 듣기</label>
+    <button id="record">녹음</button>
+    <button id="stop">정지</button>
+    <div id="sound-clips"></div>-->
+    </div>
     
     <section class="ftco-section goto-here">
     	<div class="container">
